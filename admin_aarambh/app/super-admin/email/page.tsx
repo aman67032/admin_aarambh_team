@@ -21,13 +21,22 @@ export default function EmailSystem() {
 JK Lakshmipat University, Jaipur</p>`);
 
   const [bcc, setBcc] = useState('');
+  
+  // Trial Bulk Form State
+  const [trialRecipients, setTrialRecipients] = useState('');
+  const [trialSubject, setTrialSubject] = useState('Test Campaign - Aarambh 2026');
+  const [trialBody, setTrialBody] = useState('<p>This is a custom test bulk email sent from the Aarambh 2026 Team Portal.</p>');
+  const [trialCc, setTrialCc] = useState('');
+  const [trialBcc, setTrialBcc] = useState('');
+  const [trialAttachment, setTrialAttachment] = useState<File | null>(null);
+
   const [logs, setLogs] = useState<any[]>([]);
   const [rateStatus, setRateStatus] = useState<any>(null);
   
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'send' | 'logs'>('send');
+  const [activeTab, setActiveTab] = useState<'send' | 'trial-bulk' | 'logs'>('send');
 
   const fetchLogsAndRate = async () => {
     try {
@@ -42,7 +51,6 @@ JK Lakshmipat University, Jaipur</p>`);
 
   useEffect(() => {
     fetchLogsAndRate();
-    // Refresh every 30 seconds
     const interval = setInterval(fetchLogsAndRate, 30000);
     return () => clearInterval(interval);
   }, []);
@@ -86,6 +94,39 @@ JK Lakshmipat University, Jaipur</p>`);
     }
   };
 
+  const handleSendTrialBulk = async () => {
+    if (!trialRecipients || !trialSubject || !trialBody) {
+      setErrorMsg('Please enter recipients, subject, and body.');
+      return;
+    }
+
+    setLoading(true);
+    setSuccessMsg(null);
+    setErrorMsg(null);
+    
+    try {
+      const formData = new FormData();
+      formData.append('toEmails', trialRecipients);
+      formData.append('subject', trialSubject);
+      formData.append('body', trialBody);
+      if (trialCc) formData.append('ccEmails', trialCc);
+      if (trialBcc) formData.append('bccEmails', trialBcc);
+      if (trialAttachment) formData.append('attachment', trialAttachment);
+
+      const res = await api.email.sendTestBulk(formData);
+      if (res.success) {
+        setSuccessMsg(res.message);
+        // Reset file uploader
+        setTrialAttachment(null);
+        fetchLogsAndRate();
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Error sending trial bulk emails.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Title */}
@@ -121,6 +162,14 @@ JK Lakshmipat University, Jaipur</p>`);
               }`}
             >
               Compose & Send
+            </button>
+            <button
+              onClick={() => setActiveTab('trial-bulk')}
+              className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
+                activeTab === 'trial-bulk' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+              }`}
+            >
+              Trial Bulk (Test Campaign)
             </button>
             <button
               onClick={() => setActiveTab('logs')}
@@ -184,6 +233,87 @@ JK Lakshmipat University, Jaipur</p>`);
                   }`}
                 >
                   {loading ? 'Sending...' : 'Trigger Bulk Mail to All Students'}
+                </button>
+              </div>
+            </div>
+          ) : activeTab === 'trial-bulk' ? (
+            /* Trial Bulk Tab */
+            <div className="glass-card p-6 space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Recipient Emails (Comma-separated)</label>
+                  <input
+                    type="text"
+                    value={trialRecipients}
+                    onChange={(e) => setTrialRecipients(e.target.value)}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900 font-medium"
+                    placeholder="recipient1@gmail.com, recipient2@gmail.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email Subject</label>
+                  <input
+                    type="text"
+                    value={trialSubject}
+                    onChange={(e) => setTrialSubject(e.target.value)}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900 font-semibold"
+                    placeholder="Enter subject line"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">HTML Email Body</label>
+                  <textarea
+                    rows={8}
+                    value={trialBody}
+                    onChange={(e) => setTrialBody(e.target.value)}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Custom CC Emails</label>
+                    <input
+                      type="text"
+                      value={trialCc}
+                      onChange={(e) => setTrialCc(e.target.value)}
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900"
+                      placeholder="cc1@gmail.com, cc2@gmail.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Custom BCC Emails</label>
+                    <input
+                      type="text"
+                      value={trialBcc}
+                      onChange={(e) => setTrialBcc(e.target.value)}
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900"
+                      placeholder="bcc1@gmail.com"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">File Attachment</label>
+                  <input
+                    type="file"
+                    onChange={(e) => setTrialAttachment(e.target.files ? e.target.files[0] : null)}
+                    className="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-primary hover:file:bg-indigo-100 cursor-pointer"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 flex justify-end">
+                <button
+                  onClick={handleSendTrialBulk}
+                  disabled={loading || !rateStatus?.allowed}
+                  className={`px-6 py-3 rounded-full text-xs font-bold text-white shadow-md cursor-pointer ${
+                    rateStatus?.allowed && !loading ? 'bg-primary hover:bg-primary-hover shadow-indigo-100' : 'bg-slate-300 cursor-not-allowed shadow-none'
+                  }`}
+                >
+                  {loading ? 'Sending Campaign...' : 'Send Trial Campaign'}
                 </button>
               </div>
             </div>

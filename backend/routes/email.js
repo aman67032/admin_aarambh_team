@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 const { sendEmail, checkRateLimit } = require('../services/email');
 const Student = require('../models/Student');
 const User = require('../models/User');
 const EmailLog = require('../models/EmailLog');
 const { requireAuth, requireRole } = require('../middleware/auth');
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // POST /api/email/send-trial
 // Send a test mail to verification address (Super Admin)
@@ -30,6 +34,65 @@ router.post('/send-trial', requireAuth, requireRole('super_admin'), async (req, 
   } catch (error) {
     console.error('Send trial error:', error);
     res.status(500).json({ error: 'Server error during trial mail send: ' + error.message });
+  }
+});
+
+// POST /api/email/send-test-bulk
+// Send a custom test bulk email campaign with optional attachment and custom CC/BCC
+router.post('/send-test-bulk', requireAuth, requireRole('super_admin'), upload.single('attachment'), async (req, res) => {
+  try {
+    const { toEmails, subject, body, ccEmails, bccEmails } = req.body;
+
+    if (!toEmails || !subject || !body) {
+      return res.status(400).json({ error: 'Recipient emails, subject, and body are required.' });
+    }
+
+    const recipients = toEmails.split(',').map(email => email.trim()).filter(Boolean);
+    if (recipients.length === 0) {
+      return res.status(400).json({ error: 'No valid recipient emails provided.' });
+    }
+
+    let attachment = null;
+    if (req.file) {
+      attachment = {
+        filename: req.file.originalname,
+        content: req.file.buffer
+      };
+    }
+
+    let sentCount = 0;
+    let failedCount = 0;
+    const errors = [];
+
+    for (const recipient of recipients) {
+      const result = await sendEmail({
+        to: recipient,
+        subject,
+        body,
+        cc: ccEmails || undefined,
+        bcc: bccEmails || undefined,
+        attachments: attachment ? [attachment] : undefined
+      });
+
+      if (result.success) {
+        sentCount++;
+      } else {
+        failedCount++;
+        errors.push({ email: recipient, error: result.error });
+      }
+    }
+
+    res.json({
+      success: true,
+      message: `Test campaign sent. Successful: ${sentCount}, Failed: ${failedCount}.`,
+      sentCount,
+      failedCount,
+      errors
+    });
+
+  } catch (error) {
+    console.error('Send test bulk error:', error);
+    res.status(500).json({ error: 'Server error during test bulk send: ' + error.message });
   }
 });
 

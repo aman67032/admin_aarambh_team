@@ -81,6 +81,49 @@ app.get('/api/status', (req, res) => {
   });
 });
 
+app.get('/api/status/structure', async (req, res) => {
+  try {
+    const User = require('../models/User');
+    const users = await User.find({ role: { $in: ['cluster_head', 'cohort_leader'] } }).select('name role cluster cohort');
+    
+    // Group by cluster (A-L)
+    const clusterConfig = {};
+    const allClusters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
+    
+    allClusters.forEach(c => {
+      clusterConfig[c] = {
+        clusterName: c,
+        head: null,
+        cohorts: []
+      };
+    });
+
+    users.forEach(user => {
+      const c = user.cluster;
+      if (!c || !clusterConfig[c]) return;
+
+      if (user.role === 'cluster_head') {
+        clusterConfig[c].head = user.name;
+      } else if (user.role === 'cohort_leader') {
+        clusterConfig[c].cohorts.push({
+          cohortName: user.cohort,
+          leaderName: user.name
+        });
+      }
+    });
+
+    // Sort cohorts inside each cluster alphabetically
+    Object.keys(clusterConfig).forEach(c => {
+      clusterConfig[c].cohorts.sort((a, b) => a.cohortName.localeCompare(b.cohortName));
+    });
+
+    res.json(Object.values(clusterConfig));
+  } catch (error) {
+    console.error('Error fetching structure:', error);
+    res.status(500).json({ error: 'Failed to retrieve structural details.' });
+  }
+});
+
 // Mount Routes
 const authRoutes = require('../routes/auth');
 const distributionRoutes = require('../routes/distribution');

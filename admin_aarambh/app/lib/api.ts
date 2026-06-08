@@ -141,6 +141,17 @@ export const api = {
         method: 'POST',
         body: JSON.stringify({ testEmail })
       }),
+    sendTestBulk: (formData: FormData) => 
+      request<{ 
+        success: boolean; 
+        message: string; 
+        sentCount: number; 
+        failedCount: number;
+        errors: any[];
+      }>('/email/send-test-bulk', {
+        method: 'POST',
+        body: formData
+      }),
     sendBulk: (data: { studentIds?: string[]; subject: string; bodyTemplate: string; bcc?: string }) => 
       request<{ 
         success: boolean; 
