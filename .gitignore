@@ -23,6 +23,8 @@
 **/.env
 **/.env*.local
 credentials.json
+details of cluster.csv
+*.csv
 
 # Debug logs
 npm-debug.log*
