@@ -46,7 +46,8 @@ const allowedOrigins = [
   'http://localhost:3001',
   'http://127.0.0.1:3000',
   'http://127.0.0.1:3001',
-  // Wildcard regex matching for dynamic vercel previews or actual deployment domain
+  'https://admin-aarambh-team-crat.vercel.app',
+  'https://admin-aarambh-team-crat.vercel.app/'
 ];
 
 app.use(cors({
