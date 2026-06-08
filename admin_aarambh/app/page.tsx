@@ -22,9 +22,6 @@ export default function PublicHomePage() {
   const [searchCity, setSearchCity] = useState('');
   const [searchResult, setSearchResult] = useState<string | null>(null);
 
-  // FAQ accordion state
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-
   useEffect(() => {
     const fetchStructure = async () => {
       try {
@@ -62,48 +59,6 @@ export default function PublicHomePage() {
     }
   };
 
-  const faqs = [
-    {
-      q: "What is Aarambh 2026?",
-      a: "Aarambh is the official orientation program of JK Lakshmipat University. It marks the beginning of your academic journey and helps you transition smoothly into university life."
-    },
-    {
-      q: "How are student cohorts distributed?",
-      a: "Cohorts are distributed automatically based on course and regional criteria. South BTech students are allocated to Clusters I, J, K, and L, while North students and other programs are distributed across Clusters A through H to maintain balanced class ratios."
-    },
-    {
-      q: "Who is my Cohort Leader and how do I contact them?",
-      a: "Your cohort leader is a senior student coordinator assigned to guide you. Once the official emails are sent, you will receive your cohort leader's contact number and email directly in your inbox."
-    },
-    {
-      q: "What documents do I need to bring for verification?",
-      a: "Please bring your original 10th and 12th marksheets, admission letter, ID proof (Aadhar Card), and passport-size photographs. Your Cohort Leader will verify these documents upon your arrival."
-    }
-  ];
-
-  const timelineDays = [
-    {
-      day: "Day 01",
-      title: "Welcome & Registrations",
-      desc: "Document verification, hostel allotment, and meeting your respective Cohort Leaders."
-    },
-    {
-      day: "Day 02",
-      title: "Orientation & Ice Breaking",
-      desc: "Vice Chancellor address, departmental introductory workshops, and cohort group tasks."
-    },
-    {
-      day: "Day 03",
-      title: "Campus Quest & Culture",
-      desc: "An interactive campus exploration quest followed by talent performances and networking."
-    },
-    {
-      day: "Day 04",
-      title: "Clubs & Registrations",
-      desc: "Academic course enrollment and introduction to student clubs, sports, and cultural wings."
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-[#F8FAFC] fun-bg-pattern flex flex-col justify-between">
       
@@ -120,15 +75,23 @@ export default function PublicHomePage() {
             </div>
           </div>
 
-          <Link
-            href="/login"
-            className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold rounded-full shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
-          >
-            Sign In to Portal
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/structure-details"
+              className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold rounded-full transition-all cursor-pointer"
+            >
+              View Student Allocations
+            </Link>
+            <Link
+              href="/login"
+              className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold rounded-full shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              Sign In to Portal
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -232,46 +195,6 @@ export default function PublicHomePage() {
             </div>
           )}
         </div>
-
-        {/* Orientation Highlights Timeline */}
-        <div className="space-y-8 max-w-4xl mx-auto pt-6">
-          <h2 className="text-2xl font-black font-outfit text-slate-900 text-center">Aarambh &apos;26 Schedule</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {timelineDays.map((day, idx) => (
-              <div key={idx} className="glass-card p-5 border border-slate-100 hover:scale-[1.02] flex flex-col justify-between">
-                <span className="text-3xl font-black font-outfit text-primary/30 block mb-2">{day.day}</span>
-                <h4 className="text-sm font-extrabold text-slate-800">{day.title}</h4>
-                <p className="text-xs text-slate-400 font-semibold mt-2">{day.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* FAQ Accordion */}
-        <div className="space-y-8 max-w-3xl mx-auto pt-6">
-          <h2 className="text-2xl font-black font-outfit text-slate-900 text-center">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {faqs.map((faq, idx) => {
-              const isExpanded = expandedFaq === idx;
-              return (
-                <div key={idx} className="glass-card p-4 border border-slate-100 cursor-pointer overflow-hidden transition-all duration-300" onClick={() => setExpandedFaq(isExpanded ? null : idx)}>
-                  <div className="flex justify-between items-center gap-4">
-                    <span className="text-sm font-extrabold text-slate-800">{faq.q}</span>
-                    <svg className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                  {isExpanded && (
-                    <div className="mt-3 text-xs text-slate-500 font-semibold leading-relaxed border-t border-slate-50 pt-3">
-                      {faq.a}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
       </main>
 
       {/* Footer */}

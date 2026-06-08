@@ -97,6 +97,13 @@ async function seedDatabase() {
       if (parts.length >= 7 && !isNaN(parseInt(parts[0]))) {
         const sno = parseInt(parts[0]);
         const name = parts[1].trim();
+        
+        // Skip Himanshu from Aryan cohort (Cluster G)
+        if (name.toLowerCase().includes('himanshu') && currentCluster === 'G') {
+          console.log(`Skipping cohort leader: ${name} from Cluster G`);
+          continue;
+        }
+
         const studentId = parts[2].trim();
         const gender = parts[3].trim();
         const rawRole = parts[4].trim();
