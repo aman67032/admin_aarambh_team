@@ -68,6 +68,10 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
 // Define root/status route
+app.get('/', (req, res) => {
+  res.send('Aarambh 2026 API Server is running. Visit /api/status for detailed info.');
+});
+
 app.get('/api/status', (req, res) => {
   res.json({
     status: 'online',
