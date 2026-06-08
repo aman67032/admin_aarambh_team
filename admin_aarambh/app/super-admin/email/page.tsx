@@ -100,6 +100,11 @@ JK Lakshmipat University, Jaipur</p>`);
       return;
     }
 
+    if (trialAttachment && trialAttachment.size > 4 * 1024 * 1024) {
+      setErrorMsg('Attachment file size is too large. The maximum file size allowed is 4MB.');
+      return;
+    }
+
     setLoading(true);
     setSuccessMsg(null);
     setErrorMsg(null);
@@ -302,6 +307,9 @@ JK Lakshmipat University, Jaipur</p>`);
                     onChange={(e) => setTrialAttachment(e.target.files ? e.target.files[0] : null)}
                     className="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-primary hover:file:bg-indigo-100 cursor-pointer"
                   />
+                  <span className="text-[10px] text-slate-400 font-bold block mt-1">
+                    Maximum allowed attachment size is 4MB.
+                  </span>
                 </div>
               </div>
 

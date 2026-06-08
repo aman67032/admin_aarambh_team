@@ -8,7 +8,10 @@ const EmailLog = require('../models/EmailLog');
 const { requireAuth, requireRole } = require('../middleware/auth');
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 4 * 1024 * 1024 } // 4MB maximum file size
+});
 
 // POST /api/email/send-trial
 // Send a test mail to verification address (Super Admin)
@@ -39,7 +42,19 @@ router.post('/send-trial', requireAuth, requireRole('super_admin'), async (req, 
 
 // POST /api/email/send-test-bulk
 // Send a custom test bulk email campaign with optional attachment and custom CC/BCC
-router.post('/send-test-bulk', requireAuth, requireRole('super_admin'), upload.single('attachment'), async (req, res) => {
+router.post('/send-test-bulk', requireAuth, requireRole('super_admin'), (req, res, next) => {
+  upload.single('attachment')(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ error: 'Attachment file size exceeds the 4MB limit.' });
+      }
+      return res.status(400).json({ error: err.message });
+    } else if (err) {
+      return res.status(500).json({ error: 'Upload error: ' + err.message });
+    }
+    next();
+  });
+}, async (req, res) => {
   try {
     const { toEmails, subject, body, ccEmails, bccEmails } = req.body;
 
