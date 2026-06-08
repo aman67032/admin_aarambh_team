@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const { user, login, loading: authLoading } = useApp();
@@ -51,82 +52,114 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F0F2F5] fun-bg-pattern flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#F0F2F5] fun-bg-pattern flex flex-col justify-between relative overflow-hidden">
       {/* Decorative background shapes */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-100 blur-[120px] opacity-70 pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-emerald-100 blur-[120px] opacity-70 pointer-events-none"></div>
 
-      <div className="w-full max-w-md bg-white border border-slate-100 shadow-xl rounded-3xl p-8 backdrop-blur-md relative z-10 transition-all duration-300">
-        
-        {/* Portal Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center items-center gap-3.5 mb-4">
-            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-10 object-contain" />
-            <div className="w-[1px] h-8 bg-slate-200"></div>
-            <img src="/AARAMBH26_Main logo.png" alt="Aarambh logo" className="h-12 object-contain animate-float" />
+      {/* Header */}
+      <header className="sticky top-0 bg-white/80 backdrop-blur-md border-b border-slate-100 z-50 transition-all">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-8 object-contain" />
+            <div className="w-[1px] h-6 bg-slate-200"></div>
+            <img src="/AARAMBH26_Main logo.png" alt="Aarambh logo" className="h-10 object-contain" />
+            <div className="flex flex-col hidden sm:flex">
+              <span className="text-xs font-bold text-primary font-outfit uppercase tracking-wider leading-none">Aarambh &apos;26</span>
+              <span className="text-[8px] text-slate-400 font-bold uppercase mt-0.5">JKLU</span>
+            </div>
+          </Link>
+
+          <div className="flex items-center gap-4">
+            <Link
+              href="/structure-details"
+              className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold rounded-full transition-all cursor-pointer"
+            >
+              View Student Allocations
+            </Link>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 font-outfit">Aarambh 2026</h1>
-          <p className="text-sm text-slate-500 font-semibold mt-1">Team Coordination & Student Distribution</p>
         </div>
+      </header>
 
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-700 text-xs font-semibold rounded-2xl flex items-center gap-2">
-            <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
-            </svg>
-            <span>{error}</span>
+      {/* Main Content Area */}
+      <main className="flex-1 flex items-center justify-center p-4 z-10">
+        <div className="w-full max-w-md bg-white border border-slate-100 shadow-xl rounded-3xl p-8 backdrop-blur-md transition-all duration-300">
+          
+          {/* Portal Header */}
+          <div className="text-center mb-8">
+            <div className="flex justify-center items-center gap-3.5 mb-4">
+              <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-10 object-contain" />
+              <div className="w-[1px] h-8 bg-slate-200"></div>
+              <img src="/AARAMBH26_Main logo.png" alt="Aarambh logo" className="h-12 object-contain animate-float" />
+            </div>
+            <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 font-outfit">Aarambh 2026</h1>
+            <p className="text-sm text-slate-500 font-semibold mt-1">Team Coordination & Student Distribution</p>
           </div>
-        )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Email Address</label>
-            <div className="relative">
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-700 text-xs font-semibold rounded-2xl flex items-center gap-2">
+              <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+              </svg>
+              <span>{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Email Address</label>
+              <div className="relative">
+                <input
+                  type="email"
+                  placeholder="email@jklu.edu.in"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-slate-900 font-medium"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Password</label>
               <input
-                type="email"
-                placeholder="email@jklu.edu.in"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-slate-900 font-medium"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-slate-900"
                 required
               />
             </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3.5 px-4 bg-primary hover:bg-primary-hover text-white rounded-2xl font-bold text-sm shadow-lg shadow-indigo-100 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <>
+                  Sign In
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                  </svg>
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-8 text-center border-t border-slate-100 pt-6">
+            <p className="text-xs text-slate-400 font-semibold">JK Lakshmipat University, Jaipur</p>
           </div>
-
-          <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-slate-900"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3.5 px-4 bg-primary hover:bg-primary-hover text-white rounded-2xl font-bold text-sm shadow-lg shadow-indigo-100 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            ) : (
-              <>
-                Sign In
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                </svg>
-              </>
-            )}
-          </button>
-        </form>
-
-        <div className="mt-8 text-center border-t border-slate-100 pt-6">
-          <p className="text-xs text-slate-400 font-semibold">JK Lakshmipat University, Jaipur</p>
         </div>
-      </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="py-8 border-t border-slate-100 text-center text-xs font-bold text-slate-400 z-10 bg-white/50 backdrop-blur-sm">
+        <div>JK Lakshmipat University, Jaipur © 2026</div>
+      </footer>
     </div>
   );
 }

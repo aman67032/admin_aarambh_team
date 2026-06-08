@@ -175,7 +175,7 @@ export default function PublicHomePage() {
 
                       {/* Cohorts under cluster */}
                       <div>
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-2">Cohorts & Leaders</span>
+                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-2">Cohort Leaders</span>
                         <div className="space-y-2 max-h-[160px] overflow-y-auto pr-1">
                           {cluster.cohorts.map((cohort) => (
                             <div key={cohort.cohortName} className="flex justify-between items-center text-xs py-1.5 px-3 bg-slate-50/50 rounded-xl font-semibold text-slate-600 border border-slate-100/30">
