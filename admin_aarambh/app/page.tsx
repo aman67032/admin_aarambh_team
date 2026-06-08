@@ -151,7 +151,6 @@ export default function PublicHomePage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {structure.map((cluster) => {
-                const isSouth = ['I', 'J', 'K', 'L'].includes(cluster.clusterName);
                 return (
                   <div key={cluster.clusterName} className="glass-card p-6 border border-slate-100 flex flex-col justify-between">
                     <div>
@@ -159,11 +158,6 @@ export default function PublicHomePage() {
                       <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
                         <span className="text-2xl font-black font-outfit text-slate-800">
                           Cluster {cluster.clusterName}
-                        </span>
-                        <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase ${
-                          isSouth ? 'bg-teal-50 text-teal-600 border border-teal-100' : 'bg-indigo-50 text-indigo-600 border border-indigo-100'
-                        }`}>
-                          {isSouth ? 'South BTech' : 'North Pool'}
                         </span>
                       </div>
 

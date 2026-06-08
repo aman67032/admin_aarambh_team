@@ -87,7 +87,6 @@ export default function StructureDetailsPage() {
         ) : (
           <div className="space-y-12">
             {data.map((cluster) => {
-              const isSouth = ['I', 'J', 'K', 'L'].includes(cluster.clusterName);
               return (
                 <div key={cluster.clusterName} className="glass-card overflow-hidden">
                   
@@ -101,11 +100,6 @@ export default function StructureDetailsPage() {
                         Coordinator: {cluster.head || 'To be assigned'}
                       </p>
                     </div>
-                    <span className={`self-start sm:self-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                      isSouth ? 'bg-teal-50 text-teal-600 border border-teal-100' : 'bg-orange-50 text-orange-600 border border-orange-100'
-                    }`}>
-                      {isSouth ? 'South BTech' : 'North Pool'}
-                    </span>
                   </div>
 
                   {/* Cohorts under Cluster */}
