@@ -3,13 +3,13 @@
 :root {
   --background: #FAFBFE;
   --foreground: #1E293B;
-  --primary: #6C63FF;
-  --primary-hover: #5B52E1;
-  --primary-rgb: 108, 99, 255;
-  --secondary: #00C9A7;
+  --primary: #FF6B00; /* Orange */
+  --primary-hover: #E05E00;
+  --primary-rgb: 255, 107, 0;
+  --secondary: #0072FF; /* Blue */
   --card-bg: #FFFFFF;
   --card-border: #E2E8F0;
-  --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --card-shadow: 0 10px 30px -10px rgba(0, 72, 255, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
   --header-bg: rgba(255, 255, 255, 0.8);
   --text-muted: #64748B;
   
@@ -21,13 +21,13 @@
 .theme-fun {
   --background: #FFF9F2;
   --foreground: #2C1A38;
-  --primary: #FF6B6B;
-  --primary-hover: #FF5252;
-  --primary-rgb: 255, 107, 107;
-  --secondary: #4ECDC4;
+  --primary: #FF8008; /* Bright Orange */
+  --primary-hover: #FF6A00;
+  --primary-rgb: 255, 128, 8;
+  --secondary: #00C6FF; /* Sky Blue */
   --card-bg: rgba(255, 255, 255, 0.85);
-  --card-border: rgba(255, 107, 107, 0.15);
-  --card-shadow: 0 15px 35px -12px rgba(255, 107, 107, 0.15), 0 4px 6px -2px rgba(255, 107, 107, 0.05);
+  --card-border: rgba(255, 128, 8, 0.15);
+  --card-shadow: 0 15px 35px -12px rgba(255, 128, 8, 0.15), 0 4px 6px -2px rgba(255, 128, 8, 0.05);
   --header-bg: rgba(255, 249, 242, 0.8);
   --text-muted: #7E6B8F;
 }
@@ -55,11 +55,11 @@ body {
 
 /* Custom utilities */
 .fun-gradient {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFBE53 50%, #4ECDC4 100%);
+  background: linear-gradient(135deg, #FF8008 0%, #FFC837 50%, #00C6FF 100%);
 }
 
 .premium-gradient {
-  background: linear-gradient(135deg, #6C63FF 0%, #3F37C9 50%, #00C9A7 100%);
+  background: linear-gradient(135deg, #FF6B00 0%, #FF9000 50%, #0072FF 100%);
 }
 
 .glass-card {

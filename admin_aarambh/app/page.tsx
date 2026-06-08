@@ -41,9 +41,14 @@ export default function PublicHomePage() {
       {/* Navbar */}
       <header className="sticky top-0 bg-white/80 backdrop-blur-md border-b border-slate-100 z-50 transition-all">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-xl font-extrabold tracking-tight text-primary font-outfit">Aarambh &apos;26</span>
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">JK Lakshmipat University</span>
+          <div className="flex items-center gap-3">
+            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-8 object-contain" />
+            <div className="w-[1px] h-6 bg-slate-200"></div>
+            <img src="/AARAMBH26_Main logo.png" alt="Aarambh logo" className="h-10 object-contain" />
+            <div className="flex flex-col hidden sm:flex">
+              <span className="text-xs font-bold text-primary font-outfit uppercase tracking-wider leading-none">Aarambh &apos;26</span>
+              <span className="text-[8px] text-slate-400 font-bold uppercase mt-0.5">JKLU</span>
+            </div>
           </div>
 
           <Link

@@ -60,8 +60,10 @@ export default function LoginPage() {
         
         {/* Portal Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-indigo-50 flex items-center justify-center mx-auto mb-4 animate-float">
-            <span className="text-3xl">✨</span>
+          <div className="flex justify-center items-center gap-3.5 mb-4">
+            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-10 object-contain" />
+            <div className="w-[1px] h-8 bg-slate-200"></div>
+            <img src="/AARAMBH26_Main logo.png" alt="Aarambh logo" className="h-12 object-contain animate-float" />
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 font-outfit">Aarambh 2026</h1>
           <p className="text-sm text-slate-500 font-semibold mt-1">Team Coordination & Student Distribution</p>
@@ -106,7 +108,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-sm shadow-lg shadow-indigo-100 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
+            className="w-full py-3.5 px-4 bg-primary hover:bg-primary-hover text-white rounded-2xl font-bold text-sm shadow-lg shadow-indigo-100 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
           >
             {loading ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

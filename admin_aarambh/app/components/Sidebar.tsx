@@ -80,9 +80,12 @@ export default function Sidebar() {
       <div>
         {/* Header Logo */}
         <div className="p-6 border-b border-card-border flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-xl font-bold tracking-tight text-primary">Aarambh &apos;26</span>
-            <span className="text-xs text-text-muted font-medium">JK Lakshmipat University</span>
+          <div className="flex items-center gap-2.5">
+            <img src="/AARAMBH26_Main logo.png" alt="Aarambh logo" className="h-10 object-contain" />
+            <div className="flex flex-col">
+              <span className="text-xs font-bold text-primary font-outfit uppercase tracking-wider leading-none">Aarambh &apos;26</span>
+              <span className="text-[9px] text-text-muted font-bold uppercase mt-0.5">JKLU</span>
+            </div>
           </div>
           {/* Theme Toggle */}
           <button
