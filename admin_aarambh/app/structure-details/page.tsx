@@ -108,19 +108,38 @@ export default function StructureDetailsPage() {
                       <div key={cohort.cohortName} className={`pt-6 ${idx === 0 ? 'pt-0' : ''}`}>
                         
                         {/* Cohort Leader Details */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 bg-slate-50/50 p-4 rounded-2xl border border-slate-100/30">
-                          <div>
-                            <h3 className="text-md font-extrabold font-outfit text-slate-800">
-                              Cohort Leader: {cohort.leaderName}
-                            </h3>
-                            <span className="text-xs font-bold text-slate-400 block mt-0.5">
-                              Leads Cohort {cohort.cohortName}
-                            </span>
-                          </div>
-                          <span className="text-xs bg-slate-100 px-3 py-1 rounded-full font-bold text-slate-600 self-start sm:self-center">
-                            {cohort.students.length} Allocated Students
-                          </span>
-                        </div>
+                        {(() => {
+                          const males = cohort.students.filter(s => s.gender.toLowerCase() === 'male').length;
+                          const females = cohort.students.filter(s => s.gender.toLowerCase() === 'female').length;
+                          const btech = cohort.students.filter(s => s.course === 'B.Tech').length;
+                          const bba = cohort.students.filter(s => s.course === 'BBA').length;
+                          const bdes = cohort.students.filter(s => s.course === 'B.Des').length;
+
+                          return (
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 bg-slate-50/50 p-4 rounded-2xl border border-slate-100/30">
+                              <div>
+                                <h3 className="text-md font-extrabold font-outfit text-slate-800">
+                                  Cohort Leader: {cohort.leaderName}
+                                </h3>
+                                <span className="text-xs font-bold text-slate-400 block mt-0.5">
+                                  Leads Cohort {cohort.cohortName}
+                                </span>
+                                <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1.5 text-[10px] font-bold uppercase tracking-wider">
+                                  <span className="text-indigo-600">
+                                    Gender: {males} M / {females} F
+                                  </span>
+                                  <span className="text-slate-300">|</span>
+                                  <span className="text-emerald-600">
+                                    B.Tech: {btech} • BBA: {bba} • B.Des: {bdes}
+                                  </span>
+                                </div>
+                              </div>
+                              <span className="text-xs bg-slate-100 px-3 py-1 rounded-full font-bold text-slate-600 self-start sm:self-center">
+                                {cohort.students.length} Allocated Students
+                              </span>
+                            </div>
+                          );
+                        })()}
 
                         {/* Students list */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
