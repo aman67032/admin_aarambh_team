@@ -211,6 +211,18 @@ export const api = {
       })
   },
 
+  // Cohort Leader Dashboard
+  cohort: {
+    getMyStudents: () =>
+      request<{
+        cohortName: string;
+        clusterName: string;
+        leaderName: string;
+        coordinatorName: string;
+        students: Student[];
+      }>('/cohort/my-students')
+  },
+
   // Admin Dashboard
   admin: {
     getOverview: () => 

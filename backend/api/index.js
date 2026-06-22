@@ -197,18 +197,91 @@ app.get('/api/status/cohort-allocations', async (req, res) => {
   }
 });
 
+app.get('/api/status/cohort-registrations', async (req, res) => {
+  try {
+    const User = require('../models/User');
+    const Student = require('../models/Student');
+
+    const users = await User.find({ role: { $in: ['cluster_head', 'cohort_leader'] } }).select('name role cluster cohort');
+    const students = await Student.find({}).select('name applicationNo course cohort cluster confirmedJklu confirmedAarambh documentsVerified notContinuing');
+
+    // Group by cluster
+    const clusterData = {};
+    const allClusters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
+    
+    allClusters.forEach(c => {
+      clusterData[c] = {
+        clusterName: c,
+        head: null,
+        cohorts: {}
+      };
+    });
+
+    users.forEach(user => {
+      const c = user.cluster;
+      if (!c || !clusterData[c]) return;
+
+      if (user.role === 'cluster_head') {
+        clusterData[c].head = user.name;
+      } else if (user.role === 'cohort_leader') {
+        if (!clusterData[c].cohorts[user.cohort]) {
+          clusterData[c].cohorts[user.cohort] = {
+            cohortName: user.cohort,
+            leaderName: user.name,
+            students: []
+          };
+        } else {
+          clusterData[c].cohorts[user.cohort].leaderName = user.name;
+        }
+      }
+    });
+
+    students.forEach(student => {
+      const c = student.cluster;
+      const ch = student.cohort;
+      if (!c || !ch || !clusterData[c]) return;
+
+      if (!clusterData[c].cohorts[ch]) {
+        clusterData[c].cohorts[ch] = {
+          cohortName: ch,
+          leaderName: 'To be assigned',
+          students: []
+        };
+      }
+
+      clusterData[c].cohorts[ch].students.push(student);
+    });
+
+    const formatted = Object.values(clusterData).map(cluster => {
+      const cohortsList = Object.values(cluster.cohorts).sort((a, b) => a.cohortName.localeCompare(b.cohortName));
+      return {
+        clusterName: cluster.clusterName,
+        head: cluster.head,
+        cohorts: cohortsList
+      };
+    });
+
+    res.json(formatted);
+  } catch (error) {
+    console.error('Error fetching registrations status:', error);
+    res.status(500).json({ error: 'Failed to retrieve cohort registration status.' });
+  }
+});
+
 // Mount Routes
 const authRoutes = require('../routes/auth');
 const distributionRoutes = require('../routes/distribution');
 const emailRoutes = require('../routes/email');
 const clusterRoutes = require('../routes/cluster');
 const adminRoutes = require('../routes/admin');
+const cohortRoutes = require('../routes/cohort');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/distribution', distributionRoutes);
 app.use('/api/email', emailRoutes);
 app.use('/api/cluster', clusterRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/cohort', cohortRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {

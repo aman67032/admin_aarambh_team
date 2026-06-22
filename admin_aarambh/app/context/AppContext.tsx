@@ -41,7 +41,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       } catch (error) {
         setUser(null);
         // Redirect to login if on protected page
-        if (pathname !== '/login' && pathname !== '/' && pathname !== '/structure-details') {
+        if (pathname !== '/login' && pathname !== '/' && pathname !== '/structure-details' && pathname !== '/cohort-registrations') {
           router.push('/login');
         }
       } finally {
@@ -79,6 +79,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         router.push('/admin');
       } else if (data.user.role === 'cluster_head') {
         router.push('/cluster-head');
+      } else if (data.user.role === 'cohort_leader') {
+        router.push('/cohort-leader');
       }
     } catch (error: any) {
       throw new Error(error.message || 'Login failed');
