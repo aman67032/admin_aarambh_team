@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useApp } from '../context/AppContext';
+
 
 interface StudentInfo {
   _id: string;
@@ -29,9 +31,29 @@ interface ClusterInfo {
 }
 
 export default function CohortRegistrationsPage() {
+  const { user } = useApp();
   const [data, setData] = useState<ClusterInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  const getBackLink = () => {
+    if (!user) return { href: '/', label: 'Back to Home' };
+    switch (user.role) {
+      case 'super_admin':
+        return { href: '/super-admin', label: 'Back to Dashboard' };
+      case 'admin':
+        return { href: '/admin', label: 'Back to Dashboard' };
+      case 'cluster_head':
+        return { href: '/cluster-head', label: 'Back to Dashboard' };
+      case 'cohort_leader':
+        return { href: '/cohort-leader', label: 'Back to Dashboard' };
+      default:
+        return { href: '/', label: 'Back to Home' };
+    }
+  };
+
+  const backLink = getBackLink();
+
   const [expandedCohorts, setExpandedCohorts] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
@@ -132,10 +154,10 @@ export default function CohortRegistrationsPage() {
           </Link>
 
           <Link
-            href="/"
+            href={backLink.href}
             className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1.5"
           >
-            ← Back to Home
+            ← {backLink.label}
           </Link>
         </div>
       </header>
@@ -279,7 +301,7 @@ export default function CohortRegistrationsPage() {
                                 return (
                                   <div 
                                     key={student._id} 
-                                    className={`p-3 rounded-xl border flex items-center justify-between gap-4 transition-all text-xs font-semibold ${
+                                    className={`p-3 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 transition-all text-xs font-semibold ${
                                       student.notContinuing 
                                         ? 'bg-red-50/50 border-red-100 text-red-700' 
                                         : student.confirmedJklu 
@@ -295,7 +317,7 @@ export default function CohortRegistrationsPage() {
                                     </div>
 
                                     {/* Status Indicator */}
-                                    <div className="flex gap-1.5 items-center">
+                                    <div className="flex flex-wrap gap-1.5 items-center mt-1 sm:mt-0 self-end sm:self-auto">
                                       {student.notContinuing ? (
                                         <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-red-100 text-red-700 uppercase">
                                           Not Continuing

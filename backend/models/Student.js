@@ -14,6 +14,10 @@ const callLogSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  verified: {
+    type: Boolean,
+    default: true
+  },
   createdAt: {
     type: Date,
     default: Date.now

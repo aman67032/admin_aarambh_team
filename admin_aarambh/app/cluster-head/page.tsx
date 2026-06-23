@@ -51,6 +51,21 @@ export default function ClusterHeadDashboard() {
     }
   };
 
+  const handleVerifyCallLog = async (studentId: string, logId: string) => {
+    try {
+      const res = await api.cluster.verifyCallLog(studentId, logId);
+      if (res.success) {
+        // Refresh local state
+        setCohorts(prev => prev.map(cohort => ({
+          ...cohort,
+          students: cohort.students.map((s: Student) => s._id === studentId ? res.student : s)
+        })));
+      }
+    } catch (err: any) {
+      alert(err.message || 'Error verifying call log.');
+    }
+  };
+
   const handleLogCall = async (studentId: string) => {
     if (!callNotes.trim()) return;
     setLoggingCallId(studentId);
@@ -158,7 +173,7 @@ export default function ClusterHeadDashboard() {
                       </div>
 
                       {/* Status Badges */}
-                      <div className="flex items-center gap-2 font-bold text-[10px] uppercase">
+                      <div className="flex flex-wrap items-center gap-2 font-bold text-[10px] uppercase self-start sm:self-auto mt-1 sm:mt-0">
                         {student.notContinuing ? (
                           <span className="px-2.5 py-0.5 rounded-full bg-red-100 text-red-700">Not Continuing</span>
                         ) : (
@@ -240,7 +255,7 @@ export default function ClusterHeadDashboard() {
                                         onChange={(e) => handleVerifyDocs(student._id, student.mailReceived, student.documentsVerified, 'docs', e.target.checked)}
                                         className="w-4 h-4 rounded text-primary focus:ring-primary border-slate-300"
                                       />
-                                      All Documents Verified?
+                                      Documents Confirmed OK by Cohort Leader?
                                     </label>
                                   </div>
                                 ) : (
@@ -252,7 +267,7 @@ export default function ClusterHeadDashboard() {
                                     </div>
 
                                     {/* Confirmation Buttons */}
-                                    <div className="grid grid-cols-2 gap-2">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                       <button
                                         onClick={() => handleConfirmStatus(student._id, { confirmedAarambh: !student.confirmedAarambh })}
                                         className={`py-2 px-3 rounded-xl text-[10px] font-bold border transition-all cursor-pointer ${
@@ -347,11 +362,25 @@ export default function ClusterHeadDashboard() {
                               <h5 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Call History ({student.callLogs.length})</h5>
                               <div className="space-y-3 max-h-[150px] overflow-y-auto pr-2">
                                 {student.callLogs.map((log) => (
-                                  <div key={log._id} className="p-3 bg-white border border-slate-100 rounded-2xl text-xs">
+                                  <div key={log._id} className="p-3 bg-white border border-slate-100 rounded-2xl text-xs space-y-1.5">
                                     <p className="text-slate-700 font-semibold leading-relaxed">{log.notes}</p>
-                                    <div className="flex justify-between text-[10px] text-slate-400 font-bold mt-2">
-                                      <span>By: {log.loggedByName}</span>
-                                      <span>{new Date(log.createdAt).toLocaleDateString()} at {new Date(log.createdAt).toLocaleTimeString()}</span>
+                                    <div className="flex justify-between items-center text-[10px] text-slate-400 font-bold mt-2">
+                                      <div>
+                                        <span>By: {log.loggedByName}</span>
+                                        <span className="mx-1.5">•</span>
+                                        <span>{new Date(log.createdAt).toLocaleDateString()} at {new Date(log.createdAt).toLocaleTimeString()}</span>
+                                      </div>
+                                      
+                                      {!log.verified ? (
+                                        <button
+                                          onClick={() => handleVerifyCallLog(student._id, log._id)}
+                                          className="px-2.5 py-0.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-bold cursor-pointer transition-all"
+                                        >
+                                          Verify Log
+                                        </button>
+                                      ) : (
+                                        <span className="text-emerald-600 font-extrabold">✓ Verified</span>
+                                      )}
                                     </div>
                                   </div>
                                 ))}

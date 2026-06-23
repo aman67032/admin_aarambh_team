@@ -50,6 +50,7 @@ export interface CallLog {
   loggedBy: string;
   loggedByName: string;
   createdAt: string;
+  verified?: boolean;
 }
 
 export interface CohortStats {
@@ -208,6 +209,10 @@ export const api = {
       request<{ success: boolean; student: Student }>(`/cluster/confirm/${studentId}`, {
         method: 'PUT',
         body: JSON.stringify(status)
+      }),
+    verifyCallLog: (studentId: string, logId: string) =>
+      request<{ success: boolean; student: Student }>(`/cluster/verify-call-log/${studentId}/${logId}`, {
+        method: 'PUT'
       })
   },
 
@@ -220,7 +225,12 @@ export const api = {
         leaderName: string;
         coordinatorName: string;
         students: Student[];
-      }>('/cohort/my-students')
+      }>('/cohort/my-students'),
+    addCallLog: (studentId: string, notes: string) =>
+      request<{ success: boolean; student: Student }>(`/cohort/call-log/${studentId}`, {
+        method: 'POST',
+        body: JSON.stringify({ notes })
+      })
   },
 
   // Admin Dashboard

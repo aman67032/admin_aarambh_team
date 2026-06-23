@@ -35,9 +35,9 @@ export default function SuperAdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex flex-col md:flex-row min-h-screen bg-background">
       <Sidebar />
-      <main className="flex-1 p-8 overflow-y-auto max-h-screen">
+      <main className="flex-1 p-4 md:p-8 pt-20 md:pt-8 overflow-y-auto md:max-h-screen">
         {children}
       </main>
     </div>

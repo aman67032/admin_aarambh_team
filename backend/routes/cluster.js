@@ -132,10 +132,11 @@ router.post('/call-log/:studentId', requireAuth, requireRole('cluster_head'), as
     student.callLogs.push({
       notes: notes.trim(),
       loggedBy: req.user._id,
-      loggedByName: req.user.name
+      loggedByName: req.user.name,
+      verified: true
     });
 
-    student.callCount = student.callLogs.length;
+    student.callCount = student.callLogs.filter(log => log.verified).length;
 
     await student.save();
 
@@ -195,6 +196,44 @@ router.put('/confirm/:studentId', requireAuth, requireRole('cluster_head'), asyn
   } catch (error) {
     console.error('Confirm student error:', error);
     res.status(500).json({ error: 'Server error updating confirmation status: ' + error.message });
+  }
+});
+
+// PUT /api/cluster/verify-call-log/:studentId/:logId
+// Verify a call log logged by a Cohort Leader
+router.put('/verify-call-log/:studentId/:logId', requireAuth, requireRole('cluster_head'), async (req, res) => {
+  try {
+    const { studentId, logId } = req.params;
+
+    const student = await Student.findById(studentId);
+    if (!student) {
+      return res.status(404).json({ error: 'Student not found.' });
+    }
+
+    // Ensure Cluster Head only modifies students in their own cluster
+    if (student.cluster !== req.user.cluster) {
+      return res.status(403).json({ error: 'Access denied.' });
+    }
+
+    const log = student.callLogs.id(logId);
+    if (!log) {
+      return res.status(404).json({ error: 'Call log entry not found.' });
+    }
+
+    log.verified = true;
+    student.callCount = student.callLogs.filter(l => l.verified).length;
+
+    await student.save();
+
+    res.json({
+      success: true,
+      message: 'Call log verified successfully.',
+      student
+    });
+
+  } catch (error) {
+    console.error('Verify call log error:', error);
+    res.status(500).json({ error: 'Server error verifying call log: ' + error.message });
   }
 });
 

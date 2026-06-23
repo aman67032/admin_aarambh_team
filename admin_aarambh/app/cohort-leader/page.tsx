@@ -18,6 +18,33 @@ export default function CohortLeaderDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // Call logging form state
+  const [callNotes, setCallNotes] = useState<string>('');
+  const [loggingCallId, setLoggingCallId] = useState<string | null>(null);
+
+  const handleLogCall = async (studentId: string) => {
+    if (!callNotes.trim()) return;
+    setLoggingCallId(studentId);
+    try {
+      const res = await api.cohort.addCallLog(studentId, callNotes);
+      if (res.success) {
+        setCallNotes('');
+        // Refresh local state
+        setCohortData(prev => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            students: prev.students.map((s: Student) => s._id === studentId ? res.student : s)
+          };
+        });
+      }
+    } catch (err: any) {
+      alert(err.message || 'Error adding call log.');
+    } finally {
+      setLoggingCallId(null);
+    }
+  };
 
   const fetchCohortInfo = async () => {
     try {
@@ -189,7 +216,7 @@ export default function CohortLeaderDashboard() {
                   </div>
 
                   {/* Status Badges */}
-                  <div className="flex items-center gap-2 font-bold text-[10px] uppercase">
+                  <div className="flex flex-wrap items-center gap-2 font-bold text-[10px] uppercase mt-1 sm:mt-0 self-start sm:self-auto">
                     {student.notContinuing ? (
                       <span className="px-2.5 py-0.5 rounded-full bg-red-100 text-red-700">Not Continuing</span>
                     ) : (
@@ -245,23 +272,61 @@ export default function CohortLeaderDashboard() {
                       </div>
                     </div>
 
-                    {/* Outreach Call Log list for cohort leader to check */}
-                    {student.callLogs && student.callLogs.length > 0 && (
-                      <div className="pt-4 border-t border-slate-100 space-y-2">
-                        <h4 className="text-slate-800 font-extrabold text-xs uppercase tracking-wider">Outreach Call History</h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[200px] overflow-y-auto pr-2 mt-2">
+                    {/* Outreach Call Log & History for Cohort Leader */}
+                    <div className="pt-4 border-t border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                      {/* Log call form (only if student is continuing) */}
+                      {!student.notContinuing ? (
+                        <div className="space-y-3">
+                          <h4 className="text-slate-800 font-extrabold text-xs uppercase tracking-wider">Log Outreach Call</h4>
+                          <textarea
+                            value={callNotes}
+                            onChange={(e) => setCallNotes(e.target.value)}
+                            placeholder="Enter outreach conversation notes..."
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-primary text-slate-900 font-semibold"
+                            rows={3}
+                          />
+                          <button
+                            onClick={() => handleLogCall(student._id)}
+                            disabled={loggingCallId === student._id || !callNotes.trim()}
+                            className={`px-4 py-2 rounded-xl text-xs font-bold text-white shadow-md cursor-pointer ${
+                              callNotes.trim() ? 'bg-primary hover:bg-primary-hover shadow-indigo-100' : 'bg-slate-300 shadow-none cursor-not-allowed'
+                            }`}
+                          >
+                            {loggingCallId === student._id ? 'Logging...' : 'Save Call Entry'}
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="p-4 bg-red-50/50 border border-red-100/50 rounded-2xl text-red-700 text-xs font-semibold">
+                          Outreach is closed for this student as they are not continuing admissions.
+                        </div>
+                      )}
+
+                      {/* Call logs list history */}
+                      <div className="space-y-3 w-full">
+                        <h4 className="text-slate-800 font-extrabold text-xs uppercase tracking-wider">Outreach Call History ({student.callLogs.length})</h4>
+                        <div className="space-y-3 max-h-[160px] overflow-y-auto pr-2">
                           {student.callLogs.map((log) => (
-                            <div key={log._id} className="p-3 bg-white border border-slate-100 rounded-xl text-xs">
+                            <div key={log._id} className="p-3 bg-white border border-slate-100 rounded-xl text-xs space-y-1">
                               <p className="text-slate-700 font-medium leading-relaxed">{log.notes}</p>
-                              <div className="flex justify-between text-[10px] text-slate-400 font-bold mt-2">
+                              <div className="flex justify-between items-center text-[10px] text-slate-400 font-bold mt-2">
                                 <span>By: {log.loggedByName}</span>
-                                <span>{new Date(log.createdAt).toLocaleDateString()}</span>
+                                {log.verified ? (
+                                  <span className="text-emerald-600 font-extrabold">✓ Verified</span>
+                                ) : (
+                                  <span className="text-amber-500 font-extrabold">⏳ Pending Approval</span>
+                                )}
+                              </div>
+                              <div className="text-[9px] text-slate-300 font-bold">
+                                {new Date(log.createdAt).toLocaleDateString()} at {new Date(log.createdAt).toLocaleTimeString()}
                               </div>
                             </div>
                           ))}
+                          {student.callLogs.length === 0 && (
+                            <div className="text-xs text-slate-400 italic">No outreach calls logged yet.</div>
+                          )}
                         </div>
                       </div>
-                    )}
+                    </div>
                   </div>
                 )}
               </div>

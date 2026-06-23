@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useApp } from './context/AppContext';
+
 
 interface CohortInfo {
   cohortName: string;
@@ -15,8 +17,10 @@ interface ClusterInfo {
 }
 
 export default function PublicHomePage() {
+  const { user } = useApp();
   const [structure, setStructure] = useState<ClusterInfo[]>([]);
   const [loading, setLoading] = useState(true);
+
   
   // Search state
   const [searchCity, setSearchCity] = useState('');
@@ -82,15 +86,37 @@ export default function PublicHomePage() {
             >
               View Student Allocations
             </Link>
-            <Link
-              href="/login"
-              className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold rounded-full shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
-            >
-              Sign In to Portal
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-            </Link>
+            {user ? (
+              <Link
+                href={
+                  user.role === 'super_admin'
+                    ? '/super-admin'
+                    : user.role === 'admin'
+                    ? '/admin'
+                    : user.role === 'cluster_head'
+                    ? '/cluster-head'
+                    : user.role === 'cohort_leader'
+                    ? '/cohort-leader'
+                    : '/login'
+                }
+                className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold rounded-full shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
+              >
+                Go to Dashboard
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold rounded-full shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
+              >
+                Sign In to Portal
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </Link>
+            )}
           </div>
         </div>
       </header>
