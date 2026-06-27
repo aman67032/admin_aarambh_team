@@ -190,7 +190,8 @@ export const api = {
           cohortName: string;
           leader: { id: string; name: string; email: string; phone: string } | null;
           students: Student[];
-        }> 
+        }>;
+        notPublished?: boolean;
       }>('/cluster/cohorts'),
     verifyDocs: (studentId: string, data: { mailReceived: boolean; documentsVerified: boolean }) => 
       request<{ success: boolean; student: Student }>(`/cluster/verify/${studentId}`, {
@@ -227,6 +228,7 @@ export const api = {
         leaderName: string;
         coordinatorName: string;
         students: Student[];
+        notPublished?: boolean;
       }>('/cohort/my-students'),
     addCallLog: (studentId: string, notes: string) =>
       request<{ success: boolean; student: Student }>(`/cohort/call-log/${studentId}`, {
@@ -259,6 +261,7 @@ export const api = {
           confirmedJklu: number;
           notContinuing: number;
         }>;
+        notPublished?: boolean;
       }>('/admin/overview'),
     getDistributionCheck: () => 
       request<{
@@ -316,6 +319,13 @@ export const api = {
           cluster: string;
           registeredOnPortal: boolean;
         }>;
-      }>('/admin/aarambh-verification')
+      }>('/admin/aarambh-verification'),
+    getSettings: () =>
+      request<{ studentsPublished: boolean }>('/admin/settings'),
+    updateSettings: (studentsPublished: boolean) =>
+      request<{ success: boolean; studentsPublished: boolean }>('/admin/settings', {
+        method: 'POST',
+        body: JSON.stringify({ studentsPublished })
+      })
   }
 };

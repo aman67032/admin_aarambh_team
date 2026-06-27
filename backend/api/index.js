@@ -12,7 +12,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://solomaze67032_db_user:kqj5KnpTInWmEaWB@aarambh26.xijspgv.mongodb.net/?appName=aarambh26';
+const mongoUri = process.env.MONGODB_URI;
+if (!mongoUri) {
+  console.error('Fatal Error: MONGODB_URI environment variable is not defined.');
+  process.exit(1);
+}
 
 let isConnected = false;
 

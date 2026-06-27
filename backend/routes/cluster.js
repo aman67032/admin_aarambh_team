@@ -2,15 +2,32 @@ const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student');
 const User = require('../models/User');
+const Settings = require('../models/Settings');
 const { requireAuth, requireRole } = require('../middleware/auth');
+
+async function checkPublished(req) {
+  if (req.user.role === 'super_admin') return true;
+  const setting = await Settings.findOne({ key: 'studentsPublished' });
+  return setting ? !!setting.value : false;
+}
+
 
 // GET /api/cluster/cohorts
 // Get cohorts, cohort leaders, and student listings under the logged-in Cluster Head's cluster
 router.get('/cohorts', requireAuth, requireRole('cluster_head'), async (req, res) => {
   try {
+    const isPub = await checkPublished(req);
     const clusterName = req.user.cluster;
     if (!clusterName) {
       return res.status(400).json({ error: 'Logged-in user is not associated with any cluster.' });
+    }
+
+    if (!isPub) {
+      return res.json({
+        cluster: clusterName,
+        cohorts: [],
+        notPublished: true
+      });
     }
 
     // Find all cohort leaders in this cluster
@@ -68,6 +85,11 @@ router.get('/cohorts', requireAuth, requireRole('cluster_head'), async (req, res
 // Verify that student mail is received and documents are verified
 router.put('/verify/:studentId', requireAuth, requireRole('cluster_head'), async (req, res) => {
   try {
+    const isPub = await checkPublished(req);
+    if (!isPub) {
+      return res.status(403).json({ error: 'Student data is not published yet.' });
+    }
+
     const { studentId } = req.params;
     const { mailReceived, documentsVerified } = req.body;
 
@@ -107,6 +129,11 @@ router.put('/verify/:studentId', requireAuth, requireRole('cluster_head'), async
 // Add a call log notes and increment call count
 router.post('/call-log/:studentId', requireAuth, requireRole('cluster_head'), async (req, res) => {
   try {
+    const isPub = await checkPublished(req);
+    if (!isPub) {
+      return res.status(403).json({ error: 'Student data is not published yet.' });
+    }
+
     const { studentId } = req.params;
     const { notes } = req.body;
 
@@ -156,6 +183,11 @@ router.post('/call-log/:studentId', requireAuth, requireRole('cluster_head'), as
 // Set confirmation status for student
 router.put('/confirm/:studentId', requireAuth, requireRole('cluster_head'), async (req, res) => {
   try {
+    const isPub = await checkPublished(req);
+    if (!isPub) {
+      return res.status(403).json({ error: 'Student data is not published yet.' });
+    }
+
     const { studentId } = req.params;
     const { confirmedAarambh, confirmedJklu, notContinuing, confirmationNote } = req.body;
 
@@ -203,6 +235,11 @@ router.put('/confirm/:studentId', requireAuth, requireRole('cluster_head'), asyn
 // Verify a call log logged by a Cohort Leader
 router.put('/verify-call-log/:studentId/:logId', requireAuth, requireRole('cluster_head'), async (req, res) => {
   try {
+    const isPub = await checkPublished(req);
+    if (!isPub) {
+      return res.status(403).json({ error: 'Student data is not published yet.' });
+    }
+
     const { studentId, logId } = req.params;
 
     const student = await Student.findById(studentId);

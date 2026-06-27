@@ -90,7 +90,31 @@ export default function CohortLeaderDashboard() {
     );
   }
 
-  const { cohortName, clusterName, leaderName, coordinatorName, students } = cohortData;
+  const { cohortName, clusterName, leaderName, coordinatorName, students, notPublished } = cohortData as CohortData & { notPublished?: boolean };
+
+  if (notPublished) {
+    return (
+      <div className="space-y-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-slate-900">
+              Cohort {cohortName} Dashboard
+            </h1>
+            <p className="text-xs text-slate-500 font-semibold mt-1">
+              Cohort Leader: <span className="text-slate-800 font-bold">{leaderName}</span>
+            </p>
+          </div>
+        </div>
+        <div className="glass-card p-12 text-center flex flex-col items-center justify-center gap-4">
+          <div className="text-5xl">🔒</div>
+          <h2 className="text-xl font-bold text-slate-800">Student Lists Not Published Yet</h2>
+          <p className="text-slate-500 max-w-md">
+            The student allocation lists have not been released by the Super Admin yet. Please contact your coordinator or check back later once orientation details are finalized.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Filter students based on search term
   const filteredStudents = students.filter(student => 

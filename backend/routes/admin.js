@@ -2,12 +2,54 @@ const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student');
 const User = require('../models/User');
+const Settings = require('../models/Settings');
 const { requireAuth, requireRole } = require('../middleware/auth');
+
+async function checkPublished(req) {
+  if (req.user.role === 'super_admin') return true;
+  const setting = await Settings.findOne({ key: 'studentsPublished' });
+  return setting ? !!setting.value : false;
+}
+
 
 // GET /api/admin/overview
 // Overall performance of all cluster heads
 router.get('/overview', requireAuth, requireRole(['admin', 'super_admin']), async (req, res) => {
   try {
+    const isPub = await checkPublished(req);
+    if (!isPub) {
+      const allClusters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
+      const clusterHeads = await User.find({ role: 'cluster_head' });
+      const headsMap = {};
+      clusterHeads.forEach(head => {
+        headsMap[head.cluster] = head.name;
+      });
+      const clusters = allClusters.map(c => ({
+        cluster: c,
+        headName: headsMap[c] || 'N/A',
+        total: 0,
+        verified: 0,
+        calls: 0,
+        confirmedAarambh: 0,
+        confirmedJklu: 0,
+        notContinuing: 0
+      }));
+      return res.json({
+        summary: {
+          totalStudents: 0,
+          verified: 0,
+          totalCalls: 0,
+          confirmedAarambh: 0,
+          confirmedJklu: 0,
+          notContinuing: 0,
+          verificationRate: 0,
+          confirmationRate: 0
+        },
+        clusters,
+        notPublished: true
+      });
+    }
+
     const students = await Student.find({});
     
     // Overall counts
@@ -218,6 +260,11 @@ router.get('/distribution-check', requireAuth, requireRole(['admin', 'super_admi
 // Get list of all students who are not continuing at JKLU
 router.get('/not-continuing', requireAuth, requireRole(['admin', 'super_admin']), async (req, res) => {
   try {
+    const isPub = await checkPublished(req);
+    if (!isPub) {
+      return res.json([]);
+    }
+
     const students = await Student.find({ notContinuing: true })
       .populate('confirmedBy', 'name')
       .sort({ updatedAt: -1 });
@@ -229,10 +276,24 @@ router.get('/not-continuing', requireAuth, requireRole(['admin', 'super_admin'])
   }
 });
 
-// GET /api/admin/aarambh-verification
-// Cross-check student registrations against Firebase Firestore
 router.get('/aarambh-verification', requireAuth, requireRole(['admin', 'super_admin']), async (req, res) => {
   try {
+    const isPub = await checkPublished(req);
+    if (!isPub) {
+      return res.json({
+        success: true,
+        usingFallback: false,
+        fallbackReason: 'Not published yet',
+        summary: {
+          totalStudents: 0,
+          registered: 0,
+          notRegistered: 0,
+          registrationRate: 0
+        },
+        students: []
+      });
+    }
+
     const students = await Student.find({}).sort({ name: 1 });
     
     // We try to call Firebase Firestore REST API
@@ -245,7 +306,7 @@ router.get('/aarambh-verification', requireAuth, requireRole(['admin', 'super_ad
       const fetchFirebase = () => {
         return new Promise((resolve, reject) => {
           const projectId = 'aarambh-26';
-          const apiKey = 'AIzaSyBs809r1V3eDKO0uuHkzO06GOpYFM6tewQ';
+          const apiKey = process.env.FIREBASE_API_KEY;
           const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/registrations?key=${apiKey}&pageSize=300`;
           
           https.get(url, (res) => {
@@ -327,6 +388,19 @@ router.get('/aarambh-verification', requireAuth, requireRole(['admin', 'super_ad
 // Detailed view of a specific cluster's cohorts and students (Admin/Super Admin)
 router.get('/cluster/:clusterId', requireAuth, requireRole(['admin', 'super_admin']), async (req, res) => {
   try {
+    const isPub = await checkPublished(req);
+    if (!isPub) {
+      const clusterId = req.params.clusterId.toUpperCase();
+      const clusterHead = await User.findOne({ role: 'cluster_head', cluster: clusterId });
+      return res.json({
+        cluster: clusterId,
+        clusterHead: clusterHead
+          ? { name: clusterHead.name, email: clusterHead.email, phone: clusterHead.phone }
+          : null,
+        cohorts: []
+      });
+    }
+
     const clusterId = req.params.clusterId.toUpperCase();
 
     // Validate cluster ID is one of A-L
@@ -372,6 +446,40 @@ router.get('/cluster/:clusterId', requireAuth, requireRole(['admin', 'super_admi
   } catch (error) {
     console.error('Fetch cluster detail error:', error);
     res.status(500).json({ error: 'Server error fetching cluster detail: ' + error.message });
+  }
+});
+
+// GET /api/admin/settings
+router.get('/settings', requireAuth, async (req, res) => {
+  try {
+    const setting = await Settings.findOne({ key: 'studentsPublished' });
+    res.json({ studentsPublished: setting ? !!setting.value : false });
+  } catch (error) {
+    console.error('Fetch settings error:', error);
+    res.status(500).json({ error: 'Failed to retrieve system settings.' });
+  }
+});
+
+// POST /api/admin/settings
+router.post('/settings', requireAuth, requireRole('super_admin'), async (req, res) => {
+  try {
+    const { studentsPublished } = req.body;
+    if (studentsPublished === undefined) {
+      return res.status(400).json({ error: 'studentsPublished value is required.' });
+    }
+    
+    let setting = await Settings.findOne({ key: 'studentsPublished' });
+    if (!setting) {
+      setting = new Settings({ key: 'studentsPublished', value: studentsPublished });
+    } else {
+      setting.value = studentsPublished;
+    }
+    await setting.save();
+    
+    res.json({ success: true, studentsPublished: !!setting.value });
+  } catch (error) {
+    console.error('Update settings error:', error);
+    res.status(500).json({ error: 'Failed to update system settings.' });
   }
 });
 

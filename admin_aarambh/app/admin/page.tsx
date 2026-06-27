@@ -12,6 +12,7 @@ export default function AdminDashboard() {
   const [notContinuing, setNotContinuing] = useState<Student[]>([]);
   const [aarambhData, setAarambhData] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'performance' | 'correctness' | 'not-continuing' | 'aarambh-verification'>('performance');
+  const [notPublished, setNotPublished] = useState(false);
 
   // Filtering for Aarambh Verification
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,6 +24,7 @@ export default function AdminDashboard() {
     try {
       const overviewData = await api.admin.getOverview();
       setOverview(overviewData);
+      setNotPublished(!!overviewData.notPublished);
 
       const checkData = await api.admin.getDistributionCheck();
       setDistCheck(checkData);
@@ -74,6 +76,26 @@ export default function AdminDashboard() {
 
     return matchesSearch && matchesCluster && matchesReg;
   });
+
+  if (notPublished) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-slate-900">Admin Command Center</h1>
+          <p className="text-sm text-slate-500 font-semibold mt-1">
+            Monitor Cluster Heads performance, check student distribution metrics, and manage students not continuing.
+          </p>
+        </div>
+        <div className="glass-card p-12 text-center flex flex-col items-center justify-center gap-4">
+          <div className="text-5xl">🔒</div>
+          <h2 className="text-xl font-bold text-slate-800">Student Lists Not Published Yet</h2>
+          <p className="text-slate-500 max-w-md">
+            The student allocation lists have not been released by the Super Admin yet. Please wait until details are finalized.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

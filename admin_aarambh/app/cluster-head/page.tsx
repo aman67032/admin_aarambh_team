@@ -8,6 +8,7 @@ export default function ClusterHeadDashboard() {
   const [cluster, setCluster] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
+  const [notPublished, setNotPublished] = useState(false);
   
   // Call logging form state
   const [callNotes, setCallNotes] = useState<string>('');
@@ -22,6 +23,7 @@ export default function ClusterHeadDashboard() {
       const data = await api.cluster.getCohorts();
       setCohorts(data.cohorts);
       setCluster(data.cluster);
+      setNotPublished(!!(data as any).notPublished);
     } catch (err) {
       console.error('Failed to fetch cluster cohorts:', err);
     } finally {
@@ -110,6 +112,24 @@ export default function ClusterHeadDashboard() {
         <div className="space-y-6">
           <div className="h-48 bg-slate-200 rounded-3xl"></div>
           <div className="h-48 bg-slate-200 rounded-3xl"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (notPublished) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-slate-900">Cluster {cluster} Dashboard</h1>
+          <p className="text-sm text-slate-500 font-semibold mt-1">Verify student documents, log outreach calls, and record orientation decisions.</p>
+        </div>
+        <div className="glass-card p-12 text-center flex flex-col items-center justify-center gap-4">
+          <div className="text-5xl">🔒</div>
+          <h2 className="text-xl font-bold text-slate-800">Student Lists Not Published Yet</h2>
+          <p className="text-slate-500 max-w-md">
+            The student allocation lists have not been released by the Super Admin yet. Please wait until details are finalized.
+          </p>
         </div>
       </div>
     );

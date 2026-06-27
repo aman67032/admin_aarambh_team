@@ -11,6 +11,24 @@ export default function SuperAdminDashboard() {
   const [distCheck, setDistCheck] = useState<any>(null);
   const [notContinuing, setNotContinuing] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<'performance' | 'correctness' | 'not-continuing'>('performance');
+  const [studentsPublished, setStudentsPublished] = useState(false);
+  const [toggling, setToggling] = useState(false);
+
+  const handleTogglePublished = async () => {
+    setToggling(true);
+    try {
+      const res = await api.admin.updateSettings(!studentsPublished);
+      if (res.success) {
+        setStudentsPublished(res.studentsPublished);
+      }
+    } catch (error) {
+      console.error('Failed to update publication status:', error);
+      alert('Failed to update publication status.');
+    } finally {
+      setStudentsPublished(prev => prev); // refresh state
+      setToggling(false);
+    }
+  };
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -26,6 +44,10 @@ export default function SuperAdminDashboard() {
 
         const notContData = await api.admin.getNotContinuing();
         setNotContinuing(notContData);
+
+        // Fetch global settings
+        const settings = await api.admin.getSettings();
+        setStudentsPublished(settings.studentsPublished);
       } catch (error) {
         console.error('Failed to load stats:', error);
       } finally {
@@ -54,25 +76,42 @@ export default function SuperAdminDashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Title */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-slate-900">Super Admin Dashboard</h1>
           <p className="text-sm text-slate-500 font-semibold mt-1">Manage student orientation cohorts and team alignment.</p>
         </div>
-        <div className="flex gap-3">
-          <Link
-            href="/super-admin/distribution"
-            className="px-5 py-2.5 rounded-full text-xs font-bold bg-primary hover:bg-primary-hover text-white shadow-md transition-all cursor-pointer"
-          >
-            Manage Distribution
-          </Link>
-          <Link
-            href="/super-admin/email"
-            className="px-5 py-2.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all cursor-pointer"
-          >
-            Email System
-          </Link>
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <div className="flex items-center gap-3 bg-white border border-card-border px-4 py-2 rounded-full shadow-sm">
+            <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Publish List to Team</span>
+            <button
+              onClick={handleTogglePublished}
+              disabled={toggling}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer focus:outline-none ${
+                studentsPublished ? 'bg-indigo-600' : 'bg-slate-200'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  studentsPublished ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+          <div className="flex gap-3">
+            <Link
+              href="/super-admin/distribution"
+              className="px-5 py-2.5 rounded-full text-xs font-bold bg-primary hover:bg-primary-hover text-white shadow-md transition-all cursor-pointer"
+            >
+              Manage Distribution
+            </Link>
+            <Link
+              href="/super-admin/email"
+              className="px-5 py-2.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all cursor-pointer"
+            >
+              Email System
+            </Link>
+          </div>
         </div>
       </div>
 

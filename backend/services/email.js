@@ -79,14 +79,13 @@ async function sendEmail({ to, subject, body, cc, bcc, attachments }) {
 
   // Prepare BCC list
   const defaultBcc = process.env.DEFAULT_BCC || 'deepaksogani@jklu.edu.in';
-  let finalBcc = defaultBcc;
+  const defaultBccList = defaultBcc.split(',').map(email => email.trim()).filter(Boolean);
+  let bccList = [];
   if (bcc) {
-    const bccList = bcc.split(',').map(email => email.trim());
-    if (!bccList.includes(defaultBcc)) {
-      bccList.push(defaultBcc);
-    }
-    finalBcc = bccList.join(', ');
+    bccList = bcc.split(',').map(email => email.trim()).filter(Boolean);
   }
+  const mergedBccList = Array.from(new Set([...bccList, ...defaultBccList]));
+  const finalBcc = mergedBccList.join(', ');
 
   const mailOptions = {
     from: process.env.SMTP_USER || 'amanpratapsingh@jklu.edu.in',

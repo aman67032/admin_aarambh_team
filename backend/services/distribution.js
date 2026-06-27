@@ -110,17 +110,17 @@ function distributeStudents(csvText) {
     };
 
     const sno = parseInt(getVal(['S.No', 'SNo', 'Serial No'])) || 0;
-    const applicationNo = getVal(['Application No', 'ApplicationNo', 'App No']);
-    const name = getVal(['Registered Name', 'RegisteredName', 'Name']);
+    const applicationNo = getVal(['Application No', 'ApplicationNo', 'App No', 'Application Number']);
+    const name = getVal(['Registered Name', 'RegisteredName', 'Name', 'Name of Student']);
     const gender = normalizeGender(getVal(['Gender', 'Sex']));
     const course = normalizeCourse(getVal(['Course', 'Branch']));
-    const mobile = getVal(['Registered Mobile', 'RegisteredMobile', 'Mobile', 'Phone']);
-    const email = getVal(['Registered Email', 'RegisteredEmail', 'Email']);
-    const fatherName = getVal(['Father First Name', 'FatherFirstName', 'Father Name', 'FatherName']);
-    const fatherMobile = getVal(['Father Mobile No', 'FatherMobileNo', 'Father Mobile', 'FatherPhone']);
-    const fatherEmail = getVal(['Father Email', 'FatherEmail']);
+    const mobile = getVal(['Registered Mobile', 'RegisteredMobile', 'Mobile', 'Phone', 'Student Mobile Number', 'StudentMobileNumber']);
+    const email = getVal(['Registered Email', 'RegisteredEmail', 'Email', 'Student Mail ID', 'StudentMailID', 'Student Email']);
+    const fatherName = getVal(['Father First Name', 'FatherFirstName', 'Father Name', 'FatherName', 'Parent/Guardian Name', 'Parent Name', 'ParentGuardianName']);
+    const fatherMobile = getVal(['Father Mobile No', 'FatherMobileNo', 'Father Mobile', 'FatherPhone', 'Parent Mobile Number', 'ParentMobileNumber']);
+    const fatherEmail = getVal(['Father Email', 'FatherEmail', 'Parent Mail ID', 'ParentMailID', 'Parent Email']);
     const city = getVal(['City']);
-    const district = getVal(['Permanent District', 'PermanentDistrict', 'District']);
+    const district = getVal(['Permanent District', 'PermanentDistrict', 'District', 'District ']);
     const state = getVal(['State']);
     const studentUserId = getVal(['User Id', 'UserId', 'User_Id', 'Admission Id']);
 
@@ -143,7 +143,7 @@ function distributeStudents(csvText) {
       studentUserId,
       region
     };
-  });
+  }).filter(s => s.applicationNo && s.name);
 
   // Separate South BTech and others
   const southBTech = students.filter(s => s.region === 'South' && s.course === 'B.Tech');
