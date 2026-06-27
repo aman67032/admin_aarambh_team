@@ -196,6 +196,24 @@ router.post('/send-bulk', requireAuth, requireRole('super_admin'), async (req, r
         });
       }
 
+      // Add permanent attachments from public/Email Attachment/
+      const fs = require('fs');
+      const path = require('path');
+      const attachmentDir = path.join(__dirname, '../../admin_aarambh/public/Email Attachment');
+      if (fs.existsSync(attachmentDir)) {
+        const files = fs.readdirSync(attachmentDir);
+        files.forEach(file => {
+          const filePath = path.join(attachmentDir, file);
+          const stat = fs.statSync(filePath);
+          if (stat.isFile()) {
+            attachments.push({
+              filename: file,
+              path: filePath
+            });
+          }
+        });
+      }
+
       // Attempt sending
       const result = await sendEmail({
         to: student.email,

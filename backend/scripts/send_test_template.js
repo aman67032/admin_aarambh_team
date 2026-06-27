@@ -50,7 +50,7 @@ async function sendTest() {
       .replace(/\{\{cohortLeaderPhone\}\}/g, clPhone)
       .replace(/\{\{cohortLeaderEmail\}\}/g, clEmail);
 
-    const recipient = 'amanpratapsingh@jklu.edu.in';
+    const recipients = ['amanpratapsingh@jklu.edu.in', 'deepak.sogani@jklu.edu.in'];
     const subject = `Invitation to AARAMBH 2026 - Your Journey at JKLU Begins Here!`;
 
     const attachments = [];
@@ -62,18 +62,36 @@ async function sendTest() {
       });
     }
 
-    console.log(`Sending email to ${recipient}...`);
-    const result = await sendEmail({
-      to: recipient,
-      subject: subject,
-      body: parsedBody,
-      attachments: attachments.length > 0 ? attachments : undefined
-    });
+    // Add permanent attachments from public/Email Attachment/
+    const attachmentDir = path.join(__dirname, '../../admin_aarambh/public/Email Attachment');
+    if (fs.existsSync(attachmentDir)) {
+      const files = fs.readdirSync(attachmentDir);
+      files.forEach(file => {
+        const filePath = path.join(attachmentDir, file);
+        const stat = fs.statSync(filePath);
+        if (stat.isFile()) {
+          attachments.push({
+            filename: file,
+            path: filePath
+          });
+        }
+      });
+    }
 
-    if (result.success) {
-      console.log('Email sent successfully!');
-    } else {
-      console.error('Failed to send email:', result.error || 'Unknown error');
+    for (const recipient of recipients) {
+      console.log(`Sending email to ${recipient}...`);
+      const result = await sendEmail({
+        to: recipient,
+        subject: subject,
+        body: parsedBody,
+        attachments: attachments.length > 0 ? attachments : undefined
+      });
+
+      if (result.success) {
+        console.log(`Email sent successfully to ${recipient}!`);
+      } else {
+        console.error(`Failed to send email to ${recipient}:`, result.error || 'Unknown error');
+      }
     }
 
   } catch (error) {
