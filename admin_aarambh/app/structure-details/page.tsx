@@ -30,6 +30,7 @@ export default function StructureDetailsPage() {
   const { user } = useApp();
   const [data, setData] = useState<ClusterInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [notPublished, setNotPublished] = useState(false);
 
   const getBackLink = () => {
     if (!user) return { href: '/', label: 'Back to Home' };
@@ -55,8 +56,13 @@ export default function StructureDetailsPage() {
       try {
         const res = await fetch('/api/status/cohort-allocations');
         if (res.ok) {
-          const allocations = await res.json();
-          setData(allocations);
+          const result = await res.json();
+          if (result && typeof result === 'object' && 'allocations' in result) {
+            setData(result.allocations);
+            setNotPublished(!!result.notPublished);
+          } else {
+            setData(result);
+          }
         }
       } catch (err) {
         console.error('Error fetching allocations:', err);
@@ -105,6 +111,14 @@ export default function StructureDetailsPage() {
         {loading ? (
           <div className="flex justify-center py-12">
             <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : notPublished && (!user || user.role !== 'super_admin') ? (
+          <div className="glass-card p-12 text-center flex flex-col items-center justify-center gap-4 max-w-md mx-auto">
+            <div className="text-5xl">🔒</div>
+            <h2 className="text-xl font-bold text-slate-800 font-outfit">Student Lists Not Published Yet</h2>
+            <p className="text-slate-500 text-xs font-semibold leading-relaxed">
+              The student allocation list has not been released by the Super Admin yet. Please check back later.
+            </p>
           </div>
         ) : (
           <div className="space-y-12">

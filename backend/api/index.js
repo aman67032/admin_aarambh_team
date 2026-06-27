@@ -132,9 +132,33 @@ app.get('/api/status/cohort-allocations', async (req, res) => {
   try {
     const User = require('../models/User');
     const Student = require('../models/Student');
+    const Settings = require('../models/Settings');
+
+    // Check if published
+    const setting = await Settings.findOne({ key: 'studentsPublished' });
+    const isPub = setting ? !!setting.value : false;
+
+    // Check if user is super_admin
+    let isSuperAdmin = false;
+    const token = req.cookies ? req.cookies.token : null;
+    if (token) {
+      try {
+        const jwt = require('jsonwebtoken');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_aarambh_2026_jwt_token_key_987654321');
+        if (decoded && decoded.role === 'super_admin') {
+          isSuperAdmin = true;
+        }
+      } catch (e) {
+        // Ignore verify errors
+      }
+    }
+
+    const showStudents = isPub || isSuperAdmin;
 
     const users = await User.find({ role: { $in: ['cluster_head', 'cohort_leader'] } }).select('name role cluster cohort');
-    const students = await Student.find({}).select('name applicationNo course gender region cohort cluster');
+    const students = showStudents 
+      ? await Student.find({}).select('name applicationNo course gender region cohort cluster')
+      : [];
 
     // Group by cluster
     const clusterData = {};
@@ -194,7 +218,10 @@ app.get('/api/status/cohort-allocations', async (req, res) => {
       };
     });
 
-    res.json(formatted);
+    res.json({
+      notPublished: !showStudents,
+      allocations: formatted
+    });
   } catch (error) {
     console.error('Error fetching allocations:', error);
     res.status(500).json({ error: 'Failed to retrieve cohort allocations.' });
@@ -205,9 +232,33 @@ app.get('/api/status/cohort-registrations', async (req, res) => {
   try {
     const User = require('../models/User');
     const Student = require('../models/Student');
+    const Settings = require('../models/Settings');
+
+    // Check if published
+    const setting = await Settings.findOne({ key: 'studentsPublished' });
+    const isPub = setting ? !!setting.value : false;
+
+    // Check if user is super_admin
+    let isSuperAdmin = false;
+    const token = req.cookies ? req.cookies.token : null;
+    if (token) {
+      try {
+        const jwt = require('jsonwebtoken');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_aarambh_2026_jwt_token_key_987654321');
+        if (decoded && decoded.role === 'super_admin') {
+          isSuperAdmin = true;
+        }
+      } catch (e) {
+        // Ignore verify errors
+      }
+    }
+
+    const showStudents = isPub || isSuperAdmin;
 
     const users = await User.find({ role: { $in: ['cluster_head', 'cohort_leader'] } }).select('name role cluster cohort');
-    const students = await Student.find({}).select('name applicationNo course cohort cluster confirmedJklu confirmedAarambh documentsVerified notContinuing');
+    const students = showStudents 
+      ? await Student.find({}).select('name applicationNo course cohort cluster confirmedJklu confirmedAarambh documentsVerified notContinuing')
+      : [];
 
     // Group by cluster
     const clusterData = {};
@@ -265,7 +316,10 @@ app.get('/api/status/cohort-registrations', async (req, res) => {
       };
     });
 
-    res.json(formatted);
+    res.json({
+      notPublished: !showStudents,
+      allocations: formatted
+    });
   } catch (error) {
     console.error('Error fetching registrations status:', error);
     res.status(500).json({ error: 'Failed to retrieve cohort registration status.' });

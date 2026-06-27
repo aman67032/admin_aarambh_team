@@ -35,6 +35,7 @@ export default function CohortRegistrationsPage() {
   const [data, setData] = useState<ClusterInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [notPublished, setNotPublished] = useState(false);
   
   const getBackLink = () => {
     if (!user) return { href: '/', label: 'Back to Home' };
@@ -62,11 +63,19 @@ export default function CohortRegistrationsPage() {
         const res = await fetch('/api/status/cohort-registrations');
         if (res.ok) {
           const result = await res.json();
-          setData(result);
+          let allocationsList = [];
+          if (result && typeof result === 'object' && 'allocations' in result) {
+            allocationsList = result.allocations;
+            setData(result.allocations);
+            setNotPublished(!!result.notPublished);
+          } else {
+            allocationsList = result;
+            setData(result);
+          }
           
           // Expand all cohorts by default for easy scanning
           const initialExpanded: Record<string, boolean> = {};
-          result.forEach((cluster: ClusterInfo) => {
+          allocationsList.forEach((cluster: ClusterInfo) => {
             cluster.cohorts.forEach((cohort) => {
               initialExpanded[cohort.cohortName] = true;
             });
@@ -176,7 +185,7 @@ export default function CohortRegistrationsPage() {
         </div>
 
         {/* Global Progress Statistics Card */}
-        {!loading && grandTotalStudents > 0 && (
+        {!loading && !notPublished && grandTotalStudents > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="glass-card p-6 border-l-4 border-l-primary flex flex-col justify-between">
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Allocated</span>
@@ -198,29 +207,39 @@ export default function CohortRegistrationsPage() {
         )}
 
         {/* Search Widget */}
-        <div className="max-w-2xl mx-auto">
-          <div className="relative">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search by student name, application no, cohort, or leader..."
-              className="w-full px-5 py-3 bg-white border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-primary shadow-sm text-slate-900 font-semibold"
-            />
-            {searchTerm && (
-              <button 
-                onClick={() => setSearchTerm('')} 
-                className="absolute right-4 top-3 text-slate-400 hover:text-slate-600 font-bold text-sm"
-              >
-                ✕
-              </button>
-            )}
+        {!notPublished && (
+          <div className="max-w-2xl mx-auto">
+            <div className="relative">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by student name, application no, cohort, or leader..."
+                className="w-full px-5 py-3 bg-white border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-primary shadow-sm text-slate-900 font-semibold"
+              />
+              {searchTerm && (
+                <button 
+                  onClick={() => setSearchTerm('')} 
+                  className="absolute right-4 top-3 text-slate-400 hover:text-slate-600 font-bold text-sm"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {loading ? (
           <div className="flex justify-center py-12">
             <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : notPublished && (!user || user.role !== 'super_admin') ? (
+          <div className="glass-card p-12 text-center flex flex-col items-center justify-center gap-4 max-w-md mx-auto">
+            <div className="text-5xl">🔒</div>
+            <h2 className="text-xl font-bold text-slate-800 font-outfit">Student Lists Not Published Yet</h2>
+            <p className="text-slate-500 text-xs font-semibold leading-relaxed">
+              The student allocation list has not been released by the Super Admin yet. Please check back later.
+            </p>
           </div>
         ) : (
           <div className="space-y-10">
