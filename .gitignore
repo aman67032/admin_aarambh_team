@@ -25,6 +25,8 @@
 credentials.json
 details of cluster.csv
 *.csv
+scratch/
+
 
 # Debug logs
 npm-debug.log*

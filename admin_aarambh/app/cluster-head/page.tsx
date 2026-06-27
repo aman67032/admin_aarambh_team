@@ -255,7 +255,7 @@ export default function ClusterHeadDashboard() {
                                         onChange={(e) => handleVerifyDocs(student._id, student.mailReceived, student.documentsVerified, 'docs', e.target.checked)}
                                         className="w-4 h-4 rounded text-primary focus:ring-primary border-slate-300"
                                       />
-                                      Documents Confirmed OK by Cohort Leader?
+                                      All attached documents verified & confirmed?
                                     </label>
                                   </div>
                                 ) : (

@@ -176,7 +176,9 @@ export const api = {
         dailyLimit: number; 
       }>('/email/rate-status'),
     getLogs: () => 
-      request<any[]>('/email/logs')
+      request<any[]>('/email/logs'),
+    getStudentsStatus: () =>
+      request<any[]>('/email/students')
   },
 
   // Cluster Head Dashboard
@@ -284,6 +286,36 @@ export const api = {
         }>;
       }>('/admin/distribution-check'),
     getNotContinuing: () => 
-      request<Student[]>('/admin/not-continuing')
+      request<Student[]>('/admin/not-continuing'),
+    getClusterDetails: (clusterId: string) => 
+      request<{ 
+        cluster: string;
+        clusterHead: { name: string; email: string; phone: string } | null;
+        cohorts: Array<{
+          cohortName: string;
+          leader: { id: string; name: string; email: string; phone: string } | null;
+          students: Student[];
+        }>;
+      }>(`/admin/cluster/${clusterId}`),
+    getAarambhVerification: () =>
+      request<{
+        success: boolean;
+        usingFallback: boolean;
+        fallbackReason: string;
+        summary: {
+          totalStudents: number;
+          registered: number;
+          notRegistered: number;
+          registrationRate: number;
+        };
+        students: Array<{
+          _id: string;
+          name: string;
+          applicationNo: string;
+          cohort: string;
+          cluster: string;
+          registeredOnPortal: boolean;
+        }>;
+      }>('/admin/aarambh-verification')
   }
 };

@@ -171,15 +171,30 @@ router.post('/send-bulk', requireAuth, requireRole('super_admin'), async (req, r
       const ccEmail = cohortLeader ? cohortLeader.email : '';
       const clName = cohortLeader ? cohortLeader.name : 'N/A';
       const clPhone = cohortLeader ? cohortLeader.phone : 'N/A';
+      const clEmail = cohortLeader ? cohortLeader.email : 'N/A';
 
       // Parse template variables
+      const rawFirstName = student.name.trim().split(' ')[0];
+      const firstName = rawFirstName ? (rawFirstName.charAt(0).toUpperCase() + rawFirstName.slice(1).toLowerCase()) : '';
       let parsedBody = bodyTemplate
         .replace(/\{\{name\}\}/g, student.name)
+        .replace(/\{\{firstName\}\}/g, firstName)
         .replace(/\{\{applicationNo\}\}/g, student.applicationNo)
         .replace(/\{\{course\}\}/g, student.course)
         .replace(/\{\{cohort\}\}/g, student.cohort)
         .replace(/\{\{cohortLeaderName\}\}/g, clName)
-        .replace(/\{\{cohortLeaderPhone\}\}/g, clPhone);
+        .replace(/\{\{cohortLeaderPhone\}\}/g, clPhone)
+        .replace(/\{\{cohortLeaderEmail\}\}/g, clEmail);
+
+      // Check for inline banner image attachment
+      const attachments = [];
+      if (parsedBody.includes('cid:bannerImage')) {
+        attachments.push({
+          filename: 'banner.jpg',
+          path: require('path').join(__dirname, '../../admin_aarambh/public/banner_compiled.jpg'),
+          cid: 'bannerImage'
+        });
+      }
 
       // Attempt sending
       const result = await sendEmail({
@@ -187,7 +202,8 @@ router.post('/send-bulk', requireAuth, requireRole('super_admin'), async (req, r
         subject: subject,
         body: parsedBody,
         cc: ccEmail,
-        bcc: bcc
+        bcc: bcc,
+        attachments: attachments.length > 0 ? attachments : undefined
       });
 
       if (result.success) {
@@ -212,6 +228,42 @@ router.post('/send-bulk', requireAuth, requireRole('super_admin'), async (req, r
   } catch (error) {
     console.error('Send bulk error:', error);
     res.status(500).json({ error: 'Server error during bulk email sending: ' + error.message });
+  }
+});
+
+// GET /api/email/students
+// Retrieve all students with their email delivery status
+router.get('/students', requireAuth, requireRole('super_admin'), async (req, res) => {
+  try {
+    const students = await Student.find({}, 'name applicationNo email course cohort').lean();
+    const logs = await EmailLog.find({}, 'to status errorMessage sentAt').sort({ createdAt: -1 }).lean();
+    
+    // Map email to its most recent log
+    const latestLogMap = {};
+    logs.forEach(log => {
+      if (log.to) {
+        const emailKey = log.to.toLowerCase().trim();
+        if (!latestLogMap[emailKey]) {
+          latestLogMap[emailKey] = log;
+        }
+      }
+    });
+    
+    const studentsWithStatus = students.map(student => {
+      const emailKey = student.email ? student.email.toLowerCase().trim() : '';
+      const log = emailKey ? latestLogMap[emailKey] : null;
+      return {
+        ...student,
+        emailStatus: log ? log.status : 'not_sent',
+        emailError: log ? log.errorMessage : null,
+        emailSentAt: log ? (log.sentAt || log.createdAt) : null
+      };
+    });
+    
+    res.json(studentsWithStatus);
+  } catch (error) {
+    console.error('Fetch email students error:', error);
+    res.status(500).json({ error: 'Failed to retrieve student email statuses: ' + error.message });
   }
 });
 

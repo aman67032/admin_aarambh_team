@@ -1,14 +1,22 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { api, Student } from '../lib/api';
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [overview, setOverview] = useState<any>(null);
   const [distCheck, setDistCheck] = useState<any>(null);
   const [notContinuing, setNotContinuing] = useState<Student[]>([]);
-  const [activeTab, setActiveTab] = useState<'performance' | 'correctness' | 'not-continuing'>('performance');
+  const [aarambhData, setAarambhData] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState<'performance' | 'correctness' | 'not-continuing' | 'aarambh-verification'>('performance');
+
+  // Filtering for Aarambh Verification
+  const [searchQuery, setSearchQuery] = useState('');
+  const [clusterFilter, setClusterFilter] = useState('ALL');
+  const [regFilter, setRegFilter] = useState('ALL');
 
   const fetchData = async () => {
     setLoading(true);
@@ -21,6 +29,9 @@ export default function AdminDashboard() {
 
       const notContData = await api.admin.getNotContinuing();
       setNotContinuing(notContData);
+
+      const aarambhVerificationData = await api.admin.getAarambhVerification();
+      setAarambhData(aarambhVerificationData);
     } catch (error) {
       console.error('Error fetching admin data:', error);
     } finally {
@@ -48,6 +59,21 @@ export default function AdminDashboard() {
   }
 
   const summary = overview?.summary;
+
+  // Filter student registrations
+  const filteredAarambhStudents = (aarambhData?.students || []).filter((s: any) => {
+    const matchesSearch = 
+      s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.applicationNo.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesCluster = clusterFilter === 'ALL' || s.cluster === clusterFilter;
+    
+    const matchesReg = regFilter === 'ALL' || 
+      (regFilter === 'REGISTERED' && s.registeredOnPortal) ||
+      (regFilter === 'PENDING' && !s.registeredOnPortal);
+
+    return matchesSearch && matchesCluster && matchesReg;
+  });
 
   return (
     <div className="space-y-8">
@@ -84,7 +110,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-card-border gap-6">
+      <div className="flex flex-wrap border-b border-card-border gap-6">
         <button
           onClick={() => setActiveTab('performance')}
           className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
@@ -100,6 +126,14 @@ export default function AdminDashboard() {
           }`}
         >
           Distribution Correctness ({distCheck?.stats?.warningCohorts || 0} Warnings)
+        </button>
+        <button
+          onClick={() => setActiveTab('aarambh-verification')}
+          className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
+            activeTab === 'aarambh-verification' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+          }`}
+        >
+          AARAMBH Verification ({aarambhData?.summary?.registered || 0} Registered)
         </button>
         <button
           onClick={() => setActiveTab('not-continuing')}
@@ -127,11 +161,16 @@ export default function AdminDashboard() {
                   <th className="p-4">Confirmed (Aarambh)</th>
                   <th className="p-4">Confirmed (JKLU)</th>
                   <th className="p-4">Not Continuing</th>
+                  <th className="p-4">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
                 {overview?.clusters?.map((cluster: any) => (
-                  <tr key={cluster.cluster} className="hover:bg-slate-50/50">
+                  <tr 
+                    key={cluster.cluster} 
+                    className="hover:bg-slate-50/50 cursor-pointer transition-colors group hover:bg-indigo-50/30"
+                    onClick={() => router.push(`/admin/cluster/${cluster.cluster}`)}
+                  >
                     <td className="p-4 font-bold text-slate-900">Cluster {cluster.cluster}</td>
                     <td className="p-4">{cluster.headName}</td>
                     <td className="p-4">{cluster.total}</td>
@@ -148,6 +187,9 @@ export default function AdminDashboard() {
                     <td className="p-4 text-emerald-600">{cluster.confirmedAarambh}</td>
                     <td className="p-4 text-indigo-600">{cluster.confirmedJklu}</td>
                     <td className="p-4 text-red-500">{cluster.notContinuing}</td>
+                    <td className="p-4">
+                      <span className="text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">View Details →</span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -346,6 +388,124 @@ export default function AdminDashboard() {
                 )}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'aarambh-verification' && (
+        <div className="space-y-6">
+          {/* Stats cards for verification */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="glass-card p-6 flex flex-col justify-between">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Evaluated</span>
+              <div className="text-2xl font-extrabold font-outfit text-slate-900 mt-2">
+                {aarambhData?.summary?.totalStudents || 0}
+              </div>
+            </div>
+            <div className="glass-card p-6 flex flex-col justify-between">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Registered on Portal</span>
+              <div className="text-2xl font-extrabold font-outfit text-emerald-600 mt-2">
+                {aarambhData?.summary?.registered || 0}
+              </div>
+            </div>
+            <div className="glass-card p-6 flex flex-col justify-between">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Registration</span>
+              <div className="text-2xl font-extrabold font-outfit text-amber-600 mt-2">
+                {aarambhData?.summary?.notRegistered || 0}
+              </div>
+            </div>
+            <div className="glass-card p-6 flex flex-col justify-between">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Registration Rate</span>
+              <div className="text-2xl font-extrabold font-outfit text-indigo-600 mt-2">
+                {Math.round(aarambhData?.summary?.registrationRate || 0)}%
+              </div>
+            </div>
+          </div>
+
+          {/* Filtering and search controls */}
+          <div className="glass-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex-1">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by student name or application number..."
+                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900 font-semibold"
+              />
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <select
+                value={clusterFilter}
+                onChange={(e) => setClusterFilter(e.target.value)}
+                className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-700 font-semibold focus:outline-none animate-none"
+              >
+                <option value="ALL">All Clusters</option>
+                {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'].map(c => (
+                  <option key={c} value={c}>Cluster {c}</option>
+                ))}
+              </select>
+              <select
+                value={regFilter}
+                onChange={(e) => setRegFilter(e.target.value)}
+                className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-700 font-semibold focus:outline-none animate-none"
+              >
+                <option value="ALL">All Statuses</option>
+                <option value="REGISTERED">Registered</option>
+                <option value="PENDING">Pending Portal</option>
+              </select>
+            </div>
+          </div>
+
+          {aarambhData?.usingFallback && (
+            <div className="p-3 bg-amber-50 border border-amber-100 rounded-2xl text-amber-800 text-xs font-semibold flex items-center gap-2">
+              <span>⚠️</span>
+              <span>Showing deterministic verification cache. Direct connection to external Firebase failed ({aarambhData.fallbackReason || 'Access Denied'}).</span>
+            </div>
+          )}
+
+          {/* Verification Table */}
+          <div className="glass-card overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse text-sm">
+                <thead>
+                  <tr className="bg-slate-50 border-b border-card-border text-xs font-bold text-slate-400 uppercase">
+                    <th className="p-4">Student Name</th>
+                    <th className="p-4">Application No</th>
+                    <th className="p-4">Cohort</th>
+                    <th className="p-4">Cluster</th>
+                    <th className="p-4">Registered on Portal</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+                  {filteredAarambhStudents?.map((s: any) => (
+                    <tr key={s._id} className="hover:bg-slate-50/50">
+                      <td className="p-4 font-bold text-slate-900">{s.name}</td>
+                      <td className="p-4 font-mono text-xs">{s.applicationNo}</td>
+                      <td className="p-4 font-bold">{s.cohort}</td>
+                      <td className="p-4">Cluster {s.cluster}</td>
+                      <td className="p-4">
+                        {s.registeredOnPortal ? (
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-100 text-emerald-700">
+                            ✓ Registered
+                          </span>
+                        ) : (
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-100 text-amber-700">
+                            ✗ Pending
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                  {filteredAarambhStudents?.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="p-6 text-center text-slate-400 font-bold">
+                        No students match the criteria.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

@@ -50,7 +50,7 @@ async function seedDatabase() {
 
     // Create Admin
     const adminEmail = 'deepaksogani@jklu.edu.in';
-    const adminPassword = 'deepakjkluadmin'; // Random/fixed password
+    const adminPassword = 'Winningspirit'; // Random/fixed password
     const admin = new User({
       name: 'Deepak Sogani',
       email: adminEmail,
