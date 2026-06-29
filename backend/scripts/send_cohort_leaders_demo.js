@@ -5,8 +5,9 @@ const dotenv = require('dotenv');
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-// Override default BCC temporarily for this script run
+// Override default BCC and hourly cap temporarily for this script run
 process.env.DEFAULT_BCC = 'amanpratapsingh@jklu.edu.in';
+process.env.EMAIL_LIMIT_HOURLY = '100';
 
 const { sendEmail } = require('../services/email');
 const User = require('../models/User');
@@ -98,14 +99,15 @@ async function main() {
       const recipient = 'amanpratapsingh@jklu.edu.in';
       const subject = `[Demo Mode] Invitation to AARAMBH 2026 - Your Journey Begins!`;
 
+      const finalCc = [ccEmail, 'deepak.sogani@jklu.edu.in'].filter(Boolean).join(', ');
       console.log(`Sending demo email to Aman (${recipient})...`);
-      console.log(`CC-ing Cluster Head: ${ccEmail || 'None'}`);
+      console.log(`CC-ing: ${finalCc}`);
 
       const result = await sendEmail({
         to: recipient,
         subject: subject,
         body: parsedBody,
-        cc: ccEmail || undefined,
+        cc: finalCc || undefined,
         attachments: attachments.length > 0 ? attachments : undefined
       });
 
@@ -129,6 +131,7 @@ async function main() {
         const clPhone = leader.phone || 'N/A';
         const clEmail = leader.email;
         const ccEmail = clusterHead ? clusterHead.email : '';
+        const finalCc = [ccEmail, 'deepak.sogani@jklu.edu.in'].filter(Boolean).join(', ');
 
         const rawFirstName = leader.name.trim().split(' ')[0];
         const firstName = rawFirstName ? (rawFirstName.charAt(0).toUpperCase() + rawFirstName.slice(1).toLowerCase()) : '';
@@ -148,13 +151,13 @@ async function main() {
         const subject = `[Demo for Cohort Leaders] Invitation to AARAMBH 2026 - Your Journey Begins!`;
 
         console.log(`Sending demo email to Cohort Leader: ${leader.name} (${recipient})...`);
-        console.log(`CC-ing Cluster Head: ${ccEmail || 'None'}`);
+        console.log(`CC-ing: ${finalCc}`);
 
         const result = await sendEmail({
           to: recipient,
           subject: subject,
           body: parsedBody,
-          cc: ccEmail || undefined,
+          cc: finalCc || undefined,
           attachments: attachments.length > 0 ? attachments : undefined
         });
 
