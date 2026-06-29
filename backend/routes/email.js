@@ -176,9 +176,10 @@ router.post('/send-bulk', requireAuth, requireRole('super_admin'), async (req, r
       // Parse template variables
       const rawFirstName = student.name.trim().split(' ')[0];
       const firstName = rawFirstName ? (rawFirstName.charAt(0).toUpperCase() + rawFirstName.slice(1).toLowerCase()) : '';
+      const greetingName = student.region === 'South' ? student.name : firstName;
       let parsedBody = bodyTemplate
         .replace(/\{\{name\}\}/g, student.name)
-        .replace(/\{\{firstName\}\}/g, firstName)
+        .replace(/\{\{firstName\}\}/g, greetingName)
         .replace(/\{\{applicationNo\}\}/g, student.applicationNo)
         .replace(/\{\{course\}\}/g, student.course)
         .replace(/\{\{cohort\}\}/g, student.cohort)
