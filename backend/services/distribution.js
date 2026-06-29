@@ -34,6 +34,15 @@ const NORTH_COHORTS = getCohortNames(NORTH_CLUSTERS); // 38 cohorts
 const SOUTH_COHORTS = getCohortNames(SOUTH_CLUSTERS); // 12 cohorts
 const ALL_COHORTS = [...NORTH_COHORTS, ...SOUTH_COHORTS]; // 50 cohorts
 
+const BDES_COHORTS = ['C1', 'E1'];
+const BBA_COHORTS = ['A2', 'A4', 'B4', 'C3', 'C4', 'D4', 'E2', 'E5', 'F1', 'F2', 'F3', 'F4', 'F5', 'G1', 'H2', 'H4'];
+
+function getCohortCourse(cohortName) {
+  if (BDES_COHORTS.includes(cohortName)) return 'B.Des';
+  if (BBA_COHORTS.includes(cohortName)) return 'BBA';
+  return 'B.Tech';
+}
+
 // Helper to check if a location is South India
 function isSouthIndia(city, district, state) {
   const c = (city || '').toLowerCase().trim();
@@ -244,16 +253,22 @@ function distributeStudents(csvText) {
       const cohortStudents = assignments[cohortName];
       if (cohortStudents.length >= maxCapacity) continue;
 
+      const cohortCourse = getCohortCourse(cohortName);
+
+      // Enforce strict course match for South non-BTech students
+      if (student.region === 'South' && cohortCourse !== student.course) {
+        continue;
+      }
+
+      // Prioritize course alignment for all other students
+      const courseMatchScore = (cohortCourse === student.course) ? 100 : 0;
+
       const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
       const genderScore = -sameGenderCount;
 
-      const sameCourseCount = cohortStudents.filter(s => s.course === student.course).length;
-      const courseScore = -sameCourseCount;
-
       const sizeScore = -cohortStudents.length;
 
-      // Primary weight on overall size, secondary on gender balance, tertiary on course balance
-      const score = (sizeScore * 10) + (genderScore * 5) + courseScore;
+      const score = (sizeScore * 10) + (genderScore * 5) + courseMatchScore;
 
       if (score > bestScore) {
         bestScore = score;
@@ -317,12 +332,13 @@ function distributeStudents(csvText) {
       for (const cohortName of ALL_COHORTS) {
         const cohortStudents = assignments[cohortName];
         if (cohortStudents.length < currentLimit) {
+          const cohortCourse = getCohortCourse(cohortName);
+          const courseMatchScore = (cohortCourse === student.course) ? 100 : 0;
+
           const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
           const genderScore = -sameGenderCount;
-          const sameCourseCount = cohortStudents.filter(s => s.course === student.course).length;
-          const courseScore = -sameCourseCount;
           const sizeScore = -cohortStudents.length;
-          const score = (sizeScore * 10) + (genderScore * 5) + courseScore;
+          const score = (sizeScore * 10) + (genderScore * 5) + courseMatchScore;
           
           if (score > bestScore) {
             bestScore = score;
