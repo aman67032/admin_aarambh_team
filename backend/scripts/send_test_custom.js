@@ -63,6 +63,14 @@ async function sendCustomTest() {
       });
     }
 
+    if (parsedBody.includes('cid:registrationQr')) {
+      attachments.push({
+        filename: 'registration_qr.png',
+        path: path.join(__dirname, '../../admin_aarambh/public/registration_qr.png'),
+        cid: 'registrationQr'
+      });
+    }
+
     console.log(`Sending custom test email to ${recipient} (CC: ${ccRecipient})...`);
     const result = await sendEmail({
       to: recipient,

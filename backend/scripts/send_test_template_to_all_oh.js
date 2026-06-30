@@ -61,6 +61,14 @@ async function sendBulkTest() {
       });
     }
 
+    if (parsedBody.includes('cid:registrationQr')) {
+      attachments.push({
+        filename: 'registration_qr.png',
+        path: path.join(__dirname, '../../admin_aarambh/public/registration_qr.png'),
+        cid: 'registrationQr'
+      });
+    }
+
     const recipients = [
       'deepak.sogani@jklu.edu.in',
       'deepaksogani@jklu.edu.in',

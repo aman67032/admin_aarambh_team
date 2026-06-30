@@ -54,6 +54,14 @@ async function main() {
       });
     }
 
+    if (templateContent.includes('cid:registrationQr')) {
+      attachments.push({
+        filename: 'registration_qr.png',
+        path: path.join(__dirname, '../../admin_aarambh/public/registration_qr.png'),
+        cid: 'registrationQr'
+      });
+    }
+
     const attachmentDir = path.join(__dirname, '../../admin_aarambh/public/Email Attachment');
     if (fs.existsSync(attachmentDir)) {
       const files = fs.readdirSync(attachmentDir);

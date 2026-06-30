@@ -197,6 +197,15 @@ router.post('/send-bulk', requireAuth, requireRole('super_admin'), async (req, r
         });
       }
 
+      // Check for inline QR code attachment
+      if (parsedBody.includes('cid:registrationQr')) {
+        attachments.push({
+          filename: 'registration_qr.png',
+          path: require('path').join(__dirname, '../../admin_aarambh/public/registration_qr.png'),
+          cid: 'registrationQr'
+        });
+      }
+
       // Add permanent attachments from public/Email Attachment/
       const fs = require('fs');
       const path = require('path');
