@@ -224,7 +224,11 @@ export default function CohortLeaderDashboard() {
                 <div
                   onClick={() => setSelectedStudent(isExpanded ? null : student._id)}
                   className={`p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/30 transition-colors ${
-                    student.notContinuing ? 'bg-red-50/20' : ''
+                    student.notContinuing 
+                      ? 'bg-red-50/20' 
+                      : student.confirmedJklu 
+                      ? 'bg-emerald-50/30' 
+                      : ''
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -240,23 +244,21 @@ export default function CohortLeaderDashboard() {
                   </div>
 
                   {/* Status Badges */}
-                  <div className="flex flex-wrap items-center gap-2 font-bold text-[10px] uppercase mt-1 sm:mt-0 self-start sm:self-auto">
+                  <div className="flex flex-wrap items-center gap-2 font-bold text-[10px] uppercase mt-1 sm:mt-0 self-end sm:self-auto">
                     {student.notContinuing ? (
-                      <span className="px-2.5 py-0.5 rounded-full bg-red-100 text-red-700">Not Continuing</span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-red-100 text-red-700">Not Coming</span>
                     ) : (
                       <>
                         {student.documentsVerified ? (
-                          <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Verified</span>
+                          <span className="px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700">Verified</span>
                         ) : (
                           <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700">Pending Verify</span>
                         )}
                         
-                        {student.confirmedAarambh && (
-                          <span className="px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700">Confirmed Aarambh</span>
-                        )}
-
-                        {student.confirmedJklu && (
-                          <span className="px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-700">Confirmed JKLU</span>
+                        {student.confirmedJklu ? (
+                          <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Registered</span>
+                        ) : (
+                          <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-400">Pending Reg</span>
                         )}
                       </>
                     )}
@@ -289,7 +291,7 @@ export default function CohortLeaderDashboard() {
                         
                         {student.notContinuing && student.confirmationNote && (
                           <div className="mt-3 p-3 bg-red-50 border border-red-100 rounded-xl text-red-700">
-                            <span className="font-extrabold block">Reason for withdrawal:</span>
+                            <span className="font-extrabold block">Reason for not coming to Aarambh:</span>
                             <span className="italic">&ldquo;{student.confirmationNote}&rdquo;</span>
                           </div>
                         )}
