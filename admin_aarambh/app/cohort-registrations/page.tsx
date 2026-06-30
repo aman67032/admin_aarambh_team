@@ -132,19 +132,53 @@ export default function CohortRegistrationsPage() {
     };
   }).filter(cluster => cluster.cohorts.length > 0);
 
-  // Total metrics
+  // Total metrics & Leaderboard calculation
   let grandTotalStudents = 0;
   let grandRegisteredCount = 0;
   let grandVerifiedCount = 0;
+  
+  const cohortsRanked: Array<{
+    cohortName: string;
+    leaderName: string;
+    clusterName: string;
+    total: number;
+    registered: number;
+    verified: number;
+    percentage: number;
+  }> = [];
 
   data.forEach(cluster => {
     cluster.cohorts.forEach(cohort => {
-      grandTotalStudents += cohort.students.length;
-      cohort.students.forEach(s => {
-        if (s.confirmedJklu) grandRegisteredCount++;
-        if (s.documentsVerified) grandVerifiedCount++;
+      const total = cohort.students.length;
+      const registered = cohort.students.filter(s => s.confirmedJklu).length;
+      const verified = cohort.students.filter(s => s.documentsVerified).length;
+      const percentage = total > 0 ? Math.round((registered / total) * 100) : 0;
+      
+      grandTotalStudents += total;
+      grandRegisteredCount += registered;
+      grandVerifiedCount += verified;
+
+      cohortsRanked.push({
+        cohortName: cohort.cohortName,
+        leaderName: cohort.leaderName,
+        clusterName: cluster.clusterName,
+        total,
+        registered,
+        verified,
+        percentage
       });
     });
+  });
+
+  // Sort cohorts by registration percentage desc, then absolute count desc, then alphabetically
+  cohortsRanked.sort((a, b) => {
+    if (b.percentage !== a.percentage) {
+      return b.percentage - a.percentage;
+    }
+    if (b.registered !== a.registered) {
+      return b.registered - a.registered;
+    }
+    return a.cohortName.localeCompare(b.cohortName);
   });
 
   return (
@@ -201,6 +235,111 @@ export default function CohortRegistrationsPage() {
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Documents Verified</span>
               <div className="text-3xl font-black font-outfit text-indigo-600 mt-2">
                 {grandVerifiedCount} <span className="text-sm font-semibold text-slate-400">({getPercent(grandVerifiedCount, grandTotalStudents)}%)</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Leaderboard Section */}
+        {!loading && !notPublished && cohortsRanked.length > 0 && (
+          <div className="max-w-4xl mx-auto space-y-4">
+            <div className="flex items-center gap-2 pb-1 justify-center sm:justify-start">
+              <span className="text-xl">🏆</span>
+              <h2 className="text-sm font-bold text-slate-800 font-outfit uppercase tracking-wider">
+                Cohort Leaderboard
+              </h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Podium Column (occupies 2 cols on md screens) */}
+              <div className="md:col-span-2 grid grid-cols-3 gap-3">
+                {/* 2nd Place */}
+                {cohortsRanked[1] && (
+                  <div className="glass-card p-4 flex flex-col items-center justify-between border-t-4 border-t-slate-300 bg-white relative mt-3 h-[180px]">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-300 text-slate-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black shadow-sm">
+                      2
+                    </div>
+                    <span className="text-2xl mt-1">🥈</span>
+                    <div className="text-center mt-2 w-full">
+                      <div className="text-xs font-extrabold text-slate-800 truncate">Cohort {cohortsRanked[1].cohortName}</div>
+                      <div className="text-[9px] text-slate-400 font-bold mt-0.5 truncate w-full">{cohortsRanked[1].leaderName}</div>
+                    </div>
+                    <div className="w-full text-center mt-2 bg-slate-50 py-1 rounded-lg">
+                      <div className="text-sm font-black text-slate-700">{cohortsRanked[1].percentage}%</div>
+                      <div className="text-[9px] text-slate-400 font-bold">{cohortsRanked[1].registered}/{cohortsRanked[1].total} Reg</div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 1st Place */}
+                {cohortsRanked[0] && (
+                  <div className="glass-card p-4 flex flex-col items-center justify-between border-t-4 border-t-amber-400 bg-white relative h-[196px] shadow-md shadow-amber-500/5">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-950 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black shadow-sm">
+                      1
+                    </div>
+                    <span className="text-3xl">🥇</span>
+                    <div className="text-center mt-2 w-full">
+                      <div className="text-sm font-black text-slate-800 truncate">Cohort {cohortsRanked[0].cohortName}</div>
+                      <div className="text-[9px] text-slate-400 font-bold mt-0.5 truncate w-full">{cohortsRanked[0].leaderName}</div>
+                    </div>
+                    <div className="w-full text-center mt-2 bg-amber-50 py-1 rounded-lg border border-amber-100">
+                      <div className="text-md font-black text-amber-600">{cohortsRanked[0].percentage}%</div>
+                      <div className="text-[9px] text-amber-500 font-bold">{cohortsRanked[0].registered}/{cohortsRanked[0].total} Reg</div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 3rd Place */}
+                {cohortsRanked[2] && (
+                  <div className="glass-card p-4 flex flex-col items-center justify-between border-t-4 border-t-amber-600 bg-white relative mt-5 h-[172px]">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-600 text-amber-50 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black shadow-sm">
+                      3
+                    </div>
+                    <span className="text-2xl mt-1">🥉</span>
+                    <div className="text-center mt-2 w-full">
+                      <div className="text-xs font-extrabold text-slate-800 truncate">Cohort {cohortsRanked[2].cohortName}</div>
+                      <div className="text-[9px] text-slate-400 font-bold mt-0.5 truncate w-full">{cohortsRanked[2].leaderName}</div>
+                    </div>
+                    <div className="w-full text-center mt-2 bg-slate-50 py-1 rounded-lg">
+                      <div className="text-sm font-black text-slate-700">{cohortsRanked[2].percentage}%</div>
+                      <div className="text-[9px] text-slate-400 font-bold">{cohortsRanked[2].registered}/{cohortsRanked[2].total} Reg</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Full Rank list (scrollable) */}
+              <div className="glass-card p-4 bg-white flex flex-col justify-between h-[196px]">
+                <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2 border-b border-slate-100 pb-1">
+                  All Cohorts Rankings
+                </div>
+                <div className="overflow-y-auto flex-1 pr-1 space-y-1.5 scrollbar-thin">
+                  {cohortsRanked.map((c, idx) => {
+                    const isMyCohort = user && user.role === 'cohort_leader' && user.cohort === c.cohortName;
+                    return (
+                      <div 
+                        key={c.cohortName} 
+                        className={`flex items-center justify-between p-2 rounded-xl text-xs transition-all ${
+                          isMyCohort 
+                            ? 'bg-indigo-50 border border-indigo-100 font-black text-primary shadow-sm' 
+                            : 'bg-slate-50/50 border border-slate-100 font-semibold text-slate-600'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="w-5 text-[10px] font-bold text-slate-400 text-center shrink-0">#{idx + 1}</span>
+                          <div className="min-w-0">
+                            <span className="font-extrabold truncate block">Cohort {c.cohortName}</span>
+                            <span className="text-[9px] text-slate-400 block font-semibold truncate">{c.leaderName}</span>
+                          </div>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <span className="font-extrabold text-slate-700">{c.percentage}%</span>
+                          <span className="text-[9px] text-slate-400 block font-semibold">{c.registered}/{c.total}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
