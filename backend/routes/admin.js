@@ -310,7 +310,7 @@ router.get('/aarambh-verification', requireAuth, requireRole(['admin', 'super_ad
           if (!sheetId) {
             return reject(new Error('REGISTRATION_SHEET_ID environment variable is missing'));
           }
-          const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
+          const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&t=${Date.now()}`;
 
           const getRedirected = (targetUrl) => {
             https.get(targetUrl, (res) => {
