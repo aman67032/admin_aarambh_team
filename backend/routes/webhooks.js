@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student');
 
-const normalizeAppNo = (val) => (val || '').replace(/[\/\.\s_-]/g, '').toUpperCase();
+const normalizeAppNo = (val) => (val || '').replace(/[\/\.\s_-]/g, '').replace('2025', '2026').toUpperCase();
 
 // Helper to recursively find any value matching the JKLU Customer Ref pattern in the webhook payload
 function findCustomerReference(obj) {
