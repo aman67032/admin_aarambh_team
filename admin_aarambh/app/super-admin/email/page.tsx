@@ -402,7 +402,7 @@ export default function EmailSystem() {
       <p>Your AARAMBH journey begins the moment you register. We encourage you to complete the steps below at the earliest to ensure a smooth and hassle-free arrival on campus.</p>
       <ol>
         <li>Register online through the AARAMBH Portal: <a href="https://aarambh.jklu.edu.in">https://aarambh.jklu.edu.in</a></li>
-        <li>Complete all admission-related formalities through sahayak@jklu.edu.in.</li>
+        <li>Complete all admission-related formalities through <a href="https://sahayak.jklu.edu.in">https://sahayak.jklu.edu.in</a>.</li>
         <li>Print all admission forms, obtain parent/guardian signatures wherever required, and bring the original signed copies during AARAMBH for document verification.</li>
         <li>Plan your arrival on campus on or before 13th July 2026.</li>
         <li>Carefully review the attached Guidelines Handbook and packing checklist.</li>
