@@ -296,46 +296,85 @@ router.get('/aarambh-verification', requireAuth, requireRole(['admin', 'super_ad
 
     const students = await Student.find({}).sort({ name: 1 });
     
-    // We try to call Firebase Firestore REST API
     let firebaseRegisteredAppNos = new Set();
     let usingFallback = false;
     let fallbackReason = '';
 
+    const normalize = (val) => (val || '').replace(/[\/\.\s-]/g, '').toUpperCase();
+
     try {
       const https = require('https');
-      const fetchFirebase = () => {
+      const fetchSpreadsheet = () => {
         return new Promise((resolve, reject) => {
-          const projectId = 'aarambh-26';
-          const apiKey = process.env.FIREBASE_API_KEY;
-          const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/registrations?key=${apiKey}&pageSize=300`;
-          
-          https.get(url, (res) => {
-            let data = '';
-            res.on('data', chunk => data += chunk);
-            res.on('end', () => {
+          const sheetId = process.env.REGISTRATION_SHEET_ID;
+          if (!sheetId) {
+            return reject(new Error('REGISTRATION_SHEET_ID environment variable is missing'));
+          }
+          const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
+
+          const getRedirected = (targetUrl) => {
+            https.get(targetUrl, (res) => {
               if (res.statusCode === 200) {
-                try {
-                  const json = JSON.parse(data);
-                  const list = (json.documents || []).map(doc => {
-                    const fields = doc.fields || {};
-                    return fields.applicationNo ? fields.applicationNo.stringValue : '';
-                  }).filter(Boolean);
-                  resolve(list);
-                } catch (e) {
-                  reject(new Error('JSON parse error: ' + e.message));
-                }
+                let data = '';
+                res.on('data', chunk => data += chunk);
+                res.on('end', () => {
+                  try {
+                    const lines = data.split(/\r?\n/);
+                    const appNos = [];
+                    
+                    // Simple quote-aware CSV parser
+                    const parseCSVLine = (line) => {
+                      const result = [];
+                      let current = '';
+                      let inQuotes = false;
+                      for (let i = 0; i < line.length; i++) {
+                        const char = line[i];
+                        if (char === '"') {
+                          inQuotes = !inQuotes;
+                        } else if (char === ',' && !inQuotes) {
+                          result.push(current.trim());
+                          current = '';
+                        } else {
+                          current += char;
+                        }
+                      }
+                      result.push(current.trim());
+                      return result;
+                    };
+
+                    lines.forEach((line, idx) => {
+                      if (idx === 0 || !line.trim()) return; // skip header/empty
+                      const cols = parseCSVLine(line);
+                      // "Application Number" is column 4 (index 3)
+                      if (cols.length > 3 && cols[3]) {
+                        appNos.push(cols[3]);
+                      }
+                    });
+
+                    resolve(appNos);
+                  } catch (e) {
+                    reject(new Error('CSV parse error: ' + e.message));
+                  }
+                });
+              } else if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+                getRedirected(res.headers.location);
               } else {
                 reject(new Error(`HTTP Status ${res.statusCode}`));
               }
-            });
-          }).on('error', err => reject(err));
+            }).on('error', err => reject(err));
+          };
+
+          getRedirected(url);
         });
       };
 
-      const appNos = await fetchFirebase();
-      appNos.forEach(appNo => firebaseRegisteredAppNos.add(appNo));
+      const appNos = await fetchSpreadsheet();
+      appNos.forEach(appNo => {
+        firebaseRegisteredAppNos.add(normalize(appNo));
+      });
+      
     } catch (firebaseErr) {
-      console.warn('Firebase query failed, using deterministic fallback:', firebaseErr.message);
+      console.warn('Spreadsheet query failed, using deterministic fallback:', firebaseErr.message);
       usingFallback = true;
       fallbackReason = firebaseErr.message;
       
@@ -343,14 +382,14 @@ router.get('/aarambh-verification', requireAuth, requireRole(['admin', 'super_ad
       students.forEach(s => {
         const charCodeSum = s.applicationNo.split('').reduce((sum, c) => sum + c.charCodeAt(0), 0);
         if (charCodeSum % 10 < 7) {
-          firebaseRegisteredAppNos.add(s.applicationNo);
+          firebaseRegisteredAppNos.add(normalize(s.applicationNo));
         }
       });
     }
 
     // Merge registration status with students list
     const result = students.map(s => {
-      const registered = firebaseRegisteredAppNos.has(s.applicationNo);
+      const registered = firebaseRegisteredAppNos.has(normalize(s.applicationNo));
       return {
         _id: s._id,
         name: s.name,
