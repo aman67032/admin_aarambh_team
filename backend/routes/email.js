@@ -147,9 +147,28 @@ router.post('/send-bulk', requireAuth, requireRole('super_admin'), async (req, r
       query = { _id: { $in: studentIds } };
     }
 
-    const students = await Student.find(query);
+    let students = await Student.find(query);
+
+    // If sending bulk to all students, automatically filter out those who have already been sent emails
+    if (!studentIds || studentIds.length === 0) {
+      const successfulLogs = await EmailLog.find({ status: { $in: ['sent', 'pending'] } }, 'to').lean();
+      const sentEmails = new Set(successfulLogs.map(log => log.to ? log.to.toLowerCase().trim() : ''));
+      
+      students = students.filter(student => {
+        const studentEmail = student.email ? student.email.toLowerCase().trim() : '';
+        return !sentEmails.has(studentEmail);
+      });
+    }
+
     if (students.length === 0) {
-      return res.status(404).json({ error: 'No students found to email.' });
+      return res.json({
+        success: true,
+        message: 'All matching students have already received their emails.',
+        sentCount: 0,
+        queuedCount: 0,
+        failedCount: 0,
+        errors: []
+      });
     }
 
     // Retrieve all cohort leaders to map to students quickly
