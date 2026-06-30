@@ -23,6 +23,16 @@ function findCustomerReference(obj) {
   return null;
 }
 
+// GET /api/webhooks/cashfree
+// Status endpoint for verification/browser checks
+router.get('/cashfree', (req, res) => {
+  res.json({
+    status: 'online',
+    message: 'Cashfree Webhook endpoint is active. Please configure Cashfree to send POST requests here.',
+    timestamp: new Date()
+  });
+});
+
 // POST /api/webhooks/cashfree
 // Cashfree payment success webhook handler
 router.post('/cashfree', async (req, res) => {
