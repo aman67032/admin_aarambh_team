@@ -256,8 +256,80 @@ app.get('/api/status/cohort-registrations', async (req, res) => {
     const showStudents = isPub || isSuperAdmin;
 
     const users = await User.find({ role: { $in: ['cluster_head', 'cohort_leader'] } }).select('name role cluster cohort');
+    // Fetch Google Sheet registrations to mark students as confirmedJklu
+    let firebaseRegisteredAppNos = new Set();
+    const normalize = (val) => (val || '').replace(/[\/\.\s-]/g, '').toUpperCase();
+
+    try {
+      const https = require('https');
+      const fetchSpreadsheet = () => {
+        return new Promise((resolve, reject) => {
+          const sheetId = process.env.REGISTRATION_SHEET_ID;
+          if (!sheetId) {
+            return reject(new Error('REGISTRATION_SHEET_ID environment variable is missing'));
+          }
+          const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
+
+          const getRedirected = (targetUrl) => {
+            https.get(targetUrl, (res) => {
+              if (res.statusCode === 200) {
+                let data = '';
+                res.on('data', chunk => data += chunk);
+                res.on('end', () => {
+                  try {
+                    const lines = data.split(/\r?\n/);
+                    const appNos = [];
+                    const parseCSVLine = (line) => {
+                      const result = [];
+                      let current = '';
+                      let inQuotes = false;
+                      for (let i = 0; i < line.length; i++) {
+                        const char = line[i];
+                        if (char === '"') {
+                          inQuotes = !inQuotes;
+                        } else if (char === ',' && !inQuotes) {
+                          result.push(current.trim());
+                          current = '';
+                        } else {
+                          current += char;
+                        }
+                      }
+                      result.push(current.trim());
+                      return result;
+                    };
+                    lines.forEach((line, idx) => {
+                      if (idx === 0 || !line.trim()) return;
+                      const cols = parseCSVLine(line);
+                      if (cols.length > 3 && cols[3]) {
+                        appNos.push(cols[3]);
+                      }
+                    });
+                    resolve(appNos);
+                  } catch (e) {
+                    reject(new Error('CSV parse error: ' + e.message));
+                  }
+                });
+              } else if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+                getRedirected(res.headers.location);
+              } else {
+                reject(new Error(`HTTP Status ${res.statusCode}`));
+              }
+            }).on('error', err => reject(err));
+          };
+          getRedirected(url);
+        });
+      };
+
+      const appNos = await fetchSpreadsheet();
+      appNos.forEach(appNo => {
+        firebaseRegisteredAppNos.add(normalize(appNo));
+      });
+    } catch (err) {
+      console.warn('Spreadsheet fetch failed in cohort-registrations status:', err.message);
+    }
+
     const students = showStudents 
-      ? await Student.find({}).select('name applicationNo course cohort cluster confirmedJklu confirmedAarambh documentsVerified notContinuing')
+      ? await Student.find({}).select('name applicationNo course cohort cluster confirmedJklu confirmedAarambh documentsVerified notContinuing').lean()
       : [];
 
     // Group by cluster
@@ -302,6 +374,11 @@ app.get('/api/status/cohort-registrations', async (req, res) => {
           leaderName: 'To be assigned',
           students: []
         };
+      }
+
+      // Override confirmedJklu based on live spreadsheet registrations if available
+      if (firebaseRegisteredAppNos.size > 0) {
+        student.confirmedJklu = firebaseRegisteredAppNos.has(normalize(student.applicationNo));
       }
 
       clusterData[c].cohorts[ch].students.push(student);
