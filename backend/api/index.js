@@ -410,6 +410,7 @@ const emailRoutes = require('../routes/email');
 const clusterRoutes = require('../routes/cluster');
 const adminRoutes = require('../routes/admin');
 const cohortRoutes = require('../routes/cohort');
+const webhookRoutes = require('../routes/webhooks');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/distribution', distributionRoutes);
@@ -417,6 +418,7 @@ app.use('/api/email', emailRoutes);
 app.use('/api/cluster', clusterRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/cohort', cohortRoutes);
+app.use('/api/webhooks', webhookRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
