@@ -145,6 +145,7 @@ export default function CohortRegistrationsPage() {
     registered: number;
     verified: number;
     percentage: number;
+    normalizedScore: number;
   }> = [];
 
   data.forEach(cluster => {
@@ -154,6 +155,9 @@ export default function CohortRegistrationsPage() {
       const verified = cohort.students.filter(s => s.documentsVerified).length;
       const percentage = total > 0 ? Math.round((registered / total) * 100) : 0;
       
+      // Bayesian average smoothing: assume 2 extra unregistered students to normalize size differences
+      const normalizedScore = total > 0 ? (registered / (total + 2)) * 100 : 0;
+
       grandTotalStudents += total;
       grandRegisteredCount += registered;
       grandVerifiedCount += verified;
@@ -165,15 +169,16 @@ export default function CohortRegistrationsPage() {
         total,
         registered,
         verified,
-        percentage
+        percentage,
+        normalizedScore
       });
     });
   });
 
-  // Sort cohorts by registration percentage desc, then absolute count desc, then alphabetically
+  // Sort cohorts by normalizedScore desc, then absolute count of registered students desc, then alphabetically
   cohortsRanked.sort((a, b) => {
-    if (b.percentage !== a.percentage) {
-      return b.percentage - a.percentage;
+    if (b.normalizedScore !== a.normalizedScore) {
+      return b.normalizedScore - a.normalizedScore;
     }
     if (b.registered !== a.registered) {
       return b.registered - a.registered;
