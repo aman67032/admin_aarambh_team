@@ -1,8 +1,8 @@
 import openpyxl
 import csv
 
-xlsx_path = r"C:\Users\MSI1\Downloads\New Student Information Spcimen(26.06.2026).xlsx"
-csv_path = r"F:\Aarambh 2026\Team_portal\backend\scripts\temp_students.csv"
+xlsx_path = r"C:\Users\MSI1\Downloads\New Student Information Spcimen(30.06.2026).xlsx"
+csv_path = r"F:\Aarambh 2026\Team_portal\backend\scripts\temp_students_new.csv"
 
 try:
     wb = openpyxl.load_workbook(xlsx_path, data_only=True)
