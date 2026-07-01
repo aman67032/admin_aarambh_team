@@ -185,10 +185,16 @@ function distributeStudents(csvText) {
       const cohortStudents = assignments[cohortName];
       if (cohortStudents.length >= maxCapacity) continue;
       
+      const clusterChar = cohortName[0];
+      const clusterCount = assignments[clusterChar + '1'].length + 
+                           assignments[clusterChar + '2'].length + 
+                           assignments[clusterChar + '3'].length;
+
       const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
       const genderScore = -sameGenderCount;
       const sizeScore = -cohortStudents.length;
-      const score = (sizeScore * 10) + (genderScore * 5);
+      const clusterScore = -clusterCount;
+      const score = (sizeScore * 10) + (genderScore * 5) + (clusterScore * 100);
       
       if (score > bestScore) {
         bestScore = score;
@@ -251,7 +257,7 @@ function distributeStudents(csvText) {
 
     for (const cohortName of NORTH_COHORTS) {
       const cohortStudents = assignments[cohortName];
-      if (cohortStudents.length >= maxCapacity) continue;
+      if (cohortStudents.length >= 8) continue;
 
       const cohortCourse = getCohortCourse(cohortName);
 
