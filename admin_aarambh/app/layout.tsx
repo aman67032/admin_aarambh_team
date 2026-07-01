@@ -6,16 +6,20 @@ import { AppProvider } from "./context/AppContext";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "JKLU Aarambh 2026",
-  description: "Orientation program portal for JK Lakshmipat University",
+  title: "JKLU Aarambh 2026 — Team Portal",
+  description: "Orientation program management portal for JK Lakshmipat University",
 };
 
 export default function RootLayout({
@@ -28,7 +32,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${outfit.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">
+      <body className="min-h-full flex flex-col" style={{ fontFamily: "var(--font-inter, Inter), system-ui, sans-serif" }}>
         <AppProvider>
           {children}
         </AppProvider>

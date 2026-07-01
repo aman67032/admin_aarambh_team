@@ -1,30 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-
 :root {
-  --background: #EDF2F7; /* Soft light blue-grey */
-  --foreground: #0A1428; /* Deep midnight blue */
-  --primary: #FF6B00; /* Vibrant Orange */
+  --background: #EDF2F7;
+  --foreground: #0A1428;
+  --primary: #FF6B00;
   --primary-hover: #E05E00;
   --primary-rgb: 255, 107, 0;
-  --secondary: #1E3A8A; /* Classic Dark Blue */
-  --card-bg: rgba(255, 255, 255, 0.9);
-  --card-border: rgba(30, 58, 138, 0.15); /* Dark blue tint border */
-  --card-shadow: 0 10px 30px -10px rgba(30, 58, 138, 0.08), 0 1px 3px rgba(0, 0, 0, 0.01);
-  --header-bg: rgba(237, 242, 247, 0.85);
-  --text-muted: #4A5568;}
+  --secondary: #1E3A8A;
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --card-border: rgba(30, 58, 138, 0.12);
+  --card-shadow: 0 4px 24px -4px rgba(30, 58, 138, 0.08), 0 1px 4px rgba(0,0,0,0.03);
+  --header-bg: rgba(237, 242, 247, 0.92);
+  --text-muted: #5A6A82;
+  --font-body: var(--font-inter, Inter, system-ui, sans-serif);
+  --font-heading: var(--font-outfit, Outfit, system-ui, sans-serif);
+}
 
-/* Cosmic Dark Theme (replacing standard beige Fun Theme) */
+/* Cosmic Dark Theme */
 .theme-fun {
-  --background: #050B18; /* Rich Midnight Dark Blue */
+  --background: #050B18;
   --foreground: #F8FAFC;
-  --primary: #FF8000; /* Vibrant Neon Orange */
+  --primary: #FF8000;
   --primary-hover: #E07000;
   --primary-rgb: 255, 128, 0;
-  --secondary: #2563EB; /* Royal Dark Blue Accent */
-  --card-bg: rgba(10, 20, 42, 0.85); /* Rich dark blue card */
-  --card-border: rgba(255, 128, 0, 0.15); /* Orange neon glow borders */
+  --secondary: #2563EB;
+  --card-bg: rgba(10, 20, 42, 0.85);
+  --card-border: rgba(255, 128, 0, 0.15);
   --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 128, 0, 0.04);
   --header-bg: rgba(5, 11, 24, 0.85);
   --text-muted: #8E9BB0;}
@@ -39,17 +40,28 @@
   --color-card-border: var(--card-border);
   --color-text-muted: var(--text-muted);
   
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-inter, Inter, system-ui, sans-serif);
   --font-mono: var(--font-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: var(--font-inter, Inter, system-ui, sans-serif);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 100vh;
 }
+
+h1, h2, h3, h4, h5, h6, .font-outfit {
+  font-family: var(--font-outfit, Outfit, system-ui, sans-serif);
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  letter-spacing: -0.01em;
+}
+
 
 /* Custom utilities */
 .fun-gradient {
