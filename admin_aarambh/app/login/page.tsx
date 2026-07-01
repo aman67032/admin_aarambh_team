@@ -42,38 +42,38 @@ export default function LoginPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-card-bg/50 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
-          <span className="text-sm font-semibold text-slate-600">Loading Aarambh Portal...</span>
+          <span className="text-sm font-semibold text-text-muted">Loading Aarambh Portal...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F0F2F5] fun-bg-pattern flex flex-col justify-between relative overflow-hidden">
+    <div className="min-h-screen bg-background fun-bg-pattern flex flex-col justify-between relative overflow-hidden text-foreground">
       {/* Decorative background shapes */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-100 blur-[120px] opacity-70 pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-emerald-100 blur-[120px] opacity-70 pointer-events-none"></div>
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/10 blur-[120px] opacity-70 pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-primary/10 blur-[120px] opacity-70 pointer-events-none"></div>
 
       {/* Header */}
-      <header className="sticky top-0 bg-white/80 backdrop-blur-md border-b border-slate-100 z-50 transition-all">
+      <header className="sticky top-0 bg-card-bg/70 backdrop-blur-md border-b border-card-border z-50 transition-all">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-8 object-contain" />
-            <div className="w-[1px] h-6 bg-slate-200"></div>
+            <div className="w-[1px] h-6 bg-card-border"></div>
             <img src="/AARAMBH26_Main logo.png" alt="Aarambh logo" className="h-10 object-contain" />
             <div className="flex flex-col hidden sm:flex">
               <span className="text-xs font-bold text-primary font-outfit uppercase tracking-wider leading-none">Aarambh &apos;26</span>
-              <span className="text-[8px] text-slate-400 font-bold uppercase mt-0.5">JKLU</span>
+              <span className="text-[8px] text-text-muted font-bold uppercase mt-0.5">JKLU</span>
             </div>
           </Link>
 
           <div className="flex items-center gap-4">
             <Link
               href="/structure-details"
-              className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold rounded-full transition-all cursor-pointer"
+              className="px-4 py-2 border border-card-border text-foreground hover:bg-card-bg text-xs font-bold rounded-full transition-all cursor-pointer"
             >
               View Student Allocations
             </Link>
@@ -83,21 +83,21 @@ export default function LoginPage() {
 
       {/* Main Content Area */}
       <main className="flex-1 flex items-center justify-center p-4 z-10">
-        <div className="w-full max-w-md bg-white border border-slate-100 shadow-xl rounded-3xl p-8 backdrop-blur-md transition-all duration-300">
+        <div className="w-full max-w-md glass-card p-8">
           
           {/* Portal Header */}
           <div className="text-center mb-8">
             <div className="flex justify-center items-center gap-3.5 mb-4">
               <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-10 object-contain" />
-              <div className="w-[1px] h-8 bg-slate-200"></div>
+              <div className="w-[1px] h-8 bg-card-border"></div>
               <img src="/AARAMBH26_Main logo.png" alt="Aarambh logo" className="h-12 object-contain animate-float" />
             </div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 font-outfit">Aarambh 2026</h1>
-            <p className="text-sm text-slate-500 font-semibold mt-1">Team Coordination & Student Distribution</p>
+            <h1 className="text-3xl font-black tracking-tight text-foreground font-outfit">Aarambh 2026</h1>
+            <p className="text-sm text-text-muted font-semibold mt-1">Team Coordination & Student Distribution</p>
           </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-700 text-xs font-semibold rounded-2xl flex items-center gap-2">
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-semibold rounded-2xl flex items-center gap-2">
               <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
               </svg>
@@ -107,27 +107,27 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Email Address</label>
+              <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Email Address</label>
               <div className="relative">
                 <input
                   type="email"
                   placeholder="email@jklu.edu.in"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-slate-900 font-medium"
+                  className="w-full px-4 py-3 bg-background/50 border border-card-border rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:bg-card-bg transition-all text-foreground font-medium"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Password</label>
+              <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Password</label>
               <input
                 type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-slate-900"
+                className="w-full px-4 py-3 bg-background/50 border border-card-border rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:bg-card-bg transition-all text-foreground"
                 required
               />
             </div>
@@ -135,7 +135,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 px-4 bg-primary hover:bg-primary-hover text-white rounded-2xl font-bold text-sm shadow-lg shadow-indigo-100 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
+              className="w-full py-3.5 px-4 btn-premium text-white rounded-2xl font-bold text-sm transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -150,14 +150,14 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-8 text-center border-t border-slate-100 pt-6">
-            <p className="text-xs text-slate-400 font-semibold">JK Lakshmipat University, Jaipur</p>
+          <div className="mt-8 text-center border-t border-card-border pt-6">
+            <p className="text-xs text-text-muted font-semibold">JK Lakshmipat University, Jaipur</p>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-slate-100 text-center text-xs font-bold text-slate-400 z-10 bg-white/50 backdrop-blur-sm">
+      <footer className="py-8 border-t border-card-border text-center text-xs font-bold text-text-muted z-10 bg-card-bg/50 backdrop-blur-sm">
         <div>JK Lakshmipat University, Jaipur © 2026</div>
       </footer>
     </div>

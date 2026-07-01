@@ -188,23 +188,23 @@ export default function CohortRegistrationsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-between fun-bg-pattern">
+    <div className="min-h-screen bg-background flex flex-col justify-between fun-bg-pattern text-foreground">
       {/* Header */}
-      <header className="sticky top-0 bg-white/80 backdrop-blur-md border-b border-slate-100 z-50 transition-all">
+      <header className="sticky top-0 bg-card-bg/85 backdrop-blur-md border-b border-card-border z-50 transition-all">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-8 object-contain" />
-            <div className="w-[1px] h-6 bg-slate-200"></div>
+            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-8 object-contain animate-pulse" />
+            <div className="w-[1px] h-6 bg-card-border"></div>
             <img src="/AARAMBH26_Main logo.png" alt="Aarambh logo" className="h-10 object-contain" />
             <div className="flex flex-col hidden sm:flex">
               <span className="text-xs font-bold text-primary font-outfit uppercase tracking-wider leading-none">Aarambh &apos;26</span>
-              <span className="text-[8px] text-slate-400 font-bold uppercase mt-0.5">JKLU</span>
+              <span className="text-[8px] text-text-muted font-bold uppercase mt-0.5">JKLU</span>
             </div>
           </Link>
 
           <Link
             href={backLink.href}
-            className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1.5"
+            className="px-5 py-2.5 bg-card-bg border border-card-border hover:bg-background text-foreground text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1.5"
           >
             ← {backLink.label}
           </Link>
@@ -216,7 +216,7 @@ export default function CohortRegistrationsPage() {
         
         {/* Banner Section */}
         <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <h1 className="text-3xl font-black font-outfit tracking-tight text-slate-900 leading-none">
+          <h1 className="text-3xl font-black font-outfit tracking-tight text-foreground leading-none">
             Cohort Registration Tracker
           </h1>
           <p className="inline-block bg-primary/10 border border-primary/25 text-primary text-xs font-black px-4 py-1.5 rounded-full shadow-xs leading-relaxed">
@@ -228,17 +228,17 @@ export default function CohortRegistrationsPage() {
         {!loading && !notPublished && grandTotalStudents > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="glass-card p-6 border-l-4 border-l-primary flex flex-col justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Allocated Students</span>
-              <div className="text-3xl font-black font-outfit text-slate-800 mt-2">{grandTotalStudents}</div>
+              <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Total Allocated Students</span>
+              <div className="text-3xl font-black font-outfit text-foreground mt-2">{grandTotalStudents}</div>
             </div>
             <div className="glass-card p-6 border-l-4 border-l-emerald-500 flex flex-col justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Confirmed Registration (JKLU)</span>
+              <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Confirmed Registration (JKLU)</span>
               <div className="text-3xl font-black font-outfit text-emerald-600 mt-2">
                 {grandRegisteredCount}
               </div>
             </div>
             <div className="glass-card p-6 border-l-4 border-l-indigo-500 flex flex-col justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Documents Verified</span>
+              <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Documents Verified</span>
               <div className="text-3xl font-black font-outfit text-indigo-600 mt-2">
                 {grandVerifiedCount}
               </div>
@@ -251,72 +251,72 @@ export default function CohortRegistrationsPage() {
           <div className="max-w-4xl mx-auto space-y-4">
             <div className="flex items-center gap-2 pb-1 justify-center sm:justify-start">
               <span className="text-xl">🏆</span>
-              <h2 className="text-sm font-bold text-slate-800 font-outfit uppercase tracking-wider">
+              <h2 className="text-sm font-bold text-foreground font-outfit uppercase tracking-wider">
                 Cohort Leaderboard
               </h2>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Podium Column (occupies 2 cols on md screens) */}
+              {/* Podium Column */}
               <div className="md:col-span-2 grid grid-cols-3 gap-3">
                 {/* 2nd Place */}
                 {cohortsRanked[1] && (
-                  <div className="glass-card p-4 flex flex-col items-center justify-between border-t-4 border-t-slate-300 bg-white relative mt-3 h-[180px]">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-300 text-slate-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black shadow-sm">
+                  <div className="glass-card p-4 flex flex-col items-center justify-between border-t-4 border-t-slate-400 bg-card-bg relative mt-3 h-[180px]">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-400 text-foreground w-6 h-6 rounded-full flex items-center justify-center text-xs font-black shadow-sm">
                       2
                     </div>
                     <span className="text-2xl mt-1">🥈</span>
                     <div className="text-center mt-2 w-full">
-                      <div className="text-xs font-extrabold text-slate-800 truncate">Cohort {cohortsRanked[1].cohortName}</div>
-                      <div className="text-[9px] text-slate-400 font-bold mt-0.5 truncate w-full">{cohortsRanked[1].leaderName}</div>
+                      <div className="text-xs font-extrabold text-foreground truncate">Cohort {cohortsRanked[1].cohortName}</div>
+                      <div className="text-[9px] text-text-muted font-bold mt-0.5 truncate w-full">{cohortsRanked[1].leaderName}</div>
                     </div>
-                    <div className="w-full text-center mt-2 bg-slate-50 py-1 rounded-lg">
-                      <div className="text-sm font-black text-slate-700">{cohortsRanked[1].percentage}%</div>
-                      <div className="text-[9px] text-slate-400 font-bold">{cohortsRanked[1].registered}/{cohortsRanked[1].total} Reg</div>
+                    <div className="w-full text-center mt-2 bg-background/50 border border-card-border/60 py-1 rounded-lg">
+                      <div className="text-sm font-black text-foreground">{cohortsRanked[1].percentage}%</div>
+                      <div className="text-[9px] text-text-muted font-bold">{cohortsRanked[1].registered}/{cohortsRanked[1].total} Reg</div>
                     </div>
                   </div>
                 )}
 
                 {/* 1st Place */}
                 {cohortsRanked[0] && (
-                  <div className="glass-card p-4 flex flex-col items-center justify-between border-t-4 border-t-amber-400 bg-white relative h-[196px] shadow-md shadow-amber-500/5">
+                  <div className="glass-card p-4 flex flex-col items-center justify-between border-t-4 border-t-amber-400 bg-card-bg relative h-[196px] shadow-md">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-950 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black shadow-sm">
                       1
                     </div>
                     <span className="text-3xl">🥇</span>
                     <div className="text-center mt-2 w-full">
-                      <div className="text-sm font-black text-slate-800 truncate">Cohort {cohortsRanked[0].cohortName}</div>
-                      <div className="text-[9px] text-slate-400 font-bold mt-0.5 truncate w-full">{cohortsRanked[0].leaderName}</div>
+                      <div className="text-sm font-black text-foreground truncate">Cohort {cohortsRanked[0].cohortName}</div>
+                      <div className="text-[9px] text-text-muted font-bold mt-0.5 truncate w-full">{cohortsRanked[0].leaderName}</div>
                     </div>
-                    <div className="w-full text-center mt-2 bg-amber-50 py-1 rounded-lg border border-amber-100">
-                      <div className="text-md font-black text-amber-600">{cohortsRanked[0].percentage}%</div>
-                      <div className="text-[9px] text-amber-500 font-bold">{cohortsRanked[0].registered}/{cohortsRanked[0].total} Reg</div>
+                    <div className="w-full text-center mt-2 bg-amber-500/10 py-1 rounded-lg border border-amber-500/20">
+                      <div className="text-md font-black text-amber-500">{cohortsRanked[0].percentage}%</div>
+                      <div className="text-[9px] text-amber-500/80 font-bold">{cohortsRanked[0].registered}/{cohortsRanked[0].total} Reg</div>
                     </div>
                   </div>
                 )}
 
                 {/* 3rd Place */}
                 {cohortsRanked[2] && (
-                  <div className="glass-card p-4 flex flex-col items-center justify-between border-t-4 border-t-amber-600 bg-white relative mt-5 h-[172px]">
+                  <div className="glass-card p-4 flex flex-col items-center justify-between border-t-4 border-t-amber-600 bg-card-bg relative mt-5 h-[172px]">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-600 text-amber-50 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black shadow-sm">
                       3
                     </div>
                     <span className="text-2xl mt-1">🥉</span>
                     <div className="text-center mt-2 w-full">
-                      <div className="text-xs font-extrabold text-slate-800 truncate">Cohort {cohortsRanked[2].cohortName}</div>
-                      <div className="text-[9px] text-slate-400 font-bold mt-0.5 truncate w-full">{cohortsRanked[2].leaderName}</div>
+                      <div className="text-xs font-extrabold text-foreground truncate">Cohort {cohortsRanked[2].cohortName}</div>
+                      <div className="text-[9px] text-text-muted font-bold mt-0.5 truncate w-full">{cohortsRanked[2].leaderName}</div>
                     </div>
-                    <div className="w-full text-center mt-2 bg-slate-50 py-1 rounded-lg">
-                      <div className="text-sm font-black text-slate-700">{cohortsRanked[2].percentage}%</div>
-                      <div className="text-[9px] text-slate-400 font-bold">{cohortsRanked[2].registered}/{cohortsRanked[2].total} Reg</div>
+                    <div className="w-full text-center mt-2 bg-background/50 border border-card-border/60 py-1 rounded-lg">
+                      <div className="text-sm font-black text-foreground">{cohortsRanked[2].percentage}%</div>
+                      <div className="text-[9px] text-text-muted font-bold">{cohortsRanked[2].registered}/{cohortsRanked[2].total} Reg</div>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Full Rank list (scrollable) */}
-              <div className="glass-card p-4 bg-white flex flex-col justify-between h-[196px]">
-                <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2 border-b border-slate-100 pb-1">
+              {/* Full Rank list */}
+              <div className="glass-card p-4 bg-card-bg flex flex-col justify-between h-[196px]">
+                <div className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2 border-b border-card-border pb-1">
                   All Cohorts Rankings
                 </div>
                 <div className="overflow-y-auto flex-1 pr-1 space-y-1.5 scrollbar-thin">
@@ -327,20 +327,20 @@ export default function CohortRegistrationsPage() {
                         key={c.cohortName} 
                         className={`flex items-center justify-between p-2 rounded-xl text-xs transition-all ${
                           isMyCohort 
-                            ? 'bg-indigo-50 border border-indigo-100 font-black text-primary shadow-sm' 
-                            : 'bg-slate-50/50 border border-slate-100 font-semibold text-slate-600'
+                            ? 'bg-primary/10 border border-primary/20 font-black text-primary shadow-sm' 
+                            : 'bg-background/40 border border-card-border/50 font-semibold text-text-muted'
                         }`}
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="w-5 text-[10px] font-bold text-slate-400 text-center shrink-0">#{idx + 1}</span>
+                          <span className="w-5 text-[10px] font-bold text-text-muted text-center shrink-0">#{idx + 1}</span>
                           <div className="min-w-0">
-                            <span className="font-extrabold truncate block">Cohort {c.cohortName}</span>
-                            <span className="text-[9px] text-slate-400 block font-semibold truncate">{c.leaderName}</span>
+                            <span className="font-extrabold truncate block text-foreground">Cohort {c.cohortName}</span>
+                            <span className="text-[9px] text-text-muted block font-semibold truncate">{c.leaderName}</span>
                           </div>
                         </div>
                         <div className="text-right shrink-0">
-                          <span className="font-extrabold text-slate-700">{c.percentage}%</span>
-                          <span className="text-[9px] text-slate-400 block font-semibold">{c.registered}/{c.total}</span>
+                          <span className="font-extrabold text-foreground">{c.percentage}%</span>
+                          <span className="text-[9px] text-text-muted block font-semibold">{c.registered}/{c.total}</span>
                         </div>
                       </div>
                     );
@@ -360,12 +360,12 @@ export default function CohortRegistrationsPage() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by student name, application no, cohort, or leader..."
-                className="w-full px-5 py-3 bg-white border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-primary shadow-sm text-slate-900 font-semibold"
+                className="w-full px-5 py-3 bg-background/50 border border-card-border rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-primary shadow-sm text-foreground font-semibold"
               />
               {searchTerm && (
                 <button 
                   onClick={() => setSearchTerm('')} 
-                  className="absolute right-4 top-3 text-slate-400 hover:text-slate-600 font-bold text-sm"
+                  className="absolute right-4 top-3 text-text-muted hover:text-foreground font-bold text-sm"
                 >
                   ✕
                 </button>
@@ -381,8 +381,8 @@ export default function CohortRegistrationsPage() {
         ) : notPublished && (!user || user.role !== 'super_admin') ? (
           <div className="glass-card p-12 text-center flex flex-col items-center justify-center gap-4 max-w-md mx-auto">
             <div className="text-5xl">🔒</div>
-            <h2 className="text-xl font-bold text-slate-800 font-outfit">Student Lists Not Published Yet</h2>
-            <p className="text-slate-500 text-xs font-semibold leading-relaxed">
+            <h2 className="text-xl font-bold text-foreground font-outfit">Student Lists Not Published Yet</h2>
+            <p className="text-text-muted text-xs font-semibold leading-relaxed">
               The student allocation list has not been released by the Super Admin yet. Please check back later.
             </p>
           </div>
@@ -392,11 +392,11 @@ export default function CohortRegistrationsPage() {
               <div key={cluster.clusterName} className="space-y-6">
                 
                 {/* Cluster Header */}
-                <div className="flex items-center gap-3 border-b border-slate-200 pb-3">
-                  <h2 className="text-2xl font-black font-outfit text-slate-800">
+                <div className="flex items-center gap-3 border-b border-card-border pb-3">
+                  <h2 className="text-2xl font-black font-outfit text-foreground">
                     Cluster {cluster.clusterName}
                   </h2>
-                  <span className="text-xs font-bold text-slate-400">
+                  <span className="text-xs font-bold text-text-muted">
                     Coordinator: {cluster.head || 'To be assigned'}
                   </span>
                 </div>
@@ -414,21 +414,21 @@ export default function CohortRegistrationsPage() {
                     const percentRegistered = getPercent(registeredCount, totalStudents);
 
                     return (
-                      <div key={cohort.cohortName} className="glass-card overflow-hidden flex flex-col justify-between border border-slate-100 bg-white">
+                      <div key={cohort.cohortName} className="glass-card overflow-hidden flex flex-col justify-between border border-card-border bg-card-bg">
                         
                         {/* Cohort Header Information */}
                         <div 
                           onClick={() => toggleCohort(cohort.cohortName)}
-                          className="p-5 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50 transition-all"
+                          className="p-5 bg-card-bg/50 border-b border-card-border flex items-center justify-between gap-4 cursor-pointer hover:bg-background transition-all"
                         >
                           <div className="space-y-1">
-                            <h3 className="text-md font-extrabold font-outfit text-slate-800 flex items-center gap-2">
+                            <h3 className="text-md font-extrabold font-outfit text-foreground flex items-center gap-2">
                               Cohort {cohort.cohortName}
-                              <span className="text-xs bg-slate-200/60 px-2 py-0.5 rounded-full font-bold text-slate-500">
+                              <span className="text-xs bg-background border border-card-border px-2 py-0.5 rounded-full font-bold text-text-muted">
                                 {totalStudents} Students
                               </span>
                             </h3>
-                            <span className="text-xs font-bold text-slate-400 block">
+                            <span className="text-xs font-bold text-text-muted block">
                               Leader: {cohort.leaderName}
                             </span>
                           </div>
@@ -439,18 +439,18 @@ export default function CohortRegistrationsPage() {
                               <span className="text-xs font-black text-emerald-600">
                                 {registeredCount} Registered
                               </span>
-                              <span className="text-[10px] text-slate-400 font-bold">
+                              <span className="text-[10px] text-text-muted font-bold">
                                 {verifiedCount} Docs Verified
                               </span>
                             </div>
-                            <svg className={`w-4 h-4 text-slate-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className={`w-4 h-4 text-text-muted transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                             </svg>
                           </div>
                         </div>
 
                         {/* Progress Bar */}
-                        <div className="w-full bg-slate-100 h-1">
+                        <div className="w-full bg-background h-1">
                           <div 
                             className="bg-emerald-500 h-full transition-all duration-500" 
                             style={{ width: `${percentRegistered}%` }}
@@ -467,17 +467,17 @@ export default function CohortRegistrationsPage() {
                                     key={student._id} 
                                     className={`p-3 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 transition-all text-xs font-semibold ${
                                       student.notComingAarambh 
-                                        ? 'bg-red-50/50 border-red-100 text-red-700' 
+                                        ? 'bg-red-500/10 border-red-500/20 text-red-500' 
                                         : student.notContinuing
-                                        ? 'bg-slate-100 border-slate-200 text-slate-500'
+                                        ? 'bg-card-bg/500/10 border-slate-500/20 text-text-muted'
                                         : student.confirmedJklu 
-                                        ? 'bg-emerald-50/40 border-emerald-100 text-emerald-800' 
-                                        : 'bg-white border-slate-100 text-slate-600'
+                                        ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' 
+                                        : 'bg-background/40 border-card-border/50 text-text-muted'
                                     }`}
                                   >
                                     <div>
-                                      <div className="font-extrabold">{student.name}</div>
-                                      <div className="text-[9px] text-slate-400 uppercase tracking-wider mt-0.5">
+                                      <div className="font-extrabold text-foreground">{student.name}</div>
+                                      <div className="text-[9px] text-text-muted uppercase tracking-wider mt-0.5">
                                         {student.applicationNo} • {student.course}
                                       </div>
                                     </div>
@@ -485,26 +485,26 @@ export default function CohortRegistrationsPage() {
                                     {/* Status Indicator */}
                                     <div className="flex flex-wrap gap-1.5 items-center mt-1 sm:mt-0 self-end sm:self-auto">
                                       {student.notComingAarambh ? (
-                                        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-red-100 text-red-700 uppercase">
+                                        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-red-500/25 text-red-500 border border-red-500/25 uppercase">
                                           Not Coming
                                         </span>
                                       ) : student.notContinuing ? (
-                                        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-200 text-slate-600 uppercase">
+                                        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-card-bg/500/25 text-text-muted border border-slate-500/25 uppercase">
                                           Not Continuing
                                         </span>
                                       ) : (
                                         <>
                                           {student.documentsVerified && (
-                                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100 uppercase" title="Documents Verified">
+                                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-indigo-500/20 text-indigo-500 border border-indigo-500/20 uppercase" title="Documents Verified">
                                               Verified
                                             </span>
                                           )}
                                           {student.confirmedJklu ? (
-                                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-800 uppercase" title="Registered at JKLU">
+                                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/20 text-emerald-500 border border-emerald-500/20 uppercase" title="Registered at JKLU">
                                               Registered
                                             </span>
                                           ) : (
-                                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-400 uppercase">
+                                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-card-bg/500/10 text-text-muted border border-slate-500/10 uppercase">
                                               Pending
                                             </span>
                                           )}
@@ -516,7 +516,7 @@ export default function CohortRegistrationsPage() {
                               })}
                               
                               {cohort.students.length === 0 && (
-                                <div className="text-center text-xs text-slate-400 italic py-4">
+                                <div className="text-center text-xs text-text-muted italic py-4">
                                   No students allocated.
                                 </div>
                               )}
@@ -535,8 +535,8 @@ export default function CohortRegistrationsPage() {
             {filteredData.length === 0 && (
               <div className="glass-card p-12 text-center max-w-md mx-auto">
                 <span className="text-3xl">🔍</span>
-                <h3 className="text-md font-extrabold text-slate-800 font-outfit mt-4">No matching records found</h3>
-                <p className="text-xs text-slate-400 font-semibold mt-1">Try searching for a different student name, application number, or cohort leader.</p>
+                <h3 className="text-md font-extrabold text-foreground font-outfit mt-4">No matching records found</h3>
+                <p className="text-xs text-text-muted font-semibold mt-1">Try searching for a different student name, application number, or cohort leader.</p>
               </div>
             )}
           </div>
@@ -544,7 +544,7 @@ export default function CohortRegistrationsPage() {
       </main>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-slate-100 text-center text-xs font-bold text-slate-400">
+      <footer className="py-8 border-t border-card-border text-center text-xs font-bold text-text-muted bg-card-bg/40 backdrop-blur-sm">
         <div>JK Lakshmipat University, Jaipur © 2026</div>
       </footer>
     </div>

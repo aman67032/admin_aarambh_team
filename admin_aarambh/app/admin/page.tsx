@@ -48,14 +48,14 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex flex-col gap-6 animate-pulse">
-        <div className="h-10 w-48 bg-slate-200 rounded-lg"></div>
+        <div className="h-10 w-48 bg-card-border/60 rounded-lg"></div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
         </div>
-        <div className="h-96 bg-slate-200 rounded-3xl mt-6"></div>
+        <div className="h-96 bg-card-border/60 rounded-3xl mt-6"></div>
       </div>
     );
   }
@@ -81,15 +81,15 @@ export default function AdminDashboard() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-slate-900">Admin Command Center</h1>
-          <p className="text-sm text-slate-500 font-semibold mt-1">
+          <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-foreground">Admin Command Center</h1>
+          <p className="text-sm text-text-muted font-semibold mt-1">
             Monitor Cluster Heads performance, check student distribution metrics, and manage students not continuing.
           </p>
         </div>
         <div className="glass-card p-12 text-center flex flex-col items-center justify-center gap-4">
           <div className="text-5xl">🔒</div>
-          <h2 className="text-xl font-bold text-slate-800">Student Lists Not Published Yet</h2>
-          <p className="text-slate-500 max-w-md">
+          <h2 className="text-xl font-bold text-foreground">Student Lists Not Published Yet</h2>
+          <p className="text-text-muted max-w-md">
             The student allocation lists have not been released by the Super Admin yet. Please wait until details are finalized.
           </p>
         </div>
@@ -101,8 +101,8 @@ export default function AdminDashboard() {
     <div className="space-y-8">
       {/* Title */}
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-slate-900">Admin Command Center</h1>
-        <p className="text-sm text-slate-500 font-semibold mt-1">
+        <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-foreground">Admin Command Center</h1>
+        <p className="text-sm text-text-muted font-semibold mt-1">
           Monitor Cluster Heads performance, check student distribution metrics, and manage students not continuing.
         </p>
       </div>
@@ -111,22 +111,22 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Total Students</span>
-          <div className="text-3xl font-extrabold font-outfit text-slate-900 mt-2">{summary?.totalStudents || 0}</div>
+          <div className="text-3xl font-extrabold font-outfit text-foreground mt-2">{summary?.totalStudents || 0}</div>
         </div>
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Verified (Doc Check)</span>
-          <div className="text-3xl font-extrabold font-outfit text-slate-900 mt-2">
-            {summary?.verified || 0} <span className="text-sm font-semibold text-slate-400">({Math.round(summary?.verificationRate || 0)}%)</span>
+          <div className="text-3xl font-extrabold font-outfit text-foreground mt-2">
+            {summary?.verified || 0} <span className="text-sm font-semibold text-text-muted">({Math.round(summary?.verificationRate || 0)}%)</span>
           </div>
         </div>
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Total Calls Logged</span>
-          <div className="text-3xl font-extrabold font-outfit text-slate-900 mt-2">{summary?.totalCalls || 0}</div>
+          <div className="text-3xl font-extrabold font-outfit text-foreground mt-2">{summary?.totalCalls || 0}</div>
         </div>
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Confirmed Aarambh</span>
-          <div className="text-3xl font-extrabold font-outfit text-slate-900 mt-2 text-emerald-600">
-            {summary?.confirmedAarambh || 0} <span className="text-sm font-semibold text-slate-400">({Math.round(summary?.confirmationRate || 0)}%)</span>
+          <div className="text-3xl font-extrabold font-outfit text-foreground mt-2 text-emerald-600">
+            {summary?.confirmedAarambh || 0} <span className="text-sm font-semibold text-text-muted">({Math.round(summary?.confirmationRate || 0)}%)</span>
           </div>
         </div>
       </div>
@@ -136,7 +136,7 @@ export default function AdminDashboard() {
         <button
           onClick={() => setActiveTab('performance')}
           className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-            activeTab === 'performance' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+            activeTab === 'performance' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
           }`}
         >
           Cluster Heads Performance
@@ -144,7 +144,7 @@ export default function AdminDashboard() {
         <button
           onClick={() => setActiveTab('correctness')}
           className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-            activeTab === 'correctness' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+            activeTab === 'correctness' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
           }`}
         >
           Distribution Correctness ({distCheck?.stats?.warningCohorts || 0} Warnings)
@@ -152,7 +152,7 @@ export default function AdminDashboard() {
         <button
           onClick={() => setActiveTab('aarambh-verification')}
           className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-            activeTab === 'aarambh-verification' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+            activeTab === 'aarambh-verification' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
           }`}
         >
           AARAMBH Verification ({aarambhData?.summary?.registered || 0} Registered)
@@ -160,7 +160,7 @@ export default function AdminDashboard() {
         <button
           onClick={() => setActiveTab('not-continuing')}
           className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-            activeTab === 'not-continuing' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+            activeTab === 'not-continuing' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
           }`}
         >
           Not Continuing & Not Coming Panel ({notContinuing.length})
@@ -174,7 +174,7 @@ export default function AdminDashboard() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-sm">
               <thead>
-                <tr className="bg-slate-50 border-b border-card-border text-xs font-bold text-slate-400 uppercase">
+                <tr className="bg-card-bg/50 border-b border-card-border text-xs font-bold text-text-muted uppercase">
                   <th className="p-4">Cluster</th>
                   <th className="p-4">Cluster Head</th>
                   <th className="p-4">Students Assigned</th>
@@ -186,26 +186,26 @@ export default function AdminDashboard() {
                   <th className="p-4">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+              <tbody className="divide-y divide-card-border font-semibold text-foreground">
                 {overview?.clusters?.map((cluster: any) => (
                   <tr 
                     key={cluster.cluster} 
-                    className="hover:bg-slate-50/50 cursor-pointer transition-colors group hover:bg-indigo-50/30"
+                    className="hover:bg-card-bg/50/50 cursor-pointer transition-colors group hover:bg-indigo-50/30"
                     onClick={() => router.push(`/admin/cluster/${cluster.cluster}`)}
                   >
-                    <td className="p-4 font-bold text-slate-900">Cluster {cluster.cluster}</td>
+                    <td className="p-4 font-bold text-foreground">Cluster {cluster.cluster}</td>
                     <td className="p-4">{cluster.headName}</td>
                     <td className="p-4">{cluster.total}</td>
                     <td className="p-4">
                       <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                         cluster.verified === cluster.total && cluster.total > 0
                           ? 'bg-emerald-50 text-emerald-700'
-                          : 'bg-slate-100 text-slate-700'
+                          : 'bg-background/80 text-foreground'
                       }`}>
                         {cluster.verified} / {cluster.total}
                       </span>
                     </td>
-                    <td className="p-4 text-slate-500">{cluster.calls} calls</td>
+                    <td className="p-4 text-text-muted">{cluster.calls} calls</td>
                     <td className="p-4 text-emerald-600">{cluster.confirmedAarambh}</td>
                     <td className="p-4 text-indigo-600">{cluster.confirmedJklu}</td>
                     <td className="p-4 text-red-500">{cluster.notContinuing}</td>
@@ -251,56 +251,56 @@ export default function AdminDashboard() {
           <div className="space-y-6">
             <div className="glass-card p-6 border-l-4 border-l-primary space-y-6">
               <div>
-                <h3 className="text-lg font-extrabold text-slate-900 font-outfit">Distribution Quality Status: {distCheck?.stats?.status}</h3>
-                <p className="text-xs text-slate-400 font-semibold mt-1">
+                <h3 className="text-lg font-extrabold text-foreground font-outfit">Distribution Quality Status: {distCheck?.stats?.status}</h3>
+                <p className="text-xs text-text-muted font-semibold mt-1">
                   Analyzing course ratios (North should be BTech/BBA/BDes mixed) and gender ratios (approaching 50/50) per cohort.
                 </p>
               </div>
 
               {/* Overall Ratios Summary Card */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-slate-100 font-semibold text-xs text-slate-600">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-card-border/60 font-semibold text-xs text-text-muted">
                 <div className="space-y-2">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Regional Score</span>
+                  <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Regional Score</span>
                   <div className="space-y-1">
                     <div className="flex justify-between">
                       <span>North:</span>
-                      <span className="text-slate-800 font-bold">{totalNorth} ({getPercent(totalNorth, overallStudents)}%)</span>
+                      <span className="text-foreground font-bold">{totalNorth} ({getPercent(totalNorth, overallStudents)}%)</span>
                     </div>
                     <div className="flex justify-between">
                       <span>South:</span>
-                      <span className="text-slate-800 font-bold">{totalSouth} ({getPercent(totalSouth, overallStudents)}%)</span>
+                      <span className="text-foreground font-bold">{totalSouth} ({getPercent(totalSouth, overallStudents)}%)</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Overall Gender Ratio</span>
+                  <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Overall Gender Ratio</span>
                   <div className="space-y-1">
                     <div className="flex justify-between">
                       <span>Male:</span>
-                      <span className="text-slate-800 font-bold">{totalMales} ({getPercent(totalMales, overallStudents)}%)</span>
+                      <span className="text-foreground font-bold">{totalMales} ({getPercent(totalMales, overallStudents)}%)</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Female:</span>
-                      <span className="text-slate-800 font-bold">{totalFemales} ({getPercent(totalFemales, overallStudents)}%)</span>
+                      <span className="text-foreground font-bold">{totalFemales} ({getPercent(totalFemales, overallStudents)}%)</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-2 md:col-span-2">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Overall Course Ratio</span>
+                  <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Overall Course Ratio</span>
                   <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <span className="block text-slate-400">B.Tech</span>
-                      <span className="text-slate-800 font-bold">{totalBtech} ({getPercent(totalBtech, overallStudents)}%)</span>
+                      <span className="block text-text-muted">B.Tech</span>
+                      <span className="text-foreground font-bold">{totalBtech} ({getPercent(totalBtech, overallStudents)}%)</span>
                     </div>
                     <div>
-                      <span className="block text-slate-400">BBA</span>
-                      <span className="text-slate-800 font-bold">{totalBba} ({getPercent(totalBba, overallStudents)}%)</span>
+                      <span className="block text-text-muted">BBA</span>
+                      <span className="text-foreground font-bold">{totalBba} ({getPercent(totalBba, overallStudents)}%)</span>
                     </div>
                     <div>
-                      <span className="block text-slate-400">B.Des</span>
-                      <span className="text-slate-800 font-bold">{totalBdes} ({getPercent(totalBdes, overallStudents)}%)</span>
+                      <span className="block text-text-muted">B.Des</span>
+                      <span className="text-foreground font-bold">{totalBdes} ({getPercent(totalBdes, overallStudents)}%)</span>
                     </div>
                   </div>
                 </div>
@@ -311,7 +311,7 @@ export default function AdminDashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-sm">
                   <thead>
-                    <tr className="bg-slate-50 border-b border-card-border text-xs font-bold text-slate-400 uppercase">
+                    <tr className="bg-card-bg/50 border-b border-card-border text-xs font-bold text-text-muted uppercase">
                       <th className="p-4">Cohort</th>
                       <th className="p-4">Region</th>
                       <th className="p-4">Students</th>
@@ -320,13 +320,13 @@ export default function AdminDashboard() {
                       <th className="p-4">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+                  <tbody className="divide-y divide-card-border font-semibold text-foreground">
                     {cohorts.map((c: any) => (
-                      <tr key={c.cohort} className="hover:bg-slate-50/50">
-                        <td className="p-4 font-bold text-slate-900">{c.cohort}</td>
+                      <tr key={c.cohort} className="hover:bg-card-bg/50/50">
+                        <td className="p-4 font-bold text-foreground">{c.cohort}</td>
                         <td className="p-4 text-xs">
                           <span className={`px-2 py-0.5 rounded-full font-bold ${
-                            c.isSouth ? 'bg-teal-50 text-teal-600' : 'bg-slate-100 text-slate-600'
+                            c.isSouth ? 'bg-teal-50 text-teal-600' : 'bg-background/80 text-text-muted'
                           }`}>
                             {c.isSouth ? 'South' : 'North'}
                           </span>
@@ -366,15 +366,15 @@ export default function AdminDashboard() {
         /* Not Continuing Students Panel */
         <div className="glass-card overflow-hidden">
           <div className="p-6 border-b border-card-border">
-            <h3 className="text-lg font-extrabold font-outfit text-slate-800">Students Not Continuing / Not Coming to Aarambh</h3>
-            <p className="text-xs text-slate-400 font-semibold mt-1">
+            <h3 className="text-lg font-extrabold font-outfit text-foreground">Students Not Continuing / Not Coming to Aarambh</h3>
+            <p className="text-xs text-text-muted font-semibold mt-1">
               Collected data of students who decided not to continue at JKLU or are not coming to Aarambh.
             </p>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-sm">
               <thead>
-                <tr className="bg-slate-50 border-b border-card-border text-xs font-bold text-slate-400 uppercase">
+                <tr className="bg-card-bg/50 border-b border-card-border text-xs font-bold text-text-muted uppercase">
                   <th className="p-4">Student Name</th>
                   <th className="p-4">Application No</th>
                   <th className="p-4">Course</th>
@@ -385,17 +385,17 @@ export default function AdminDashboard() {
                   <th className="p-4">Reported By</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+              <tbody className="divide-y divide-card-border font-semibold text-foreground">
                 {notContinuing.map((s) => (
                   <tr 
                     key={s._id} 
-                    className={`hover:bg-slate-50/50 ${
+                    className={`hover:bg-card-bg/50/50 ${
                       s.notComingAarambh 
                         ? 'bg-red-50/20 text-red-900 border-red-100/50' 
-                        : 'bg-slate-50/10 text-slate-500 border-slate-100/50'
+                        : 'bg-card-bg/50/10 text-text-muted border-card-border/60/50'
                     }`}
                   >
-                    <td className={`p-4 font-bold ${s.notComingAarambh ? 'text-red-700' : 'text-slate-900'}`}>{s.name}</td>
+                    <td className={`p-4 font-bold ${s.notComingAarambh ? 'text-red-700' : 'text-foreground'}`}>{s.name}</td>
                     <td className="p-4">{s.applicationNo}</td>
                     <td className="p-4">{s.course}</td>
                     <td className="p-4 font-bold">{s.cohort}</td>
@@ -409,7 +409,7 @@ export default function AdminDashboard() {
                           Not Coming (Aarambh)
                         </span>
                       ) : (
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-600 uppercase">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-card-border/60 text-text-muted uppercase">
                           Not Continuing (JKLU)
                         </span>
                       )}
@@ -424,7 +424,7 @@ export default function AdminDashboard() {
                 ))}
                 {notContinuing.length === 0 && (
                   <tr>
-                    <td colSpan={8} className="p-6 text-center text-slate-400 font-bold">No students marked as not continuing or not coming.</td>
+                    <td colSpan={8} className="p-6 text-center text-text-muted font-bold">No students marked as not continuing or not coming.</td>
                   </tr>
                 )}
               </tbody>
@@ -438,25 +438,25 @@ export default function AdminDashboard() {
           {/* Stats cards for verification */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="glass-card p-6 flex flex-col justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Evaluated</span>
-              <div className="text-2xl font-extrabold font-outfit text-slate-900 mt-2">
+              <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Total Evaluated</span>
+              <div className="text-2xl font-extrabold font-outfit text-foreground mt-2">
                 {aarambhData?.summary?.totalStudents || 0}
               </div>
             </div>
             <div className="glass-card p-6 flex flex-col justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Registered on Portal</span>
+              <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Registered on Portal</span>
               <div className="text-2xl font-extrabold font-outfit text-emerald-600 mt-2">
                 {aarambhData?.summary?.registered || 0}
               </div>
             </div>
             <div className="glass-card p-6 flex flex-col justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Registration</span>
+              <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Pending Registration</span>
               <div className="text-2xl font-extrabold font-outfit text-amber-600 mt-2">
                 {aarambhData?.summary?.notRegistered || 0}
               </div>
             </div>
             <div className="glass-card p-6 flex flex-col justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Registration Rate</span>
+              <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Registration Rate</span>
               <div className="text-2xl font-extrabold font-outfit text-indigo-600 mt-2">
                 {Math.round(aarambhData?.summary?.registrationRate || 0)}%
               </div>
@@ -471,14 +471,14 @@ export default function AdminDashboard() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by student name or application number..."
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900 font-semibold"
+                className="w-full px-4 py-2.5 bg-card-bg/50 border border-card-border rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground font-semibold"
               />
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <select
                 value={clusterFilter}
                 onChange={(e) => setClusterFilter(e.target.value)}
-                className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-700 font-semibold focus:outline-none animate-none"
+                className="px-3 py-2 bg-card-bg/50 border border-card-border rounded-2xl text-xs text-foreground font-semibold focus:outline-none animate-none"
               >
                 <option value="ALL">All Clusters</option>
                 {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'].map(c => (
@@ -488,7 +488,7 @@ export default function AdminDashboard() {
               <select
                 value={regFilter}
                 onChange={(e) => setRegFilter(e.target.value)}
-                className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-700 font-semibold focus:outline-none animate-none"
+                className="px-3 py-2 bg-card-bg/50 border border-card-border rounded-2xl text-xs text-foreground font-semibold focus:outline-none animate-none"
               >
                 <option value="ALL">All Statuses</option>
                 <option value="REGISTERED">Registered</option>
@@ -509,7 +509,7 @@ export default function AdminDashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-sm">
                 <thead>
-                  <tr className="bg-slate-50 border-b border-card-border text-xs font-bold text-slate-400 uppercase">
+                  <tr className="bg-card-bg/50 border-b border-card-border text-xs font-bold text-text-muted uppercase">
                     <th className="p-4">Student Name</th>
                     <th className="p-4">Application No</th>
                     <th className="p-4">Cohort</th>
@@ -517,10 +517,10 @@ export default function AdminDashboard() {
                     <th className="p-4">Registered on Portal</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+                <tbody className="divide-y divide-card-border font-semibold text-foreground">
                   {filteredAarambhStudents?.map((s: any) => (
-                    <tr key={s._id} className="hover:bg-slate-50/50">
-                      <td className="p-4 font-bold text-slate-900">{s.name}</td>
+                    <tr key={s._id} className="hover:bg-card-bg/50/50">
+                      <td className="p-4 font-bold text-foreground">{s.name}</td>
                       <td className="p-4 font-mono text-xs">{s.applicationNo}</td>
                       <td className="p-4 font-bold">{s.cohort}</td>
                       <td className="p-4">Cluster {s.cluster}</td>
@@ -539,7 +539,7 @@ export default function AdminDashboard() {
                   ))}
                   {filteredAarambhStudents?.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="p-6 text-center text-slate-400 font-bold">
+                      <td colSpan={5} className="p-6 text-center text-text-muted font-bold">
                         No students match the criteria.
                       </td>
                     </tr>

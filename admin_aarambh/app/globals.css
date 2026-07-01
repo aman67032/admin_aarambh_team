@@ -1,35 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+
 :root {
-  --background: #FAFBFE;
-  --foreground: #1E293B;
-  --primary: #FF6B00; /* Orange */
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --primary: #FF6B00; /* Vibrant Orange */
   --primary-hover: #E05E00;
   --primary-rgb: 255, 107, 0;
-  --secondary: #0072FF; /* Blue */
-  --card-bg: #FFFFFF;
-  --card-border: #E2E8F0;
-  --card-shadow: 0 10px 30px -10px rgba(0, 72, 255, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --secondary: #6366F1; /* Indigo */
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-border: rgba(226, 232, 240, 0.8);
+  --card-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.05), 0 1px 3px rgba(0, 0, 0, 0.01);
   --header-bg: rgba(255, 255, 255, 0.8);
   --text-muted: #64748B;
   
-  --font-sans: var(--font-geist-sans), Inter, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
 
-/* Fun Theme */
+/* Cosmic Dark Theme (replacing standard beige Fun Theme) */
 .theme-fun {
-  --background: #FFF9F2;
-  --foreground: #2C1A38;
-  --primary: #FF8008; /* Bright Orange */
+  --background: #090D16;
+  --foreground: #F8FAFC;
+  --primary: #FF8008; /* Bright Neon Orange */
   --primary-hover: #FF6A00;
   --primary-rgb: 255, 128, 8;
-  --secondary: #00C6FF; /* Sky Blue */
-  --card-bg: rgba(255, 255, 255, 0.85);
-  --card-border: rgba(255, 128, 8, 0.15);
-  --card-shadow: 0 15px 35px -12px rgba(255, 128, 8, 0.15), 0 4px 6px -2px rgba(255, 128, 8, 0.05);
-  --header-bg: rgba(255, 249, 242, 0.8);
-  --text-muted: #7E6B8F;
+  --secondary: #38BDF8; /* Electric Cyan */
+  --card-bg: rgba(15, 23, 42, 0.6);
+  --card-border: rgba(99, 102, 241, 0.15);
+  --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 15px rgba(56, 189, 248, 0.03);
+  --header-bg: rgba(9, 13, 22, 0.8);
+  --text-muted: #94A3B8;
 }
 
 @theme inline {
@@ -40,6 +42,7 @@
   --color-secondary: var(--secondary);
   --color-card-bg: var(--card-bg);
   --color-card-border: var(--card-border);
+  --color-text-muted: var(--text-muted);
   
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
@@ -49,49 +52,52 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 100vh;
 }
 
 /* Custom utilities */
 .fun-gradient {
-  background: linear-gradient(135deg, #FF8008 0%, #FFC837 50%, #00C6FF 100%);
+  background: linear-gradient(135deg, #FF8008 0%, #FFC837 50%, #38BDF8 100%);
 }
 
 .premium-gradient {
-  background: linear-gradient(135deg, #FF6B00 0%, #FF9000 50%, #0072FF 100%);
+  background: linear-gradient(135deg, #FF6B00 0%, #FF9000 50%, #6366F1 100%);
 }
 
 .glass-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   box-shadow: var(--card-shadow);
-  backdrop-filter: blur(12px);
-  border-radius: 1.5rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(16px);
+  border-radius: 1.25rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s, border-color 0.4s;
 }
 
 .glass-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.12), 0 0 25px rgba(56, 189, 248, 0.05);
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
 .theme-fun .glass-card:hover {
-  box-shadow: 0 20px 40px -15px rgba(255, 107, 107, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.4);
 }
 
 .btn-premium {
-  background: linear-gradient(135deg, var(--primary) 0%, #5B52E1 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: white;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 9999px;
-  box-shadow: 0 4px 14px 0 rgba(var(--primary-rgb), 0.3);
-  transition: all 0.2s ease;
+  box-shadow: 0 8px 20px -6px rgba(var(--primary-rgb), 0.4);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-premium:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px 0 rgba(var(--primary-rgb), 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -6px rgba(var(--primary-rgb), 0.5), 0 0 15px rgba(99, 102, 241, 0.2);
 }
 
 .btn-premium:active {
@@ -100,8 +106,8 @@ body {
 
 /* Micro-animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
 }
 
 .animate-float {
@@ -114,13 +120,27 @@ body {
 }
 
 .hover-bounce:hover {
-  animation: bounce-subtle 1s ease infinite;
+  animation: bounce-subtle 1.2s ease infinite;
+}
+
+/* Custom glow effects */
+.glow-primary {
+  filter: drop-shadow(0 0 15px rgba(var(--primary-rgb), 0.15));
+}
+
+.glow-secondary {
+  filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.15));
 }
 
 /* Fun backgrounds */
 .fun-bg-pattern {
-  background-image: radial-gradient(circle at 1px 1px, rgba(255, 107, 107, 0.08) 1px, transparent 0);
-  background-size: 24px 24px;
+  background-image: radial-gradient(circle at 1px 1px, rgba(99, 102, 241, 0.05) 1px, transparent 0);
+  background-size: 32px 32px;
+}
+
+.theme-fun .fun-bg-pattern {
+  background-image: radial-gradient(circle at 1px 1px, rgba(56, 189, 248, 0.03) 1px, transparent 0);
+  background-size: 32px 32px;
 }
 
 /* Hide scrollbar */
@@ -134,15 +154,23 @@ body {
 
 /* Sleek custom scrollbars */
 .scrollbar-thin::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
+  height: 6px;
 }
 .scrollbar-thin::-webkit-scrollbar-track {
   background: transparent;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 99px;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: rgba(148, 163, 184, 0.5);
+}
+
+.theme-fun .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.2);
+}
+.theme-fun .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.4);
 }

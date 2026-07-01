@@ -69,8 +69,8 @@ export default function StudentDistribution() {
     <div className="space-y-8">
       {/* Title */}
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-slate-900">Student Distribution Portal</h1>
-        <p className="text-sm text-slate-500 font-semibold mt-1">Upload student data to run the automated regional, gender, and course allocation algorithm.</p>
+        <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-foreground">Student Distribution Portal</h1>
+        <p className="text-sm text-text-muted font-semibold mt-1">Upload student data to run the automated regional, gender, and course allocation algorithm.</p>
       </div>
 
       {successMessage && (
@@ -99,7 +99,7 @@ export default function StudentDistribution() {
           <div
             onDragOver={handleDragOver}
             onDrop={handleDrop}
-            className="w-full h-64 border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center p-6 bg-slate-50 hover:bg-slate-100 transition-all cursor-pointer relative group"
+            className="w-full h-64 border-2 border-dashed border-card-border rounded-3xl flex flex-col items-center justify-center p-6 bg-card-bg/50 hover:bg-background/80 transition-all cursor-pointer relative group"
           >
             <input
               type="file"
@@ -108,10 +108,10 @@ export default function StudentDistribution() {
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
             <span className="text-4xl mb-4 group-hover:scale-110 transition-transform">📄</span>
-            <span className="text-sm font-bold text-slate-700">
+            <span className="text-sm font-bold text-foreground">
               {file ? file.name : 'Drag & drop student registration CSV here'}
             </span>
-            <span className="text-xs text-slate-400 font-semibold mt-2">
+            <span className="text-xs text-text-muted font-semibold mt-2">
               {file ? `${(file.size / 1024).toFixed(1)} KB` : 'Or click to browse files'}
             </span>
           </div>
@@ -142,8 +142,8 @@ export default function StudentDistribution() {
         <div className="space-y-8">
           <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
             <div>
-              <h2 className="text-2xl font-extrabold text-slate-900 font-outfit">Allocation Preview</h2>
-              <p className="text-sm text-slate-500 font-semibold">Review the distribution parameters before confirming save to the database.</p>
+              <h2 className="text-2xl font-extrabold text-foreground font-outfit">Allocation Preview</h2>
+              <p className="text-sm text-text-muted font-semibold">Review the distribution parameters before confirming save to the database.</p>
             </div>
             <div className="flex gap-3">
               <button
@@ -152,7 +152,7 @@ export default function StudentDistribution() {
                   setPreviewStudents([]);
                   setFile(null);
                 }}
-                className="px-5 py-2.5 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold transition-all cursor-pointer"
+                className="px-5 py-2.5 rounded-full border border-card-border text-text-muted hover:bg-card-bg/50 text-xs font-bold transition-all cursor-pointer"
               >
                 Cancel
               </button>
@@ -179,27 +179,27 @@ export default function StudentDistribution() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="glass-card p-6">
               <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Total Students</span>
-              <div className="text-3xl font-extrabold font-outfit text-slate-900 mt-2">{previewStats.totalStudents}</div>
+              <div className="text-3xl font-extrabold font-outfit text-foreground mt-2">{previewStats.totalStudents}</div>
             </div>
             <div className="glass-card p-6">
               <span className="text-xs font-bold text-text-muted uppercase tracking-wider">North classification</span>
-              <div className="text-3xl font-extrabold font-outfit text-slate-900 mt-2">{previewStats.northCount}</div>
+              <div className="text-3xl font-extrabold font-outfit text-foreground mt-2">{previewStats.northCount}</div>
             </div>
             <div className="glass-card p-6">
               <span className="text-xs font-bold text-text-muted uppercase tracking-wider">South classification</span>
-              <div className="text-3xl font-extrabold font-outfit text-slate-900 mt-2">{previewStats.southCount}</div>
+              <div className="text-3xl font-extrabold font-outfit text-foreground mt-2">{previewStats.southCount}</div>
             </div>
           </div>
 
           {/* Cohorts Allocations Details */}
           <div className="glass-card overflow-hidden">
             <div className="p-6 border-b border-card-border">
-              <h3 className="text-lg font-extrabold font-outfit text-slate-800">Cohort Breakdowns</h3>
+              <h3 className="text-lg font-extrabold font-outfit text-foreground">Cohort Breakdowns</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-sm">
                 <thead>
-                  <tr className="bg-slate-50 border-b border-card-border text-xs font-bold text-slate-400 uppercase">
+                  <tr className="bg-card-bg/50 border-b border-card-border text-xs font-bold text-text-muted uppercase">
                     <th className="p-4">Cohort</th>
                     <th className="p-4">Cluster</th>
                     <th className="p-4">Allocated Count</th>
@@ -207,14 +207,14 @@ export default function StudentDistribution() {
                     <th className="p-4">Course Ratio (BTech / BBA / BDes)</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+                <tbody className="divide-y divide-card-border font-semibold text-foreground">
                   {previewStats.cohorts.map((cohort) => (
-                    <tr key={cohort.cohortName} className="hover:bg-slate-50/50">
-                      <td className="p-4 font-bold text-slate-900">{cohort.cohortName}</td>
+                    <tr key={cohort.cohortName} className="hover:bg-card-bg/50/50">
+                      <td className="p-4 font-bold text-foreground">{cohort.cohortName}</td>
                       <td className="p-4">{cohort.cluster}</td>
                       <td className="p-4">
                         <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
-                          cohort.total > 10 ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-800'
+                          cohort.total > 10 ? 'bg-amber-100 text-amber-800' : 'bg-background/80 text-foreground'
                         }`}>
                           {cohort.total}
                         </span>

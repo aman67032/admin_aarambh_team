@@ -69,14 +69,14 @@ export default function SuperAdminDashboard() {
   if (loading) {
     return (
       <div className="flex flex-col gap-6 animate-pulse">
-        <div className="h-10 w-48 bg-slate-200 rounded-lg"></div>
+        <div className="h-10 w-48 bg-card-border/60 rounded-lg"></div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
         </div>
-        <div className="h-96 bg-slate-200 rounded-3xl mt-6"></div>
+        <div className="h-96 bg-card-border/60 rounded-3xl mt-6"></div>
       </div>
     );
   }
@@ -102,17 +102,17 @@ export default function SuperAdminDashboard() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-slate-900">Super Admin Dashboard</h1>
-          <p className="text-sm text-slate-500 font-semibold mt-1">Manage student orientation cohorts and team alignment.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-foreground">Super Admin Dashboard</h1>
+          <p className="text-sm text-text-muted font-semibold mt-1">Manage student orientation cohorts and team alignment.</p>
         </div>
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <div className="flex items-center gap-3 bg-white border border-card-border px-4 py-2 rounded-full shadow-sm">
-            <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Publish List to Team</span>
+            <span className="text-[11px] font-bold text-text-muted uppercase tracking-wider">Publish List to Team</span>
             <button
               onClick={handleTogglePublished}
               disabled={toggling}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer focus:outline-none ${
-                studentsPublished ? 'bg-indigo-600' : 'bg-slate-200'
+                studentsPublished ? 'bg-indigo-600' : 'bg-card-border/60'
               }`}
             >
               <span
@@ -131,7 +131,7 @@ export default function SuperAdminDashboard() {
             </Link>
             <Link
               href="/super-admin/email"
-              className="px-5 py-2.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all cursor-pointer"
+              className="px-5 py-2.5 rounded-full text-xs font-bold bg-background/80 hover:bg-card-border/60 text-foreground transition-all cursor-pointer"
             >
               Email System
             </Link>
@@ -144,7 +144,7 @@ export default function SuperAdminDashboard() {
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Total Distributed</span>
           <div className="flex items-baseline gap-2 mt-4">
-            <span className="text-4xl font-extrabold font-outfit text-slate-900">{stats?.totalStudents || 0}</span>
+            <span className="text-4xl font-extrabold font-outfit text-foreground">{stats?.totalStudents || 0}</span>
             <span className="text-xs text-text-muted font-semibold">students</span>
           </div>
         </div>
@@ -152,7 +152,7 @@ export default function SuperAdminDashboard() {
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">North Region</span>
           <div className="flex items-baseline gap-2 mt-4">
-            <span className="text-4xl font-extrabold font-outfit text-slate-900">{stats?.northCount || 0}</span>
+            <span className="text-4xl font-extrabold font-outfit text-foreground">{stats?.northCount || 0}</span>
             <span className="text-xs text-text-muted font-semibold">students</span>
           </div>
         </div>
@@ -160,7 +160,7 @@ export default function SuperAdminDashboard() {
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">South Region</span>
           <div className="flex items-baseline gap-2 mt-4">
-            <span className="text-4xl font-extrabold font-outfit text-slate-900">{stats?.southCount || 0}</span>
+            <span className="text-4xl font-extrabold font-outfit text-foreground">{stats?.southCount || 0}</span>
             <span className="text-xs text-text-muted font-semibold">students</span>
           </div>
         </div>
@@ -168,7 +168,7 @@ export default function SuperAdminDashboard() {
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Verification Rate</span>
           <div className="flex items-baseline gap-2 mt-4">
-            <span className="text-4xl font-extrabold font-outfit text-slate-900">
+            <span className="text-4xl font-extrabold font-outfit text-foreground">
               {adminOverview?.summary?.verificationRate ? Math.round(adminOverview.summary.verificationRate) : 0}%
             </span>
             <span className="text-xs text-text-muted font-semibold">
@@ -181,11 +181,11 @@ export default function SuperAdminDashboard() {
       {!hasStudents ? (
         /* Empty State */
         <div className="glass-card p-12 text-center flex flex-col items-center max-w-2xl mx-auto mt-8">
-          <div className="w-20 h-20 rounded-full bg-slate-50 flex items-center justify-center mb-6 text-4xl animate-bounce-subtle">
+          <div className="w-20 h-20 rounded-full bg-card-bg/50 flex items-center justify-center mb-6 text-4xl animate-bounce-subtle">
             📁
           </div>
-          <h2 className="text-2xl font-extrabold text-slate-900 font-outfit">No Students Uploaded Yet</h2>
-          <p className="text-slate-500 font-semibold text-sm max-w-md mt-2 mb-6">
+          <h2 className="text-2xl font-extrabold text-foreground font-outfit">No Students Uploaded Yet</h2>
+          <p className="text-text-muted font-semibold text-sm max-w-md mt-2 mb-6">
             Upload the registration CSV containing new student details. The system will automatically classify and distribute them across cohorts.
           </p>
           <Link
@@ -205,7 +205,7 @@ export default function SuperAdminDashboard() {
             <button
               onClick={() => setActiveTab('performance')}
               className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-                activeTab === 'performance' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+                activeTab === 'performance' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
               }`}
             >
               Clusters Performance
@@ -213,7 +213,7 @@ export default function SuperAdminDashboard() {
             <button
               onClick={() => setActiveTab('correctness')}
               className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-                activeTab === 'correctness' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+                activeTab === 'correctness' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
               }`}
             >
               Distribution Correctness ({distCheck?.stats?.warningCohorts || 0} Warnings)
@@ -221,7 +221,7 @@ export default function SuperAdminDashboard() {
             <button
               onClick={() => setActiveTab('not-continuing')}
               className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-                activeTab === 'not-continuing' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+                activeTab === 'not-continuing' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
               }`}
             >
               Not Continuing Panel ({notContinuing.length})
@@ -229,7 +229,7 @@ export default function SuperAdminDashboard() {
             <button
               onClick={() => setActiveTab('aarambh-verification')}
               className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-                activeTab === 'aarambh-verification' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+                activeTab === 'aarambh-verification' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
               }`}
             >
               Aarambh Portal Verification
@@ -239,13 +239,13 @@ export default function SuperAdminDashboard() {
           {/* Active Tab Panel */}
           {activeTab === 'performance' && (
             <div className="space-y-6 animate-fade-in">
-              <h2 className="text-xl font-extrabold font-outfit text-slate-900">Clusters Performance Summary</h2>
+              <h2 className="text-xl font-extrabold font-outfit text-foreground">Clusters Performance Summary</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {adminOverview?.clusters?.map((cluster: any) => (
-                  <div key={cluster.cluster} className="glass-card p-6 border border-slate-100 flex flex-col justify-between">
+                  <div key={cluster.cluster} className="glass-card p-6 border border-card-border/60 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <span className="text-2xl font-black font-outfit text-slate-800">Cluster {cluster.cluster}</span>
+                        <span className="text-2xl font-black font-outfit text-foreground">Cluster {cluster.cluster}</span>
                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
                           ['I', 'J', 'K', 'L'].includes(cluster.cluster)
                             ? 'bg-teal-50 text-teal-600'
@@ -256,25 +256,25 @@ export default function SuperAdminDashboard() {
                       </div>
                       <div className="space-y-2 text-sm font-semibold">
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Head:</span>
-                          <span className="text-slate-800">{cluster.headName}</span>
+                          <span className="text-text-muted">Head:</span>
+                          <span className="text-foreground">{cluster.headName}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Allocated:</span>
-                          <span className="text-slate-800">{cluster.total} students</span>
+                          <span className="text-text-muted">Allocated:</span>
+                          <span className="text-foreground">{cluster.total} students</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Verified:</span>
-                          <span className="text-slate-800">{cluster.verified} / {cluster.total}</span>
+                          <span className="text-text-muted">Verified:</span>
+                          <span className="text-foreground">{cluster.verified} / {cluster.total}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Confirmed:</span>
-                          <span className="text-slate-800 text-emerald-600">{cluster.confirmedAarambh} (Aarambh)</span>
+                          <span className="text-text-muted">Confirmed:</span>
+                          <span className="text-foreground text-emerald-600">{cluster.confirmedAarambh} (Aarambh)</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-6 pt-4 border-t border-slate-50 flex items-center justify-between text-xs font-bold text-slate-400">
+                    <div className="mt-6 pt-4 border-t border-slate-50 flex items-center justify-between text-xs font-bold text-text-muted">
                       <span>Call Logs: {cluster.calls}</span>
                       <span className="text-red-500">Not Continuing: {cluster.notContinuing}</span>
                     </div>
@@ -314,56 +314,56 @@ export default function SuperAdminDashboard() {
               <div className="space-y-6 animate-fade-in">
                 <div className="glass-card p-6 border-l-4 border-l-primary space-y-6">
                   <div>
-                    <h3 className="text-lg font-extrabold text-slate-900 font-outfit">Distribution Quality Status: {distCheck?.stats?.status}</h3>
-                    <p className="text-xs text-slate-400 font-semibold mt-1">
+                    <h3 className="text-lg font-extrabold text-foreground font-outfit">Distribution Quality Status: {distCheck?.stats?.status}</h3>
+                    <p className="text-xs text-text-muted font-semibold mt-1">
                       Analyzing course ratios (North should be BTech/BBA/BDes mixed) and gender ratios (approaching 50/50) per cohort.
                     </p>
                   </div>
 
                   {/* Overall Ratios Summary Card */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-slate-100 font-semibold text-xs text-slate-600">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-card-border/60 font-semibold text-xs text-text-muted">
                     <div className="space-y-2">
-                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Regional Score</span>
+                      <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Regional Score</span>
                       <div className="space-y-1">
                         <div className="flex justify-between">
                           <span>North:</span>
-                          <span className="text-slate-800 font-bold">{totalNorth} ({getPercent(totalNorth, overallStudents)}%)</span>
+                          <span className="text-foreground font-bold">{totalNorth} ({getPercent(totalNorth, overallStudents)}%)</span>
                         </div>
                         <div className="flex justify-between">
                           <span>South:</span>
-                          <span className="text-slate-800 font-bold">{totalSouth} ({getPercent(totalSouth, overallStudents)}%)</span>
+                          <span className="text-foreground font-bold">{totalSouth} ({getPercent(totalSouth, overallStudents)}%)</span>
                         </div>
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Overall Gender Ratio</span>
+                      <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Overall Gender Ratio</span>
                       <div className="space-y-1">
                         <div className="flex justify-between">
                           <span>Male:</span>
-                          <span className="text-slate-800 font-bold">{totalMales} ({getPercent(totalMales, overallStudents)}%)</span>
+                          <span className="text-foreground font-bold">{totalMales} ({getPercent(totalMales, overallStudents)}%)</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Female:</span>
-                          <span className="text-slate-800 font-bold">{totalFemales} ({getPercent(totalFemales, overallStudents)}%)</span>
+                          <span className="text-foreground font-bold">{totalFemales} ({getPercent(totalFemales, overallStudents)}%)</span>
                         </div>
                       </div>
                     </div>
 
                     <div className="space-y-2 md:col-span-2">
-                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Overall Course Ratio</span>
+                      <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Overall Course Ratio</span>
                       <div className="grid grid-cols-3 gap-2">
                         <div>
-                          <span className="block text-slate-400">B.Tech</span>
-                          <span className="text-slate-800 font-bold">{totalBtech} ({getPercent(totalBtech, overallStudents)}%)</span>
+                          <span className="block text-text-muted">B.Tech</span>
+                          <span className="text-foreground font-bold">{totalBtech} ({getPercent(totalBtech, overallStudents)}%)</span>
                         </div>
                         <div>
-                          <span className="block text-slate-400">BBA</span>
-                          <span className="text-slate-800 font-bold">{totalBba} ({getPercent(totalBba, overallStudents)}%)</span>
+                          <span className="block text-text-muted">BBA</span>
+                          <span className="text-foreground font-bold">{totalBba} ({getPercent(totalBba, overallStudents)}%)</span>
                         </div>
                         <div>
-                          <span className="block text-slate-400">B.Des</span>
-                          <span className="text-slate-800 font-bold">{totalBdes} ({getPercent(totalBdes, overallStudents)}%)</span>
+                          <span className="block text-text-muted">B.Des</span>
+                          <span className="text-foreground font-bold">{totalBdes} ({getPercent(totalBdes, overallStudents)}%)</span>
                         </div>
                       </div>
                     </div>
@@ -374,7 +374,7 @@ export default function SuperAdminDashboard() {
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse text-sm">
                       <thead>
-                        <tr className="bg-slate-50 border-b border-card-border text-xs font-bold text-slate-400 uppercase">
+                        <tr className="bg-card-bg/50 border-b border-card-border text-xs font-bold text-text-muted uppercase">
                           <th className="p-4">Cohort</th>
                           <th className="p-4">Region</th>
                           <th className="p-4">Students</th>
@@ -383,13 +383,13 @@ export default function SuperAdminDashboard() {
                           <th className="p-4">Status</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+                      <tbody className="divide-y divide-card-border font-semibold text-foreground">
                         {cohorts.map((c: any) => (
-                          <tr key={c.cohort} className="hover:bg-slate-50/50">
-                            <td className="p-4 font-bold text-slate-900">{c.cohort}</td>
+                          <tr key={c.cohort} className="hover:bg-card-bg/50/50">
+                            <td className="p-4 font-bold text-foreground">{c.cohort}</td>
                             <td className="p-4 text-xs">
                               <span className={`px-2 py-0.5 rounded-full font-bold ${
-                                c.isSouth ? 'bg-teal-50 text-teal-600' : 'bg-slate-100 text-slate-600'
+                                c.isSouth ? 'bg-teal-50 text-teal-600' : 'bg-background/80 text-text-muted'
                               }`}>
                                 {c.isSouth ? 'South' : 'North'}
                               </span>
@@ -428,15 +428,15 @@ export default function SuperAdminDashboard() {
           {activeTab === 'not-continuing' && (
             <div className="glass-card overflow-hidden animate-fade-in">
               <div className="p-6 border-b border-card-border">
-                <h3 className="text-lg font-extrabold font-outfit text-slate-800">Students Not Continuing Admissions</h3>
-                <p className="text-xs text-slate-400 font-semibold mt-1">
+                <h3 className="text-lg font-extrabold font-outfit text-foreground">Students Not Continuing Admissions</h3>
+                <p className="text-xs text-text-muted font-semibold mt-1">
                   Collected data of students who decided not to continue at JKLU.
                 </p>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-sm">
                   <thead>
-                    <tr className="bg-slate-50 border-b border-card-border text-xs font-bold text-slate-400 uppercase">
+                    <tr className="bg-card-bg/50 border-b border-card-border text-xs font-bold text-text-muted uppercase">
                       <th className="p-4">Student Name</th>
                       <th className="p-4">Application No</th>
                       <th className="p-4">Course</th>
@@ -446,10 +446,10 @@ export default function SuperAdminDashboard() {
                       <th className="p-4">Reported By</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+                  <tbody className="divide-y divide-card-border font-semibold text-foreground">
                     {notContinuing.map((s: any) => (
-                      <tr key={s._id} className="hover:bg-slate-50/50">
-                        <td className="p-4 font-bold text-slate-900">{s.name}</td>
+                      <tr key={s._id} className="hover:bg-card-bg/50/50">
+                        <td className="p-4 font-bold text-foreground">{s.name}</td>
                         <td className="p-4">{s.applicationNo}</td>
                         <td className="p-4">{s.course}</td>
                         <td className="p-4 font-bold">{s.cohort}</td>
@@ -457,17 +457,17 @@ export default function SuperAdminDashboard() {
                           <div>Phone: {s.mobile}</div>
                           <div>Email: {s.email}</div>
                         </td>
-                        <td className="p-4 text-xs text-slate-500 font-normal max-w-[200px] leading-relaxed">
+                        <td className="p-4 text-xs text-text-muted font-normal max-w-[200px] leading-relaxed">
                           {s.confirmationNote || 'No explanation provided.'}
                         </td>
-                        <td className="p-4 text-xs font-normal text-slate-400">
+                        <td className="p-4 text-xs font-normal text-text-muted">
                           {s.confirmedBy ? s.confirmedBy.name : 'Cluster Head'}
                         </td>
                       </tr>
                     ))}
                     {notContinuing.length === 0 && (
                       <tr>
-                        <td colSpan={7} className="p-6 text-center text-slate-400 font-bold">No students marked as not continuing.</td>
+                        <td colSpan={7} className="p-6 text-center text-text-muted font-bold">No students marked as not continuing.</td>
                       </tr>
                     )}
                   </tbody>
@@ -481,25 +481,25 @@ export default function SuperAdminDashboard() {
               {/* Stats cards for verification */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="glass-card p-6 flex flex-col justify-between">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Evaluated</span>
-                  <div className="text-2xl font-extrabold font-outfit text-slate-900 mt-2">
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Total Evaluated</span>
+                  <div className="text-2xl font-extrabold font-outfit text-foreground mt-2">
                     {aarambhData?.summary?.totalStudents || 0}
                   </div>
                 </div>
                 <div className="glass-card p-6 flex flex-col justify-between">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Registered on Portal</span>
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Registered on Portal</span>
                   <div className="text-2xl font-extrabold font-outfit text-emerald-600 mt-2">
                     {aarambhData?.summary?.registered || 0}
                   </div>
                 </div>
                 <div className="glass-card p-6 flex flex-col justify-between">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Registration</span>
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Pending Registration</span>
                   <div className="text-2xl font-extrabold font-outfit text-amber-600 mt-2">
                     {aarambhData?.summary?.notRegistered || 0}
                   </div>
                 </div>
                 <div className="glass-card p-6 flex flex-col justify-between">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Registration Rate</span>
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Registration Rate</span>
                   <div className="text-2xl font-extrabold font-outfit text-indigo-600 mt-2">
                     {Math.round(aarambhData?.summary?.registrationRate || 0)}%
                   </div>
@@ -514,14 +514,14 @@ export default function SuperAdminDashboard() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search by student name or application number..."
-                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900 font-semibold"
+                    className="w-full px-4 py-2.5 bg-card-bg/50 border border-card-border rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground font-semibold"
                   />
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                   <select
                     value={clusterFilter}
                     onChange={(e) => setClusterFilter(e.target.value)}
-                    className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-700 font-semibold focus:outline-none animate-none"
+                    className="px-3 py-2 bg-card-bg/50 border border-card-border rounded-2xl text-xs text-foreground font-semibold focus:outline-none animate-none"
                   >
                     <option value="ALL">All Clusters</option>
                     {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'].map(c => (
@@ -531,7 +531,7 @@ export default function SuperAdminDashboard() {
                   <select
                     value={regFilter}
                     onChange={(e) => setRegFilter(e.target.value)}
-                    className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-700 font-semibold focus:outline-none animate-none"
+                    className="px-3 py-2 bg-card-bg/50 border border-card-border rounded-2xl text-xs text-foreground font-semibold focus:outline-none animate-none"
                   >
                     <option value="ALL">All Statuses</option>
                     <option value="REGISTERED">Registered</option>
@@ -552,7 +552,7 @@ export default function SuperAdminDashboard() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse text-sm">
                     <thead>
-                      <tr className="bg-slate-50 border-b border-card-border text-xs font-bold text-slate-400 uppercase">
+                      <tr className="bg-card-bg/50 border-b border-card-border text-xs font-bold text-text-muted uppercase">
                         <th className="p-4">Student Name</th>
                         <th className="p-4">Application No</th>
                         <th className="p-4">Cohort</th>
@@ -560,10 +560,10 @@ export default function SuperAdminDashboard() {
                         <th className="p-4">Registered on Portal</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+                    <tbody className="divide-y divide-card-border font-semibold text-foreground">
                       {filteredAarambhStudents?.map((s: any) => (
-                        <tr key={s._id} className="hover:bg-slate-50/50">
-                          <td className="p-4 font-bold text-slate-900">{s.name}</td>
+                        <tr key={s._id} className="hover:bg-card-bg/50/50">
+                          <td className="p-4 font-bold text-foreground">{s.name}</td>
                           <td className="p-4 font-mono text-xs">{s.applicationNo}</td>
                           <td className="p-4 font-bold">{s.cohort}</td>
                           <td className="p-4">Cluster {s.cluster}</td>
@@ -582,7 +582,7 @@ export default function SuperAdminDashboard() {
                       ))}
                       {filteredAarambhStudents?.length === 0 && (
                         <tr>
-                          <td colSpan={5} className="p-6 text-center text-slate-400 font-bold">
+                          <td colSpan={5} className="p-6 text-center text-text-muted font-bold">
                             No students match the criteria.
                           </td>
                         </tr>

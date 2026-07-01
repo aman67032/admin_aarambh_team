@@ -49,18 +49,18 @@ export default function AdminClusterDetailPage() {
   if (loading) {
     return (
       <div className="flex flex-col gap-6 animate-pulse">
-        <div className="h-6 w-40 bg-slate-200 rounded-lg"></div>
-        <div className="h-10 w-64 bg-slate-200 rounded-lg"></div>
-        <div className="h-5 w-80 bg-slate-200 rounded-lg"></div>
+        <div className="h-6 w-40 bg-card-border/60 rounded-lg"></div>
+        <div className="h-10 w-64 bg-card-border/60 rounded-lg"></div>
+        <div className="h-5 w-80 bg-card-border/60 rounded-lg"></div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-4">
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
-          <div className="h-32 bg-slate-200 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
+          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
         </div>
         <div className="space-y-6 mt-6">
-          <div className="h-48 bg-slate-200 rounded-3xl"></div>
-          <div className="h-48 bg-slate-200 rounded-3xl"></div>
+          <div className="h-48 bg-card-border/60 rounded-3xl"></div>
+          <div className="h-48 bg-card-border/60 rounded-3xl"></div>
         </div>
       </div>
     );
@@ -75,7 +75,7 @@ export default function AdminClusterDetailPage() {
         </Link>
         <div className="glass-card p-8 text-center space-y-3">
           <div className="text-red-500 font-extrabold text-lg">Error Loading Cluster</div>
-          <p className="text-sm text-slate-500 font-semibold">{error}</p>
+          <p className="text-sm text-text-muted font-semibold">{error}</p>
         </div>
       </div>
     );
@@ -89,14 +89,14 @@ export default function AdminClusterDetailPage() {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
           Back to Admin Dashboard
         </Link>
-        <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-slate-900">Cluster {cluster} Dashboard</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-foreground">Cluster {cluster} Dashboard</h1>
         {clusterHead && (
-          <div className="flex flex-wrap items-center gap-4 mt-2 text-sm font-semibold text-slate-500">
-            <span><span className="text-slate-400">Cluster Head:</span> <span className="text-slate-800">{clusterHead.name}</span></span>
-            <span className="text-slate-300">•</span>
-            <span><span className="text-slate-400">Email:</span> <span className="text-slate-800">{clusterHead.email}</span></span>
-            <span className="text-slate-300">•</span>
-            <span><span className="text-slate-400">Phone:</span> <span className="text-slate-800">{clusterHead.phone}</span></span>
+          <div className="flex flex-wrap items-center gap-4 mt-2 text-sm font-semibold text-text-muted">
+            <span><span className="text-text-muted">Cluster Head:</span> <span className="text-foreground">{clusterHead.name}</span></span>
+            <span className="text-text-muted/60">•</span>
+            <span><span className="text-text-muted">Email:</span> <span className="text-foreground">{clusterHead.email}</span></span>
+            <span className="text-text-muted/60">•</span>
+            <span><span className="text-text-muted">Phone:</span> <span className="text-foreground">{clusterHead.phone}</span></span>
           </div>
         )}
       </div>
@@ -105,22 +105,22 @@ export default function AdminClusterDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Total Students</span>
-          <div className="text-3xl font-extrabold font-outfit text-slate-900 mt-2">{totalStudents}</div>
+          <div className="text-3xl font-extrabold font-outfit text-foreground mt-2">{totalStudents}</div>
         </div>
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Verified (Doc Check)</span>
-          <div className="text-3xl font-extrabold font-outfit text-slate-900 mt-2">
-            {verifiedCount} <span className="text-sm font-semibold text-slate-400">({totalStudents > 0 ? Math.round((verifiedCount / totalStudents) * 100) : 0}%)</span>
+          <div className="text-3xl font-extrabold font-outfit text-foreground mt-2">
+            {verifiedCount} <span className="text-sm font-semibold text-text-muted">({totalStudents > 0 ? Math.round((verifiedCount / totalStudents) * 100) : 0}%)</span>
           </div>
         </div>
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Calls Logged</span>
-          <div className="text-3xl font-extrabold font-outfit text-slate-900 mt-2">{callsLogged}</div>
+          <div className="text-3xl font-extrabold font-outfit text-foreground mt-2">{callsLogged}</div>
         </div>
         <div className="glass-card p-6 flex flex-col justify-between">
           <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Confirmed Aarambh</span>
-          <div className="text-3xl font-extrabold font-outfit text-slate-900 mt-2 text-emerald-600">
-            {confirmedAarambhCount} <span className="text-sm font-semibold text-slate-400">({totalStudents > 0 ? Math.round((confirmedAarambhCount / totalStudents) * 100) : 0}%)</span>
+          <div className="text-3xl font-extrabold font-outfit text-foreground mt-2 text-emerald-600">
+            {confirmedAarambhCount} <span className="text-sm font-semibold text-text-muted">({totalStudents > 0 ? Math.round((confirmedAarambhCount / totalStudents) * 100) : 0}%)</span>
           </div>
         </div>
       </div>
@@ -131,25 +131,25 @@ export default function AdminClusterDetailPage() {
           <div key={cohort.cohortName} className="glass-card overflow-hidden">
 
             {/* Cohort Header */}
-            <div className="p-6 bg-slate-50 border-b border-card-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="p-6 bg-card-bg/50 border-b border-card-border flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h2 className="text-xl font-black font-outfit text-slate-800">Cohort {cohort.cohortName}</h2>
+                <h2 className="text-xl font-black font-outfit text-foreground">Cohort {cohort.cohortName}</h2>
                 <span className="text-xs text-text-muted font-bold mt-1 block">
                   Students count: {cohort.students.length} / 10
                 </span>
               </div>
 
               {cohort.leader && (
-                <div className="text-xs font-semibold text-slate-500 space-y-1">
-                  <div><span className="text-slate-400">Cohort Leader:</span> <span className="text-slate-800">{cohort.leader.name}</span></div>
-                  <div><span className="text-slate-400">Email:</span> <span className="text-slate-800">{cohort.leader.email}</span></div>
-                  <div><span className="text-slate-400">Phone:</span> <span className="text-slate-800">{cohort.leader.phone}</span></div>
+                <div className="text-xs font-semibold text-text-muted space-y-1">
+                  <div><span className="text-text-muted">Cohort Leader:</span> <span className="text-foreground">{cohort.leader.name}</span></div>
+                  <div><span className="text-text-muted">Email:</span> <span className="text-foreground">{cohort.leader.email}</span></div>
+                  <div><span className="text-text-muted">Phone:</span> <span className="text-foreground">{cohort.leader.phone}</span></div>
                 </div>
               )}
             </div>
 
             {/* Students list */}
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-card-border">
               {cohort.students.map((student: Student) => {
                 const isExpanded = selectedStudent === student._id;
                 const isVerified = student.mailReceived && student.documentsVerified;
@@ -160,17 +160,17 @@ export default function AdminClusterDetailPage() {
                     {/* Student Row Click Header */}
                     <div
                       onClick={() => setSelectedStudent(isExpanded ? null : student._id)}
-                      className={`p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/50 transition-colors ${
+                      className={`p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer hover:bg-card-bg/50/50 transition-colors ${
                         student.notContinuing ? 'bg-red-50/30' : ''
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-500 text-xs shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-background/80 flex items-center justify-center font-bold text-text-muted text-xs shrink-0">
                           {student.name.charAt(0)}
                         </div>
                         <div>
-                          <div className="font-extrabold text-slate-800 text-sm">{student.name}</div>
-                          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{student.applicationNo} • {student.course}</div>
+                          <div className="font-extrabold text-foreground text-sm">{student.name}</div>
+                          <div className="text-[10px] text-text-muted font-bold uppercase tracking-wider">{student.applicationNo} • {student.course}</div>
                         </div>
                       </div>
 
@@ -196,7 +196,7 @@ export default function AdminClusterDetailPage() {
                           </>
                         )}
 
-                        <svg className={`w-4 h-4 text-slate-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className={`w-4 h-4 text-text-muted transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                         </svg>
                       </div>
@@ -204,23 +204,23 @@ export default function AdminClusterDetailPage() {
 
                     {/* Student Expanded Detail Panel (Read-Only) */}
                     {isExpanded && (
-                      <div className="p-6 bg-slate-50/30 border-t border-slate-50 space-y-6">
+                      <div className="p-6 bg-card-bg/50/30 border-t border-slate-50 space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
 
                           {/* Student Demographics */}
-                          <div className="space-y-2 text-xs font-semibold text-slate-500">
-                            <h4 className="text-slate-800 font-extrabold text-sm mb-3">Student Demographics</h4>
-                            <div><span className="text-slate-400">Gender:</span> <span className="text-slate-800">{student.gender}</span></div>
-                            <div><span className="text-slate-400">Mobile:</span> <span className="text-slate-800">{student.mobile}</span></div>
-                            <div><span className="text-slate-400">Email:</span> <span className="text-slate-800">{student.email}</span></div>
-                            <div><span className="text-slate-400">Father Name:</span> <span className="text-slate-800">{student.fatherName}</span></div>
-                            <div><span className="text-slate-400">Father Phone:</span> <span className="text-slate-800">{student.fatherMobile}</span></div>
-                            <div><span className="text-slate-400">Location:</span> <span className="text-slate-800">{student.city}, {student.district}, {student.state}</span></div>
+                          <div className="space-y-2 text-xs font-semibold text-text-muted">
+                            <h4 className="text-foreground font-extrabold text-sm mb-3">Student Demographics</h4>
+                            <div><span className="text-text-muted">Gender:</span> <span className="text-foreground">{student.gender}</span></div>
+                            <div><span className="text-text-muted">Mobile:</span> <span className="text-foreground">{student.mobile}</span></div>
+                            <div><span className="text-text-muted">Email:</span> <span className="text-foreground">{student.email}</span></div>
+                            <div><span className="text-text-muted">Father Name:</span> <span className="text-foreground">{student.fatherName}</span></div>
+                            <div><span className="text-text-muted">Father Phone:</span> <span className="text-foreground">{student.fatherMobile}</span></div>
+                            <div><span className="text-text-muted">Location:</span> <span className="text-foreground">{student.city}, {student.district}, {student.state}</span></div>
                           </div>
 
                           {/* Status Summary (Read-Only) */}
                           <div className="glass-card p-5 space-y-4">
-                            <h4 className="text-slate-800 font-extrabold text-sm">Status Overview</h4>
+                            <h4 className="text-foreground font-extrabold text-sm">Status Overview</h4>
 
                             {student.notContinuing ? (
                               <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-800 text-xs space-y-1">
@@ -242,12 +242,12 @@ export default function AdminClusterDetailPage() {
                                 {/* Verification Detail */}
                                 <div className="grid grid-cols-2 gap-2 text-xs">
                                   <div className={`p-2 rounded-xl text-center font-bold ${
-                                    student.mailReceived ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-50 text-slate-400'
+                                    student.mailReceived ? 'bg-emerald-50 text-emerald-700' : 'bg-card-bg/50 text-text-muted'
                                   }`}>
                                     {student.mailReceived ? '✓' : '✗'} Mail Received
                                   </div>
                                   <div className={`p-2 rounded-xl text-center font-bold ${
-                                    student.documentsVerified ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-50 text-slate-400'
+                                    student.documentsVerified ? 'bg-emerald-50 text-emerald-700' : 'bg-card-bg/50 text-text-muted'
                                   }`}>
                                     {student.documentsVerified ? '✓' : '✗'} Docs Verified
                                   </div>
@@ -256,12 +256,12 @@ export default function AdminClusterDetailPage() {
                                 {/* Confirmation Status */}
                                 <div className="grid grid-cols-2 gap-2 text-xs">
                                   <div className={`p-2 rounded-xl text-center font-bold ${
-                                    student.confirmedAarambh ? 'bg-indigo-50 text-indigo-700' : 'bg-slate-50 text-slate-400'
+                                    student.confirmedAarambh ? 'bg-indigo-50 text-indigo-700' : 'bg-card-bg/50 text-text-muted'
                                   }`}>
                                     {student.confirmedAarambh ? '✓ Aarambh Confirmed' : '- Aarambh Pending'}
                                   </div>
                                   <div className={`p-2 rounded-xl text-center font-bold ${
-                                    student.confirmedJklu ? 'bg-teal-50 text-teal-700' : 'bg-slate-50 text-slate-400'
+                                    student.confirmedJklu ? 'bg-teal-50 text-teal-700' : 'bg-card-bg/50 text-text-muted'
                                   }`}>
                                     {student.confirmedJklu ? '✓ JKLU Confirmed' : '- JKLU Pending'}
                                   </div>
@@ -272,13 +272,13 @@ export default function AdminClusterDetailPage() {
                         </div>
 
                         {/* Call History (Read-Only) */}
-                        <div className="pt-6 border-t border-slate-100">
-                          <h5 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3">Call History ({student.callLogs?.length || 0})</h5>
+                        <div className="pt-6 border-t border-card-border/60">
+                          <h5 className="text-xs font-bold text-foreground uppercase tracking-wider mb-3">Call History ({student.callLogs?.length || 0})</h5>
                           <div className="space-y-3 max-h-[250px] overflow-y-auto pr-2">
                             {student.callLogs?.map((log) => (
-                              <div key={log._id} className="p-3 bg-white border border-slate-100 rounded-2xl text-xs space-y-1.5">
-                                <p className="text-slate-700 font-semibold leading-relaxed">{log.notes}</p>
-                                <div className="flex justify-between items-center text-[10px] text-slate-400 font-bold mt-2">
+                              <div key={log._id} className="p-3 bg-white border border-card-border/60 rounded-2xl text-xs space-y-1.5">
+                                <p className="text-foreground font-semibold leading-relaxed">{log.notes}</p>
+                                <div className="flex justify-between items-center text-[10px] text-text-muted font-bold mt-2">
                                   <div>
                                     <span>By: {log.loggedByName}</span>
                                     <span className="mx-1.5">•</span>
@@ -293,7 +293,7 @@ export default function AdminClusterDetailPage() {
                               </div>
                             ))}
                             {(!student.callLogs || student.callLogs.length === 0) && (
-                              <div className="text-xs text-slate-400 italic">No outreach calls logged yet.</div>
+                              <div className="text-xs text-text-muted italic">No outreach calls logged yet.</div>
                             )}
                           </div>
                         </div>
@@ -303,7 +303,7 @@ export default function AdminClusterDetailPage() {
                 );
               })}
               {cohort.students.length === 0 && (
-                <div className="p-6 text-center text-slate-400 font-bold text-xs">No students allocated to this cohort yet.</div>
+                <div className="p-6 text-center text-text-muted font-bold text-xs">No students allocated to this cohort yet.</div>
               )}
             </div>
           </div>

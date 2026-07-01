@@ -158,14 +158,14 @@ export default function Sidebar() {
         <div className="flex items-center gap-3">
           <button
             onClick={toggleTheme}
-            className="p-1.5 rounded-full hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-full hover:bg-background/80 transition-colors"
           >
             {theme === 'light' ? <span className="text-md">✨</span> : <span className="text-md">🎨</span>}
           </button>
           
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2 text-slate-600 hover:text-slate-900 focus:outline-none"
+            className="p-2 text-text-muted hover:text-foreground focus:outline-none"
             aria-label="Toggle menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -204,7 +204,7 @@ export default function Sidebar() {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-slate-100 transition-colors"
+              className="p-2 rounded-full hover:bg-card-bg border border-card-border/40 transition-colors"
               title={theme === 'light' ? 'Switch to Fun Theme' : 'Switch to Light Theme'}
             >
               {theme === 'light' ? (
@@ -216,11 +216,11 @@ export default function Sidebar() {
           </div>
 
           {/* Close button on mobile sidebar top */}
-          <div className="p-4 border-b border-card-border flex md:hidden items-center justify-between bg-slate-50">
-            <span className="text-xs font-extrabold uppercase text-slate-500 font-outfit">Navigation</span>
+          <div className="p-4 border-b border-card-border flex md:hidden items-center justify-between bg-background">
+            <span className="text-xs font-extrabold uppercase text-text-muted font-outfit">Navigation</span>
             <button 
               onClick={() => setIsOpen(false)}
-              className="text-slate-400 hover:text-slate-600"
+              className="text-text-muted hover:text-foreground"
             >
               ✕
             </button>
@@ -235,10 +235,10 @@ export default function Sidebar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsOpen(false)} // Close sidebar when link is clicked
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 border border-transparent ${
                     isActive
-                      ? 'bg-primary text-white shadow-md'
-                      : 'text-foreground hover:bg-slate-100 hover:translate-x-1'
+                      ? 'bg-primary text-white shadow-md border-primary/20'
+                      : 'text-foreground hover:bg-card-bg/85 hover:border-card-border/50 hover:translate-x-1'
                   }`}
                 >
                   {link.icon}
@@ -252,7 +252,7 @@ export default function Sidebar() {
         {/* User Footer Profile */}
         <div className="p-4 border-t border-card-border">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center font-bold text-primary shrink-0">
+            <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary shrink-0">
               {user.name.charAt(0)}
             </div>
             <div className="flex flex-col min-w-0">

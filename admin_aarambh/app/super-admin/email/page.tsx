@@ -606,8 +606,8 @@ export default function EmailSystem() {
     <div className="space-y-8">
       {/* Title */}
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-slate-900">Email Outreach Center</h1>
-        <p className="text-sm text-slate-500 font-semibold mt-1">Send communication emails to new students using Outlook SMTP. CCs Cohort Leaders and respects strict rate limits.</p>
+        <h1 className="text-3xl font-extrabold tracking-tight font-outfit text-foreground">Email Outreach Center</h1>
+        <p className="text-sm text-text-muted font-semibold mt-1">Send communication emails to new students using Outlook SMTP. CCs Cohort Leaders and respects strict rate limits.</p>
       </div>
 
       {/* Success/Error alerts */}
@@ -633,7 +633,7 @@ export default function EmailSystem() {
             <button
               onClick={() => setActiveTab('send')}
               className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-                activeTab === 'send' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+                activeTab === 'send' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
               }`}
             >
               Compose & Send
@@ -641,7 +641,7 @@ export default function EmailSystem() {
             <button
               onClick={() => setActiveTab('trial-bulk')}
               className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-                activeTab === 'trial-bulk' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+                activeTab === 'trial-bulk' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
               }`}
             >
               Trial Bulk (Test Campaign)
@@ -649,7 +649,7 @@ export default function EmailSystem() {
             <button
               onClick={() => setActiveTab('students')}
               className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-                activeTab === 'students' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+                activeTab === 'students' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
               }`}
             >
               Student List & Status
@@ -657,7 +657,7 @@ export default function EmailSystem() {
             <button
               onClick={() => setActiveTab('logs')}
               className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
-                activeTab === 'logs' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
+                activeTab === 'logs' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
               }`}
             >
               Email Logs ({logs.length})
@@ -669,45 +669,45 @@ export default function EmailSystem() {
             <div className="glass-card p-6 space-y-6">
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email Subject</label>
+                  <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Email Subject</label>
                   <input
                     type="text"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900 font-semibold"
+                    className="w-full px-4 py-3 bg-card-bg/50 border border-card-border rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground font-semibold"
                     placeholder="Enter email subject"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">HTML Body Template</label>
+                  <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">HTML Body Template</label>
                   <textarea
                     rows={12}
                     value={bodyTemplate}
                     onChange={(e) => setBodyTemplate(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900"
+                    className="w-full px-4 py-3 bg-card-bg/50 border border-card-border rounded-2xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground"
                   />
-                  <span className="text-[10px] text-slate-400 font-bold block mt-1">
+                  <span className="text-[10px] text-text-muted font-bold block mt-1">
                     Available variables: &#123;&#123;name&#125;&#125;, &#123;&#123;firstName&#125;&#125;, &#123;&#123;applicationNo&#125;&#125;, &#123;&#123;course&#125;&#125;, &#123;&#123;cohort&#125;&#125;, &#123;&#123;cohortLeaderName&#125;&#125;, &#123;&#123;cohortLeaderPhone&#125;&#125;, &#123;&#123;cohortLeaderEmail&#125;&#125;
                   </span>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Custom BCC Addresses (Optional, comma-separated)</label>
+                  <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Custom BCC Addresses (Optional, comma-separated)</label>
                   <input
                     type="text"
                     value={bcc}
                     onChange={(e) => setBcc(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900 font-medium"
+                    className="w-full px-4 py-3 bg-card-bg/50 border border-card-border rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground font-medium"
                     placeholder="e.g. registrar@jklu.edu.in, dean@jklu.edu.in"
                   />
-                  <span className="text-[10px] text-slate-400 font-bold block mt-1">
+                  <span className="text-[10px] text-text-muted font-bold block mt-1">
                     Note: deepaksogani@jklu.edu.in is automatically BCC&apos;d on all student emails.
                   </span>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex justify-end gap-3">
+              <div className="pt-4 border-t border-card-border/60 flex justify-end gap-3">
                 <button
                   onClick={handleSendBulk}
                   disabled={loading || !rateStatus?.allowed}
@@ -724,74 +724,74 @@ export default function EmailSystem() {
             <div className="glass-card p-6 space-y-6">
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Recipient Emails (Comma-separated)</label>
+                  <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Recipient Emails (Comma-separated)</label>
                   <input
                     type="text"
                     value={trialRecipients}
                     onChange={(e) => setTrialRecipients(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900 font-medium"
+                    className="w-full px-4 py-3 bg-card-bg/50 border border-card-border rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground font-medium"
                     placeholder="recipient1@gmail.com, recipient2@gmail.com"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email Subject</label>
+                  <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Email Subject</label>
                   <input
                     type="text"
                     value={trialSubject}
                     onChange={(e) => setTrialSubject(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900 font-semibold"
+                    className="w-full px-4 py-3 bg-card-bg/50 border border-card-border rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground font-semibold"
                     placeholder="Enter subject line"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">HTML Email Body</label>
+                  <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">HTML Email Body</label>
                   <textarea
                     rows={8}
                     value={trialBody}
                     onChange={(e) => setTrialBody(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900"
+                    className="w-full px-4 py-3 bg-card-bg/50 border border-card-border rounded-2xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Custom CC Emails</label>
+                    <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Custom CC Emails</label>
                     <input
                       type="text"
                       value={trialCc}
                       onChange={(e) => setTrialCc(e.target.value)}
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900"
+                      className="w-full px-4 py-3 bg-card-bg/50 border border-card-border rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground"
                       placeholder="cc1@gmail.com, cc2@gmail.com"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Custom BCC Emails</label>
+                    <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Custom BCC Emails</label>
                     <input
                       type="text"
                       value={trialBcc}
                       onChange={(e) => setTrialBcc(e.target.value)}
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900"
+                      className="w-full px-4 py-3 bg-card-bg/50 border border-card-border rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground"
                       placeholder="bcc1@gmail.com"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">File Attachment</label>
+                  <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">File Attachment</label>
                   <input
                     type="file"
                     onChange={(e) => setTrialAttachment(e.target.files ? e.target.files[0] : null)}
-                    className="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-primary hover:file:bg-indigo-100 cursor-pointer"
+                    className="w-full text-xs text-text-muted file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-primary hover:file:bg-indigo-100 cursor-pointer"
                   />
-                  <span className="text-[10px] text-slate-400 font-bold block mt-1">
+                  <span className="text-[10px] text-text-muted font-bold block mt-1">
                     Maximum allowed attachment size is 4MB.
                   </span>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex justify-end">
+              <div className="pt-4 border-t border-card-border/60 flex justify-end">
                 <button
                   onClick={handleSendTrialBulk}
                   disabled={loading || !rateStatus?.allowed}
@@ -806,20 +806,20 @@ export default function EmailSystem() {
           ) : activeTab === 'students' ? (
             /* Students Tab */
             <div className="glass-card p-6 space-y-4">
-              <div className="flex flex-col md:flex-row gap-4 justify-between items-center pb-2 border-b border-slate-100">
-                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Student Email Delivery Status</h3>
+              <div className="flex flex-col md:flex-row gap-4 justify-between items-center pb-2 border-b border-card-border/60">
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">Student Email Delivery Status</h3>
                 <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                   <input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900 w-full sm:w-48"
+                    className="px-4 py-2 bg-card-bg/50 border border-card-border rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground w-full sm:w-48"
                     placeholder="Search name, app no, cohort..."
                   />
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-700 cursor-pointer"
+                    className="px-4 py-2 bg-card-bg/50 border border-card-border rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground cursor-pointer"
                   >
                     <option value="all">All Statuses</option>
                     <option value="sent">Sent</option>
@@ -831,21 +831,21 @@ export default function EmailSystem() {
               </div>
 
               {loadingStudents ? (
-                <div className="py-12 text-center text-slate-400 font-bold text-xs">
+                <div className="py-12 text-center text-text-muted font-bold text-xs">
                   Loading student email statuses...
                 </div>
               ) : (
                 <div className="overflow-x-auto max-h-[500px]">
                   <table className="w-full text-left border-collapse text-sm">
                     <thead>
-                      <tr className="bg-slate-50 border-b border-card-border text-xs font-bold text-slate-400 uppercase">
+                      <tr className="bg-card-bg/50 border-b border-card-border text-xs font-bold text-text-muted uppercase">
                         <th className="p-4">Student Info</th>
                         <th className="p-4">Cohort & Course</th>
                         <th className="p-4">Delivery Status</th>
                         <th className="p-4 text-right">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+                    <tbody className="divide-y divide-card-border font-semibold text-foreground">
                       {students.filter(student => {
                         const matchesSearch = 
                           student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -858,29 +858,29 @@ export default function EmailSystem() {
                           
                         return matchesSearch && matchesStatus;
                       }).map((student) => (
-                        <tr key={student._id} className="hover:bg-slate-50/50">
+                        <tr key={student._id} className="hover:bg-card-bg/50/50">
                           <td className="p-4">
-                            <div className="text-slate-900 font-bold">{student.name}</div>
-                            <div className="text-[10px] text-slate-400 font-medium">{student.applicationNo}</div>
-                            <div className="text-[11px] text-slate-500 font-medium">{student.email}</div>
+                            <div className="text-foreground font-bold">{student.name}</div>
+                            <div className="text-[10px] text-text-muted font-medium">{student.applicationNo}</div>
+                            <div className="text-[11px] text-text-muted font-medium">{student.email}</div>
                           </td>
                           <td className="p-4 text-xs">
-                            <div className="text-slate-700 font-bold">Cohort: {student.cohort}</div>
-                            <div className="text-slate-400 font-medium">{student.course}</div>
+                            <div className="text-foreground font-bold">Cohort: {student.cohort}</div>
+                            <div className="text-text-muted font-medium">{student.course}</div>
                           </td>
                           <td className="p-4">
                             <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                               student.emailStatus === 'sent' ? 'bg-emerald-50 text-emerald-600' :
                               student.emailStatus === 'failed' ? 'bg-red-50 text-red-600' :
                               student.emailStatus === 'pending' ? 'bg-amber-50 text-amber-600' :
-                              'bg-slate-50 text-slate-400'
+                              'bg-card-bg/50 text-text-muted'
                             }`}>
                               {student.emailStatus === 'sent' ? 'Sent' :
                                student.emailStatus === 'failed' ? 'Failed' :
                                student.emailStatus === 'pending' ? 'Pending' : 'Not Sent'}
                             </span>
                             {student.emailSentAt && (
-                              <span className="text-[9px] text-slate-400 font-medium block mt-1">
+                              <span className="text-[9px] text-text-muted font-medium block mt-1">
                                 {new Date(student.emailSentAt).toLocaleString()}
                               </span>
                             )}
@@ -895,7 +895,7 @@ export default function EmailSystem() {
                               <button
                                 onClick={() => handleSendIndividualEmail(student._id)}
                                 disabled={sendingStudentId !== null}
-                                className="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-[11px] font-bold transition-all disabled:opacity-50 cursor-pointer"
+                                className="px-3 py-1 bg-background/80 hover:bg-card-border/60 text-text-muted rounded-xl text-[11px] font-bold transition-all disabled:opacity-50 cursor-pointer"
                               >
                                 {sendingStudentId === student._id ? 'Sending...' : 'Resend'}
                               </button>
@@ -924,7 +924,7 @@ export default function EmailSystem() {
                         return matchesSearch && matchesStatus;
                       }).length === 0 && (
                         <tr>
-                          <td colSpan={4} className="p-6 text-center text-slate-400 font-bold">No students found.</td>
+                          <td colSpan={4} className="p-6 text-center text-text-muted font-bold">No students found.</td>
                         </tr>
                       )}
                     </tbody>
@@ -938,16 +938,16 @@ export default function EmailSystem() {
               <div className="overflow-x-auto max-h-[500px]">
                 <table className="w-full text-left border-collapse text-sm">
                   <thead>
-                    <tr className="bg-slate-50 border-b border-card-border text-xs font-bold text-slate-400 uppercase">
+                    <tr className="bg-card-bg/50 border-b border-card-border text-xs font-bold text-text-muted uppercase">
                       <th className="p-4">Recipient</th>
                       <th className="p-4">Subject</th>
                       <th className="p-4">Status</th>
                       <th className="p-4">Time</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+                  <tbody className="divide-y divide-card-border font-semibold text-foreground">
                     {logs.map((log) => (
-                      <tr key={log._id} className="hover:bg-slate-50/50">
+                      <tr key={log._id} className="hover:bg-card-bg/50/50">
                         <td className="p-4 truncate max-w-[150px]" title={log.to}>{log.to}</td>
                         <td className="p-4 truncate max-w-[200px]" title={log.subject}>{log.subject}</td>
                         <td className="p-4">
@@ -963,14 +963,14 @@ export default function EmailSystem() {
                             </span>
                           )}
                         </td>
-                        <td className="p-4 text-xs text-slate-400">
+                        <td className="p-4 text-xs text-text-muted">
                           {log.sentAt ? new Date(log.sentAt).toLocaleTimeString() : new Date(log.createdAt).toLocaleTimeString()}
                         </td>
                       </tr>
                     ))}
                     {logs.length === 0 && (
                       <tr>
-                        <td colSpan={4} className="p-6 text-center text-slate-400 font-bold">No emails sent yet.</td>
+                        <td colSpan={4} className="p-6 text-center text-text-muted font-bold">No emails sent yet.</td>
                       </tr>
                     )}
                   </tbody>
@@ -984,17 +984,17 @@ export default function EmailSystem() {
         <div className="space-y-6">
           {/* Quota gauges */}
           <div className="glass-card p-6 space-y-6">
-            <h3 className="text-md font-extrabold text-slate-900 font-outfit">Outbox Quota Status</h3>
+            <h3 className="text-md font-extrabold text-foreground font-outfit">Outbox Quota Status</h3>
             
             {rateStatus && (
               <div className="space-y-6 font-semibold">
                 {/* Hourly limit check */}
                 <div className="space-y-2">
                   <div className="flex justify-between text-xs">
-                    <span className="text-slate-400">Hourly Limit</span>
-                    <span className="text-slate-800">{rateStatus.hourlyCount} / {rateStatus.hourlyLimit}</span>
+                    <span className="text-text-muted">Hourly Limit</span>
+                    <span className="text-foreground">{rateStatus.hourlyCount} / {rateStatus.hourlyLimit}</span>
                   </div>
-                  <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-background/80 h-2.5 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
                         rateStatus.hourlyCount >= rateStatus.hourlyLimit ? 'bg-red-500' :
@@ -1008,10 +1008,10 @@ export default function EmailSystem() {
                 {/* Daily limit check */}
                 <div className="space-y-2">
                   <div className="flex justify-between text-xs">
-                    <span className="text-slate-400">Daily Limit</span>
-                    <span className="text-slate-800">{rateStatus.dailyCount} / {rateStatus.dailyLimit}</span>
+                    <span className="text-text-muted">Daily Limit</span>
+                    <span className="text-foreground">{rateStatus.dailyCount} / {rateStatus.dailyLimit}</span>
                   </div>
-                  <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-background/80 h-2.5 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
                         rateStatus.dailyCount >= rateStatus.dailyLimit ? 'bg-red-500' :
@@ -1033,8 +1033,8 @@ export default function EmailSystem() {
 
           {/* Trial mail sender */}
           <div className="glass-card p-6 space-y-4">
-            <h3 className="text-md font-extrabold text-slate-900 font-outfit">Outlook SMTP Trial Mail</h3>
-            <p className="text-xs text-slate-400 font-semibold leading-relaxed">
+            <h3 className="text-md font-extrabold text-foreground font-outfit">Outlook SMTP Trial Mail</h3>
+            <p className="text-xs text-text-muted font-semibold leading-relaxed">
               Verify SMTP server connectivity by sending a test email. Leave blank to send to yourself.
             </p>
             <div>
@@ -1043,13 +1043,13 @@ export default function EmailSystem() {
                 value={testEmail}
                 onChange={(e) => setTestEmail(e.target.value)}
                 placeholder="test-email@example.com"
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-900"
+                className="w-full px-4 py-2.5 bg-card-bg/50 border border-card-border rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-foreground"
               />
             </div>
             <button
               onClick={handleSendTrial}
               disabled={loading}
-              className="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-2xl transition-all cursor-pointer"
+              className="w-full py-2.5 px-4 bg-background/80 hover:bg-card-border/60 text-foreground text-xs font-bold rounded-2xl transition-all cursor-pointer"
             >
               {loading ? 'Sending...' : 'Send Trial Mail'}
             </button>
