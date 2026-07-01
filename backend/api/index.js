@@ -51,7 +51,9 @@ const allowedOrigins = [
   'http://127.0.0.1:3000',
   'http://127.0.0.1:3001',
   'https://admin-aarambh-team-crat.vercel.app',
-  'https://admin-aarambh-team-crat.vercel.app/'
+  'https://admin-aarambh-team-crat.vercel.app/',
+  'https://sahayak.jklu.edu.in',
+  'https://sahayak.jklu.edu.in/'
 ];
 
 app.use(cors({
@@ -225,6 +227,31 @@ app.get('/api/status/cohort-allocations', async (req, res) => {
   } catch (error) {
     console.error('Error fetching allocations:', error);
     res.status(500).json({ error: 'Failed to retrieve cohort allocations.' });
+  }
+});
+
+// Secure read-only endpoint for external integration
+app.get('/api/public/student-cohorts', async (req, res) => {
+  const { secret } = req.query;
+  const expectedSecret = process.env.API_SECRET_KEY || 'aarambh2026read';
+  if (secret !== expectedSecret) {
+    return res.status(403).json({ error: 'Unauthorized. Invalid secret key.' });
+  }
+
+  try {
+    const Student = require('../models/Student');
+    const students = await Student.find({})
+      .select('name applicationNo course gender cohort cluster confirmedJklu confirmedAarambh notContinuing')
+      .sort({ name: 1 });
+      
+    res.json({
+      success: true,
+      total: students.length,
+      students
+    });
+  } catch (error) {
+    console.error('Error fetching public student cohorts:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
