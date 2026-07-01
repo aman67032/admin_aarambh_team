@@ -69,6 +69,48 @@ function normalizeGender(gender) {
   return 'Male';
 }
 
+function getWarningPenalty(cohortName, cohortStudents, student) {
+  const isSouth = ['I', 'J', 'K', 'L'].includes(cohortName[0]);
+  
+  const newTotal = cohortStudents.length + 1;
+  const newMales = cohortStudents.filter(s => s.gender === 'Male').length + (student.gender === 'Male' ? 1 : 0);
+  const newFemales = cohortStudents.filter(s => s.gender === 'Female').length + (student.gender === 'Female' ? 1 : 0);
+  
+  const newBTech = cohortStudents.filter(s => s.course === 'B.Tech').length + (student.course === 'B.Tech' ? 1 : 0);
+  const newBBA = cohortStudents.filter(s => s.course === 'BBA').length + (student.course === 'BBA' ? 1 : 0);
+  const newBDes = cohortStudents.filter(s => s.course === 'B.Des').length + (student.course === 'B.Des' ? 1 : 0);
+  
+  let penalty = 0;
+
+  // 1. Size over limit warning (> 11)
+  if (newTotal > 11) {
+    penalty += 1000;
+  }
+
+  // 2. Gender ratio check
+  const genderDiff = Math.abs(newMales - newFemales);
+  if (newTotal >= 4 && genderDiff > 4) {
+    penalty += 300; // Penalize gender imbalance
+  }
+
+  // 3. Course check
+  if (isSouth) {
+    const nonBTech = newTotal - newBTech;
+    if (nonBTech > 0 && newTotal <= 10) {
+      penalty += 500; // South should only have BTech
+    }
+  } else {
+    // North cohorts should not be dominated by a single course
+    if (newTotal >= 5) {
+      if (newBTech / newTotal > 0.8) penalty += 400;
+      if (newBBA / newTotal > 0.8) penalty += 400;
+      if (newBDes / newTotal > 0.8) penalty += 400;
+    }
+  }
+
+  return penalty;
+}
+
 async function run() {
   try {
     const mongoUri = process.env.MONGODB_URI;
@@ -219,7 +261,8 @@ async function run() {
         const genderScore = -sameGenderCount;
         const sizeScore = -cohortStudents.length;
         const clusterScore = -clusterCount;
-        const score = (sizeScore * 10) + (genderScore * 5) + (clusterScore * 100);
+        const penalty = getWarningPenalty(cohortName, cohortStudents, student);
+        const score = (sizeScore * 10) + (genderScore * 5) + (clusterScore * 100) - penalty;
         
         if (score > bestScore) {
           bestScore = score;
@@ -290,7 +333,8 @@ async function run() {
         const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
         const genderScore = -sameGenderCount;
         const sizeScore = -cohortStudents.length;
-        const score = (sizeScore * 10) + (genderScore * 5) + courseMatchScore;
+        const penalty = getWarningPenalty(cohortName, cohortStudents, student);
+        const score = (sizeScore * 10) + (genderScore * 5) + courseMatchScore - penalty;
 
         if (score > bestScore) {
           bestScore = score;
@@ -326,7 +370,8 @@ async function run() {
             const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
             const genderScore = -sameGenderCount;
             const sizeScore = -cohortStudents.length;
-            const score = (sizeScore * 10) + (genderScore * 5);
+            const penalty = getWarningPenalty(cohortName, cohortStudents, student);
+            const score = (sizeScore * 10) + (genderScore * 5) - penalty;
             
             if (score > bestScore) {
               bestScore = score;
@@ -369,7 +414,8 @@ async function run() {
             const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
             const genderScore = -sameGenderCount;
             const sizeScore = -cohortStudents.length;
-            const score = (sizeScore * 10) + (genderScore * 5) + courseMatchScore;
+            const penalty = getWarningPenalty(cohortName, cohortStudents, student);
+            const score = (sizeScore * 10) + (genderScore * 5) + courseMatchScore - penalty;
             
             if (score > bestScore) {
               bestScore = score;
