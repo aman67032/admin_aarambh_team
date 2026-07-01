@@ -71,6 +71,9 @@ function normalizeGender(gender) {
 
 function getWarningPenalty(cohortName, cohortStudents, student) {
   const isSouth = ['I', 'J', 'K', 'L'].includes(cohortName[0]);
+  if (isSouth) {
+    return 0; // Keep South out of warn-aware penalty checks since they only get B.Tech
+  }
   
   const newTotal = cohortStudents.length + 1;
   const newMales = cohortStudents.filter(s => s.gender === 'Male').length + (student.gender === 'Male' ? 1 : 0);
@@ -93,19 +96,11 @@ function getWarningPenalty(cohortName, cohortStudents, student) {
     penalty += 300; // Penalize gender imbalance
   }
 
-  // 3. Course check
-  if (isSouth) {
-    const nonBTech = newTotal - newBTech;
-    if (nonBTech > 0 && newTotal <= 10) {
-      penalty += 500; // South should only have BTech
-    }
-  } else {
-    // North cohorts should not be dominated by a single course
-    if (newTotal >= 5) {
-      if (newBTech / newTotal > 0.8) penalty += 400;
-      if (newBBA / newTotal > 0.8) penalty += 400;
-      if (newBDes / newTotal > 0.8) penalty += 400;
-    }
+  // 3. Course check (North cohorts should not be dominated by a single course)
+  if (newTotal >= 5) {
+    if (newBTech / newTotal > 0.8) penalty += 400;
+    if (newBBA / newTotal > 0.8) penalty += 400;
+    if (newBDes / newTotal > 0.8) penalty += 400;
   }
 
   return penalty;
