@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useApp } from './context/AppContext';
 import Loader from './components/Loader';
+import PlasmaWave from './components/PlasmaWave';
 
 
 interface CohortInfo {
@@ -65,7 +66,10 @@ export default function PublicHomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background fun-bg-pattern flex flex-col justify-between text-foreground">
+    <div className="min-h-screen bg-background fun-bg-pattern flex flex-col justify-between text-foreground relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none opacity-[0.06] mix-blend-screen z-0">
+        <PlasmaWave speed1={0.05} speed2={0.05} focalLength={0.8} bend1={1} bend2={0.5} dir2={1} rotationDeg={0} />
+      </div>
       
       {/* Navbar */}
       <header className="sticky top-0 bg-card-bg/85 backdrop-blur-md border-b border-card-border z-50 transition-all">
