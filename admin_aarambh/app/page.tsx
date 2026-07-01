@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useApp } from './context/AppContext';
+import Loader from './components/Loader';
 
 
 interface CohortInfo {
@@ -169,10 +170,8 @@ export default function PublicHomePage() {
         <div className="space-y-6">
           <h2 className="text-2xl font-black font-outfit text-foreground text-center">Structure Configuration</h2>
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-pulse">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="h-64 bg-card-border/60/20 rounded-3xl"></div>
-              ))}
+            <div className="min-h-[40vh] flex items-center justify-center">
+              <Loader scale={0.7} label="Loading structure configuration..." />
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

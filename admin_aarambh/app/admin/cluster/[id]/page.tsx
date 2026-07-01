@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { api, Student } from '../../../lib/api';
+import Loader from '../../../components/Loader';
 
 export default function AdminClusterDetailPage() {
   const params = useParams();
@@ -48,20 +49,8 @@ export default function AdminClusterDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col gap-6 animate-pulse">
-        <div className="h-6 w-40 bg-card-border/60 rounded-lg"></div>
-        <div className="h-10 w-64 bg-card-border/60 rounded-lg"></div>
-        <div className="h-5 w-80 bg-card-border/60 rounded-lg"></div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-4">
-          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
-          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
-          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
-          <div className="h-32 bg-card-border/60 rounded-3xl"></div>
-        </div>
-        <div className="space-y-6 mt-6">
-          <div className="h-48 bg-card-border/60 rounded-3xl"></div>
-          <div className="h-48 bg-card-border/60 rounded-3xl"></div>
-        </div>
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <Loader scale={0.7} label="Loading cluster details..." />
       </div>
     );
   }
