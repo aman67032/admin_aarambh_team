@@ -214,12 +214,12 @@ export default function CohortRegistrationsPage() {
       <main className="max-w-7xl mx-auto px-6 py-12 flex-1 w-full space-y-8">
         
         {/* Banner Section */}
-        <div className="text-center space-y-2 max-w-2xl mx-auto">
+        <div className="text-center space-y-3 max-w-2xl mx-auto">
           <h1 className="text-3xl font-black font-outfit tracking-tight text-slate-900 leading-none">
             Cohort Registration Tracker
           </h1>
-          <p className="text-xs text-slate-500 font-semibold leading-relaxed">
-            Monitor real-time student registration progress across all cohorts. Share this tracker with your Cohort Leaders.
+          <p className="inline-block bg-primary/10 border border-primary/25 text-primary text-xs font-black px-4 py-1.5 rounded-full shadow-xs leading-relaxed">
+            Real-time student registration progress across all cohorts.
           </p>
         </div>
 
