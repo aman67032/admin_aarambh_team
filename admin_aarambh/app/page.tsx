@@ -85,6 +85,12 @@ export default function PublicHomePage() {
           </div>
 
           <div className="flex items-center gap-4">
+            <Link
+              href="/cohort-registrations"
+              className="px-4 py-2 border border-card-border text-text-muted hover:bg-card-bg text-xs font-bold rounded-full transition-all cursor-pointer"
+            >
+              Cohort Registrations
+            </Link>
             {user ? (
               <Link
                 href={
