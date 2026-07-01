@@ -154,7 +154,7 @@ export default function StructureDetailsPage() {
   return (
 
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-between fun-bg-pattern relative overflow-hidden">      
-      <div className="absolute inset-0 pointer-events-none opacity-[0.06] mix-blend-screen z-0">
+      <div className="absolute inset-0 pointer-events-none opacity-25 z-0">
         <PlasmaWave speed1={0.05} speed2={0.05} focalLength={0.8} bend1={1} bend2={0.5} dir2={1} rotationDeg={0} />
       </div>
 

@@ -128,7 +128,7 @@ export default function PlasmaWave(props: PlasmaWaveProps) {
     dir2 = 1.0,
     bend1 = 1,
     bend2 = 0.5,
-    colors = ['#FF8000', '#0B1329'] // Default to Orange and Midnight Blue shades
+    colors = ['#FF6B00', '#1D4ED8'] // Vivid Orange + Royal Blue — visible on both themes
   } = props;
 
   const propsRef = useRef<PlasmaWaveProps>(props);
@@ -215,7 +215,7 @@ export default function PlasmaWave(props: PlasmaWaveProps) {
         dir2: d2 = 1.0,
         bend1: b1 = 1,
         bend2: b2 = 0.5,
-        colors: cols = ['#FF8000', '#0B1329']
+        colors: cols = ['#FF6B00', '#1D4ED8']
       } = propsRef.current;
 
       uniformOffset[0] = xOff;
