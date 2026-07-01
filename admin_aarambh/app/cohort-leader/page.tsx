@@ -160,21 +160,21 @@ export default function CohortLeaderDashboard() {
       {/* Cohort Stats Widgets */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="glass-card p-6 border-l-4 border-l-primary flex flex-col justify-between">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Allocated</span>
-          <div className="text-2xl font-black font-outfit text-slate-800 mt-2">{totalStudents} Students</div>
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Allocated Students</span>
+          <div className="text-2xl font-black font-outfit text-slate-800 mt-2">{totalStudents}</div>
         </div>
         
         <div className="glass-card p-6 border-l-4 border-l-emerald-500 flex flex-col justify-between">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Registered at JKLU</span>
           <div className="text-2xl font-black font-outfit text-emerald-600 mt-2">
-            {registeredCount} <span className="text-xs font-semibold text-slate-400">({getPercent(registeredCount, totalStudents)}%)</span>
+            {registeredCount}
           </div>
         </div>
 
         <div className="glass-card p-6 border-l-4 border-l-indigo-500 flex flex-col justify-between">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Documents Verified</span>
           <div className="text-2xl font-black font-outfit text-indigo-600 mt-2">
-            {verifiedCount} <span className="text-xs font-semibold text-slate-400">({getPercent(verifiedCount, totalStudents)}%)</span>
+            {verifiedCount}
           </div>
         </div>
 

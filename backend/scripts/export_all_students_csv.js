@@ -44,8 +44,9 @@ async function exportCSV() {
       'Registered at JKLU (confirmedJklu)',
       'Confirmed Aarambh',
       'Documents Verified',
+      'Not Coming to Aarambh',
       'Not Continuing',
-      'Not Continuing Reason'
+      'Reason / Note'
     ];
 
     let csvContent = headers.join(',') + '\n';
@@ -70,6 +71,7 @@ async function exportCSV() {
         student.confirmedJklu ? 'TRUE' : 'FALSE',
         student.confirmedAarambh ? 'TRUE' : 'FALSE',
         student.documentsVerified ? 'TRUE' : 'FALSE',
+        student.notComingAarambh ? 'TRUE' : 'FALSE',
         student.notContinuing ? 'TRUE' : 'FALSE',
         student.confirmationNote || ''
       ];

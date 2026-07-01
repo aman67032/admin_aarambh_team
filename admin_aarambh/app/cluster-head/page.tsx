@@ -15,8 +15,8 @@ export default function ClusterHeadDashboard() {
   const [loggingCallId, setLoggingCallId] = useState<string | null>(null);
   
   // Confirmation state
-  const [notContinuingNotes, setNotContinuingNotes] = useState<string>('');
-  const [showNotContinuingForm, setShowNotContinuingForm] = useState<string | null>(null);
+  const [confirmationNotes, setConfirmationNotes] = useState<string>('');
+  const [activeForm, setActiveForm] = useState<{ studentId: string; type: 'aarambh' | 'jklu' } | null>(null);
 
   const fetchCohortData = async () => {
     try {
@@ -88,12 +88,12 @@ export default function ClusterHeadDashboard() {
     }
   };
 
-  const handleConfirmStatus = async (studentId: string, updates: { confirmedAarambh?: boolean; confirmedJklu?: boolean; notContinuing?: boolean; confirmationNote?: string }) => {
+  const handleConfirmStatus = async (studentId: string, updates: { confirmedAarambh?: boolean; confirmedJklu?: boolean; notContinuing?: boolean; notComingAarambh?: boolean; confirmationNote?: string }) => {
     try {
       const res = await api.cluster.confirmStatus(studentId, updates);
       if (res.success) {
-        setShowNotContinuingForm(null);
-        setNotContinuingNotes('');
+        setActiveForm(null);
+        setConfirmationNotes('');
         // Refresh local state
         setCohorts(prev => prev.map(cohort => ({
           ...cohort,
@@ -199,7 +199,9 @@ export default function ClusterHeadDashboard() {
                       {/* Status Badges */}
                       <div className="flex flex-wrap items-center gap-2 font-bold text-[10px] uppercase self-start sm:self-auto mt-1 sm:mt-0">
                         {student.notContinuing ? (
-                          <span className="px-2.5 py-0.5 rounded-full bg-red-100 text-red-700">Not Coming</span>
+                          <span className="px-2.5 py-0.5 rounded-full bg-red-100 text-red-700 font-extrabold">Not Continuing (JKLU)</span>
+                        ) : student.notComingAarambh ? (
+                          <span className="px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-700 font-extrabold">Not Coming (Aarambh)</span>
                         ) : (
                           <>
                             {isVerified ? (
@@ -241,14 +243,24 @@ export default function ClusterHeadDashboard() {
                           {/* Progressive Workflow Control Box */}
                           <div className="glass-card p-5 space-y-4">
                             <h4 className="text-slate-800 font-extrabold text-sm">Outreach Action panel</h4>
-
                             {student.notContinuing ? (
                               <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-800 text-xs space-y-1">
-                                <span className="font-extrabold block">Marked as Not Coming to Aarambh</span>
+                                <span className="font-extrabold block">Marked as Not Continuing at JKLU</span>
                                 <p className="font-normal italic">Note: &ldquo;{student.confirmationNote || 'No explanation provided.'}&rdquo;</p>
                                 <button
                                   onClick={() => handleConfirmStatus(student._id, { notContinuing: false, confirmationNote: '' })}
                                   className="mt-3 text-[10px] font-bold text-red-700 hover:underline cursor-pointer"
+                                >
+                                  Revert status
+                                </button>
+                              </div>
+                            ) : student.notComingAarambh ? (
+                              <div className="p-4 bg-orange-50 border border-orange-100 rounded-2xl text-orange-800 text-xs space-y-1">
+                                <span className="font-extrabold block">Marked as Not Coming to Aarambh</span>
+                                <p className="font-normal italic">Note: &ldquo;{student.confirmationNote || 'No explanation provided.'}&rdquo;</p>
+                                <button
+                                  onClick={() => handleConfirmStatus(student._id, { notComingAarambh: false, confirmationNote: '' })}
+                                  className="mt-3 text-[10px] font-bold text-orange-700 hover:underline cursor-pointer"
                                 >
                                   Revert status
                                 </button>
@@ -287,35 +299,56 @@ export default function ClusterHeadDashboard() {
                                       <span>✅</span>
                                       <span>Document Verification Completed</span>
                                     </div>
-
-                                    {/* Not Continuing button */}
-                                    {showNotContinuingForm !== student._id ? (
-                                      <button
-                                        onClick={() => setShowNotContinuingForm(student._id)}
-                                        className="w-full py-2 bg-red-50 hover:bg-red-100 text-red-600 text-[10px] font-bold rounded-xl transition-all cursor-pointer"
-                                      >
-                                        Student is Not Coming to Aarambh
-                                      </button>
+ 
+                                    {(!activeForm || activeForm.studentId !== student._id) ? (
+                                      <div className="space-y-2">
+                                        <button
+                                          onClick={() => {
+                                            setActiveForm({ studentId: student._id, type: 'aarambh' });
+                                            setConfirmationNotes('');
+                                          }}
+                                          className="w-full py-2 bg-orange-50 hover:bg-orange-100 text-orange-600 text-[10px] font-bold rounded-xl transition-all cursor-pointer"
+                                        >
+                                          Student is Not Coming to Aarambh
+                                        </button>
+                                        <button
+                                          onClick={() => {
+                                            setActiveForm({ studentId: student._id, type: 'jklu' });
+                                            setConfirmationNotes('');
+                                          }}
+                                          className="w-full py-2 bg-red-50 hover:bg-red-100 text-red-600 text-[10px] font-bold rounded-xl transition-all cursor-pointer"
+                                        >
+                                          Student is Not Continuing at JKLU
+                                        </button>
+                                      </div>
                                     ) : (
                                       <div className="space-y-2 pt-2 border-t border-slate-100">
-                                        <label className="block text-[10px] font-bold text-slate-500 uppercase">Specify Reason</label>
+                                        <label className="block text-[10px] font-bold text-slate-500 uppercase">
+                                          Specify Reason ({activeForm.type === 'aarambh' ? 'Not Coming to Aarambh' : 'Not Continuing at JKLU'})
+                                        </label>
                                         <textarea
-                                          value={notContinuingNotes}
-                                          onChange={(e) => setNotContinuingNotes(e.target.value)}
-                                          placeholder="Enter reasons why student is not coming to Aarambh..."
-                                          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-red-500 text-slate-900"
+                                          value={confirmationNotes}
+                                          onChange={(e) => setConfirmationNotes(e.target.value)}
+                                          placeholder={activeForm.type === 'aarambh' ? 'Enter reasons why student is not coming to Aarambh...' : 'Enter reasons why student is not continuing at JKLU...'}
+                                          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-900"
                                           rows={2}
                                         />
                                         <div className="flex gap-2 justify-end">
                                           <button
-                                            onClick={() => setShowNotContinuingForm(null)}
-                                            className="px-3 py-1 text-[10px] font-bold text-slate-500 border border-slate-200 rounded-lg bg-white"
+                                            onClick={() => setActiveForm(null)}
+                                            className="px-3 py-1 text-[10px] font-bold text-slate-500 border border-slate-200 rounded-lg bg-white cursor-pointer"
                                           >
                                             Cancel
                                           </button>
                                           <button
-                                            onClick={() => handleConfirmStatus(student._id, { notContinuing: true, confirmationNote: notContinuingNotes })}
-                                            className="px-3 py-1 text-[10px] font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg"
+                                            onClick={() => {
+                                              if (activeForm.type === 'aarambh') {
+                                                handleConfirmStatus(student._id, { notComingAarambh: true, confirmationNote: confirmationNotes });
+                                              } else {
+                                                handleConfirmStatus(student._id, { notContinuing: true, confirmationNote: confirmationNotes });
+                                              }
+                                            }}
+                                            className="px-3 py-1 text-[10px] font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg cursor-pointer"
                                           >
                                             Submit
                                           </button>
@@ -328,9 +361,9 @@ export default function ClusterHeadDashboard() {
                             )}
                           </div>
                         </div>
-
+ 
                         {/* Call Logging Details (Only if Verified) */}
-                        {isVerified && !student.notContinuing && (
+                        {isVerified && !student.notContinuing && !student.notComingAarambh && (
                           <div className="pt-6 border-t border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-6">
                             
                             {/* Log call form */}

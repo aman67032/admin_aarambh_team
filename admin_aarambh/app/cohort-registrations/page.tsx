@@ -227,19 +227,19 @@ export default function CohortRegistrationsPage() {
         {!loading && !notPublished && grandTotalStudents > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="glass-card p-6 border-l-4 border-l-primary flex flex-col justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Allocated</span>
-              <div className="text-3xl font-black font-outfit text-slate-800 mt-2">{grandTotalStudents} Students</div>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Allocated Students</span>
+              <div className="text-3xl font-black font-outfit text-slate-800 mt-2">{grandTotalStudents}</div>
             </div>
             <div className="glass-card p-6 border-l-4 border-l-emerald-500 flex flex-col justify-between">
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Confirmed Registration (JKLU)</span>
               <div className="text-3xl font-black font-outfit text-emerald-600 mt-2">
-                {grandRegisteredCount} <span className="text-sm font-semibold text-slate-400">({getPercent(grandRegisteredCount, grandTotalStudents)}%)</span>
+                {grandRegisteredCount}
               </div>
             </div>
             <div className="glass-card p-6 border-l-4 border-l-indigo-500 flex flex-col justify-between">
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Documents Verified</span>
               <div className="text-3xl font-black font-outfit text-indigo-600 mt-2">
-                {grandVerifiedCount} <span className="text-sm font-semibold text-slate-400">({getPercent(grandVerifiedCount, grandTotalStudents)}%)</span>
+                {grandVerifiedCount}
               </div>
             </div>
           </div>

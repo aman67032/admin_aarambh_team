@@ -138,6 +138,10 @@ const studentSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  notComingAarambh: {
+    type: Boolean,
+    default: false
+  },
   confirmationNote: {
     type: String
   },

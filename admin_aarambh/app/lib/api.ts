@@ -39,6 +39,7 @@ export interface Student {
   confirmedAarambh: boolean;
   confirmedJklu: boolean;
   notContinuing: boolean;
+  notComingAarambh: boolean;
   confirmationNote?: string;
   confirmedAt?: string;
   confirmedBy?: string;
@@ -207,6 +208,7 @@ export const api = {
       confirmedAarambh?: boolean; 
       confirmedJklu?: boolean; 
       notContinuing?: boolean; 
+      notComingAarambh?: boolean;
       confirmationNote?: string; 
     }) => 
       request<{ success: boolean; student: Student }>(`/cluster/confirm/${studentId}`, {

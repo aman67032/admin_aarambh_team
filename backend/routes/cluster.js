@@ -189,7 +189,7 @@ router.put('/confirm/:studentId', requireAuth, requireRole('cluster_head'), asyn
     }
 
     const { studentId } = req.params;
-    const { confirmedAarambh, confirmedJklu, notContinuing, confirmationNote } = req.body;
+    const { confirmedAarambh, confirmedJklu, notContinuing, notComingAarambh, confirmationNote } = req.body;
 
     const student = await Student.findById(studentId);
     if (!student) {
@@ -209,6 +209,7 @@ router.put('/confirm/:studentId', requireAuth, requireRole('cluster_head'), asyn
     student.confirmedAarambh = confirmedAarambh !== undefined ? confirmedAarambh : student.confirmedAarambh;
     student.confirmedJklu = confirmedJklu !== undefined ? confirmedJklu : student.confirmedJklu;
     student.notContinuing = notContinuing !== undefined ? notContinuing : student.notContinuing;
+    student.notComingAarambh = notComingAarambh !== undefined ? notComingAarambh : student.notComingAarambh;
     
     if (confirmationNote !== undefined) {
       student.confirmationNote = confirmationNote.trim();
