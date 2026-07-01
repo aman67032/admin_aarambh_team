@@ -1,6 +1,6 @@
 'use client';
 
-import PlasmaWave from '../components/PlasmaWave';
+import Lightfall from '../components/Lightfall';
 
 
 
@@ -766,9 +766,23 @@ export default function CohortRegistrationsPage() {
 
     <div className="min-h-screen bg-background flex flex-col justify-between fun-bg-pattern text-foreground relative overflow-hidden">
 
-      <div className="absolute inset-0 pointer-events-none opacity-25 z-0">
+      <div className="absolute inset-0 pointer-events-none z-0">
 
-        <PlasmaWave speed1={0.05} speed2={0.05} focalLength={0.8} bend1={1} bend2={0.5} dir2={1} rotationDeg={0} />
+        <Lightfall
+          colors={['#FF6B00', '#FF9A3C', '#1D4ED8', '#3B82F6']}
+          backgroundColor="#050B18"
+          speed={0.5}
+          streakCount={3}
+          streakWidth={1.2}
+          streakLength={1.2}
+          glow={1.5}
+          density={0.6}
+          twinkle={1}
+          zoom={3}
+          backgroundGlow={0.3}
+          opacity={1}
+          mouseInteraction={false}
+        />
 
       </div>
 
