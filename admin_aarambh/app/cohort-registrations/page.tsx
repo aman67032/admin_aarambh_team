@@ -4,6 +4,7 @@
 
 
 
+import AuroraBackground from '../components/AuroraBackground';
 import Loader from '../components/Loader';
 
 
@@ -764,17 +765,14 @@ export default function CohortRegistrationsPage() {
 
 
 
-    <div className="min-h-screen bg-background flex flex-col justify-between fun-bg-pattern text-foreground relative overflow-hidden">
+    <div className="min-h-screen flex flex-col justify-between text-foreground relative overflow-hidden" style={{background:'#050B18'}}>
+
+      {/* === Beautiful animated aurora background === */}
+      <AuroraBackground />
 
 
 
-
-
-      {/* Header */}
-
-
-
-      <header className="sticky top-0 bg-card-bg/85 backdrop-blur-md border-b border-card-border z-50 transition-all">
+      <header className="sticky top-0 backdrop-blur-xl border-b z-50 transition-all relative" style={{background:'rgba(5,11,24,0.75)', borderColor:'rgba(255,107,0,0.15)'}}>
 
 
 
@@ -862,7 +860,7 @@ export default function CohortRegistrationsPage() {
 
 
 
-      <main className="max-w-7xl mx-auto px-6 py-12 flex-1 w-full space-y-8">
+      <main className="max-w-7xl mx-auto px-6 py-12 flex-1 w-full space-y-8 relative z-10">
 
 
 
