@@ -16,6 +16,7 @@ interface StudentInfo {
   confirmedAarambh: boolean;
   documentsVerified: boolean;
   notContinuing: boolean;
+  notComingAarambh: boolean;
 }
 
 interface CohortInfo {
@@ -465,8 +466,10 @@ export default function CohortRegistrationsPage() {
                                   <div 
                                     key={student._id} 
                                     className={`p-3 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 transition-all text-xs font-semibold ${
-                                      student.notContinuing 
+                                      student.notComingAarambh 
                                         ? 'bg-red-50/50 border-red-100 text-red-700' 
+                                        : student.notContinuing
+                                        ? 'bg-slate-100 border-slate-200 text-slate-500'
                                         : student.confirmedJklu 
                                         ? 'bg-emerald-50/40 border-emerald-100 text-emerald-800' 
                                         : 'bg-white border-slate-100 text-slate-600'
@@ -481,8 +484,12 @@ export default function CohortRegistrationsPage() {
 
                                     {/* Status Indicator */}
                                     <div className="flex flex-wrap gap-1.5 items-center mt-1 sm:mt-0 self-end sm:self-auto">
-                                      {student.notContinuing ? (
+                                      {student.notComingAarambh ? (
                                         <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-red-100 text-red-700 uppercase">
+                                          Not Coming
+                                        </span>
+                                      ) : student.notContinuing ? (
+                                        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-200 text-slate-600 uppercase">
                                           Not Continuing
                                         </span>
                                       ) : (
