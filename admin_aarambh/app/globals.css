@@ -3,36 +3,31 @@
 
 
 :root {
-  --background: #F8FAFC;
-  --foreground: #0F172A;
+  --background: #EDF2F7; /* Soft light blue-grey */
+  --foreground: #0A1428; /* Deep midnight blue */
   --primary: #FF6B00; /* Vibrant Orange */
   --primary-hover: #E05E00;
   --primary-rgb: 255, 107, 0;
-  --secondary: #6366F1; /* Indigo */
-  --card-bg: rgba(255, 255, 255, 0.8);
-  --card-border: rgba(226, 232, 240, 0.8);
-  --card-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.05), 0 1px 3px rgba(0, 0, 0, 0.01);
-  --header-bg: rgba(255, 255, 255, 0.8);
-  --text-muted: #64748B;
-  
-  --font-sans: 'Plus Jakarta Sans', var(--font-geist-sans), sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
-}
+  --secondary: #1E3A8A; /* Classic Dark Blue */
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(30, 58, 138, 0.15); /* Dark blue tint border */
+  --card-shadow: 0 10px 30px -10px rgba(30, 58, 138, 0.08), 0 1px 3px rgba(0, 0, 0, 0.01);
+  --header-bg: rgba(237, 242, 247, 0.85);
+  --text-muted: #4A5568;}
 
 /* Cosmic Dark Theme (replacing standard beige Fun Theme) */
 .theme-fun {
-  --background: #090D16;
+  --background: #050B18; /* Rich Midnight Dark Blue */
   --foreground: #F8FAFC;
-  --primary: #FF8008; /* Bright Neon Orange */
-  --primary-hover: #FF6A00;
-  --primary-rgb: 255, 128, 8;
-  --secondary: #38BDF8; /* Electric Cyan */
-  --card-bg: rgba(15, 23, 42, 0.6);
-  --card-border: rgba(99, 102, 241, 0.15);
-  --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 15px rgba(56, 189, 248, 0.03);
-  --header-bg: rgba(9, 13, 22, 0.8);
-  --text-muted: #94A3B8;
-}
+  --primary: #FF8000; /* Vibrant Neon Orange */
+  --primary-hover: #E07000;
+  --primary-rgb: 255, 128, 0;
+  --secondary: #2563EB; /* Royal Dark Blue Accent */
+  --card-bg: rgba(10, 20, 42, 0.85); /* Rich dark blue card */
+  --card-border: rgba(255, 128, 0, 0.15); /* Orange neon glow borders */
+  --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 128, 0, 0.04);
+  --header-bg: rgba(5, 11, 24, 0.85);
+  --text-muted: #8E9BB0;}
 
 @theme inline {
   --color-background: var(--background);

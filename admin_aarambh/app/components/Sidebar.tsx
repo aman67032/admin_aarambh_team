@@ -148,7 +148,7 @@ export default function Sidebar() {
       {/* Mobile Top Navigation Bar */}
       <div className="flex md:hidden items-center justify-between px-4 h-16 bg-card-bg border-b border-card-border fixed top-0 left-0 right-0 z-40 transition-all">
         <div className="flex items-center gap-2">
-          <img src="/AARAMBH26_Main logo.png" alt="Aarambh logo" className="h-8 object-contain" />
+          <img src="/Aarambh_logo_Final-01.svg" alt="Aarambh logo" className="h-12 object-contain" />
           <div className="flex flex-col">
             <span className="text-[10px] font-bold text-primary font-outfit uppercase tracking-wider leading-none">Aarambh &apos;26</span>
             <span className="text-[8px] text-text-muted font-bold uppercase mt-0.5">JKLU</span>
@@ -195,7 +195,7 @@ export default function Sidebar() {
           {/* Header Logo (only shown on desktop sidebar) */}
           <div className="p-6 border-b border-card-border flex items-center justify-between hidden md:flex">
             <div className="flex items-center gap-2.5">
-              <img src="/AARAMBH26_Main logo.png" alt="Aarambh logo" className="h-10 object-contain" />
+              <img src="/Aarambh_logo_Final-01.svg" alt="Aarambh logo" className="h-16 object-contain" />
               <div className="flex flex-col">
                 <span className="text-xs font-bold text-primary font-outfit uppercase tracking-wider leading-none">Aarambh &apos;26</span>
                 <span className="text-[9px] text-text-muted font-bold uppercase mt-0.5">JKLU</span>
