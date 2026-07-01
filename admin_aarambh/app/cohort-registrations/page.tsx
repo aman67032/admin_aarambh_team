@@ -143,19 +143,17 @@ export default function CohortRegistrationsPage() {
     return a.cohortName.localeCompare(b.cohortName);
   });
 
-  const grandPct = getPercent(grandRegisteredCount, grandTotalStudents);
-
   return (
     <div className="min-h-screen bg-background flex flex-col justify-between text-foreground relative overflow-hidden">
       <AuroraBackground />
 
       {/* Header */}
       <header className="sticky top-0 bg-card-bg/85 backdrop-blur-md border-b border-card-border z-50">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-12 object-contain" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3">
+            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-9 sm:h-12 object-contain" />
             <div className="w-[1px] h-6 bg-card-border"></div>
-            <img src="/Aarambh_logo_Final-01.svg" alt="Aarambh logo" className="h-16 object-contain" />
+            <img src="/Aarambh_logo_Final-01.svg" alt="Aarambh logo" className="h-12 sm:h-16 object-contain" />
             <div className="flex flex-col hidden sm:flex">
               <span className="text-xs font-bold text-primary font-outfit uppercase tracking-wider leading-none">Aarambh &apos;26</span>
               <span className="text-[8px] text-text-muted font-bold uppercase mt-0.5">JKLU</span>
@@ -163,18 +161,18 @@ export default function CohortRegistrationsPage() {
           </Link>
           <Link
             href={backLink.href}
-            className="px-5 py-2.5 bg-card-bg border border-card-border hover:bg-background text-foreground text-xs font-semibold rounded-full transition-all cursor-pointer flex items-center gap-1.5"
+            className="px-3 sm:px-5 py-1.5 sm:py-2.5 bg-card-bg border border-card-border hover:bg-background text-foreground text-xs font-semibold rounded-full transition-all cursor-pointer flex items-center gap-1.5"
           >
-            ← {backLink.label}
+            ← <span className="hidden sm:inline">{backLink.label}</span><span className="inline sm:hidden">Back</span>
           </Link>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-12 flex-1 w-full space-y-10 relative z-10">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 w-full space-y-8 sm:space-y-10 relative z-10">
 
         {/* Page Title */}
         <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Cohort Registration Tracker</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Cohort Registration Tracker</h1>
           <p className="inline-block bg-primary/10 border border-primary/25 text-primary text-xs font-semibold px-4 py-1.5 rounded-full">
             Real-time student registration progress across all cohorts.
           </p>
@@ -182,24 +180,21 @@ export default function CohortRegistrationsPage() {
 
         {/* Global Stats */}
         {!loading && !notPublished && grandTotalStudents > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
-            <div className="glass-card p-6 flex flex-col gap-3 border-l-4 border-l-primary">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 max-w-4xl mx-auto">
+            <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-primary">
               <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Total Students</div>
-              <div className="text-3xl font-bold text-foreground">{grandTotalStudents}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-foreground">{grandTotalStudents}</div>
               <div className="text-xs text-text-muted">Allocated across all cohorts</div>
             </div>
-            <div className="glass-card p-6 flex flex-col gap-3 border-l-4 border-l-emerald-500">
+            <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-emerald-500">
               <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Registered at JKLU</div>
-              <div className="text-3xl font-bold text-emerald-600">{grandRegisteredCount}</div>
-              <div className="mt-1 h-1.5 bg-card-border/40 rounded-full overflow-hidden">
-                <div className="h-full bg-emerald-500 rounded-full transition-all" style={{ width: `${grandPct}%` }}></div>
-              </div>
-              <div className="text-xs text-text-muted">{grandPct}% overall</div>
+              <div className="text-2xl sm:text-3xl font-bold text-emerald-600">{grandRegisteredCount}</div>
+              <div className="text-xs text-text-muted">Registered in database</div>
             </div>
-            <div className="glass-card p-6 flex flex-col gap-3 border-l-4 border-l-indigo-500">
+            <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-indigo-500">
               <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Documents Verified</div>
-              <div className="text-3xl font-bold text-indigo-600">{grandVerifiedCount}</div>
-              <div className="text-xs text-text-muted">{getPercent(grandVerifiedCount, grandTotalStudents)}% of total</div>
+              <div className="text-2xl sm:text-3xl font-bold text-indigo-600">{grandVerifiedCount}</div>
+              <div className="text-xs text-text-muted">Verified by cluster head</div>
             </div>
           </div>
         )}
@@ -214,49 +209,49 @@ export default function CohortRegistrationsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {/* Podium */}
-              <div className="md:col-span-2 grid grid-cols-3 gap-3 items-end">
+              <div className="md:col-span-2 grid grid-cols-3 gap-2 sm:gap-3 items-end">
                 {/* 2nd */}
                 {cohortsRanked[1] && (
-                  <div className="glass-card p-4 flex flex-col items-center border-t-4 border-t-slate-400 relative h-[170px]">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-400 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow-sm">2</div>
-                    <span className="text-2xl mt-2">🥈</span>
-                    <div className="text-center mt-2 flex-1">
-                      <div className="text-xs font-bold text-foreground truncate w-full">Cohort {cohortsRanked[1].cohortName}</div>
-                      <div className="text-[9px] text-text-muted mt-0.5 truncate">{cohortsRanked[1].leaderName}</div>
+                  <div className="glass-card p-2 sm:p-4 flex flex-col items-center border-t-4 border-t-slate-400 relative h-[140px] sm:h-[170px]">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-400 text-white w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-sm">2</div>
+                    <span className="text-xl sm:text-2xl mt-1.5 sm:mt-2">🥈</span>
+                    <div className="text-center mt-1 sm:mt-2 flex-1 w-full min-w-0">
+                      <div className="text-[10px] sm:text-xs font-bold text-foreground truncate w-full">Cohort {cohortsRanked[1].cohortName}</div>
+                      <div className="text-[8px] sm:text-[9px] text-text-muted mt-0.5 truncate w-full">{cohortsRanked[1].leaderName}</div>
                     </div>
-                    <div className="w-full text-center mt-auto bg-card-bg border border-card-border py-1.5 rounded-lg">
-                      <div className="text-sm font-bold text-foreground">{cohortsRanked[1].percentage}%</div>
-                      <div className="text-[9px] text-text-muted">{cohortsRanked[1].registered}/{cohortsRanked[1].total} Reg</div>
+                    <div className="w-full text-center mt-auto bg-card-bg border border-card-border py-1 sm:py-1.5 rounded-lg">
+                      <div className="text-[11px] sm:text-sm font-bold text-foreground">{cohortsRanked[1].registered}/{cohortsRanked[1].total}</div>
+                      <div className="text-[8px] sm:text-[9px] text-text-muted">Registered</div>
                     </div>
                   </div>
                 )}
                 {/* 1st */}
                 {cohortsRanked[0] && (
-                  <div className="glass-card p-4 flex flex-col items-center border-t-4 border-t-amber-400 relative h-[196px] shadow-md">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-950 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow-sm">1</div>
-                    <span className="text-3xl mt-2">🥇</span>
-                    <div className="text-center mt-2 flex-1">
-                      <div className="text-sm font-bold text-foreground truncate w-full">Cohort {cohortsRanked[0].cohortName}</div>
-                      <div className="text-[9px] text-text-muted mt-0.5 truncate">{cohortsRanked[0].leaderName}</div>
+                  <div className="glass-card p-2 sm:p-4 flex flex-col items-center border-t-4 border-t-amber-400 relative h-[160px] sm:h-[196px] shadow-md">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-950 w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-sm">1</div>
+                    <span className="text-2xl sm:text-3xl mt-1.5 sm:mt-2">🥇</span>
+                    <div className="text-center mt-1 sm:mt-2 flex-1 w-full min-w-0">
+                      <div className="text-xs sm:text-sm font-bold text-foreground truncate w-full">Cohort {cohortsRanked[0].cohortName}</div>
+                      <div className="text-[8px] sm:text-[9px] text-text-muted mt-0.5 truncate w-full">{cohortsRanked[0].leaderName}</div>
                     </div>
-                    <div className="w-full text-center mt-auto bg-amber-500/10 py-1.5 rounded-lg border border-amber-500/20">
-                      <div className="text-sm font-bold text-amber-600">{cohortsRanked[0].percentage}%</div>
-                      <div className="text-[9px] text-amber-600/70">{cohortsRanked[0].registered}/{cohortsRanked[0].total} Reg</div>
+                    <div className="w-full text-center mt-auto bg-amber-500/10 py-1 sm:py-1.5 rounded-lg border border-amber-500/20">
+                      <div className="text-[11px] sm:text-sm font-bold text-amber-600">{cohortsRanked[0].registered}/{cohortsRanked[0].total}</div>
+                      <div className="text-[8px] sm:text-[9px] text-amber-600/70">Registered</div>
                     </div>
                   </div>
                 )}
                 {/* 3rd */}
                 {cohortsRanked[2] && (
-                  <div className="glass-card p-4 flex flex-col items-center border-t-4 border-t-amber-600 relative h-[155px]">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow-sm">3</div>
-                    <span className="text-2xl mt-2">🥉</span>
-                    <div className="text-center mt-2 flex-1">
-                      <div className="text-xs font-bold text-foreground truncate w-full">Cohort {cohortsRanked[2].cohortName}</div>
-                      <div className="text-[9px] text-text-muted mt-0.5 truncate">{cohortsRanked[2].leaderName}</div>
+                  <div className="glass-card p-2 sm:p-4 flex flex-col items-center border-t-4 border-t-amber-600 relative h-[130px] sm:h-[155px]">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-600 text-white w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-sm">3</div>
+                    <span className="text-xl sm:text-2xl mt-1.5 sm:mt-2">🥉</span>
+                    <div className="text-center mt-1 sm:mt-2 flex-1 w-full min-w-0">
+                      <div className="text-[10px] sm:text-xs font-bold text-foreground truncate w-full">Cohort {cohortsRanked[2].cohortName}</div>
+                      <div className="text-[8px] sm:text-[9px] text-text-muted mt-0.5 truncate w-full">{cohortsRanked[2].leaderName}</div>
                     </div>
-                    <div className="w-full text-center mt-auto bg-card-bg border border-card-border py-1.5 rounded-lg">
-                      <div className="text-sm font-bold text-foreground">{cohortsRanked[2].percentage}%</div>
-                      <div className="text-[9px] text-text-muted">{cohortsRanked[2].registered}/{cohortsRanked[2].total} Reg</div>
+                    <div className="w-full text-center mt-auto bg-card-bg border border-card-border py-1 sm:py-1.5 rounded-lg">
+                      <div className="text-[11px] sm:text-sm font-bold text-foreground">{cohortsRanked[2].registered}/{cohortsRanked[2].total}</div>
+                      <div className="text-[8px] sm:text-[9px] text-text-muted">Registered</div>
                     </div>
                   </div>
                 )}
@@ -280,8 +275,8 @@ export default function CohortRegistrationsPage() {
                           </div>
                         </div>
                         <div className="text-right shrink-0 ml-2">
-                          <span className="font-bold text-foreground">{c.percentage}%</span>
-                          <span className="text-[9px] text-text-muted block">{c.registered}/{c.total}</span>
+                          <span className="font-bold text-foreground">{c.registered}/{c.total}</span>
+                          <span className="text-[9px] text-text-muted block">Registered</span>
                         </div>
                       </div>
                     );
@@ -335,7 +330,6 @@ export default function CohortRegistrationsPage() {
             {filteredData.map((cluster) => {
               const clTotal = cluster.cohorts.reduce((a, c) => a + c.students.length, 0);
               const clReg = cluster.cohorts.reduce((a, c) => a + c.students.filter(s => s.confirmedJklu).length, 0);
-              const clPct = getPercent(clReg, clTotal);
 
               return (
                 <div key={cluster.clusterName} className="space-y-5">
@@ -349,10 +343,7 @@ export default function CohortRegistrationsPage() {
                       <p className="text-xs text-text-muted mt-1 ml-5">Coordinator: <span className="font-semibold text-foreground">{cluster.head || 'To be assigned'}</span></p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="h-1.5 w-24 bg-card-border/40 rounded-full overflow-hidden">
-                        <div className="h-full bg-secondary rounded-full transition-all" style={{ width: `${clPct}%` }}></div>
-                      </div>
-                      <span className="text-xs font-semibold text-text-muted">{clReg}/{clTotal} reg</span>
+                      <span className="text-xs font-semibold text-text-muted">{clReg}/{clTotal} registered</span>
                     </div>
                   </div>
 
@@ -363,7 +354,6 @@ export default function CohortRegistrationsPage() {
                       const totalStudents = cohort.students.length;
                       const registeredCount = cohort.students.filter(s => s.confirmedJklu).length;
                       const verifiedCount = cohort.students.filter(s => s.documentsVerified).length;
-                      const percentRegistered = getPercent(registeredCount, totalStudents);
 
                       return (
                         <div key={cohort.cohortName} className="glass-card overflow-hidden border border-card-border">
@@ -390,11 +380,6 @@ export default function CohortRegistrationsPage() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                               </svg>
                             </div>
-                          </div>
-
-                          {/* Progress bar */}
-                          <div className="w-full bg-card-border/20 h-1">
-                            <div className="bg-emerald-500 h-full transition-all duration-500" style={{ width: `${percentRegistered}%` }}></div>
                           </div>
 
                           {/* Student list */}
