@@ -1,7 +1,7 @@
 import openpyxl
 import csv
 
-xlsx_path = r"C:\Users\MSI1\Downloads\New Student Information Spcimen(30.06.2026).xlsx"
+xlsx_path = r"C:\Users\MSI1\Downloads\New Student Information Spcimen(01.07.2026).xlsx"
 csv_path = r"F:\Aarambh 2026\Team_portal\backend\scripts\temp_students_new.csv"
 
 try:

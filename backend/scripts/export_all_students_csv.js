@@ -77,7 +77,7 @@ async function exportCSV() {
       csvContent += row.map(val => escapeCSV(val)).join(',') + '\n';
     });
 
-    const outputPath = path.join("F:\\Aarambh 2026\\Team_portal", "all_students_153_combined.csv");
+    const outputPath = path.join("F:\\Aarambh 2026\\Team_portal", "all_students_combined.csv");
     fs.writeFileSync(outputPath, csvContent, 'utf-8');
     console.log(`Successfully exported all students to: ${outputPath}`);
 
