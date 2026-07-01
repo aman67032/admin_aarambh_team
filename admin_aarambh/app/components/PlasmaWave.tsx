@@ -153,6 +153,15 @@ export default function PlasmaWave(props: PlasmaWaveProps) {
 
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
+
+    // Force canvas to fill container via CSS
+    gl.canvas.style.display = 'block';
+    gl.canvas.style.position = 'absolute';
+    gl.canvas.style.top = '0';
+    gl.canvas.style.left = '0';
+    gl.canvas.style.width = '100%';
+    gl.canvas.style.height = '100%';
+
     ctn.appendChild(gl.canvas);
 
     const camera = new Camera(gl);
@@ -247,5 +256,16 @@ export default function PlasmaWave(props: PlasmaWaveProps) {
     };
   }, []);
 
-  return <div ref={containerRef} className="w-full h-full" />;
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
+      }}
+    />
+  );
 }
