@@ -44,6 +44,14 @@ app.use(async (req, res, next) => {
   next();
 });
 
+// Parse body payloads first
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Mount Webhook route before CORS to isolate from CORS checks
+const webhookRoutes = require('../routes/webhooks');
+app.use('/api/webhooks', webhookRoutes);
+
 // Configure CORS - Allow localhost and Vercel domains
 const allowedOrigins = [
   'http://localhost:3000',
@@ -69,8 +77,6 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
 // Define root/status route
@@ -364,7 +370,6 @@ const emailRoutes = require('../routes/email');
 const clusterRoutes = require('../routes/cluster');
 const adminRoutes = require('../routes/admin');
 const cohortRoutes = require('../routes/cohort');
-const webhookRoutes = require('../routes/webhooks');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/distribution', distributionRoutes);
@@ -372,7 +377,6 @@ app.use('/api/email', emailRoutes);
 app.use('/api/cluster', clusterRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/cohort', cohortRoutes);
-app.use('/api/webhooks', webhookRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
