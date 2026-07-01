@@ -765,14 +765,14 @@ export default function CohortRegistrationsPage() {
 
 
 
-    <div className="min-h-screen flex flex-col justify-between text-foreground relative overflow-hidden" style={{background:'#050B18'}}>
+    <div className="min-h-screen bg-background flex flex-col justify-between text-foreground relative overflow-hidden">
 
       {/* === Beautiful animated aurora background === */}
       <AuroraBackground />
 
 
 
-      <header className="sticky top-0 backdrop-blur-xl border-b z-50 transition-all relative" style={{background:'rgba(5,11,24,0.75)', borderColor:'rgba(255,107,0,0.15)'}}>
+      <header className="sticky top-0 bg-card-bg/85 backdrop-blur-md border-b border-card-border z-50 transition-all relative">
 
 
 
