@@ -117,7 +117,7 @@ router.get('/overview', requireAuth, requireRole(['admin', 'super_admin']), asyn
         confirmedJkluCount++;
         clusterPerf[c].confirmedJklu++;
       }
-      if (student.notContinuing) {
+      if (student.notContinuing || student.notComingAarambh) {
         notContinuingCount++;
         clusterPerf[c].notContinuing++;
       }
@@ -265,7 +265,12 @@ router.get('/not-continuing', requireAuth, requireRole(['admin', 'super_admin'])
       return res.json([]);
     }
 
-    const students = await Student.find({ notContinuing: true })
+    const students = await Student.find({
+      $or: [
+        { notContinuing: true },
+        { notComingAarambh: true }
+      ]
+    })
       .populate('confirmedBy', 'name')
       .sort({ updatedAt: -1 });
 

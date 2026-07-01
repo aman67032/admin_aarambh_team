@@ -163,7 +163,7 @@ export default function AdminDashboard() {
             activeTab === 'not-continuing' ? 'border-b-2 border-primary text-primary' : 'text-slate-400'
           }`}
         >
-          Not Continuing Panel ({notContinuing.length})
+          Not Continuing & Not Coming Panel ({notContinuing.length})
         </button>
       </div>
 
@@ -366,9 +366,9 @@ export default function AdminDashboard() {
         /* Not Continuing Students Panel */
         <div className="glass-card overflow-hidden">
           <div className="p-6 border-b border-card-border">
-            <h3 className="text-lg font-extrabold font-outfit text-slate-800">Students Not Continuing Admissions</h3>
+            <h3 className="text-lg font-extrabold font-outfit text-slate-800">Students Not Continuing / Not Coming to Aarambh</h3>
             <p className="text-xs text-slate-400 font-semibold mt-1">
-              Collected data of students who decided not to continue at JKLU.
+              Collected data of students who decided not to continue at JKLU or are not coming to Aarambh.
             </p>
           </div>
           <div className="overflow-x-auto">
@@ -380,14 +380,22 @@ export default function AdminDashboard() {
                   <th className="p-4">Course</th>
                   <th className="p-4">Cohort</th>
                   <th className="p-4">Contact Info</th>
+                  <th className="p-4">Status / Type</th>
                   <th className="p-4">Reason Note</th>
                   <th className="p-4">Reported By</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
                 {notContinuing.map((s) => (
-                  <tr key={s._id} className="hover:bg-slate-50/50">
-                    <td className="p-4 font-bold text-slate-900">{s.name}</td>
+                  <tr 
+                    key={s._id} 
+                    className={`hover:bg-slate-50/50 ${
+                      s.notComingAarambh 
+                        ? 'bg-red-50/20 text-red-900 border-red-100/50' 
+                        : 'bg-slate-50/10 text-slate-500 border-slate-100/50'
+                    }`}
+                  >
+                    <td className={`p-4 font-bold ${s.notComingAarambh ? 'text-red-700' : 'text-slate-900'}`}>{s.name}</td>
                     <td className="p-4">{s.applicationNo}</td>
                     <td className="p-4">{s.course}</td>
                     <td className="p-4 font-bold">{s.cohort}</td>
@@ -395,17 +403,28 @@ export default function AdminDashboard() {
                       <div>Phone: {s.mobile}</div>
                       <div>Email: {s.email}</div>
                     </td>
-                    <td className="p-4 text-xs text-slate-500 font-normal max-w-[200px] leading-relaxed">
+                    <td className="p-4">
+                      {s.notComingAarambh ? (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase">
+                          Not Coming (Aarambh)
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-600 uppercase">
+                          Not Continuing (JKLU)
+                        </span>
+                      )}
+                    </td>
+                    <td className="p-4 text-xs font-normal max-w-[200px] leading-relaxed">
                       {s.confirmationNote || 'No explanation provided.'}
                     </td>
-                    <td className="p-4 text-xs font-normal text-slate-400">
+                    <td className="p-4 text-xs font-normal">
                       {s.confirmedBy ? (s.confirmedBy as any).name : 'Cluster Head'}
                     </td>
                   </tr>
                 ))}
                 {notContinuing.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="p-6 text-center text-slate-400 font-bold">No students marked as not continuing.</td>
+                    <td colSpan={8} className="p-6 text-center text-slate-400 font-bold">No students marked as not continuing or not coming.</td>
                   </tr>
                 )}
               </tbody>
