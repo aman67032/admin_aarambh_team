@@ -158,11 +158,26 @@ export default function CohortRegistrationsPage() {
     });
   });
 
+  // Wilson Score Lower Bound — statistically correct normalization.
+  // Penalises small cohorts: 1/1 (100%) scores lower than 3/3 (100%) or 8/10 (80%).
+  // z = 1.65 → 90% confidence interval.
+  const wilsonScore = (registered: number, total: number): number => {
+    if (total === 0 || registered === 0) return 0;
+    const z = 1.65;
+    const p = registered / total;
+    const z2 = z * z;
+    const numerator = p + z2 / (2 * total) - z * Math.sqrt((p * (1 - p) + z2 / (4 * total)) / total);
+    const denominator = 1 + z2 / total;
+    return Math.max(0, numerator / denominator);
+  };
+
   cohortsRanked.sort((a, b) => {
-    if (b.percentage !== a.percentage) return b.percentage - a.percentage;
-    if (b.registered !== a.registered) return b.registered - a.registered;
+    const scoreA = wilsonScore(a.registered, a.total);
+    const scoreB = wilsonScore(b.registered, b.total);
+    // Primary: Wilson score (higher is better)
+    if (Math.abs(scoreB - scoreA) > 0.0001) return scoreB - scoreA;
+    // Tie-break: who reached this state EARLIER wins (lower timestamp = better)
     if (a.latestConfirmTime !== b.latestConfirmTime) return a.latestConfirmTime - b.latestConfirmTime;
-    if (b.total !== a.total) return b.total - a.total;
     return a.cohortName.localeCompare(b.cohortName);
   });
 
