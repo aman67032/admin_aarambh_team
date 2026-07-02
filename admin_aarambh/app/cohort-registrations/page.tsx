@@ -158,9 +158,9 @@ export default function CohortRegistrationsPage() {
     });
   });
 
-  // Wilson Score Lower Bound — statistically correct normalization.
-  // Penalises small cohorts: 1/1 (100%) scores lower than 3/3 (100%) or 8/10 (80%).
-  // z = 1.65 → 90% confidence interval.
+  // Wilson Score Lower Bound — z=1.65 (90% confidence).
+  // Rewards cohorts with both high rate AND enough registrations as evidence.
+  // 1/1 (100%) < 3/3 (100%) < 8/10 (80%) after normalization.
   const wilsonScore = (registered: number, total: number): number => {
     if (total === 0 || registered === 0) return 0;
     const z = 1.65;
@@ -171,13 +171,33 @@ export default function CohortRegistrationsPage() {
     return Math.max(0, numerator / denominator);
   };
 
+  // Pass 1: compute raw Wilson scores and gather all valid timestamps
+  const rawScores = cohortsRanked.map(c => wilsonScore(c.registered, c.total));
+  const validTimes = cohortsRanked
+    .map(c => c.latestConfirmTime)
+    .filter(t => t !== Infinity);
+
+  const minTime = validTimes.length > 0 ? Math.min(...validTimes) : 0;
+  const maxTime = validTimes.length > 0 ? Math.max(...validTimes) : 0;
+  const timeRange = maxTime - minTime;
+
+  // Pass 2: compose final score = 85% Wilson + 15% time bonus
+  // Time bonus: 1 = finished earliest, 0 = finished latest (or no time data)
+  const compositeScore = (wilsonIdx: number, cohort: typeof cohortsRanked[0]): number => {
+    const ws = rawScores[wilsonIdx];
+    let timeFactor = 0;
+    if (cohort.latestConfirmTime !== Infinity && timeRange > 0) {
+      timeFactor = 1 - (cohort.latestConfirmTime - minTime) / timeRange;
+    }
+    return 0.85 * ws + 0.15 * timeFactor;
+  };
+
   cohortsRanked.sort((a, b) => {
-    const scoreA = wilsonScore(a.registered, a.total);
-    const scoreB = wilsonScore(b.registered, b.total);
-    // Primary: Wilson score (higher is better)
+    const idxA = cohortsRanked.indexOf(a);
+    const idxB = cohortsRanked.indexOf(b);
+    const scoreA = compositeScore(idxA, a);
+    const scoreB = compositeScore(idxB, b);
     if (Math.abs(scoreB - scoreA) > 0.0001) return scoreB - scoreA;
-    // Tie-break: who reached this state EARLIER wins (lower timestamp = better)
-    if (a.latestConfirmTime !== b.latestConfirmTime) return a.latestConfirmTime - b.latestConfirmTime;
     return a.cohortName.localeCompare(b.cohortName);
   });
 
