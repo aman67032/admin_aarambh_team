@@ -138,8 +138,9 @@ export default function CohortRegistrationsPage() {
   });
 
   cohortsRanked.sort((a, b) => {
-    if (b.normalizedScore !== a.normalizedScore) return b.normalizedScore - a.normalizedScore;
+    if (b.percentage !== a.percentage) return b.percentage - a.percentage;
     if (b.registered !== a.registered) return b.registered - a.registered;
+    if (b.total !== a.total) return b.total - a.total;
     return a.cohortName.localeCompare(b.cohortName);
   });
 
