@@ -18,6 +18,7 @@ interface StudentInfo {
   documentsVerified: boolean;
   notContinuing: boolean;
   notComingAarambh: boolean;
+  confirmedAt?: string;
 }
 
 interface CohortInfo {
@@ -120,26 +121,47 @@ export default function CohortRegistrationsPage() {
   const cohortsRanked: Array<{
     cohortName: string; leaderName: string; clusterName: string;
     total: number; registered: number; verified: number;
-    percentage: number; normalizedScore: number;
+    percentage: number; latestConfirmTime: number;
   }> = [];
 
   data.forEach(cluster => {
     cluster.cohorts.forEach(cohort => {
       const total = cohort.students.length;
-      const registered = cohort.students.filter(s => s.confirmedJklu).length;
+      const registeredStudents = cohort.students.filter(s => s.confirmedJklu);
+      const registered = registeredStudents.length;
       const verified = cohort.students.filter(s => s.documentsVerified).length;
       const percentage = total > 0 ? Math.round((registered / total) * 100) : 0;
-      const normalizedScore = total > 0 ? (registered / (total + 2)) * 100 : 0;
+      
+      let latestConfirmTime = Infinity;
+      if (registered > 0) {
+        const confirmTimes = registeredStudents
+          .map(s => s.confirmedAt ? new Date(s.confirmedAt).getTime() : null)
+          .filter((t): t is number => t !== null);
+        if (confirmTimes.length > 0) {
+          latestConfirmTime = Math.max(...confirmTimes);
+        }
+      }
+
       grandTotalStudents += total;
       grandRegisteredCount += registered;
       grandVerifiedCount += verified;
-      cohortsRanked.push({ cohortName: cohort.cohortName, leaderName: cohort.leaderName, clusterName: cluster.clusterName, total, registered, verified, percentage, normalizedScore });
+      cohortsRanked.push({ 
+        cohortName: cohort.cohortName, 
+        leaderName: cohort.leaderName, 
+        clusterName: cluster.clusterName, 
+        total, 
+        registered, 
+        verified, 
+        percentage, 
+        latestConfirmTime 
+      });
     });
   });
 
   cohortsRanked.sort((a, b) => {
     if (b.percentage !== a.percentage) return b.percentage - a.percentage;
     if (b.registered !== a.registered) return b.registered - a.registered;
+    if (a.latestConfirmTime !== b.latestConfirmTime) return a.latestConfirmTime - b.latestConfirmTime;
     if (b.total !== a.total) return b.total - a.total;
     return a.cohortName.localeCompare(b.cohortName);
   });
