@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Loader from '../../components/Loader';
+import { useApp } from '../../context/AppContext';
 
 interface BedInfo {
   sno: number;
@@ -18,6 +19,7 @@ interface RoomInfo {
 }
 
 export default function HostelManagementPage() {
+  const { user } = useApp();
   const [activeHostel, setActiveHostel] = useState<'BH-1' | 'GH-2'>('BH-1');
   const [rooms, setRooms] = useState<RoomInfo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -369,7 +371,7 @@ export default function HostelManagementPage() {
                         </div>
 
                         {/* Action Button */}
-                        {bed.isOccupied && (
+                        {bed.isOccupied && user?.role === 'super_admin' && (
                           <button
                             onClick={() => handleVacateBed(bed.sno, room.room, bed.bed)}
                             disabled={vacatingSno === bed.sno}
