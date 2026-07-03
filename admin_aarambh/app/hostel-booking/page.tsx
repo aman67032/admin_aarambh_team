@@ -64,15 +64,9 @@ export default function HostelBookingPage() {
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [bookingDetails, setBookingDetails] = useState<any>(null);
 
-  // Force fun theme (dark mode) on mount for consistent styling and readability
+  // Force light theme on mount for clean layout and readability
   useEffect(() => {
-    document.documentElement.classList.add('theme-fun');
-    return () => {
-      const savedTheme = localStorage.getItem('aarambh-theme');
-      if (savedTheme !== 'fun') {
-        document.documentElement.classList.remove('theme-fun');
-      }
-    };
+    document.documentElement.classList.remove('theme-fun');
   }, []);
 
   // Verify primary student
@@ -302,17 +296,17 @@ export default function HostelBookingPage() {
             <div className="w-16 h-16 bg-green-500/20 border border-green-500/50 rounded-full flex items-center justify-center mx-auto mb-6">
               <span className="text-3xl text-green-500 font-bold">✓</span>
             </div>
-            <h2 className="text-2xl font-bold font-outfit text-white mb-2">Booking Confirmed!</h2>
+            <h2 className="text-2xl font-bold font-outfit text-foreground mb-2">Booking Confirmed!</h2>
             <p className="text-text-muted text-sm mb-6">Your hostel room has been successfully booked.</p>
 
             <div className="bg-background/80 rounded-xl p-6 border border-card-border text-left mb-6 font-mono text-xs">
               <div className="flex justify-between border-b border-card-border/50 pb-2 mb-2">
                 <span className="text-text-muted">Hostel Block:</span>
-                <span className="font-bold text-white">{bookingDetails?.hostel}</span>
+                <span className="font-bold text-foreground">{bookingDetails?.hostel}</span>
               </div>
               <div className="flex justify-between border-b border-card-border/50 pb-2 mb-2">
                 <span className="text-text-muted">Floor Level:</span>
-                <span className="font-bold text-white">{bookingDetails?.floor}</span>
+                <span className="font-bold text-foreground">{bookingDetails?.floor}</span>
               </div>
               <div className="flex justify-between border-b border-card-border/50 pb-2 mb-2">
                 <span className="text-text-muted">Room Number:</span>
@@ -335,7 +329,7 @@ export default function HostelBookingPage() {
           /* Step 1: Verification Screen */
           <div className="max-w-md mx-auto bg-card-bg/60 border border-card-border rounded-2xl p-8 backdrop-blur-md shadow-lg">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold font-outfit text-white mb-2">Team Hostel Allotment</h1>
+              <h1 className="text-2xl font-bold font-outfit text-foreground mb-2">Team Hostel Allotment</h1>
               <p className="text-text-muted text-xs">Aarambh 2026 Team Leaders & Volunteers Room Selection</p>
               <div className="bg-primary/10 border border-primary/20 rounded-xl px-4 py-2 mt-4 text-[10px] text-primary inline-block">
                 👥 Friend & Room sharing supported (No login required)
@@ -344,7 +338,7 @@ export default function HostelBookingPage() {
 
             <form onSubmit={handleVerifyStudent} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-white uppercase tracking-wider mb-2 font-outfit">
+                <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-2 font-outfit">
                   Roll Number
                 </label>
                 <input
@@ -352,7 +346,7 @@ export default function HostelBookingPage() {
                   placeholder="e.g., 2023BTech096"
                   value={appNo}
                   onChange={(e) => setAppNo(e.target.value)}
-                  className="w-full px-4 py-3 bg-background border border-card-border focus:border-primary rounded-xl text-white text-sm outline-none transition-all placeholder:text-text-muted/50"
+                  className="w-full px-4 py-3 bg-background border border-card-border focus:border-primary rounded-xl text-foreground text-sm outline-none transition-all placeholder:text-text-muted/50"
                   required
                 />
               </div>
@@ -378,7 +372,7 @@ export default function HostelBookingPage() {
             <div className="w-16 h-16 bg-primary/20 border border-primary/50 rounded-full flex items-center justify-center mx-auto mb-6">
               <span className="text-2xl text-primary font-bold">🏢</span>
             </div>
-            <h2 className="text-xl font-bold font-outfit text-white mb-2">Room Already Allotted!</h2>
+            <h2 className="text-xl font-bold font-outfit text-foreground mb-2">Room Already Allotted!</h2>
             <p className="text-text-muted text-xs mb-6">
               Hey **{student.name}**, your hostel room allotment is already active.
             </p>
@@ -386,11 +380,11 @@ export default function HostelBookingPage() {
             <div className="bg-background/80 rounded-xl p-6 border border-card-border text-left mb-6 font-mono text-xs">
               <div className="flex justify-between border-b border-card-border/50 pb-2 mb-2">
                 <span className="text-text-muted">Hostel Block:</span>
-                <span className="font-bold text-white">{allotment.hostel}</span>
+                <span className="font-bold text-foreground">{allotment.hostel}</span>
               </div>
               <div className="flex justify-between border-b border-card-border/50 pb-2 mb-2">
                 <span className="text-text-muted">Floor Level:</span>
-                <span className="font-bold text-white">{allotment.floor}</span>
+                <span className="font-bold text-foreground">{allotment.floor}</span>
               </div>
               <div className="flex justify-between border-b border-card-border/50 pb-2 mb-2">
                 <span className="text-text-muted">Room Number:</span>
@@ -417,11 +411,11 @@ export default function HostelBookingPage() {
               <div className="bg-card-bg/60 border border-card-border rounded-2xl p-6 backdrop-blur-md">
                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
                   <div>
-                    <h2 className="text-xl font-bold font-outfit text-white">
+                    <h2 className="text-xl font-bold font-outfit text-foreground">
                       Select Room in {hostelName}
                     </h2>
                     <p className="text-xs text-text-muted">
-                      Member: **{student.name}** ({student.gender}) | Position: {student.cohort}
+                      Member: <span className="font-extrabold text-foreground">{student.name}</span> ({student.gender}) | Position: <span className="font-extrabold text-primary">{student.cohort}</span>
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -475,10 +469,10 @@ export default function HostelBookingPage() {
                             onClick={() => handleSelectRoom(room)}
                             className={`p-4 border rounded-xl text-left transition-all hover:scale-[1.02] cursor-pointer flex flex-col justify-between gap-3 ${
                               isSelected
-                                ? 'bg-primary/10 border-primary text-white shadow-glow'
+                                ? 'bg-primary/10 border-primary text-foreground shadow-glow'
                                 : isFullyBooked
                                 ? 'bg-background border-card-border/40 opacity-55 text-text-muted cursor-not-allowed'
-                                : 'bg-background hover:bg-card-bg border-card-border text-white'
+                                : 'bg-background hover:bg-card-bg border-card-border text-foreground'
                             }`}
                             disabled={isFullyBooked}
                           >
@@ -513,7 +507,7 @@ export default function HostelBookingPage() {
             {/* Right Column: Room Details & Booking Panel */}
             <div className="space-y-6">
               <div className="bg-card-bg/60 border border-card-border rounded-2xl p-6 backdrop-blur-md">
-                <h3 className="text-md font-bold font-outfit text-white mb-4 border-b border-card-border pb-3 flex items-center justify-between">
+                <h3 className="text-md font-bold font-outfit text-foreground mb-4 border-b border-card-border pb-3 flex items-center justify-between">
                   <span>Room Selection Summary</span>
                   {selectedRoom && (
                     <span className="text-xs bg-primary/20 text-primary border border-primary/30 px-2 py-0.5 rounded-full">
@@ -547,7 +541,7 @@ export default function HostelBookingPage() {
                             displayClass = 'bg-accent text-black border-accent font-bold scale-[1.02]';
                             displayName += ` (Friend: ${friendAssigned.verifiedStudent?.name.split(' ')[0]})`;
                           } else {
-                            displayClass = 'bg-background border-card-border hover:bg-card-bg text-white hover:border-primary/50';
+                            displayClass = 'bg-background border-card-border hover:bg-card-bg text-foreground hover:border-primary/50';
                           }
 
                           return (
@@ -584,7 +578,7 @@ export default function HostelBookingPage() {
                             }}
                             className="w-4 h-4 accent-primary rounded border-card-border bg-background focus:ring-primary cursor-pointer"
                           />
-                          <span className="text-xs font-bold text-white uppercase tracking-wider">
+                          <span className="text-xs font-bold text-foreground uppercase tracking-wider">
                             Book with friends (same room)
                           </span>
                         </label>
@@ -613,7 +607,7 @@ export default function HostelBookingPage() {
                                     placeholder="Friend Roll No"
                                     value={friend.appNo}
                                     onChange={(e) => updateFriendState(idx, { appNo: e.target.value, verifiedStudent: null, error: '', bedSno: null })}
-                                    className="flex-1 px-3 py-2 bg-card-bg/40 border border-card-border rounded-lg text-white text-xs outline-none focus:border-accent"
+                                    className="flex-1 px-3 py-2 bg-card-bg/40 border border-card-border rounded-lg text-foreground text-xs outline-none focus:border-accent"
                                     disabled={friend.verifying}
                                   />
                                   <button
@@ -669,7 +663,7 @@ export default function HostelBookingPage() {
                             {friendsList.length < (hostelName === 'BH-1' ? 1 : 3) && (
                               <button
                                 onClick={addFriendInput}
-                                className="w-full py-2 bg-card-bg border border-dashed border-card-border text-[10px] font-bold text-text-muted hover:text-white rounded-lg transition-all cursor-pointer"
+                                className="w-full py-2 bg-card-bg border border-dashed border-card-border text-[10px] font-bold text-text-muted hover:text-foreground rounded-lg transition-all cursor-pointer"
                               >
                                 + Add Friend
                               </button>
