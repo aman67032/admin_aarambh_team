@@ -329,14 +329,6 @@ export default function HostelBookingPage() {
             <div className="w-[1px] h-6 bg-card-border"></div>
             <img src="/Aarambh_logo_Final-01.svg" alt="Aarambh logo" className="h-16 object-contain" />
           </Link>
-          <div>
-            <Link
-              href="/"
-              className="px-4 py-2 border border-card-border text-text-muted hover:bg-card-bg text-xs font-bold rounded-full transition-all cursor-pointer"
-            >
-              Back to Home
-            </Link>
-          </div>
         </div>
       </header>
 
