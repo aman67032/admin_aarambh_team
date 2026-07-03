@@ -250,10 +250,10 @@ router.post('/book', async (req, res) => {
       }
     }
 
-    // 4. Perform the booking updates
+    // 4. Perform the booking updates atomically
     // Assign primary bed
-    await HostelRoom.updateOne(
-      { _id: primaryBed._id },
+    const primaryUpdate = await HostelRoom.updateOne(
+      { _id: primaryBed._id, allottedTo: null },
       {
         $set: {
           allottedTo: primaryMember._id,
@@ -263,11 +263,15 @@ router.post('/book', async (req, res) => {
       }
     );
 
+    if (primaryUpdate.modifiedCount === 0) {
+      return res.status(400).json({ error: `Selected bed slot ${primaryBed.bed} in Room ${primaryBed.room} was just occupied by another member. Please refresh and try again.` });
+    }
+
     // Assign friend beds
     for (const f of friendRecords) {
       const fBed = targetBeds.find(b => b.sno === f.bedSno);
-      await HostelRoom.updateOne(
-        { _id: fBed._id },
+      const friendUpdate = await HostelRoom.updateOne(
+        { _id: fBed._id, allottedTo: null },
         {
           $set: {
             allottedTo: f.member._id,
@@ -276,6 +280,12 @@ router.post('/book', async (req, res) => {
           }
         }
       );
+
+      if (friendUpdate.modifiedCount === 0) {
+        // Rollback primary booking (optional safety, since it's an error state)
+        await HostelRoom.updateOne({ _id: primaryBed._id }, { $set: { allottedTo: null, allottedToName: null, allottedToAppNo: null } });
+        return res.status(400).json({ error: `Friend bed slot ${fBed.bed} in Room ${fBed.room} was just occupied by another member. Please refresh and try again.` });
+      }
     }
 
     res.json({

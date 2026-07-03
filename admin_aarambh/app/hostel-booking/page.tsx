@@ -192,7 +192,11 @@ export default function HostelBookingPage() {
     }
 
     // Check if duplicate in friendsList
-    const duplicate = friendsList.some((f, idx) => idx !== index && f.appNo.trim().toUpperCase() === friend.appNo.trim().toUpperCase());
+    const normFriendApp = friend.appNo.trim().toUpperCase().replace(/[\/\.\s-]/g, '');
+    const duplicate = friendsList.some((f, idx) => {
+      if (idx === index || !f.appNo) return false;
+      return f.appNo.trim().toUpperCase().replace(/[\/\.\s-]/g, '') === normFriendApp;
+    });
     if (duplicate) {
       updateFriendState(index, { error: 'Duplicate friend roll number.' });
       return;
