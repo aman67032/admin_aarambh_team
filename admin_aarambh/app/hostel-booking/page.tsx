@@ -370,12 +370,12 @@ export default function HostelBookingPage() {
               </div>
             </div>
 
-            <button
-              onClick={() => window.location.reload()}
-              className="w-full py-3 bg-gradient-to-r from-primary to-accent hover:from-primary-dark hover:to-accent-dark text-black font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow"
+            <Link
+              href="/"
+              className="w-full py-3 bg-gradient-to-r from-primary to-accent hover:from-primary-dark hover:to-accent-dark text-black font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow block text-center"
             >
-              Done / Book Another Room
-            </button>
+              Done
+            </Link>
           </div>
         ) : !student ? (
           /* Step 1: Verification Screen */
@@ -479,12 +479,12 @@ export default function HostelBookingPage() {
               </div>
             </div>
 
-            <button
-              onClick={() => window.location.reload()}
-              className="w-full py-3 bg-gradient-to-r from-primary to-accent hover:from-primary-dark hover:to-accent-dark text-black font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow"
+            <Link
+              href="/"
+              className="w-full py-3 bg-gradient-to-r from-primary to-accent hover:from-primary-dark hover:to-accent-dark text-black font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow block text-center"
             >
-              Verify Different Application
-            </button>
+              Go to Home
+            </Link>
           </div>
         ) : (
           /* Step 2: Room Selection & Grid Screen */
