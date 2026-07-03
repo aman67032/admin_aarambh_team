@@ -64,6 +64,17 @@ export default function HostelBookingPage() {
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [bookingDetails, setBookingDetails] = useState<any>(null);
 
+  // Force fun theme (dark mode) on mount for consistent styling and readability
+  useEffect(() => {
+    document.documentElement.classList.add('theme-fun');
+    return () => {
+      const savedTheme = localStorage.getItem('aarambh-theme');
+      if (savedTheme !== 'fun') {
+        document.documentElement.classList.remove('theme-fun');
+      }
+    };
+  }, []);
+
   // Verify primary student
   const handleVerifyStudent = async (e: React.FormEvent) => {
     e.preventDefault();
