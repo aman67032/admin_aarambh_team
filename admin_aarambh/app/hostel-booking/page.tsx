@@ -389,22 +389,24 @@ export default function HostelBookingPage() {
 
       {/* Header */}
       <header className="sticky top-0 bg-card-bg/85 backdrop-blur-md border-b border-card-border z-50 transition-all">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-12 object-contain" />
+            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-9 md:h-12 object-contain" />
             <div className="w-[1px] h-6 bg-card-border"></div>
-            <img src="/Aarambh_logo_Final-01.svg" alt="Aarambh logo" className="h-16 object-contain" />
+            <img src="/Aarambh_logo_Final-01.svg" alt="Aarambh logo" className="h-12 md:h-16 object-contain" />
           </Link>
         </div>
       </header>
 
       {/* Main Body */}
-      <main className="max-w-7xl mx-auto px-6 py-12 flex-1 w-full z-10">
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-12 flex-1 w-full z-10">
         {/* Success screen */}
         {bookingSuccess ? (
-          <div className="max-w-md mx-auto bg-card-bg/60 border border-card-border rounded-2xl p-8 backdrop-blur-md text-center shadow-glow">
+          <div className="max-w-md mx-auto bg-card-bg/60 border border-card-border rounded-2xl p-5 md:p-8 backdrop-blur-md text-center shadow-glow">
             <div className="w-16 h-16 bg-green-500/20 border border-green-500/50 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-3xl text-green-500 font-bold">✓</span>
+              <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
             </div>
             <h2 className="text-2xl font-bold font-outfit text-foreground mb-2">Booking Confirmed!</h2>
             <p className="text-text-muted text-sm mb-6">Your hostel room has been successfully booked.</p>
@@ -432,7 +434,10 @@ export default function HostelBookingPage() {
               onClick={() => setIsDocsModalOpen(true)}
               className="w-full mb-3 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow flex items-center justify-center gap-2"
             >
-              📄 Download Required Forms (PDF)
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Download Required Forms (PDF)
             </button>
 
             <Link
@@ -444,12 +449,15 @@ export default function HostelBookingPage() {
           </div>
         ) : !student ? (
           /* Step 1: Verification Screen */
-          <div className="max-w-md mx-auto bg-card-bg/60 border border-card-border rounded-2xl p-8 backdrop-blur-md shadow-lg">
+          <div className="max-w-md mx-auto bg-card-bg/60 border border-card-border rounded-2xl p-5 md:p-8 backdrop-blur-md shadow-lg">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold font-outfit text-foreground mb-2">Team Hostel Allotment</h1>
+              <h1 className="text-xl md:text-2xl font-bold font-outfit text-foreground mb-2">Team Hostel Allotment</h1>
               <p className="text-text-muted text-xs">Aarambh 2026 Team Leaders & Volunteers Room Selection</p>
               <div className="bg-primary/10 border border-primary/20 rounded-xl px-4 py-2 mt-4 text-[10px] text-primary inline-block">
-                👥 Friend & Room sharing supported (No login required)
+                <svg className="w-3.5 h-3.5 inline-block mr-1.5 align-text-bottom" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                Friend & Room sharing supported (No login required)
               </div>
             </div>
 
@@ -516,9 +524,11 @@ export default function HostelBookingPage() {
           </div>
         ) : isAllotted && allotment ? (
           /* Step 1.5: Already Booked View */
-          <div className="max-w-md mx-auto bg-card-bg/60 border border-card-border rounded-2xl p-8 backdrop-blur-md text-center shadow-lg">
+          <div className="max-w-md mx-auto bg-card-bg/60 border border-card-border rounded-2xl p-5 md:p-8 backdrop-blur-md text-center shadow-lg">
             <div className="w-16 h-16 bg-primary/20 border border-primary/50 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-2xl text-primary font-bold">🏢</span>
+              <svg className="w-8 h-8 text-primary mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
             </div>
             <h2 className="text-xl font-bold font-outfit text-foreground mb-2">Room Already Allotted!</h2>
             <p className="text-text-muted text-xs mb-6">
@@ -548,7 +558,10 @@ export default function HostelBookingPage() {
               onClick={() => setIsDocsModalOpen(true)}
               className="w-full mb-3 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow flex items-center justify-center gap-2"
             >
-              📄 Download Required Forms (PDF)
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Download Required Forms (PDF)
             </button>
 
             <Link
@@ -563,7 +576,7 @@ export default function HostelBookingPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left/Middle Column: Grid and Floor Selection */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-card-bg/60 border border-card-border rounded-2xl p-6 backdrop-blur-md">
+              <div className="bg-card-bg/60 border border-card-border rounded-2xl p-4 md:p-6 backdrop-blur-md">
                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
                   <div>
                     <h2 className="text-xl font-bold font-outfit text-foreground">
@@ -599,7 +612,7 @@ export default function HostelBookingPage() {
                             setSelectedRoom(null);
                             setSelectedBed(null);
                           }}
-                          className={`px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                          className={`px-3 py-1.5 md:px-4 md:py-2 text-[10px] md:text-xs font-bold rounded-lg transition-all cursor-pointer ${
                             selectedFloor === floor
                               ? 'bg-primary text-black font-extrabold shadow-glow'
                               : 'bg-background hover:bg-card-bg text-text-muted border border-card-border'
@@ -611,7 +624,7 @@ export default function HostelBookingPage() {
                     </div>
 
                     {/* Room Grid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 md:gap-4">
                       {filteredRooms.map((room) => {
                         const totalBeds = room.beds.length;
                         const occupiedBeds = room.beds.filter(b => b.isOccupied).length;
@@ -622,7 +635,7 @@ export default function HostelBookingPage() {
                           <button
                             key={room.room}
                             onClick={() => handleSelectRoom(room)}
-                            className={`p-4 border rounded-xl text-left transition-all hover:scale-[1.02] cursor-pointer flex flex-col justify-between gap-3 ${
+                            className={`p-3 md:p-4 border rounded-xl text-left transition-all hover:scale-[1.02] cursor-pointer flex flex-col justify-between gap-2 md:gap-3 ${
                               isSelected
                                 ? 'bg-primary/10 border-primary text-foreground shadow-glow'
                                 : isFullyBooked
@@ -661,7 +674,7 @@ export default function HostelBookingPage() {
 
             {/* Right Column: Room Details & Booking Panel */}
             <div className="space-y-6">
-              <div className="bg-card-bg/60 border border-card-border rounded-2xl p-6 backdrop-blur-md">
+              <div className="bg-card-bg/60 border border-card-border rounded-2xl p-4 md:p-6 backdrop-blur-md">
                 <h3 className="text-md font-bold font-outfit text-foreground mb-4 border-b border-card-border pb-3 flex items-center justify-between">
                   <span>Room Selection Summary</span>
                   {selectedRoom && (
@@ -781,7 +794,7 @@ export default function HostelBookingPage() {
                                 {friend.verifiedStudent && (
                                   <div className="space-y-2">
                                     <span className="block text-[10px] text-green-500 font-bold">
-                                      ✓ Verified: {friend.verifiedStudent.name}
+                                      <span className="inline-block w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></span>Verified: {friend.verifiedStudent.name}
                                     </span>
                                     {/* Friend Bed Selector */}
                                     <div className="space-y-1">
@@ -860,7 +873,7 @@ export default function HostelBookingPage() {
                 onClick={() => setIsDocsModalOpen(false)}
                 className="text-text-muted hover:text-foreground text-sm font-bold cursor-pointer"
               >
-                ✕
+                x
               </button>
             </div>
 
@@ -1133,7 +1146,7 @@ export default function HostelBookingPage() {
             I/We give my/our consent to university that my/our ward be allowed to check-in and check-out of the University Campus for overnight stay out of the campus, warden office will take prior approval from us. (Please tick):
           </p>
           <p style={{ margin: '0 0 15px 0', fontStyle: 'italic', fontWeight: 'bold' }}>
-            [✓] (I/We also agree to submit our permission for night-out via email to <span style={{ textDecoration: 'underline', color: 'blue' }}>wardenboys@jklu.edu.in</span> / <span style={{ textDecoration: 'underline', color: 'blue' }}>wardengirls@jklu.edu.in</span>)
+            [Yes] (I/We also agree to submit our permission for night-out via email to <span style={{ textDecoration: 'underline', color: 'blue' }}>wardenboys@jklu.edu.in</span> / <span style={{ textDecoration: 'underline', color: 'blue' }}>wardengirls@jklu.edu.in</span>)
           </p>
           <p style={{ margin: '0 0 20px 0', fontSize: '9px', textAlign: 'justify', borderLeft: '2px solid #666', paddingLeft: '8px' }}>
             The request must be submitted latest by 6:00 PM on the day of the student's night-out. If a student is found absent (staying outside the campus) without prior information or approval from the Hostel Warden, the University reserves the right to take appropriate disciplinary action as per rules.
@@ -1164,7 +1177,7 @@ export default function HostelBookingPage() {
 
       {/* Footer */}
       <footer className="border-t border-card-border py-4 bg-card-bg/25">
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center text-xs text-text-muted">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 flex justify-between items-center text-xs text-text-muted">
           <span>&copy; 2026 Team Aarambh. All Rights Reserved.</span>
           <span>Built by Aman</span>
         </div>
