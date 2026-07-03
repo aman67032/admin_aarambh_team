@@ -37,7 +37,7 @@ def run():
     rows = list(sheet.iter_rows(values_only=True))[1:] # skip header
     
     members = []
-    seen_rolls = set()
+    seen_keys = set() # Store (roll, name) tuple to prevent duplicate insertions of the same person
     
     for r_idx, r in enumerate(rows):
         if not r or r[0] is None:
@@ -54,14 +54,16 @@ def run():
             continue
             
         norm_roll = normalize_roll(roll_no)
+        norm_name = str(name).strip().lower()
         if not norm_roll:
             continue
             
-        if norm_roll in seen_rolls:
-            print(f"Skipping duplicate roll number: {norm_roll} ({name})")
+        key = (norm_roll, norm_name)
+        if key in seen_keys:
+            print(f"Skipping exact duplicate: {norm_roll} ({name})")
             continue
             
-        seen_rolls.add(norm_roll)
+        seen_keys.add(key)
         
         # Clean gender
         g = str(gender).strip().lower()

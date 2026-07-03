@@ -7,8 +7,7 @@ const teamMemberSchema = new mongoose.Schema({
   },
   rollNo: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   gender: {
     type: String,

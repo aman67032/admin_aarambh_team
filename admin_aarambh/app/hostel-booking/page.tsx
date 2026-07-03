@@ -46,6 +46,10 @@ export default function HostelBookingPage() {
   const [allotment, setAllotment] = useState<AllotmentInfo | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Handle duplicate roll numbers in sheet
+  const [multipleMembers, setMultipleMembers] = useState<any[]>([]);
+  const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+
   // Rooms display states
   const [rooms, setRooms] = useState<RoomInfo[]>([]);
   const [loadingRooms, setLoadingRooms] = useState(false);
@@ -84,6 +88,8 @@ export default function HostelBookingPage() {
     setSelectedBed(null);
     setIsGroupBooking(false);
     setFriendsList([{ appNo: '', verifiedStudent: null, bedSno: null, error: '', verifying: false }]);
+    setMultipleMembers([]);
+    setSelectedMemberId(null);
 
     try {
       const res = await fetch('/api/hostel/verify-student', {
@@ -97,10 +103,50 @@ export default function HostelBookingPage() {
         throw new Error(data.error || 'Verification failed.');
       }
 
+      // If duplicate roll number found in sheet
+      if (data.multiple) {
+        setMultipleMembers(data.members);
+        return;
+      }
+
       setStudent(data.student);
       setHostelName(data.hostel);
       setIsAllotted(data.isAllotted);
       setAllotment(data.allotment);
+      setSelectedMemberId(data.student.id);
+
+      if (!data.isAllotted && data.hostel) {
+        fetchRooms(data.hostel);
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || 'An error occurred during verification.');
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  // Handle select duplicate member
+  const handleSelectMember = async (member: any) => {
+    setVerifying(true);
+    setErrorMsg('');
+    try {
+      const res = await fetch('/api/hostel/verify-student', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rollNo: appNo.trim(), gender: member.gender })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Verification failed.');
+      }
+
+      setStudent(data.student);
+      setHostelName(data.hostel);
+      setIsAllotted(data.isAllotted);
+      setAllotment(data.allotment);
+      setSelectedMemberId(member.id);
+      setMultipleMembers([]); // clear list
 
       if (!data.isAllotted && data.hostel) {
         fetchRooms(data.hostel);
@@ -148,17 +194,18 @@ export default function HostelBookingPage() {
     // Check if duplicate in friendsList
     const duplicate = friendsList.some((f, idx) => idx !== index && f.appNo.trim().toUpperCase() === friend.appNo.trim().toUpperCase());
     if (duplicate) {
-      updateFriendState(index, { error: 'Duplicate friend application number.' });
+      updateFriendState(index, { error: 'Duplicate friend roll number.' });
       return;
     }
 
     updateFriendState(index, { verifying: true, error: '', verifiedStudent: null });
 
     try {
+      // Pass primary student's gender to resolve duplicates automatically for the correct gender block!
       const res = await fetch('/api/hostel/verify-student', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rollNo: friend.appNo.trim() })
+        body: JSON.stringify({ rollNo: friend.appNo.trim(), gender: student?.gender })
       });
 
       const data = await res.json();
@@ -170,7 +217,7 @@ export default function HostelBookingPage() {
         throw new Error(`${data.student.name} is already allotted to Room ${data.allotment.room}.`);
       }
 
-      // Check gender mismatch
+      // Check gender mismatch (double safety)
       if (student && data.student.gender !== student.gender) {
         throw new Error(`Gender mismatch: Friend must be ${student.gender}.`);
       }
@@ -229,6 +276,7 @@ export default function HostelBookingPage() {
       const payload = {
         studentAppNo: student.applicationNo,
         bedSno: selectedBed.sno,
+        selectedMemberId: selectedMemberId,
         friends: isGroupBooking
           ? friendsList.map(f => ({
               applicationNo: f.verifiedStudent!.applicationNo,
@@ -299,7 +347,7 @@ export default function HostelBookingPage() {
             <h2 className="text-2xl font-bold font-outfit text-foreground mb-2">Booking Confirmed!</h2>
             <p className="text-text-muted text-sm mb-6">Your hostel room has been successfully booked.</p>
 
-            <div className="bg-background/80 rounded-xl p-6 border border-card-border text-left mb-6 font-mono text-xs">
+            <div className="bg-background/80 rounded-xl p-6 border border-card-border text-foreground mb-6 font-mono text-xs">
               <div className="flex justify-between border-b border-card-border/50 pb-2 mb-2">
                 <span className="text-text-muted">Hostel Block:</span>
                 <span className="font-bold text-foreground">{bookingDetails?.hostel}</span>
@@ -336,35 +384,66 @@ export default function HostelBookingPage() {
               </div>
             </div>
 
-            <form onSubmit={handleVerifyStudent} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-2 font-outfit">
-                  Roll Number
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g., 2023BTech096"
-                  value={appNo}
-                  onChange={(e) => setAppNo(e.target.value)}
-                  className="w-full px-4 py-3 bg-background border border-card-border focus:border-primary rounded-xl text-foreground text-sm outline-none transition-all placeholder:text-text-muted/50"
-                  required
-                />
-              </div>
-
-              {errorMsg && (
-                <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded-xl">
-                  {errorMsg}
+            {multipleMembers.length > 0 ? (
+              /* If multiple members with duplicate roll number found */
+              <div className="space-y-4">
+                <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">
+                  We found multiple members with this Roll Number. Please select your name:
+                </p>
+                <div className="flex flex-col gap-2">
+                  {multipleMembers.map((m) => (
+                    <button
+                      key={m.id}
+                      onClick={() => handleSelectMember(m)}
+                      className="w-full text-left p-4 border border-card-border hover:border-primary/50 bg-background hover:bg-card-bg rounded-xl transition-all cursor-pointer flex flex-col justify-between gap-1"
+                    >
+                      <span className="text-sm font-bold text-foreground">{m.name}</span>
+                      <span className="text-[10px] text-text-muted">{m.position} ({m.gender})</span>
+                    </button>
+                  ))}
                 </div>
-              )}
+                <button
+                  onClick={() => {
+                    setMultipleMembers([]);
+                    setErrorMsg('');
+                  }}
+                  className="w-full py-2 border border-card-border text-text-muted hover:bg-card-bg text-xs font-bold rounded-lg transition-all mt-4 cursor-pointer"
+                >
+                  Go Back
+                </button>
+              </div>
+            ) : (
+              /* Normal Form */
+              <form onSubmit={handleVerifyStudent} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-2 font-outfit">
+                    Roll Number
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g., 2023BTech096"
+                    value={appNo}
+                    onChange={(e) => setAppNo(e.target.value)}
+                    className="w-full px-4 py-3 bg-background border border-card-border focus:border-primary rounded-xl text-foreground text-sm outline-none transition-all placeholder:text-text-muted/50"
+                    required
+                  />
+                </div>
 
-              <button
-                type="submit"
-                disabled={verifying}
-                className="w-full py-3 bg-gradient-to-r from-primary to-accent hover:from-primary-dark hover:to-accent-dark text-black font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow flex items-center justify-center gap-2"
-              >
-                {verifying ? 'Verifying Team Member...' : 'Proceed to Book'}
-              </button>
-            </form>
+                {errorMsg && (
+                  <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded-xl">
+                    {errorMsg}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={verifying}
+                  className="w-full py-3 bg-gradient-to-r from-primary to-accent hover:from-primary-dark hover:to-accent-dark text-black font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow flex items-center justify-center gap-2"
+                >
+                  {verifying ? 'Verifying Team Member...' : 'Proceed to Book'}
+                </button>
+              </form>
+            )}
           </div>
         ) : isAllotted && allotment ? (
           /* Step 1.5: Already Booked View */
@@ -377,7 +456,7 @@ export default function HostelBookingPage() {
               Hey **{student.name}**, your hostel room allotment is already active.
             </p>
 
-            <div className="bg-background/80 rounded-xl p-6 border border-card-border text-left mb-6 font-mono text-xs">
+            <div className="bg-background/80 rounded-xl p-6 border border-card-border text-foreground mb-6 font-mono text-xs">
               <div className="flex justify-between border-b border-card-border/50 pb-2 mb-2">
                 <span className="text-text-muted">Hostel Block:</span>
                 <span className="font-bold text-foreground">{allotment.hostel}</span>
@@ -625,7 +704,7 @@ export default function HostelBookingPage() {
 
                                 {friend.verifiedStudent && (
                                   <div className="space-y-2">
-                                    <span className="block text-[10px] text-green-400 font-bold">
+                                    <span className="block text-[10px] text-green-500 font-bold">
                                       ✓ Verified: {friend.verifiedStudent.name}
                                     </span>
                                     {/* Friend Bed Selector */}

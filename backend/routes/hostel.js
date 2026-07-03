@@ -13,25 +13,48 @@ function normalizeRollNo(rollNo) {
 // Verify a team member by roll number and check room allotment status
 router.post('/verify-student', async (req, res) => {
   try {
-    const { rollNo } = req.body;
+    const { rollNo, gender } = req.body;
     if (!rollNo) {
       return res.status(400).json({ error: 'Roll number is required.' });
     }
 
     const normRoll = normalizeRollNo(rollNo);
-    
-    // Find team member in DB
-    const member = await TeamMember.findOne({
+    let query = {
       rollNo: { $regex: new RegExp('^' + normRoll + '$', 'i') }
-    });
+    };
 
-    if (!member) {
+    if (gender) {
+      const cleanGender = (gender.toLowerCase() === 'female' || gender.toLowerCase() === 'f') ? 'Female' : 'Male';
+      query.gender = cleanGender;
+    }
+
+    // Find all matching team members
+    const members = await TeamMember.find(query);
+
+    if (members.length === 0) {
       return res.status(404).json({ error: 'No team leader or volunteer found with this Roll Number.' });
     }
 
+    // If multiple members found (duplicate roll number in sheet), return list so user can choose
+    if (members.length > 1) {
+      return res.json({
+        success: true,
+        multiple: true,
+        members: members.map(m => ({
+          id: m._id,
+          name: m.name,
+          gender: m.gender,
+          position: m.position,
+          email: m.email
+        }))
+      });
+    }
+
+    const member = members[0];
+
     // Determine gender-based hostel ('BH-1' for male, 'GH-2' for female)
-    const gender = (member.gender || '').toLowerCase();
-    const isFemale = gender === 'female' || gender === 'f';
+    const mGender = (member.gender || '').toLowerCase();
+    const isFemale = mGender === 'female' || mGender === 'f';
     const hostel = isFemale ? 'GH-2' : 'BH-1';
 
     // Check if team member is already allotted a room
@@ -112,7 +135,7 @@ router.get('/rooms/:hostelName', async (req, res) => {
 // Book room beds for primary team member and optional friends
 router.post('/book', async (req, res) => {
   try {
-    const { studentAppNo: rollNo, bedSno, friends } = req.body;
+    const { studentAppNo: rollNo, bedSno, friends, selectedMemberId } = req.body;
     
     if (!rollNo || !bedSno) {
       return res.status(400).json({ error: 'Team member Roll Number and selected bed are required.' });
@@ -121,9 +144,19 @@ router.post('/book', async (req, res) => {
     const normPrimaryRoll = normalizeRollNo(rollNo);
     
     // 1. Verify primary team member
-    const primaryMember = await TeamMember.findOne({
-      rollNo: { $regex: new RegExp('^' + normPrimaryRoll + '$', 'i') }
-    });
+    let primaryMember = null;
+    if (selectedMemberId) {
+      primaryMember = await TeamMember.findById(selectedMemberId);
+    } else {
+      const members = await TeamMember.find({
+        rollNo: { $regex: new RegExp('^' + normPrimaryRoll + '$', 'i') }
+      });
+      if (members.length === 1) {
+        primaryMember = members[0];
+      } else if (members.length > 1) {
+        return res.status(400).json({ error: 'Multiple members found with this Roll Number. Please select your name first.' });
+      }
+    }
     
     if (!primaryMember) {
       return res.status(404).json({ error: 'Primary team member not found.' });
@@ -166,20 +199,14 @@ router.post('/book', async (req, res) => {
         friendRollsSeen.add(normFriendRoll);
         friendSnosSeen.add(parseFriendSno);
 
-        // Find friend record
+        // Find friend record (filter by primary member's gender to resolve duplicates!)
         const friendRec = await TeamMember.findOne({
-          rollNo: { $regex: new RegExp('^' + normFriendRoll + '$', 'i') }
+          rollNo: { $regex: new RegExp('^' + normFriendRoll + '$', 'i') },
+          gender: isFemale ? 'Female' : 'Male'
         });
         
         if (!friendRec) {
-          return res.status(404).json({ error: `Friend team member with Roll Number ${fRoll} not found.` });
-        }
-
-        // Verify friend matches primary student's gender/hostel
-        const fGender = (friendRec.gender || '').toLowerCase();
-        const fIsFemale = fGender === 'female' || fGender === 'f';
-        if (fIsFemale !== isFemale) {
-          return res.status(400).json({ error: `Friend team member ${friendRec.name} has a different gender. Co-ed room bookings are not allowed.` });
+          return res.status(404).json({ error: `Friend team member with Roll Number ${fRoll} (matching gender ${isFemale ? 'Female' : 'Male'}) not found.` });
         }
 
         // Check if friend already has a room
