@@ -5,6 +5,7 @@ import Loader from '../components/Loader';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useApp } from '../context/AppContext';
+import { useRouter } from 'next/navigation';
 
 interface StudentInfo {
   _id: string;
@@ -34,7 +35,15 @@ interface ClusterInfo {
 }
 
 export default function CohortRegistrationsPage() {
-  const { user } = useApp();
+  const { user, loading: appLoading } = useApp();
+  const router = useRouter();
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!appLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, appLoading, router]);
   const [data, setData] = useState<ClusterInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -183,6 +192,14 @@ export default function CohortRegistrationsPage() {
     return a.cohortName.localeCompare(b.cohortName);
   });
 
+  if (appLoading || !user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader scale={0.7} label="Verifying session..." />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background flex flex-col justify-between text-foreground relative overflow-hidden">
       <AuroraBackground />
@@ -303,7 +320,15 @@ export default function CohortRegistrationsPage() {
                 <div className="overflow-y-auto flex-1 pr-1 space-y-1.5 scrollbar-thin">
                   {cohortsRanked.map((c, idx) => {
                     const isMyCohort = user && user.role === 'cohort_leader' && (user as any).cohort === c.cohortName;
-                    return (
+                    if (appLoading || !user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader scale={0.7} label="Verifying session..." />
+      </div>
+    );
+  }
+
+  return (
                       <div key={c.cohortName} className={`flex items-center justify-between px-2 py-1.5 rounded-lg text-xs transition-all ${
                         isMyCohort ? 'bg-primary/10 border border-primary/20 text-primary' : 'bg-background/40 border border-card-border/50 text-text-muted'
                       }`}>
@@ -371,7 +396,15 @@ export default function CohortRegistrationsPage() {
               const clTotal = cluster.cohorts.reduce((a, c) => a + c.students.length, 0);
               const clReg = cluster.cohorts.reduce((a, c) => a + c.students.filter(s => s.confirmedJklu).length, 0);
 
-              return (
+              if (appLoading || !user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader scale={0.7} label="Verifying session..." />
+      </div>
+    );
+  }
+
+  return (
                 <div key={cluster.clusterName} className="space-y-5">
                   {/* Cluster Header */}
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-card-border pb-4">
@@ -395,7 +428,15 @@ export default function CohortRegistrationsPage() {
                       const registeredCount = cohort.students.filter(s => s.confirmedJklu).length;
                       const verifiedCount = cohort.students.filter(s => s.documentsVerified).length;
 
-                      return (
+                      if (appLoading || !user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader scale={0.7} label="Verifying session..." />
+      </div>
+    );
+  }
+
+  return (
                         <div key={cohort.cohortName} className="glass-card overflow-hidden border border-card-border">
 
                           {/* Cohort Header */}
@@ -427,7 +468,15 @@ export default function CohortRegistrationsPage() {
                             <div className="divide-y divide-card-border">
                               {cohort.students.map((student) => {
                                 const initial = student.name.charAt(0).toUpperCase();
-                                return (
+                                if (appLoading || !user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader scale={0.7} label="Verifying session..." />
+      </div>
+    );
+  }
+
+  return (
                                   <div
                                     key={student._id}
                                     className={`px-5 py-3 flex items-center justify-between gap-3 text-sm ${
