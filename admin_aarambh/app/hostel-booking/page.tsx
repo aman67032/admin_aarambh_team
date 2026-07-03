@@ -5,6 +5,14 @@ import Link from 'next/link';
 import Loader from '../components/Loader';
 import PlasmaWave from '../components/PlasmaWave';
 
+// Normalize roll numbers for comparison
+const normalizeRollNo = (rollNo: string) => {
+  if (!rollNo) return '';
+  let clean = rollNo.replace(/[\/\.\s-]/g, '').toUpperCase().trim();
+  clean = clean.replace('BETCH', 'BTECH');
+  return clean;
+};
+
 interface StudentInfo {
   id: string;
   name: string;
@@ -244,16 +252,16 @@ export default function HostelBookingPage() {
     if (!friend.appNo.trim()) return;
 
     // Check if friend appNo is same as primary student
-    if (student && friend.appNo.trim().toUpperCase().replace(/[\/\.\s-]/g, '') === student.applicationNo.toUpperCase().replace(/[\/\.\s-]/g, '')) {
+    if (student && normalizeRollNo(friend.appNo) === normalizeRollNo(student.applicationNo)) {
       updateFriendState(index, { error: 'You cannot add yourself as a friend.' });
       return;
     }
 
     // Check if duplicate in friendsList
-    const normFriendApp = friend.appNo.trim().toUpperCase().replace(/[\/\.\s-]/g, '');
+    const normFriendApp = normalizeRollNo(friend.appNo);
     const duplicate = friendsList.some((f, idx) => {
       if (idx === index || !f.appNo) return false;
-      return f.appNo.trim().toUpperCase().replace(/[\/\.\s-]/g, '') === normFriendApp;
+      return normalizeRollNo(f.appNo) === normFriendApp;
     });
     if (duplicate) {
       updateFriendState(index, { error: 'Duplicate friend roll number.' });

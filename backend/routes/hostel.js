@@ -6,7 +6,9 @@ const HostelRoom = require('../models/HostelRoom');
 // Normalize roll numbers for comparison
 function normalizeRollNo(rollNo) {
   if (!rollNo) return "";
-  return rollNo.replace(/[\/\.\s-]/g, '').toUpperCase().trim();
+  let clean = rollNo.replace(/[\/\.\s-]/g, '').toUpperCase().trim();
+  clean = clean.replace('BETCH', 'BTECH');
+  return clean;
 }
 
 // POST /api/hostel/verify-student
