@@ -38,10 +38,14 @@ export default function CohortRegistrationsPage() {
   const { user, loading: appLoading } = useApp();
   const router = useRouter();
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated or not authorized
   useEffect(() => {
-    if (!appLoading && !user) {
-      router.push('/login');
+    if (!appLoading) {
+      if (!user) {
+        router.push('/login');
+      } else if (user.email === 'hosteladmin@jklu.edu.in') {
+        router.push('/admin/hostel');
+      }
     }
   }, [user, appLoading, router]);
   const [data, setData] = useState<ClusterInfo[]>([]);
@@ -192,7 +196,7 @@ export default function CohortRegistrationsPage() {
     return a.cohortName.localeCompare(b.cohortName);
   });
 
-  if (appLoading || !user) {
+  if (appLoading || !user || user.email === 'hosteladmin@jklu.edu.in') {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader scale={0.7} label="Verifying session..." />
@@ -320,7 +324,7 @@ export default function CohortRegistrationsPage() {
                 <div className="overflow-y-auto flex-1 pr-1 space-y-1.5 scrollbar-thin">
                   {cohortsRanked.map((c, idx) => {
                     const isMyCohort = user && user.role === 'cohort_leader' && (user as any).cohort === c.cohortName;
-                    if (appLoading || !user) {
+                    if (appLoading || !user || user.email === 'hosteladmin@jklu.edu.in') {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader scale={0.7} label="Verifying session..." />
@@ -396,7 +400,7 @@ export default function CohortRegistrationsPage() {
               const clTotal = cluster.cohorts.reduce((a, c) => a + c.students.length, 0);
               const clReg = cluster.cohorts.reduce((a, c) => a + c.students.filter(s => s.confirmedJklu).length, 0);
 
-              if (appLoading || !user) {
+              if (appLoading || !user || user.email === 'hosteladmin@jklu.edu.in') {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader scale={0.7} label="Verifying session..." />
@@ -428,7 +432,7 @@ export default function CohortRegistrationsPage() {
                       const registeredCount = cohort.students.filter(s => s.confirmedJklu).length;
                       const verifiedCount = cohort.students.filter(s => s.documentsVerified).length;
 
-                      if (appLoading || !user) {
+                      if (appLoading || !user || user.email === 'hosteladmin@jklu.edu.in') {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader scale={0.7} label="Verifying session..." />
@@ -468,7 +472,7 @@ export default function CohortRegistrationsPage() {
                             <div className="divide-y divide-card-border">
                               {cohort.students.map((student) => {
                                 const initial = student.name.charAt(0).toUpperCase();
-                                if (appLoading || !user) {
+                                if (appLoading || !user || user.email === 'hosteladmin@jklu.edu.in') {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader scale={0.7} label="Verifying session..." />

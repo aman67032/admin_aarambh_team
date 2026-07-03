@@ -8,8 +8,7 @@ interface BedInfo {
   bed: string;
   isOccupied: boolean;
   occupiedByCohort: string | null;
-  occupiedByName?: string;
-  occupiedByAppNo?: string;
+  occupiedByAppNo?: string | null;
 }
 
 interface RoomInfo {
@@ -41,29 +40,6 @@ export default function HostelManagementPage() {
       if (!res.ok) {
         throw new Error(data.error || 'Failed to fetch rooms.');
       }
-      
-      // The backend returns isOccupied and occupiedByCohort.
-      // We will also fetch team members details or extract from the db.
-      // Wait, in /api/hostel/rooms/:hostelName we can check if the database includes allottedToName.
-      // Let's verify what the backend returns:
-      // occupiedByCohort: bed.allottedTo ? (bed.allottedToName || 'Reserved') : null
-      // Let's modify the backend /api/hostel/rooms/:hostelName to also return allottedToAppNo so we can see their roll number!
-      // Wait, does the backend already do that?
-      // Yes, in routes/hostel.js line 119:
-      // occupiedByCohort: bed.allottedTo ? (bed.allottedToName || 'Reserved') : null
-      // But wait! We can update the backend to return allottedToAppNo and allottedToName separately to the admin!
-      // Actually, let's check: does the backend already return these fields?
-      // Let's look at lines 104-124 in routes/hostel.js:
-      // bedsMap[roomKey].beds.push({
-      //   sno: bed.sno,
-      //   bed: bed.bed,
-      //   isOccupied: !!bed.allottedTo,
-      //   occupiedByCohort: bed.allottedTo ? (bed.allottedToName || 'Reserved') : null
-      // });
-      // Yes! It returns occupiedByCohort which contains the student's name!
-      // Let's update the backend /rooms/:hostelName to return the student's roll number too so the admin gets the full details!
-      // This is extremely helpful! Let's do that right after.
-      
       setRooms(data.rooms);
     } catch (err: any) {
       setError(err.message || 'An error occurred fetching hostel room allotments.');
@@ -122,7 +98,7 @@ export default function HostelManagementPage() {
         if (occupancyFilter === 'Occupied' && !bed.isOccupied) return false;
         if (occupancyFilter === 'Vacant' && bed.isOccupied) return false;
         
-        // Search match (student name or roll number/cohort)
+        // Search match (student name or roll number)
         if (searchQuery.trim() !== '') {
           const query = searchQuery.toLowerCase();
           const nameMatch = bed.occupiedByCohort && bed.occupiedByCohort.toLowerCase().includes(query);
@@ -142,91 +118,118 @@ export default function HostelManagementPage() {
     });
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-card-border pb-5">
+    <div className="space-y-8 pb-12 font-outfit">
+      {/* Header and Hostel Switcher */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-card-border pb-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-foreground font-outfit uppercase tracking-wider">
-            Hostel Management
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full">
+            Hostel Dashboard
+          </span>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight uppercase mt-2.5">
+            Hostel Command Center
           </h1>
-          <p className="text-text-muted text-xs mt-1">
-            Real-time room allotment and occupancy manager for boys & girls hostels.
+          <p className="text-text-muted text-xs mt-1 max-w-xl">
+            Monitor real-time bed occupancy, search team allotments, and manage checkout actions.
           </p>
         </div>
         
         {/* Hostel Selector Tabs */}
-        <div className="flex bg-card-bg/60 border border-card-border p-1 rounded-xl w-fit">
+        <div className="flex bg-card-bg/60 border border-card-border p-1.5 rounded-2xl w-fit shadow-inner">
           <button
             onClick={() => setActiveHostel('BH-1')}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer font-outfit ${
+            className={`px-5 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider flex items-center gap-2 ${
               activeHostel === 'BH-1'
-                ? 'bg-primary text-white shadow-md'
+                ? 'bg-primary text-white shadow-lg'
                 : 'text-text-muted hover:text-foreground'
             }`}
           >
-            BH-1 (Boys Hostel)
+            👨‍💻 BH-1 (Boys Hostel)
           </button>
           <button
             onClick={() => setActiveHostel('GH-2')}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer font-outfit ${
+            className={`px-5 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider flex items-center gap-2 ${
               activeHostel === 'GH-2'
-                ? 'bg-primary text-white shadow-md'
+                ? 'bg-primary text-white shadow-lg'
                 : 'text-text-muted hover:text-foreground'
             }`}
           >
-            GH-2 (Girls Hostel)
+            👩‍💻 GH-2 (Girls Hostel)
           </button>
         </div>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-card-bg/40 border border-card-border/50 p-4 rounded-xl flex flex-col justify-between">
-          <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Total Beds</span>
-          <span className="text-2xl font-extrabold text-foreground font-outfit mt-2">{loading ? '...' : totalBeds}</span>
+        {/* Total Beds */}
+        <div className="bg-gradient-to-br from-card-bg to-card-bg/30 border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:border-card-border/80 transition-all">
+          <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Total Bed Slots</span>
+          <div className="flex items-baseline justify-between mt-3">
+            <span className="text-3xl font-extrabold text-foreground">{loading ? '...' : totalBeds}</span>
+            <span className="text-[10px] bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-md font-bold">Capacity</span>
+          </div>
         </div>
-        <div className="bg-card-bg/40 border border-card-border/50 p-4 rounded-xl flex flex-col justify-between">
-          <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Occupied Beds</span>
-          <span className="text-2xl font-extrabold text-red-500 font-outfit mt-2">{loading ? '...' : occupiedBeds}</span>
+
+        {/* Occupied Beds */}
+        <div className="bg-gradient-to-br from-card-bg to-card-bg/30 border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:border-card-border/80 transition-all">
+          <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Occupied Beds</span>
+          <div className="flex items-baseline justify-between mt-3">
+            <span className="text-3xl font-extrabold text-red-500">{loading ? '...' : occupiedBeds}</span>
+            <span className="text-[10px] bg-red-500/10 text-red-500 border border-red-500/20 px-2 py-0.5 rounded-md font-bold">Filled</span>
+          </div>
         </div>
-        <div className="bg-card-bg/40 border border-card-border/50 p-4 rounded-xl flex flex-col justify-between">
-          <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Vacant Beds</span>
-          <span className="text-2xl font-extrabold text-green-500 font-outfit mt-2">{loading ? '...' : vacantBeds}</span>
+
+        {/* Vacant Beds */}
+        <div className="bg-gradient-to-br from-card-bg to-card-bg/30 border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:border-card-border/80 transition-all">
+          <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Vacant Beds</span>
+          <div className="flex items-baseline justify-between mt-3">
+            <span className="text-3xl font-extrabold text-green-500">{loading ? '...' : vacantBeds}</span>
+            <span className="text-[10px] bg-green-500/10 text-green-500 border border-green-500/20 px-2 py-0.5 rounded-md font-bold">Available</span>
+          </div>
         </div>
-        <div className="bg-card-bg/40 border border-card-border/50 p-4 rounded-xl flex flex-col justify-between">
-          <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Occupancy Rate</span>
-          <div className="flex items-baseline gap-2 mt-2">
-            <span className="text-2xl font-extrabold text-primary font-outfit">{loading ? '...' : `${occupancyRate}%`}</span>
-            <span className="text-[10px] text-text-muted">filled</span>
+
+        {/* Occupancy Rate */}
+        <div className="bg-gradient-to-br from-card-bg to-card-bg/30 border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:border-card-border/80 transition-all">
+          <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Allotment Rate</span>
+          <div className="flex items-baseline justify-between mt-3">
+            <span className="text-3xl font-extrabold text-primary">{loading ? '...' : `${occupancyRate}%`}</span>
+            <div className="w-16 bg-card-border rounded-full h-1.5 overflow-hidden">
+              <div 
+                className="bg-primary h-1.5 transition-all duration-500" 
+                style={{ width: `${occupancyRate}%` }}
+              />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Filters Bar */}
-      <div className="bg-card-bg/60 border border-card-border p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-4">
+      <div className="bg-card-bg border border-card-border p-5 rounded-2xl flex flex-col md:flex-row md:items-center gap-5 shadow-sm">
         {/* Search */}
         <div className="flex-1">
-          <label className="block text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1.5 font-outfit">
-            Search Student Name
+          <label className="block text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2">
+            Search Team Member
           </label>
-          <input
-            type="text"
-            placeholder="Search by student name..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-3 py-2 bg-background border border-card-border rounded-xl text-foreground text-xs outline-none focus:border-primary placeholder:text-text-muted/40 font-outfit"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search by student name or roll number..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-9 pr-4 py-2.5 bg-background border border-card-border focus:border-primary rounded-xl text-foreground text-xs outline-none transition-all placeholder:text-text-muted/40 font-semibold"
+            />
+            <span className="absolute left-3.5 top-3.5 text-xs text-text-muted">🔍</span>
+          </div>
         </div>
 
         {/* Floor selector */}
-        <div className="w-full md:w-48">
-          <label className="block text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1.5 font-outfit">
+        <div className="w-full md:w-56">
+          <label className="block text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2">
             Floor Level
           </label>
           <select
             value={selectedFloor}
             onChange={(e) => setSelectedFloor(e.target.value)}
-            className="w-full px-3 py-2 bg-background border border-card-border rounded-xl text-foreground text-xs outline-none focus:border-primary font-outfit"
+            className="w-full px-3 py-2.5 bg-background border border-card-border rounded-xl text-foreground text-xs outline-none focus:border-primary font-bold cursor-pointer"
           >
             {floors.map(f => (
               <option key={f} value={f}>{f === 'All' ? 'All Floors' : `${f} Floor`}</option>
@@ -235,18 +238,18 @@ export default function HostelManagementPage() {
         </div>
 
         {/* Availability Filter */}
-        <div className="w-full md:w-48">
-          <label className="block text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1.5 font-outfit">
+        <div className="w-full md:w-64">
+          <label className="block text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2">
             Bed Availability
           </label>
-          <div className="flex border border-card-border p-0.5 rounded-xl bg-background">
+          <div className="flex border border-card-border p-1 rounded-xl bg-background">
             {(['All', 'Occupied', 'Vacant'] as const).map(filter => (
               <button
                 key={filter}
                 onClick={() => setOccupancyFilter(filter)}
-                className={`flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all cursor-pointer font-outfit ${
+                className={`flex-1 py-2 text-[10px] font-extrabold rounded-lg transition-all cursor-pointer uppercase tracking-wider ${
                   occupancyFilter === filter
-                    ? 'bg-primary text-white shadow-sm'
+                    ? 'bg-primary text-white shadow-md'
                     : 'text-text-muted hover:text-foreground'
                 }`}
               >
@@ -259,7 +262,7 @@ export default function HostelManagementPage() {
 
       {/* Grid of rooms */}
       {loading ? (
-        <div className="py-20 flex justify-center">
+        <div className="py-24 flex justify-center">
           <Loader scale={0.6} label="Loading rooms and allotments..." />
         </div>
       ) : error ? (
@@ -267,77 +270,122 @@ export default function HostelManagementPage() {
           {error}
         </div>
       ) : filteredRooms.length === 0 ? (
-        <div className="py-20 text-center text-text-muted text-sm font-outfit">
-          No rooms match the selected filters.
+        <div className="py-24 text-center text-text-muted text-sm border border-dashed border-card-border rounded-2xl bg-card-bg/20">
+          No room allotments match the selected search filters.
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredRooms.map((room) => (
-            <div
-              key={room.room}
-              className="bg-card-bg/60 border border-card-border rounded-2xl p-5 flex flex-col justify-between gap-4 transition-all hover:border-card-border/80 hover:shadow-md"
-            >
-              {/* Room Header */}
-              <div className="flex items-center justify-between border-b border-card-border pb-3">
-                <span className="text-md font-extrabold text-foreground font-outfit">Room {room.room}</span>
-                <span className="px-2 py-0.5 bg-card-bg border border-card-border text-[9px] font-bold text-text-muted uppercase rounded-md font-outfit">
-                  {room.floor} Floor
+          {filteredRooms.map((room) => {
+            const occupiedCount = room.beds.filter(b => b.isOccupied).length;
+            const totalRoomBeds = room.beds.length;
+            const isFull = occupiedCount === totalRoomBeds;
+            const isEmpty = occupiedCount === 0;
+
+            let statusBadge = (
+              <span className="px-2.5 py-0.5 bg-green-500/10 text-green-500 border border-green-500/20 text-[9px] font-extrabold rounded-md uppercase tracking-wider">
+                Vacant
+              </span>
+            );
+            if (isFull) {
+              statusBadge = (
+                <span className="px-2.5 py-0.5 bg-red-500/10 text-red-500 border border-red-500/20 text-[9px] font-extrabold rounded-md uppercase tracking-wider">
+                  Full ({occupiedCount}/{totalRoomBeds})
                 </span>
-              </div>
+              );
+            } else if (!isEmpty) {
+              statusBadge = (
+                <span className="px-2.5 py-0.5 bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 text-[9px] font-extrabold rounded-md uppercase tracking-wider">
+                  Semi ({occupiedCount}/{totalRoomBeds})
+                </span>
+              );
+            }
 
-              {/* Beds list */}
-              <div className="space-y-3">
-                {room.beds.map((bed) => (
-                  <div
-                    key={bed.sno}
-                    className={`p-3 rounded-xl border flex items-center justify-between gap-4 ${
-                      bed.isOccupied
-                        ? 'bg-red-500/5 border-red-500/15'
-                        : 'bg-green-500/5 border-green-500/15'
-                    }`}
-                  >
-                    {/* Bed Info */}
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-foreground font-outfit">{bed.bed}</span>
-                        <span
-                          className={`w-1.5 h-1.5 rounded-full ${
-                            bed.isOccupied ? 'bg-red-500' : 'bg-green-500'
-                          }`}
-                        />
-                      </div>
-                      
-                      {bed.isOccupied ? (
-                        <div className="text-[10px] text-foreground font-bold mt-1 truncate">
-                          👤 {bed.occupiedByCohort}
-                          {bed.occupiedByAppNo && (
-                            <span className="text-text-muted font-normal block mt-0.5 ml-3.5">
-                              #{bed.occupiedByAppNo}
-                            </span>
-                          )}
-                        </div>
-                      ) : (
-                        <span className="text-[9px] text-green-500 font-bold uppercase tracking-wider mt-1 block">
-                          Vacant
-                        </span>
-                      )}
-                    </div>
+            return (
+              <div
+                key={room.room}
+                className="bg-card-bg/60 border border-card-border rounded-2xl p-5 flex flex-col justify-between gap-5 transition-all hover:border-card-border/90 hover:shadow-md relative overflow-hidden"
+              >
+                {/* Visual indicator bar at the top */}
+                <div 
+                  className={`absolute top-0 left-0 right-0 h-1.5 ${
+                    isFull ? 'bg-red-500' : isEmpty ? 'bg-green-500' : 'bg-yellow-500'
+                  }`}
+                />
 
-                    {/* Action Button */}
-                    {bed.isOccupied && (
-                      <button
-                        onClick={() => handleVacateBed(bed.sno, room.room, bed.bed)}
-                        disabled={vacatingSno === bed.sno}
-                        className="px-2.5 py-1.5 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/20 text-[9px] font-extrabold rounded-lg transition-all cursor-pointer font-outfit uppercase tracking-wider shrink-0"
-                      >
-                        {vacatingSno === bed.sno ? 'Vacating...' : 'Vacate'}
-                      </button>
-                    )}
+                {/* Room Header */}
+                <div className="flex items-center justify-between border-b border-card-border pb-3.5 mt-1.5">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-lg font-black text-foreground">Room {room.room}</span>
+                    <span className="text-[10px] text-text-muted font-bold">({room.floor} Floor)</span>
                   </div>
-                ))}
+                  {statusBadge}
+                </div>
+
+                {/* Beds list */}
+                <div className="space-y-4">
+                  {room.beds.map((bed) => {
+                    const firstLetter = bed.isOccupied && bed.occupiedByCohort ? bed.occupiedByCohort.charAt(0).toUpperCase() : '?';
+                    return (
+                      <div
+                        key={bed.sno}
+                        className={`p-3.5 rounded-xl border flex items-center justify-between gap-4 transition-all ${
+                          bed.isOccupied
+                            ? 'bg-card-bg/40 border-card-border/80'
+                            : 'bg-green-500/[0.02] border-dashed border-green-500/20'
+                        }`}
+                      >
+                        {/* Bed Info */}
+                        <div className="flex items-center gap-3 min-w-0">
+                          {/* Avatar or vacant icon */}
+                          {bed.isOccupied ? (
+                            <div className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary text-sm shrink-0">
+                              {firstLetter}
+                            </div>
+                          ) : (
+                            <div className="w-9 h-9 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center text-xs shrink-0">
+                              🛏️
+                            </div>
+                          )}
+
+                          <div className="min-w-0">
+                            <span className="text-xs font-bold text-foreground block">{bed.bed}</span>
+                            {bed.isOccupied ? (
+                              <div className="mt-1 min-w-0">
+                                <span className="text-[11px] font-extrabold text-foreground truncate block leading-tight">
+                                  {bed.occupiedByCohort}
+                                </span>
+                                {bed.occupiedByAppNo && (
+                                  <span className="text-[9px] bg-background border border-card-border text-text-muted px-1.5 py-0.5 rounded-md font-mono mt-1 inline-block font-semibold">
+                                    {bed.occupiedByAppNo}
+                                  </span>
+                                )}
+                              </div>
+                            ) : (
+                              <span className="text-[10px] text-green-500 font-extrabold uppercase mt-0.5 block tracking-wider leading-none">
+                                + Available Slot
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Action Button */}
+                        {bed.isOccupied && (
+                          <button
+                            onClick={() => handleVacateBed(bed.sno, room.room, bed.bed)}
+                            disabled={vacatingSno === bed.sno}
+                            className="px-3 py-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/20 text-[9px] font-black rounded-lg transition-all cursor-pointer uppercase tracking-wider shrink-0"
+                            title="Vacate Bed Slot"
+                          >
+                            {vacatingSno === bed.sno ? 'Vacating...' : 'Vacate'}
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
