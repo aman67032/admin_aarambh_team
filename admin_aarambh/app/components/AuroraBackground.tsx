@@ -1,12 +1,16 @@
 'use client';
 
 import React from 'react';
+import { useApp } from '../context/AppContext';
 
 /**
  * AuroraBackground — pure CSS animated background.
- * Light Theme edition using pastel orange and sky blue.
+ * Theme-aware edition supporting light pastel and deep space themes.
  */
 export default function AuroraBackground() {
+  const { theme } = useApp();
+  const isDark = theme === 'fun';
+
   return (
     <>
       <style>{`
@@ -69,16 +73,19 @@ export default function AuroraBackground() {
         .p12 { left:78%;  animation-duration:19s; animation-delay:1s;   width:4px; height:4px; }
       `}</style>
 
-      {/* === Light theme background base === */}
+      {/* === Base Background === */}
       <div
         style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(135deg, #F3F6FA 0%, #E8EDF4 40%, #DFE5F0 75%, #F3F6FA 100%)',
+          background: isDark 
+            ? 'linear-gradient(135deg, #050B18 0%, #091020 40%, #0F1A30 75%, #050B18 100%)'
+            : 'linear-gradient(135deg, #F3F6FA 0%, #E8EDF4 40%, #DFE5F0 75%, #F3F6FA 100%)',
           zIndex: 0,
+          transition: 'background 0.4s ease'
         }}
       />
 
-      {/* === Orb 1 — soft orange top-left === */}
+      {/* === Orb 1 === */}
       <div
         className="aurora-orb-1"
         style={{
@@ -86,13 +93,15 @@ export default function AuroraBackground() {
           top: '-15%', left: '-5%',
           width: '55vw', height: '55vw',
           borderRadius: '50%',
-          background: 'radial-gradient(circle at 40% 40%, rgba(255,107,0,0.18) 0%, rgba(255,107,0,0.05) 50%, transparent 75%)',
+          background: isDark
+            ? 'radial-gradient(circle at 40% 40%, rgba(255,107,0,0.12) 0%, rgba(255,107,0,0.03) 50%, transparent 75%)'
+            : 'radial-gradient(circle at 40% 40%, rgba(255,107,0,0.18) 0%, rgba(255,107,0,0.05) 50%, transparent 75%)',
           filter: 'blur(50px)',
           zIndex: 1,
         }}
       />
 
-      {/* === Orb 2 — soft sky blue bottom-right === */}
+      {/* === Orb 2 === */}
       <div
         className="aurora-orb-2"
         style={{
@@ -100,13 +109,15 @@ export default function AuroraBackground() {
           bottom: '-15%', right: '-8%',
           width: '60vw', height: '60vw',
           borderRadius: '50%',
-          background: 'radial-gradient(circle at 60% 60%, rgba(59,130,246,0.18) 0%, rgba(59,130,246,0.05) 50%, transparent 75%)',
+          background: isDark
+            ? 'radial-gradient(circle at 60% 60%, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.03) 50%, transparent 75%)'
+            : 'radial-gradient(circle at 60% 60%, rgba(59,130,246,0.18) 0%, rgba(59,130,246,0.05) 50%, transparent 75%)',
           filter: 'blur(55px)',
           zIndex: 1,
         }}
       />
 
-      {/* === Orb 3 — pastel orange accent top-right === */}
+      {/* === Orb 3 === */}
       <div
         className="aurora-orb-3"
         style={{
@@ -114,13 +125,15 @@ export default function AuroraBackground() {
           top: '10%', right: '5%',
           width: '38vw', height: '38vw',
           borderRadius: '50%',
-          background: 'radial-gradient(circle at 50% 50%, rgba(255,154,60,0.14) 0%, rgba(255,107,0,0.03) 55%, transparent 80%)',
+          background: isDark
+            ? 'radial-gradient(circle at 50% 50%, rgba(255,154,60,0.08) 0%, rgba(255,107,0,0.02) 55%, transparent 80%)'
+            : 'radial-gradient(circle at 50% 50%, rgba(255,154,60,0.14) 0%, rgba(255,107,0,0.03) 55%, transparent 80%)',
           filter: 'blur(45px)',
           zIndex: 1,
         }}
       />
 
-      {/* === Orb 4 — light blue mid-left === */}
+      {/* === Orb 4 === */}
       <div
         className="aurora-orb-4"
         style={{
@@ -128,7 +141,9 @@ export default function AuroraBackground() {
           top: '40%', left: '10%',
           width: '30vw', height: '30vw',
           borderRadius: '50%',
-          background: 'radial-gradient(circle at 50% 50%, rgba(96,165,250,0.12) 0%, rgba(59,130,246,0.03) 60%, transparent 80%)',
+          background: isDark
+            ? 'radial-gradient(circle at 50% 50%, rgba(96,165,250,0.08) 0%, rgba(59,130,246,0.02) 60%, transparent 80%)'
+            : 'radial-gradient(circle at 50% 50%, rgba(96,165,250,0.12) 0%, rgba(59,130,246,0.03) 60%, transparent 80%)',
           filter: 'blur(40px)',
           zIndex: 1,
         }}
@@ -143,7 +158,7 @@ export default function AuroraBackground() {
           transform: 'translateX(-50%)',
           width: '300px', height: '300px',
           borderRadius: '50%',
-          border: '1px solid rgba(255,107,0,0.08)',
+          border: isDark ? '1px solid rgba(255,107,0,0.05)' : '1px solid rgba(255,107,0,0.08)',
           zIndex: 2,
         }}
       />
@@ -155,7 +170,7 @@ export default function AuroraBackground() {
           transform: 'translateX(-50%)',
           width: '300px', height: '300px',
           borderRadius: '50%',
-          border: '1px solid rgba(59,130,246,0.08)',
+          border: isDark ? '1px solid rgba(59,130,246,0.05)' : '1px solid rgba(59,130,246,0.08)',
           zIndex: 2,
         }}
       />
@@ -165,33 +180,13 @@ export default function AuroraBackground() {
         className="aurora-grid"
         style={{
           position: 'absolute', inset: 0,
-          backgroundImage: 'radial-gradient(circle, rgba(99,102,241,0.06) 1.2px, transparent 1.2px)',
+          backgroundImage: isDark
+            ? 'radial-gradient(circle, rgba(99,102,241,0.08) 1.2px, transparent 1.2px)'
+            : 'radial-gradient(circle, rgba(99,102,241,0.06) 1.2px, transparent 1.2px)',
           backgroundSize: '36px 36px',
           zIndex: 2,
         }}
       />
-
-      {/* === Diagonal soft glowing streaks === */}
-      <div style={{
-        position: 'absolute', inset: 0, zIndex: 2, overflow: 'hidden', pointerEvents: 'none',
-      }}>
-        {[
-          { top: '8%',  left: '-5%',  rotate: '30deg',  color: 'rgba(255,107,0,0.03)',  width: '80vw', height: '1px' },
-          { top: '20%', left: '10%',  rotate: '30deg',  color: 'rgba(59,130,246,0.03)',  width: '70vw', height: '1px' },
-          { top: '45%', left: '-10%', rotate: '-20deg', color: 'rgba(255,154,60,0.025)', width: '90vw', height: '1px' },
-          { top: '65%', left: '5%',   rotate: '15deg',  color: 'rgba(96,165,250,0.03)',  width: '75vw', height: '1px' },
-          { top: '80%', left: '-5%',  rotate: '25deg',  color: 'rgba(255,107,0,0.02)',  width: '85vw', height: '1px' },
-        ].map((s, i) => (
-          <div key={i} style={{
-            position: 'absolute',
-            top: s.top, left: s.left,
-            width: s.width, height: s.height,
-            background: `linear-gradient(90deg, transparent, ${s.color}, ${s.color}, transparent)`,
-            transform: `rotate(${s.rotate})`,
-            filter: 'blur(1px)',
-          }} />
-        ))}
-      </div>
 
       {/* === Floating soft particles === */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none', overflow: 'hidden' }}>
@@ -213,10 +208,12 @@ export default function AuroraBackground() {
         ))}
       </div>
 
-      {/* === Soft light vignette overlay === */}
+      {/* === Soft vignette overlay === */}
       <div style={{
         position: 'absolute', inset: 0, zIndex: 4,
-        background: 'radial-gradient(ellipse at center, transparent 60%, rgba(243,246,250,0.3) 100%)',
+        background: isDark
+          ? 'radial-gradient(ellipse at center, transparent 60%, rgba(5,11,24,0.6) 100%)'
+          : 'radial-gradient(ellipse at center, transparent 60%, rgba(243,246,250,0.3) 100%)',
         pointerEvents: 'none',
       }} />
     </>
