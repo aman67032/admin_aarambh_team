@@ -679,7 +679,7 @@ export default function HostelBookingPage() {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g., 2023BTech096"
+                    placeholder="e.g., 2023BTech***"
                     value={appNo}
                     onChange={(e) => setAppNo(e.target.value)}
                     className="w-full px-4 py-3 bg-background border border-card-border focus:border-primary rounded-xl text-foreground text-sm outline-none transition-all placeholder:text-text-muted/50"
@@ -961,7 +961,7 @@ export default function HostelBookingPage() {
                                     <div className="flex gap-2">
                                       <input
                                         type="text"
-                                        placeholder="e.g. 2025BTech188"
+                                        placeholder="e.g. 2025BTech***"
                                         value={friend.appNo}
                                         onChange={(e) => updateFriendState(idx, {
                                           appNo: e.target.value,
