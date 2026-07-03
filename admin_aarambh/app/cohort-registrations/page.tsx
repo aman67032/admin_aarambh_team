@@ -546,8 +546,12 @@ export default function CohortRegistrationsPage() {
         )}
       </main>
 
-      <footer className="py-8 border-t border-card-border text-center text-xs font-medium text-text-muted bg-card-bg/40 backdrop-blur-sm">
-        JK Lakshmipat University, Jaipur © 2026
+      {/* Footer */}
+      <footer className="py-6 border-t border-card-border text-[10px] font-bold text-text-muted z-10 bg-card-bg/40 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
+          <span>&copy; 2026 Team Aarambh. All Rights Reserved.</span>
+          <span>Built by Aman P</span>
+        </div>
       </footer>
     </div>
   );
