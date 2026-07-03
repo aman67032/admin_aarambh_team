@@ -221,7 +221,7 @@ router.post('/book', async (req, res) => {
 
     // 3. Verify all selected beds are vacant and belong to the correct hostel
     const targetSnos = [parseInt(bedSno), ...friendRecords.map(f => f.bedSno)];
-    const targetBeds = await HostelRoom.find({ sno: { $in: targetSnos } });
+    const targetBeds = await HostelRoom.find({ sno: { $in: targetSnos }, hostel: expectedHostel });
 
     if (targetBeds.length !== targetSnos.length) {
       return res.status(400).json({ error: 'One or more of the selected bed slots do not exist.' });
