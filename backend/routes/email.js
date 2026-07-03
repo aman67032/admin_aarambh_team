@@ -127,7 +127,7 @@ router.get('/rate-status', requireAuth, async (req, res) => {
     });
   } catch (error) {
     console.error('Rate status error:', error);
-    res.status(500).json({ error: 'Failed to retrieve email rate status.' });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -316,7 +316,7 @@ router.get('/students', requireAuth, requireRole('super_admin'), async (req, res
 
 // GET /api/email/logs
 // Retrieve recent email logs
-router.get('/logs', requireAuth, async (req, res) => {
+router.get('/logs', requireAuth, requireRole('super_admin'), async (req, res) => {
   try {
     const logs = await EmailLog.find({})
       .sort({ createdAt: -1 })
@@ -324,7 +324,7 @@ router.get('/logs', requireAuth, async (req, res) => {
     res.json(logs);
   } catch (error) {
     console.error('Fetch logs error:', error);
-    res.status(500).json({ error: 'Failed to retrieve email logs.' });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

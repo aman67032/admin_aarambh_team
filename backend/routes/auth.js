@@ -32,7 +32,7 @@ router.post('/login', async (req, res) => {
         cluster: user.cluster,
         cohort: user.cohort
       },
-      process.env.JWT_SECRET || 'super_secret_aarambh_2026_jwt_token_key_987654321',
+      process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 
@@ -61,7 +61,7 @@ router.post('/login', async (req, res) => {
 
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ error: 'Server error during login.' });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

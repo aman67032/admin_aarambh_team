@@ -59,7 +59,7 @@ router.get('/my-students', requireAuth, requireRole('cohort_leader'), async (req
 
   } catch (error) {
     console.error('Fetch my-students error:', error);
-    res.status(500).json({ error: 'Server error retrieving cohort details: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -109,7 +109,7 @@ router.post('/call-log/:studentId', requireAuth, requireRole('cohort_leader'), a
 
   } catch (error) {
     console.error('Cohort add call log error:', error);
-    res.status(500).json({ error: 'Server error logging call: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

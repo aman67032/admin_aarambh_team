@@ -139,7 +139,7 @@ router.get('/overview', requireAuth, requireRole(['admin', 'super_admin']), asyn
 
   } catch (error) {
     console.error('Fetch admin overview error:', error);
-    res.status(500).json({ error: 'Server error fetching overview: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -252,7 +252,7 @@ router.get('/distribution-check', requireAuth, requireRole(['admin', 'super_admi
 
   } catch (error) {
     console.error('Distribution check error:', error);
-    res.status(500).json({ error: 'Server error analyzing distribution: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -277,7 +277,7 @@ router.get('/not-continuing', requireAuth, requireRole(['admin', 'super_admin'])
     res.json(students);
   } catch (error) {
     console.error('Fetch not continuing error:', error);
-    res.status(500).json({ error: 'Server error fetching not-continuing list.' });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -332,7 +332,7 @@ router.get('/aarambh-verification', requireAuth, requireRole(['admin', 'super_ad
 
   } catch (error) {
     console.error('Aarambh verification error:', error);
-    res.status(500).json({ error: 'Server error fetching Aarambh verification: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -397,12 +397,12 @@ router.get('/cluster/:clusterId', requireAuth, requireRole(['admin', 'super_admi
 
   } catch (error) {
     console.error('Fetch cluster detail error:', error);
-    res.status(500).json({ error: 'Server error fetching cluster detail: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
 // GET /api/admin/settings
-router.get('/settings', requireAuth, async (req, res) => {
+router.get('/settings', requireAuth, requireRole(['admin', 'super_admin']), async (req, res) => {
   try {
     const setting = await Settings.findOne({ key: 'studentsPublished' });
     res.json({ studentsPublished: setting ? !!setting.value : false });

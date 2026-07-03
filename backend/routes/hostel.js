@@ -58,7 +58,7 @@ const requireHostelAuth = (req, res, next) => {
       return res.status(401).json({ error: 'Session verification required. Please verify your OTP.' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_aarambh_2026_jwt_token_key_987654321');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (!decoded.isHostelAuth) {
       return res.status(401).json({ error: 'Invalid session token type.' });
     }
@@ -196,7 +196,7 @@ router.post('/verify-otp', async (req, res) => {
         gender: member.gender,
         isHostelAuth: true
       },
-      process.env.JWT_SECRET || 'super_secret_aarambh_2026_jwt_token_key_987654321',
+      process.env.JWT_SECRET,
       { expiresIn: '30m' }
     );
 
@@ -271,7 +271,7 @@ router.post('/verify-student', async (req, res) => {
         gender: member.gender,
         isHostelAuth: true
       },
-      process.env.JWT_SECRET || 'super_secret_aarambh_2026_jwt_token_key_987654321',
+      process.env.JWT_SECRET,
       { expiresIn: '30m' }
     );
 

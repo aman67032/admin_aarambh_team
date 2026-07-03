@@ -77,7 +77,7 @@ router.get('/cohorts', requireAuth, requireRole('cluster_head'), async (req, res
 
   } catch (error) {
     console.error('Fetch cluster cohorts error:', error);
-    res.status(500).json({ error: 'Server error retrieving cluster details: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -121,7 +121,7 @@ router.put('/verify/:studentId', requireAuth, requireRole('cluster_head'), async
 
   } catch (error) {
     console.error('Verify student error:', error);
-    res.status(500).json({ error: 'Server error updating student verification: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -175,7 +175,7 @@ router.post('/call-log/:studentId', requireAuth, requireRole('cluster_head'), as
 
   } catch (error) {
     console.error('Add call log error:', error);
-    res.status(500).json({ error: 'Server error logging call: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -228,7 +228,7 @@ router.put('/confirm/:studentId', requireAuth, requireRole('cluster_head'), asyn
 
   } catch (error) {
     console.error('Confirm student error:', error);
-    res.status(500).json({ error: 'Server error updating confirmation status: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -271,7 +271,7 @@ router.put('/verify-call-log/:studentId/:logId', requireAuth, requireRole('clust
 
   } catch (error) {
     console.error('Verify call log error:', error);
-    res.status(500).json({ error: 'Server error verifying call log: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

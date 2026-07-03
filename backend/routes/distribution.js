@@ -67,7 +67,7 @@ router.post('/preview', requireAuth, requireRole('super_admin'), upload.single('
 
   } catch (error) {
     console.error('Distribution preview error:', error);
-    res.status(500).json({ error: 'Error executing student distribution preview: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -81,23 +81,32 @@ router.post('/confirm', requireAuth, requireRole('super_admin'), async (req, res
       return res.status(400).json({ error: 'No student data provided to confirm.' });
     }
 
-    // Delete existing students before inserting new ones
+    // Fetch backup of existing students first to support in-memory transactional rollback
+    const existingBackup = await Student.find({}).lean();
+
     console.log('Clearing existing students...');
     await Student.deleteMany({});
 
-    // Bulk insert students
-    console.log(`Inserting ${students.length} students...`);
-    const insertedStudents = await Student.insertMany(students);
+    try {
+      console.log(`Inserting ${students.length} students...`);
+      const insertedStudents = await Student.insertMany(students);
 
-    res.json({
-      success: true,
-      message: `${insertedStudents.length} students have been successfully distributed and saved in the database.`,
-      count: insertedStudents.length
-    });
+      res.json({
+        success: true,
+        message: `${insertedStudents.length} students have been successfully distributed and saved in the database.`,
+        count: insertedStudents.length
+      });
+    } catch (insertErr) {
+      console.error('Insert failed, rolling back to backup...', insertErr);
+      if (existingBackup.length > 0) {
+        await Student.insertMany(existingBackup);
+      }
+      throw new Error('Database insert failed. Rollback executed successfully.');
+    }
 
   } catch (error) {
     console.error('Distribution confirm error:', error);
-    res.status(500).json({ error: 'Error saving distributed students: ' + error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

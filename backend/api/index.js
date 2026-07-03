@@ -74,7 +74,11 @@ const allowedOrigins = [
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
-    const isAllowed = allowedOrigins.indexOf(origin) !== -1 || origin.includes('vercel.app') || origin.includes('jklu.edu.in');
+    const isAllowed = allowedOrigins.indexOf(origin) !== -1 || 
+                      origin.endsWith('.admin-aarambh-team-crat.vercel.app') || 
+                      origin === 'https://admin-aarambh-team-crat.vercel.app' ||
+                      origin.endsWith('.jklu.edu.in') ||
+                      origin === 'https://jklu.edu.in';
     if (isAllowed) {
       callback(null, true);
     } else {

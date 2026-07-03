@@ -18,7 +18,7 @@ const requireAuth = async (req, res, next) => {
       return res.status(401).json({ error: 'Authentication required. No token provided.' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_aarambh_2026_jwt_token_key_987654321');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id).select('-password');
 
     if (!user) {
@@ -29,7 +29,7 @@ const requireAuth = async (req, res, next) => {
     next();
   } catch (error) {
     console.error('Auth middleware error:', error);
-    return res.status(401).json({ error: 'Authentication failed. Invalid token.' });
+    return res.status(401).json({ error: 'Authentication failed.' });
   }
 };
 
