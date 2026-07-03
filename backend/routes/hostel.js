@@ -27,7 +27,7 @@ const sendDirectEmail = async ({ to, subject, html }) => {
     secure: false,
     auth: {
       user: process.env.SMTP_USER || 'amanpratapsingh@jklu.edu.in',
-      pass: process.env.SMTP_PASS_OTP || process.env.SMTP_PASS || 'fdgnghhzqjycjvxt'
+      pass: process.env.SMTP_PASS_OTP || process.env.SMTP_PASS
     },
     tls: {
       ciphers: 'SSLv3',
