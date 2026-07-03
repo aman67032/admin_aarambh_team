@@ -162,11 +162,16 @@ router.post('/verify-otp', async (req, res) => {
     // Delete used OTP
     await HostelOtp.deleteOne({ _id: validOtp._id });
 
-    // Find all matching team members
+    // Find all matching team members (resolving duplicates by gender if provided)
     const escapedRoll = escapeRegex(normRoll);
-    const members = await TeamMember.find({
+    let memberQuery = {
       rollNo: { $regex: new RegExp('^' + escapedRoll + '$', 'i') }
-    });
+    };
+    if (req.body.gender) {
+      const escapedGender = escapeRegex(req.body.gender);
+      memberQuery.gender = { $regex: new RegExp('^' + escapedGender + '$', 'i') };
+    }
+    const members = await TeamMember.find(memberQuery);
 
     if (members.length === 0) {
       return res.status(404).json({ error: 'No team leader or volunteer found.' });

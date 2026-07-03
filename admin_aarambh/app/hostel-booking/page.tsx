@@ -73,7 +73,16 @@ export default function HostelBookingPage() {
 
   // Group booking/friends state
   const [isGroupBooking, setIsGroupBooking] = useState(false);
-  const [friendsList, setFriendsList] = useState<{ appNo: string; verifiedStudent: StudentInfo | null; bedSno: number | null; error: string; verifying: boolean }[]>([
+  const [friendsList, setFriendsList] = useState<{ 
+    appNo: string; 
+    verifiedStudent: StudentInfo | null; 
+    bedSno: number | null; 
+    error: string; 
+    verifying: boolean;
+    otpSent?: boolean;
+    otpCode?: string;
+    maskedEmail?: string;
+  }[]>([
     { appNo: '', verifiedStudent: null, bedSno: null, error: '', verifying: false }
   ]);
 
@@ -317,7 +326,7 @@ export default function HostelBookingPage() {
       return;
     }
 
-    updateFriendState(index, { verifying: true, error: '', verifiedStudent: null });
+    updateFriendState(index, { verifying: true, error: '', verifiedStudent: null, otpSent: false });
 
     try {
       // Pass primary student's gender to resolve duplicates automatically for the correct gender block!
@@ -341,9 +350,64 @@ export default function HostelBookingPage() {
         throw new Error(`Gender mismatch: Friend must be ${student.gender}.`);
       }
 
-      updateFriendState(index, { verifiedStudent: data.student, error: '' });
+      // Trigger OTP sending to friend's registered email
+      const otpRes = await fetch('/api/hostel/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rollNo: friend.appNo.trim() })
+      });
+
+      const otpData = await otpRes.json();
+      if (!otpRes.ok) {
+        throw new Error(otpData.error || 'Failed to send OTP to friend.');
+      }
+
+      updateFriendState(index, { 
+        otpSent: true, 
+        maskedEmail: otpData.email, 
+        error: '',
+        otpCode: '' 
+      });
     } catch (err: any) {
       updateFriendState(index, { error: err.message || 'Verification failed.' });
+    } finally {
+      updateFriendState(index, { verifying: false });
+    }
+  };
+
+  // Verify OTP code entered for friend
+  const handleVerifyFriendOtp = async (index: number) => {
+    const friend = friendsList[index];
+    if (!friend.otpCode || friend.otpCode.trim().length !== 6) {
+      updateFriendState(index, { error: 'Please enter a valid 6-digit verification code.' });
+      return;
+    }
+
+    updateFriendState(index, { verifying: true, error: '' });
+
+    try {
+      const res = await fetch('/api/hostel/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          rollNo: friend.appNo.trim(), 
+          otp: friend.otpCode.trim(),
+          gender: student?.gender 
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Invalid OTP code.');
+      }
+
+      updateFriendState(index, { 
+        verifiedStudent: data.student, 
+        otpSent: false, 
+        error: '' 
+      });
+    } catch (err: any) {
+      updateFriendState(index, { error: err.message || 'OTP verification failed.' });
     } finally {
       updateFriendState(index, { verifying: false });
     }
@@ -891,18 +955,53 @@ export default function HostelBookingPage() {
                                     type="text"
                                     placeholder="Friend Roll No"
                                     value={friend.appNo}
-                                    onChange={(e) => updateFriendState(idx, { appNo: e.target.value, verifiedStudent: null, error: '', bedSno: null })}
-                                    className="flex-1 px-3 py-2 bg-card-bg/40 border border-card-border rounded-lg text-foreground text-xs outline-none focus:border-accent"
-                                    disabled={friend.verifying}
+                                    onChange={(e) => updateFriendState(idx, { appNo: e.target.value, verifiedStudent: null, error: '', bedSno: null, otpSent: false })}
+                                    className="flex-1 px-3 py-2 bg-card-bg/40 border border-card-border rounded-lg text-foreground text-xs outline-none focus:border-primary"
+                                    disabled={friend.verifying || friend.otpSent}
                                   />
-                                  <button
-                                    onClick={() => handleVerifyFriend(idx)}
-                                    className="px-3 bg-accent text-black font-bold text-xs rounded-lg hover:bg-accent-dark transition-all cursor-pointer whitespace-nowrap"
-                                    disabled={friend.verifying || !friend.appNo.trim()}
-                                  >
-                                    {friend.verifying ? '...' : 'Verify'}
-                                  </button>
+                                  {!friend.otpSent && !friend.verifiedStudent && (
+                                    <button
+                                      onClick={() => handleVerifyFriend(idx)}
+                                      className="px-4 py-2 bg-primary text-white font-bold text-xs rounded-lg hover:bg-primary-hover transition-all cursor-pointer whitespace-nowrap disabled:opacity-50"
+                                      disabled={friend.verifying || !friend.appNo.trim()}
+                                    >
+                                      {friend.verifying ? '...' : 'Verify'}
+                                    </button>
+                                  )}
                                 </div>
+
+                                {friend.otpSent && !friend.verifiedStudent && (
+                                  <div className="space-y-2 border-t border-card-border/50 pt-2.5">
+                                    <span className="block text-[10px] text-text-muted font-semibold">
+                                      OTP sent to registered email: <strong className="text-foreground">{friend.maskedEmail}</strong>
+                                    </span>
+                                    <div className="flex gap-2">
+                                      <input
+                                        type="text"
+                                        placeholder="6-digit OTP code"
+                                        maxLength={6}
+                                        value={friend.otpCode || ''}
+                                        onChange={(e) => updateFriendState(idx, { otpCode: e.target.value })}
+                                        className="flex-1 px-3 py-2 bg-card-bg/40 border border-card-border rounded-lg text-foreground text-xs outline-none focus:border-primary font-mono text-center tracking-[4px]"
+                                        disabled={friend.verifying}
+                                      />
+                                      <button
+                                        onClick={() => handleVerifyFriendOtp(idx)}
+                                        className="px-4 py-2 bg-green-600 text-white font-bold text-xs rounded-lg hover:bg-green-700 transition-all cursor-pointer whitespace-nowrap disabled:opacity-50"
+                                        disabled={friend.verifying || !friend.otpCode || friend.otpCode.trim().length !== 6}
+                                      >
+                                        {friend.verifying ? '...' : 'Confirm OTP'}
+                                      </button>
+                                      <button
+                                        onClick={() => handleVerifyFriend(idx)}
+                                        className="px-3 py-2 border border-card-border text-foreground hover:bg-background/80 font-bold text-xs rounded-lg transition-all cursor-pointer whitespace-nowrap"
+                                        disabled={friend.verifying}
+                                      >
+                                        Resend
+                                      </button>
+                                    </div>
+                                  </div>
+                                )}
 
                                 {friend.error && (
                                   <span className="block text-[10px] text-red-400 font-semibold">{friend.error}</span>
