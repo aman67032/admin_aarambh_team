@@ -18,17 +18,18 @@
 
 /* Cosmic Dark Theme */
 .theme-fun {
-  --background: #050B18;
+  --background: #000000;
   --foreground: #F8FAFC;
   --primary: #FF8000;
   --primary-hover: #E07000;
   --primary-rgb: 255, 128, 0;
   --secondary: #2563EB;
-  --card-bg: rgba(10, 20, 42, 0.85);
-  --card-border: rgba(255, 128, 0, 0.15);
-  --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 128, 0, 0.04);
-  --header-bg: rgba(5, 11, 24, 0.85);
-  --text-muted: #8E9BB0;}
+  --card-bg: #121214;
+  --card-border: #222225;
+  --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 128, 0, 0.02);
+  --header-bg: #0A0A0C;
+  --text-muted: #9BA3AF;
+}
 
 @theme inline {
   --color-background: var(--background);

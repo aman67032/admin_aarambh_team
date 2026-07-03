@@ -78,7 +78,7 @@ export default function AuroraBackground() {
         style={{
           position: 'absolute', inset: 0,
           background: isDark 
-            ? 'linear-gradient(135deg, #050B18 0%, #091020 40%, #0F1A30 75%, #050B18 100%)'
+            ? 'linear-gradient(135deg, #000000 0%, #0A0A0C 40%, #121214 75%, #000000 100%)'
             : 'linear-gradient(135deg, #F3F6FA 0%, #E8EDF4 40%, #DFE5F0 75%, #F3F6FA 100%)',
           zIndex: 0,
           transition: 'background 0.4s ease'
