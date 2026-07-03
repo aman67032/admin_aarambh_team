@@ -14,8 +14,14 @@ import { useApp } from '../context/AppContext';
 
 
 export default function AdminDashboard() {
-
+  const { user, loading: appLoading } = useApp();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!appLoading && user && user.email === 'hosteladmin@jklu.edu.in') {
+      router.push('/admin/hostel');
+    }
+  }, [user, appLoading, router]);
 
   const [loading, setLoading] = useState(true);
 
