@@ -1466,7 +1466,7 @@ export default function HostelBookingPage() {
       <footer className="border-t border-card-border py-4 bg-card-bg/25">
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex justify-between items-center text-xs text-text-muted">
           <span>&copy; 2026 Team Aarambh. All Rights Reserved.</span>
-          <span>Built by Aman</span>
+          <span>Built by Aman P</span>
         </div>
       </footer>
     </div>
