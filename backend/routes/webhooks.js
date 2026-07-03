@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const crypto = require('crypto');
 const Student = require('../models/Student');
 
 const normalizeAppNo = (val) => (val || '').replace(/[\/\.\s_-]/g, '').replace('2025', '2026').toUpperCase();
@@ -8,7 +9,6 @@ const normalizeAppNo = (val) => (val || '').replace(/[\/\.\s_-]/g, '').replace('
 function findCustomerReference(obj) {
   if (!obj) return null;
   if (typeof obj === 'string') {
-    // Matches patterns like JKLU_B_DES_2026_0521, JKLUBDES20260521, JKLU/B.DES/2026/0521, etc.
     const match = obj.match(/JKLU[A-Z0-9_]*_(\d{4})/i) || obj.match(/JKLU[\/\.A-Z0-9_]*\/(\d{4})/i);
     if (match) return obj;
   }
@@ -23,8 +23,53 @@ function findCustomerReference(obj) {
   return null;
 }
 
+// Cashfree Signature verification middleware
+function verifyCashfreeSignature(req, res, next) {
+  const secret = process.env.CASHFREE_WEBHOOK_SECRET;
+  
+  if (!secret) {
+    console.warn('WARNING: CASHFREE_WEBHOOK_SECRET env variable is not configured. Webhook signature check is temporarily bypassed.');
+    return next();
+  }
+
+  const signature = req.headers['x-webhook-signature'] || req.headers['x-cashfree-signature'] || req.headers['x-signature'];
+  const timestamp = req.headers['x-webhook-timestamp'] || req.headers['x-timestamp'];
+
+  if (!signature) {
+    console.error('Webhook signature verification failed: Missing signature header.');
+    return res.status(401).json({ error: 'Missing Webhook signature.' });
+  }
+
+  try {
+    let computedSignature = '';
+    const rawBody = JSON.stringify(req.body);
+    
+    if (timestamp) {
+      const signatureData = timestamp + rawBody;
+      computedSignature = crypto
+        .createHmac('sha256', secret)
+        .update(signatureData)
+        .digest('base64');
+    } else {
+      computedSignature = crypto
+        .createHmac('sha256', secret)
+        .update(rawBody)
+        .digest('base64');
+    }
+
+    if (computedSignature !== signature) {
+      console.error('Webhook signature verification failed: Signature mismatch.');
+      return res.status(401).json({ error: 'Invalid Webhook signature.' });
+    }
+
+    next();
+  } catch (err) {
+    console.error('Signature verification error:', err);
+    return res.status(500).json({ error: 'Signature verification failed.' });
+  }
+}
+
 // GET /api/webhooks/cashfree
-// Status endpoint for verification/browser checks
 router.get('/cashfree', (req, res) => {
   res.json({
     status: 'online',
@@ -34,8 +79,8 @@ router.get('/cashfree', (req, res) => {
 });
 
 // POST /api/webhooks/cashfree
-// Cashfree payment success webhook handler
-router.post('/cashfree', async (req, res) => {
+// Cashfree payment success webhook handler (secured with signature check)
+router.post('/cashfree', verifyCashfreeSignature, async (req, res) => {
   try {
     console.log('=== Received Cashfree Webhook ===');
     console.log('Headers:', req.headers);
@@ -43,9 +88,6 @@ router.post('/cashfree', async (req, res) => {
 
     const payload = req.body;
     
-    // Check if the payment was successful
-    // Cashfree payload formats can vary (v3 vs v2 vs older API versions)
-    // We check common status flags: type === 'PAYMENT_SUCCESS_WEBHOOK', txStatus === 'SUCCESS', or payment_status === 'SUCCESS'
     const isSuccess = 
       payload.type === 'PAYMENT_SUCCESS_WEBHOOK' || 
       (payload.data && payload.data.payment && payload.data.payment.payment_status === 'SUCCESS') ||
@@ -57,7 +99,6 @@ router.post('/cashfree', async (req, res) => {
       return res.status(200).json({ status: 'ignored', reason: 'Not a success event' });
     }
 
-    // Recursively look for customer reference ID in the payload
     const customerRef = findCustomerReference(payload);
     if (!customerRef) {
       console.warn('Webhook warning: Could not find any JKLU customer reference ID in payload.');
@@ -68,10 +109,7 @@ router.post('/cashfree', async (req, res) => {
     const normalizedRef = normalizeAppNo(customerRef);
     console.log(`Normalized Reference: "${normalizedRef}"`);
 
-    // Pull all students from database
     const students = await Student.find({});
-    
-    // Search for matching student
     const matchedStudent = students.find(s => normalizeAppNo(s.applicationNo) === normalizedRef);
 
     if (!matchedStudent) {
@@ -99,8 +137,7 @@ router.post('/cashfree', async (req, res) => {
 
   } catch (err) {
     console.error('Error processing Cashfree webhook:', err);
-    // Always return 200/500 to Cashfree so they don't continuously retry unless it's a real transient failure
-    return res.status(500).json({ error: 'Server error processing webhook: ' + err.message });
+    return res.status(500).json({ error: 'Server error processing webhook.' });
   }
 });
 

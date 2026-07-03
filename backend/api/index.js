@@ -4,6 +4,13 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
+const { requireAuth } = require('../middleware/auth');
+
+// Validate critical secrets in production
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  console.error('Fatal Error: JWT_SECRET environment variable is not defined in production.');
+  process.exit(1);
+}
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '../.env') });
@@ -93,7 +100,7 @@ app.get('/api/status', (req, res) => {
   });
 });
 
-app.get('/api/status/structure', async (req, res) => {
+app.get('/api/status/structure', requireAuth, async (req, res) => {
   try {
     const User = require('../models/User');
     const users = await User.find({ role: { $in: ['cluster_head', 'cohort_leader'] } }).select('name role cluster cohort');
@@ -136,7 +143,7 @@ app.get('/api/status/structure', async (req, res) => {
   }
 });
 
-app.get('/api/status/cohort-allocations', async (req, res) => {
+app.get('/api/status/cohort-allocations', requireAuth, async (req, res) => {
   try {
     const User = require('../models/User');
     const Student = require('../models/Student');
@@ -239,9 +246,9 @@ app.get('/api/status/cohort-allocations', async (req, res) => {
 // Secure read-only endpoint for external integration
 app.get('/api/public/student-cohorts', async (req, res) => {
   const { secret } = req.query;
-  const expectedSecret = process.env.API_SECRET_KEY || 'aarambh2026read';
-  if (secret !== expectedSecret) {
-    return res.status(403).json({ error: 'Unauthorized. Invalid secret key.' });
+  const expectedSecret = process.env.API_SECRET_KEY;
+  if (!expectedSecret || secret !== expectedSecret) {
+    return res.status(403).json({ error: 'Unauthorized. Invalid or unconfigured secret key.' });
   }
 
   try {
@@ -261,7 +268,7 @@ app.get('/api/public/student-cohorts', async (req, res) => {
   }
 });
 
-app.get('/api/status/cohort-registrations', async (req, res) => {
+app.get('/api/status/cohort-registrations', requireAuth, async (req, res) => {
   try {
     const User = require('../models/User');
     const Student = require('../models/Student');
@@ -384,7 +391,7 @@ app.use('/api/hostel', hostelRoutes);
 app.use((err, req, res, next) => {
   console.error('API Error:', err.message);
   res.status(err.status || 500).json({
-    error: err.message || 'Internal Server Error'
+    error: 'Internal Server Error'
   });
 });
 

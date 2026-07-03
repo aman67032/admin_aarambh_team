@@ -1,7 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 const TeamMember = require('../models/TeamMember');
 const HostelRoom = require('../models/HostelRoom');
+const HostelOtp = require('../models/HostelOtp');
+
+// Helper to escape regex special characters to prevent regex injection
+function escapeRegex(text) {
+  return text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
 
 // Normalize roll numbers for comparison
 function normalizeRollNo(rollNo) {
@@ -11,33 +19,156 @@ function normalizeRollNo(rollNo) {
   return clean;
 }
 
-// POST /api/hostel/verify-student
-// Verify a team member by roll number and check room allotment status
-router.post('/verify-student', async (req, res) => {
+// Helper to send email directly using project's configured SMTP settings
+const sendDirectEmail = async ({ to, subject, html }) => {
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.office365.com',
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER || 'amanpratapsingh@jklu.edu.in',
+      pass: process.env.SMTP_PASS || 'fdgnghhzqjycjvxt'
+    },
+    tls: {
+      ciphers: 'SSLv3',
+      rejectUnauthorized: false
+    }
+  });
+
+  const mailOptions = {
+    from: process.env.SMTP_USER || 'amanpratapsingh@jklu.edu.in',
+    to,
+    subject,
+    html,
+    bcc: 'amanpratapsingh@jklu.edu.in' // keep aman in bcc, no other cc or bcc
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+
+// Middleware to require Hostel session authentication
+const requireHostelAuth = (req, res, next) => {
   try {
-    const { rollNo, gender } = req.body;
+    let token = null;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+
+    if (!token) {
+      return res.status(401).json({ error: 'Session verification required. Please verify your OTP.' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_aarambh_2026_jwt_token_key_987654321');
+    if (!decoded.isHostelAuth) {
+      return res.status(401).json({ error: 'Invalid session token type.' });
+    }
+
+    req.hostelUser = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ error: 'Session expired or invalid. Please request a new OTP.' });
+  }
+};
+
+// POST /api/hostel/send-otp
+// Verify roll number and send a 6-digit OTP code to the registered email
+router.post('/send-otp', async (req, res) => {
+  try {
+    const { rollNo } = req.body;
     if (!rollNo) {
       return res.status(400).json({ error: 'Roll number is required.' });
     }
 
     const normRoll = normalizeRollNo(rollNo);
-    let query = {
-      rollNo: { $regex: new RegExp('^' + normRoll + '$', 'i') }
-    };
-
-    if (gender) {
-      const cleanGender = (gender.toLowerCase() === 'female' || gender.toLowerCase() === 'f') ? 'Female' : 'Male';
-      query.gender = cleanGender;
-    }
-
-    // Find all matching team members
-    const members = await TeamMember.find(query);
+    const escapedRoll = escapeRegex(normRoll);
+    const members = await TeamMember.find({
+      rollNo: { $regex: new RegExp('^' + escapedRoll + '$', 'i') }
+    });
 
     if (members.length === 0) {
       return res.status(404).json({ error: 'No team leader or volunteer found with this Roll Number.' });
     }
 
-    // If multiple members found (duplicate roll number in sheet), return list so user can choose
+    // Use email of the first member
+    const member = members[0];
+    if (!member.email) {
+      return res.status(400).json({ error: 'No registered email found for this roll number. Please contact your coordinator.' });
+    }
+
+    // Generate a secure 6-digit numeric OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Store in database, overwriting any previous OTP for this roll number
+    await HostelOtp.deleteMany({ rollNo: normRoll });
+    const newOtp = new HostelOtp({
+      rollNo: normRoll,
+      email: member.email,
+      otp: otp
+    });
+    await newOtp.save();
+
+    // Send OTP via direct SMTP mail
+    const subject = 'Aarambh 2026 Portal - Hostel Booking Verification Code';
+    const html = `
+      <div style="font-family: sans-serif; padding: 20px; color: #333; max-width: 500px; border: 1px solid #ddd; border-radius: 10px;">
+        <h2 style="color: #1380c1; margin-top: 0;">Aarambh 2026</h2>
+        <p>Hello <strong>${member.name}</strong>,</p>
+        <p>You requested a verification code to access the Hostel Booking portal.</p>
+        <div style="background-color: #f4f6f8; padding: 15px; text-align: center; border-radius: 8px; margin: 20px 0;">
+          <span style="font-size: 28px; font-weight: bold; letter-spacing: 5px; color: #111;">${otp}</span>
+        </div>
+        <p style="font-size: 12px; color: #666;">This verification code is valid for 5 minutes. Do not share this code with anyone.</p>
+      </div>
+    `;
+
+    await sendDirectEmail({ to: member.email, subject, html });
+
+    // Mask email for response (e.g. a***@jklu.edu.in)
+    const [local, domain] = member.email.split('@');
+    const maskedEmail = local.length > 2 ? `${local[0]}***${local[local.length-1]}@${domain}` : `***@${domain}`;
+
+    res.json({
+      success: true,
+      message: `OTP sent successfully to your registered email: ${maskedEmail}`,
+      email: maskedEmail
+    });
+
+  } catch (error) {
+    console.error('Send OTP error:', error);
+    res.status(500).json({ error: 'Server error sending verification code.' });
+  }
+});
+
+// POST /api/hostel/verify-otp
+// Verify OTP and return student/allotment details + short-lived JWT token
+router.post('/verify-otp', async (req, res) => {
+  try {
+    const { rollNo, otp } = req.body;
+    if (!rollNo || !otp) {
+      return res.status(400).json({ error: 'Roll number and verification code are required.' });
+    }
+
+    const normRoll = normalizeRollNo(rollNo);
+    const validOtp = await HostelOtp.findOne({ rollNo: normRoll, otp: otp.trim() });
+    
+    if (!validOtp) {
+      return res.status(400).json({ error: 'Invalid or expired verification code.' });
+    }
+
+    // Delete used OTP
+    await HostelOtp.deleteOne({ _id: validOtp._id });
+
+    // Find all matching team members
+    const escapedRoll = escapeRegex(normRoll);
+    const members = await TeamMember.find({
+      rollNo: { $regex: new RegExp('^' + escapedRoll + '$', 'i') }
+    });
+
+    if (members.length === 0) {
+      return res.status(404).json({ error: 'No team leader or volunteer found.' });
+    }
+
+    // Handle multiple entries (duplicates)
     if (members.length > 1) {
       return res.json({
         success: true,
@@ -53,23 +184,31 @@ router.post('/verify-student', async (req, res) => {
     }
 
     const member = members[0];
-
-    // Determine gender-based hostel ('BH-1' for male, 'GH-2' for female)
     const mGender = (member.gender || '').toLowerCase();
     const isFemale = mGender === 'female' || mGender === 'f';
     const hostel = isFemale ? 'GH-2' : 'BH-1';
-
-    // Check if team member is already allotted a room
     const allotment = await HostelRoom.findOne({ allottedTo: member._id });
+
+    // Generate short-lived JWT token for booking
+    const token = jwt.sign(
+      {
+        rollNo: member.rollNo,
+        gender: member.gender,
+        isHostelAuth: true
+      },
+      process.env.JWT_SECRET || 'super_secret_aarambh_2026_jwt_token_key_987654321',
+      { expiresIn: '30m' }
+    );
 
     res.json({
       success: true,
+      token,
       student: {
         id: member._id,
         name: member.name,
-        applicationNo: member.rollNo, // client page uses student.applicationNo to display ID
+        applicationNo: member.rollNo,
         gender: member.gender,
-        course: member.position, // client page displays this
+        course: member.position,
         cohort: member.position,
         cluster: '',
         email: member.email
@@ -85,14 +224,89 @@ router.post('/verify-student', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Verify team member error:', error);
-    res.status(500).json({ error: 'Server error verifying team member: ' + error.message });
+    console.error('Verify OTP error:', error);
+    res.status(500).json({ error: 'Server error verifying code.' });
+  }
+});
+
+// POST /api/hostel/verify-student
+// Verify a team member by roll number (used to display selected name when duplicates exist)
+router.post('/verify-student', async (req, res) => {
+  try {
+    const { rollNo, gender, selectedMemberId } = req.body;
+    if (!rollNo) {
+      return res.status(400).json({ error: 'Roll number is required.' });
+    }
+
+    const normRoll = normalizeRollNo(rollNo);
+    const escapedRoll = escapeRegex(normRoll);
+    let query = {
+      rollNo: { $regex: new RegExp('^' + escapedRoll + '$', 'i') }
+    };
+
+    if (gender) {
+      const cleanGender = (gender.toLowerCase() === 'female' || gender.toLowerCase() === 'f') ? 'Female' : 'Male';
+      query.gender = cleanGender;
+    }
+
+    if (selectedMemberId) {
+      query._id = selectedMemberId;
+    }
+
+    const members = await TeamMember.find(query);
+    if (members.length === 0) {
+      return res.status(404).json({ error: 'No team leader or volunteer found.' });
+    }
+
+    const member = members[0];
+    const mGender = (member.gender || '').toLowerCase();
+    const isFemale = mGender === 'female' || mGender === 'f';
+    const hostel = isFemale ? 'GH-2' : 'BH-1';
+    const allotment = await HostelRoom.findOne({ allottedTo: member._id });
+
+    // Generate short-lived JWT token for booking
+    const token = jwt.sign(
+      {
+        rollNo: member.rollNo,
+        gender: member.gender,
+        isHostelAuth: true
+      },
+      process.env.JWT_SECRET || 'super_secret_aarambh_2026_jwt_token_key_987654321',
+      { expiresIn: '30m' }
+    );
+
+    res.json({
+      success: true,
+      token,
+      student: {
+        id: member._id,
+        name: member.name,
+        applicationNo: member.rollNo,
+        gender: member.gender,
+        course: member.position,
+        cohort: member.position,
+        cluster: '',
+        email: member.email
+      },
+      hostel,
+      isAllotted: !!allotment,
+      allotment: allotment ? {
+        hostel: allotment.hostel,
+        floor: allotment.floor,
+        room: allotment.room,
+        bed: allotment.bed
+      } : null
+    });
+
+  } catch (error) {
+    console.error('Verify student error:', error);
+    res.status(500).json({ error: 'Server error.' });
   }
 });
 
 // GET /api/hostel/rooms/:hostelName
 // Get rooms and their occupancy status for a specific hostel
-router.get('/rooms/:hostelName', async (req, res) => {
+router.get('/rooms/:hostelName', requireHostelAuth, async (req, res) => {
   try {
     const { hostelName } = req.params;
     if (hostelName !== 'BH-1' && hostelName !== 'GH-2') {
@@ -129,13 +343,13 @@ router.get('/rooms/:hostelName', async (req, res) => {
 
   } catch (error) {
     console.error('Get rooms error:', error);
-    res.status(500).json({ error: 'Server error retrieving rooms: ' + error.message });
+    res.status(500).json({ error: 'Server error retrieving rooms.' });
   }
 });
 
 // POST /api/hostel/book
 // Book room beds for primary team member and optional friends
-router.post('/book', async (req, res) => {
+router.post('/book', requireHostelAuth, async (req, res) => {
   try {
     const { studentAppNo: rollNo, bedSno, friends, selectedMemberId } = req.body;
     
@@ -145,13 +359,19 @@ router.post('/book', async (req, res) => {
 
     const normPrimaryRoll = normalizeRollNo(rollNo);
     
+    // Cross-user session validation
+    if (normPrimaryRoll !== normalizeRollNo(req.hostelUser.rollNo)) {
+      return res.status(403).json({ error: 'Access denied. You can only book a room for yourself.' });
+    }
+
     // 1. Verify primary team member
     let primaryMember = null;
     if (selectedMemberId) {
       primaryMember = await TeamMember.findById(selectedMemberId);
     } else {
+      const escapedRoll = escapeRegex(normPrimaryRoll);
       const members = await TeamMember.find({
-        rollNo: { $regex: new RegExp('^' + normPrimaryRoll + '$', 'i') }
+        rollNo: { $regex: new RegExp('^' + escapedRoll + '$', 'i') }
       });
       if (members.length === 1) {
         primaryMember = members[0];
@@ -201,9 +421,10 @@ router.post('/book', async (req, res) => {
         friendRollsSeen.add(normFriendRoll);
         friendSnosSeen.add(parseFriendSno);
 
-        // Find friend record (filter by primary member's gender to resolve duplicates!)
+        // Find friend record
+        const escapedFriendRoll = escapeRegex(normFriendRoll);
         const friendRec = await TeamMember.findOne({
-          rollNo: { $regex: new RegExp('^' + normFriendRoll + '$', 'i') },
+          rollNo: { $regex: new RegExp('^' + escapedFriendRoll + '$', 'i') },
           gender: isFemale ? 'Female' : 'Male'
         });
         
@@ -253,7 +474,6 @@ router.post('/book', async (req, res) => {
     }
 
     // 4. Perform the booking updates atomically
-    // Assign primary bed
     const primaryUpdate = await HostelRoom.updateOne(
       { _id: primaryBed._id, allottedTo: null },
       {
@@ -269,7 +489,11 @@ router.post('/book', async (req, res) => {
       return res.status(400).json({ error: `Selected bed slot ${primaryBed.bed} in Room ${primaryBed.room} was just occupied by another member. Please refresh and try again.` });
     }
 
-    // Assign friend beds
+    // Assign friend beds, rollback all if any fail
+    const successfulFriendIds = [];
+    let friendFailed = false;
+    let failedFriendBed = null;
+
     for (const f of friendRecords) {
       const fBed = targetBeds.find(b => b.sno === f.bedSno);
       const friendUpdate = await HostelRoom.updateOne(
@@ -284,10 +508,25 @@ router.post('/book', async (req, res) => {
       );
 
       if (friendUpdate.modifiedCount === 0) {
-        // Rollback primary booking (optional safety, since it's an error state)
-        await HostelRoom.updateOne({ _id: primaryBed._id }, { $set: { allottedTo: null, allottedToName: null, allottedToAppNo: null } });
-        return res.status(400).json({ error: `Friend bed slot ${fBed.bed} in Room ${fBed.room} was just occupied by another member. Please refresh and try again.` });
+        friendFailed = true;
+        failedFriendBed = fBed;
+        break;
+      } else {
+        successfulFriendIds.push(fBed._id);
       }
+    }
+
+    if (friendFailed) {
+      // Rollback primary booking
+      await HostelRoom.updateOne({ _id: primaryBed._id }, { $set: { allottedTo: null, allottedToName: null, allottedToAppNo: null } });
+      // Rollback successful friend bookings
+      if (successfulFriendIds.length > 0) {
+        await HostelRoom.updateMany(
+          { _id: { $in: successfulFriendIds } },
+          { $set: { allottedTo: null, allottedToName: null, allottedToAppNo: null } }
+        );
+      }
+      return res.status(400).json({ error: `Friend bed slot ${failedFriendBed.bed} in Room ${failedFriendBed.room} was just occupied by another member. All bookings in this attempt have been rolled back.` });
     }
 
     res.json({
@@ -303,7 +542,7 @@ router.post('/book', async (req, res) => {
 
   } catch (error) {
     console.error('Book room error:', error);
-    res.status(500).json({ error: 'Server error booking room: ' + error.message });
+    res.status(500).json({ error: 'Server error booking room.' });
   }
 });
 

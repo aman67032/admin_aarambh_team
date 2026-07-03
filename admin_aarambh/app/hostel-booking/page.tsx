@@ -129,6 +129,12 @@ export default function HostelBookingPage() {
     generatePDF('parent-consent-pdf-template', `Parent_Consent_Form_${student?.name.replace(/\s+/g, '_')}.pdf`);
   };
 
+  // OTP Verification states
+  const [otpStep, setOtpStep] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [otpEmail, setOtpEmail] = useState('');
+  const [hostelToken, setHostelToken] = useState('');
+
   // Booking process states
   const [booking, setBooking] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
@@ -139,7 +145,7 @@ export default function HostelBookingPage() {
     document.documentElement.classList.remove('theme-fun');
   }, []);
 
-  // Verify primary student
+  // Step 1: Send OTP to official email
   const handleVerifyStudent = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!appNo.trim()) return;
@@ -156,9 +162,10 @@ export default function HostelBookingPage() {
     setFriendsList([{ appNo: '', verifiedStudent: null, bedSno: null, error: '', verifying: false }]);
     setMultipleMembers([]);
     setSelectedMemberId(null);
+    setOtp('');
 
     try {
-      const res = await fetch('/api/hostel/verify-student', {
+      const res = await fetch('/api/hostel/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rollNo: appNo.trim() })
@@ -166,7 +173,35 @@ export default function HostelBookingPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Verification failed.');
+        throw new Error(data.error || 'Failed to send verification code.');
+      }
+
+      setOtpEmail(data.email);
+      setOtpStep(true);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'An error occurred during verification.');
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  // Step 1.2: Verify OTP
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!otp.trim()) return;
+
+    setVerifying(true);
+    setErrorMsg('');
+    try {
+      const res = await fetch('/api/hostel/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rollNo: appNo.trim(), otp: otp.trim() })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Verification code failed.');
       }
 
       // If duplicate roll number found in sheet
@@ -180,9 +215,11 @@ export default function HostelBookingPage() {
       setIsAllotted(data.isAllotted);
       setAllotment(data.allotment);
       setSelectedMemberId(data.student.id);
+      setHostelToken(data.token);
+      setOtpStep(false); // clear OTP step
 
       if (!data.isAllotted && data.hostel) {
-        fetchRooms(data.hostel);
+        fetchRooms(data.hostel, data.token);
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'An error occurred during verification.');
@@ -212,10 +249,11 @@ export default function HostelBookingPage() {
       setIsAllotted(data.isAllotted);
       setAllotment(data.allotment);
       setSelectedMemberId(member.id);
+      setHostelToken(data.token);
       setMultipleMembers([]); // clear list
 
       if (!data.isAllotted && data.hostel) {
-        fetchRooms(data.hostel);
+        fetchRooms(data.hostel, data.token);
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'An error occurred during verification.');
@@ -225,10 +263,15 @@ export default function HostelBookingPage() {
   };
 
   // Fetch hostel rooms
-  const fetchRooms = async (hostel: string) => {
+  const fetchRooms = async (hostel: string, authToken?: string) => {
     setLoadingRooms(true);
     try {
-      const res = await fetch(`/api/hostel/rooms/${hostel}`);
+      const activeToken = authToken || hostelToken;
+      const res = await fetch(`/api/hostel/rooms/${hostel}`, {
+        headers: {
+          'Authorization': `Bearer ${activeToken}`
+        }
+      });
       const data = await res.json();
       if (res.ok) {
         setRooms(data.rooms);
@@ -357,7 +400,10 @@ export default function HostelBookingPage() {
 
       const res = await fetch('/api/hostel/book', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${hostelToken}`
+        },
         body: JSON.stringify(payload)
       });
 
@@ -448,7 +494,7 @@ export default function HostelBookingPage() {
             </Link>
           </div>
         ) : !student ? (
-          /* Step 1: Verification Screen */
+          /* Step 1: Verification Screen (Roll Number and OTP inputs) */
           <div className="max-w-md mx-auto bg-card-bg/60 border border-card-border rounded-2xl p-5 md:p-8 backdrop-blur-md shadow-lg">
             <div className="text-center mb-8">
               <h1 className="text-xl md:text-2xl font-bold font-outfit text-foreground mb-2">Team Hostel Allotment</h1>
@@ -489,8 +535,56 @@ export default function HostelBookingPage() {
                   Go Back
                 </button>
               </div>
+            ) : otpStep ? (
+              /* Step 1.2: OTP Code Verification Screen */
+              <form onSubmit={handleVerifyOtp} className="space-y-4">
+                <div className="p-3 bg-primary/10 border border-primary/20 rounded-xl text-[10.5px] text-primary">
+                  A verification code has been sent to your registered email: <strong>{otpEmail}</strong>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-2 font-outfit">
+                    Verification Code (OTP)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter 6-digit code"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className="w-full px-4 py-3 bg-background border border-card-border focus:border-primary rounded-xl text-foreground text-sm outline-none transition-all placeholder:text-text-muted/50 text-center font-mono text-lg tracking-wider"
+                    maxLength={6}
+                    required
+                  />
+                </div>
+
+                {errorMsg && (
+                  <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded-xl">
+                    {errorMsg}
+                  </div>
+                )}
+
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOtpStep(false);
+                      setOtp('');
+                      setErrorMsg('');
+                    }}
+                    className="flex-1 py-3 border border-card-border text-text-muted hover:bg-card-bg font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={verifying}
+                    className="flex-1 py-3 bg-gradient-to-r from-primary to-accent hover:from-primary-dark hover:to-accent-dark text-black font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow flex items-center justify-center gap-2"
+                  >
+                    {verifying ? 'Verifying Code...' : 'Verify & Continue'}
+                  </button>
+                </div>
+              </form>
             ) : (
-              /* Normal Form */
+              /* Step 1: Normal Form (Enter Roll) */
               <form onSubmit={handleVerifyStudent} className="space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-2 font-outfit">
@@ -517,7 +611,7 @@ export default function HostelBookingPage() {
                   disabled={verifying}
                   className="w-full py-3 bg-gradient-to-r from-primary to-accent hover:from-primary-dark hover:to-accent-dark text-black font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow flex items-center justify-center gap-2"
                 >
-                  {verifying ? 'Verifying Team Member...' : 'Proceed to Book'}
+                  {verifying ? 'Sending Code...' : 'Proceed to Book'}
                 </button>
               </form>
             )}
