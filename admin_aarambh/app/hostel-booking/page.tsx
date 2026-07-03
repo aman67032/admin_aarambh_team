@@ -89,7 +89,7 @@ export default function HostelBookingPage() {
       const res = await fetch('/api/hostel/verify-student', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ applicationNo: appNo.trim() })
+        body: JSON.stringify({ rollNo: appNo.trim() })
       });
 
       const data = await res.json();
@@ -158,7 +158,7 @@ export default function HostelBookingPage() {
       const res = await fetch('/api/hostel/verify-student', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ applicationNo: friend.appNo.trim() })
+        body: JSON.stringify({ rollNo: friend.appNo.trim() })
       });
 
       const data = await res.json();
