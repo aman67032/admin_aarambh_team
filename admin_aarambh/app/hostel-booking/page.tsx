@@ -324,21 +324,21 @@ export default function HostelBookingPage() {
           /* Step 1: Verification Screen */
           <div className="max-w-md mx-auto bg-card-bg/60 border border-card-border rounded-2xl p-8 backdrop-blur-md shadow-lg">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold font-outfit text-white mb-2">Hostel Room Allotment</h1>
-              <p className="text-text-muted text-xs">Aarambh 2026 Hostel Room Selection</p>
+              <h1 className="text-2xl font-bold font-outfit text-white mb-2">Team Hostel Allotment</h1>
+              <p className="text-text-muted text-xs">Aarambh 2026 Team Leaders & Volunteers Room Selection</p>
               <div className="bg-primary/10 border border-primary/20 rounded-xl px-4 py-2 mt-4 text-[10px] text-primary inline-block">
-                👥 Friend & Group bookings supported (No login required)
+                👥 Friend & Room sharing supported (No login required)
               </div>
             </div>
 
             <form onSubmit={handleVerifyStudent} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-white uppercase tracking-wider mb-2 font-outfit">
-                  Application Number
+                  Roll Number
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g., JKLU/B.TECH/2026/0230"
+                  placeholder="e.g., 2023BTech096"
                   value={appNo}
                   onChange={(e) => setAppNo(e.target.value)}
                   className="w-full px-4 py-3 bg-background border border-card-border focus:border-primary rounded-xl text-white text-sm outline-none transition-all placeholder:text-text-muted/50"
@@ -357,7 +357,7 @@ export default function HostelBookingPage() {
                 disabled={verifying}
                 className="w-full py-3 bg-gradient-to-r from-primary to-accent hover:from-primary-dark hover:to-accent-dark text-black font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow flex items-center justify-center gap-2"
               >
-                {verifying ? 'Verifying Student...' : 'Proceed to Book'}
+                {verifying ? 'Verifying Team Member...' : 'Proceed to Book'}
               </button>
             </form>
           </div>
@@ -410,7 +410,7 @@ export default function HostelBookingPage() {
                       Select Room in {hostelName}
                     </h2>
                     <p className="text-xs text-text-muted">
-                      Student: **{student.name}** ({student.gender}) | Cohort: {student.cohort}
+                      Member: **{student.name}** ({student.gender}) | Position: {student.cohort}
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -599,7 +599,7 @@ export default function HostelBookingPage() {
                                 <div className="flex gap-2">
                                   <input
                                     type="text"
-                                    placeholder="Friend App No"
+                                    placeholder="Friend Roll No"
                                     value={friend.appNo}
                                     onChange={(e) => updateFriendState(idx, { appNo: e.target.value, verifiedStudent: null, error: '', bedSno: null })}
                                     className="flex-1 px-3 py-2 bg-card-bg/40 border border-card-border rounded-lg text-white text-xs outline-none focus:border-accent"

@@ -1,52 +1,53 @@
 const express = require('express');
 const router = express.Router();
-const Student = require('../models/Student');
+const TeamMember = require('../models/TeamMember');
 const HostelRoom = require('../models/HostelRoom');
 
-// Normalize application numbers for comparison
-function normalizeAppNo(appNo) {
-  if (!appNo) return "";
-  return appNo.replace(/[\/\.\s-]/g, '').toUpperCase().trim();
+// Normalize roll numbers for comparison
+function normalizeRollNo(rollNo) {
+  if (!rollNo) return "";
+  return rollNo.replace(/[\/\.\s-]/g, '').toUpperCase().trim();
 }
 
 // POST /api/hostel/verify-student
-// Verify a student by application number and check room allotment status
+// Verify a team member by roll number and check room allotment status
 router.post('/verify-student', async (req, res) => {
   try {
-    const { applicationNo } = req.body;
-    if (!applicationNo) {
-      return res.status(400).json({ error: 'Application number is required.' });
+    const { rollNo } = req.body;
+    if (!rollNo) {
+      return res.status(400).json({ error: 'Roll number is required.' });
     }
 
-    const normAppNo = normalizeAppNo(applicationNo);
+    const normRoll = normalizeRollNo(rollNo);
     
-    // Find student in DB
-    const students = await Student.find({});
-    const student = students.find(s => normalizeAppNo(s.applicationNo) === normAppNo);
+    // Find team member in DB
+    const member = await TeamMember.findOne({
+      rollNo: { $regex: new RegExp('^' + normRoll + '$', 'i') }
+    });
 
-    if (!student) {
-      return res.status(404).json({ error: 'No student found with this application number.' });
+    if (!member) {
+      return res.status(404).json({ error: 'No team leader or volunteer found with this Roll Number.' });
     }
 
     // Determine gender-based hostel ('BH-1' for male, 'GH-2' for female)
-    const gender = (student.gender || '').toLowerCase();
+    const gender = (member.gender || '').toLowerCase();
     const isFemale = gender === 'female' || gender === 'f';
     const hostel = isFemale ? 'GH-2' : 'BH-1';
 
-    // Check if student is already allotted a room
-    const allotment = await HostelRoom.findOne({ allottedTo: student._id });
+    // Check if team member is already allotted a room
+    const allotment = await HostelRoom.findOne({ allottedTo: member._id });
 
     res.json({
       success: true,
       student: {
-        id: student._id,
-        name: student.name,
-        applicationNo: student.applicationNo,
-        gender: student.gender,
-        course: student.course,
-        cohort: student.cohort,
-        cluster: student.cluster,
-        email: student.email
+        id: member._id,
+        name: member.name,
+        applicationNo: member.rollNo, // client page uses student.applicationNo to display ID
+        gender: member.gender,
+        course: member.position, // client page displays this
+        cohort: member.position,
+        cluster: '',
+        email: member.email
       },
       hostel,
       isAllotted: !!allotment,
@@ -59,8 +60,8 @@ router.post('/verify-student', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Verify student error:', error);
-    res.status(500).json({ error: 'Server error verifying student: ' + error.message });
+    console.error('Verify team member error:', error);
+    res.status(500).json({ error: 'Server error verifying team member: ' + error.message });
   }
 });
 
@@ -90,7 +91,6 @@ router.get('/rooms/:hostelName', async (req, res) => {
         sno: bed.sno,
         bed: bed.bed,
         isOccupied: !!bed.allottedTo,
-        // For privacy, we only share the occupied student's cohort & first name
         occupiedByCohort: bed.allottedTo ? (bed.allottedToName || 'Reserved') : null
       });
     });
@@ -109,81 +109,86 @@ router.get('/rooms/:hostelName', async (req, res) => {
 });
 
 // POST /api/hostel/book
-// Book room beds for primary student and optional friends
+// Book room beds for primary team member and optional friends
 router.post('/book', async (req, res) => {
   try {
-    const { studentAppNo, bedSno, friends } = req.body;
+    const { studentAppNo: rollNo, bedSno, friends } = req.body;
     
-    if (!studentAppNo || !bedSno) {
-      return res.status(400).json({ error: 'Student application number and selected bed are required.' });
+    if (!rollNo || !bedSno) {
+      return res.status(400).json({ error: 'Team member Roll Number and selected bed are required.' });
     }
 
-    const normPrimaryApp = normalizeAppNo(studentAppNo);
-    const allStudents = await Student.find({});
+    const normPrimaryRoll = normalizeRollNo(rollNo);
     
-    // 1. Verify primary student
-    const primaryStudent = allStudents.find(s => normalizeAppNo(s.applicationNo) === normPrimaryApp);
-    if (!primaryStudent) {
-      return res.status(404).json({ error: 'Primary student not found.' });
+    // 1. Verify primary team member
+    const primaryMember = await TeamMember.findOne({
+      rollNo: { $regex: new RegExp('^' + normPrimaryRoll + '$', 'i') }
+    });
+    
+    if (!primaryMember) {
+      return res.status(404).json({ error: 'Primary team member not found.' });
     }
 
-    // Check if primary student already has a room
-    const primaryExisting = await HostelRoom.findOne({ allottedTo: primaryStudent._id });
+    // Check if primary member already has a room
+    const primaryExisting = await HostelRoom.findOne({ allottedTo: primaryMember._id });
     if (primaryExisting) {
-      return res.status(400).json({ error: `Student ${primaryStudent.name} is already allotted to Room ${primaryExisting.room}.` });
+      return res.status(400).json({ error: `Team member ${primaryMember.name} is already allotted to Room ${primaryExisting.room}.` });
     }
 
     // Determine correct hostel
-    const gender = (primaryStudent.gender || '').toLowerCase();
+    const gender = (primaryMember.gender || '').toLowerCase();
     const isFemale = gender === 'female' || gender === 'f';
     const expectedHostel = isFemale ? 'GH-2' : 'BH-1';
 
     // 2. Verify friends (if any)
     const friendRecords = [];
-    const friendAppNosSeen = new Set([normPrimaryApp]);
+    const friendRollsSeen = new Set([normPrimaryRoll]);
     const friendSnosSeen = new Set([parseInt(bedSno)]);
 
     if (friends && Array.isArray(friends) && friends.length > 0) {
       for (const friend of friends) {
-        const { applicationNo: fAppNo, bedSno: fSno } = friend;
+        const { applicationNo: fRoll, bedSno: fSno } = friend;
         
-        if (!fAppNo || !fSno) {
-          return res.status(400).json({ error: 'Friend application number and bed slot are required.' });
+        if (!fRoll || !fSno) {
+          return res.status(400).json({ error: 'Friend Roll Number and bed slot are required.' });
         }
 
-        const normFriendApp = normalizeAppNo(fAppNo);
+        const normFriendRoll = normalizeRollNo(fRoll);
         const parseFriendSno = parseInt(fSno);
 
-        if (friendAppNosSeen.has(normFriendApp)) {
-          return res.status(400).json({ error: 'Duplicate friend application numbers or booking primary student as friend is not allowed.' });
+        if (friendRollsSeen.has(normFriendRoll)) {
+          return res.status(400).json({ error: 'Duplicate friend roll numbers or booking primary member as friend is not allowed.' });
         }
         if (friendSnosSeen.has(parseFriendSno)) {
-          return res.status(400).json({ error: 'Two students cannot select the same bed slot.' });
+          return res.status(400).json({ error: 'Two members cannot select the same bed slot.' });
         }
 
-        friendAppNosSeen.add(normFriendApp);
+        friendRollsSeen.add(normFriendRoll);
         friendSnosSeen.add(parseFriendSno);
 
         // Find friend record
-        const friendRec = allStudents.find(s => normalizeAppNo(s.applicationNo) === normFriendApp);
+        const friendRec = await TeamMember.findOne({
+          rollNo: { $regex: new RegExp('^' + normFriendRoll + '$', 'i') }
+        });
+        
         if (!friendRec) {
-          return res.status(404).json({ error: `Friend student with Application Number ${fAppNo} not found.` });
+          return res.status(404).json({ error: `Friend team member with Roll Number ${fRoll} not found.` });
         }
 
         // Verify friend matches primary student's gender/hostel
         const fGender = (friendRec.gender || '').toLowerCase();
         const fIsFemale = fGender === 'female' || fGender === 'f';
         if (fIsFemale !== isFemale) {
-          return res.status(400).json({ error: `Friend student ${friendRec.name} has a different gender. Co-ed room bookings are not allowed.` });
+          return res.status(400).json({ error: `Friend team member ${friendRec.name} has a different gender. Co-ed room bookings are not allowed.` });
         }
 
         // Check if friend already has a room
         const friendExisting = await HostelRoom.findOne({ allottedTo: friendRec._id });
         if (friendExisting) {
-          return res.status(400).json({ error: `Friend student ${friendRec.name} is already allotted to Room ${friendExisting.room}.` });
+          return res.status(400).json({ error: `Friend team member ${friendRec.name} is already allotted to Room ${friendExisting.room}.` });
         }
 
-        friendRecords.push({ student: friendRec, bedSno: parseFriendSno });
+        friendRecords.push({ member: friendRec, bedSno: parseFriendSno });
       }
     }
 
@@ -198,13 +203,13 @@ router.post('/book', async (req, res) => {
     // Check hostel consistency and occupancy
     const primaryBed = targetBeds.find(b => b.sno === parseInt(bedSno));
     if (primaryBed.hostel !== expectedHostel) {
-      return res.status(403).json({ error: `Primary student gender does not match selected bed hostel (${primaryBed.hostel}).` });
+      return res.status(403).json({ error: `Primary member gender does not match selected bed hostel (${primaryBed.hostel}).` });
     }
     if (primaryBed.allottedTo) {
       return res.status(400).json({ error: `Selected bed slot in Room ${primaryBed.room} is already occupied.` });
     }
 
-    // Verify all selected slots are in the SAME room (crucial "friend type thing" logic!)
+    // Verify all selected slots are in the SAME room
     const targetRoom = primaryBed.room;
     for (const bed of targetBeds) {
       if (bed.room !== targetRoom) {
@@ -224,9 +229,9 @@ router.post('/book', async (req, res) => {
       { _id: primaryBed._id },
       {
         $set: {
-          allottedTo: primaryStudent._id,
-          allottedToName: primaryStudent.name,
-          allottedToAppNo: primaryStudent.applicationNo
+          allottedTo: primaryMember._id,
+          allottedToName: primaryMember.name,
+          allottedToAppNo: primaryMember.rollNo
         }
       }
     );
@@ -238,9 +243,9 @@ router.post('/book', async (req, res) => {
         { _id: fBed._id },
         {
           $set: {
-            allottedTo: f.student._id,
-            allottedToName: f.student.name,
-            allottedToAppNo: f.student.applicationNo
+            allottedTo: f.member._id,
+            allottedToName: f.member.name,
+            allottedToAppNo: f.member.rollNo
           }
         }
       );

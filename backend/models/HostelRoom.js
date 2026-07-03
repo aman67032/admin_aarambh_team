@@ -24,7 +24,7 @@ const hostelRoomSchema = new mongoose.Schema({
   },
   allottedTo: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Student',
+    ref: 'TeamMember',
     default: null
   },
   allottedToName: {
