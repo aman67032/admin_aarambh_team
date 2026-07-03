@@ -370,6 +370,7 @@ const emailRoutes = require('../routes/email');
 const clusterRoutes = require('../routes/cluster');
 const adminRoutes = require('../routes/admin');
 const cohortRoutes = require('../routes/cohort');
+const hostelRoutes = require('../routes/hostel');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/distribution', distributionRoutes);
@@ -377,6 +378,7 @@ app.use('/api/email', emailRoutes);
 app.use('/api/cluster', clusterRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/cohort', cohortRoutes);
+app.use('/api/hostel', hostelRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {

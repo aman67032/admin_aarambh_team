@@ -86,6 +86,12 @@ export default function PublicHomePage() {
 
           <div className="flex items-center gap-4">
             <Link
+              href="/hostel-booking"
+              className="px-4 py-2 border border-primary/20 hover:border-primary/50 text-primary bg-primary/5 hover:bg-primary/10 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              🏢 Hostel Room Booking
+            </Link>
+            <Link
               href="/cohort-registrations"
               className="px-4 py-2 border border-card-border text-text-muted hover:bg-card-bg text-xs font-bold rounded-full transition-all cursor-pointer"
             >
