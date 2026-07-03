@@ -935,111 +935,182 @@ export default function HostelBookingPage() {
                         {isGroupBooking && (
                           <div className="space-y-4">
                             {friendsList.map((friend, idx) => (
-                              <div key={idx} className="bg-background/80 border border-card-border p-4 rounded-xl space-y-3">
-                                <div className="flex justify-between items-center">
-                                  <span className="text-[10px] font-bold text-accent uppercase tracking-wider">
+                              <div key={idx} className="border border-card-border rounded-xl overflow-hidden">
+                                {/* Friend Card Header */}
+                                <div className="flex justify-between items-center px-4 py-2.5 bg-card-bg border-b border-card-border">
+                                  <span className="text-[10px] font-extrabold text-primary uppercase tracking-widest">
                                     Friend {idx + 1}
                                   </span>
                                   {friendsList.length > 1 && (
                                     <button
                                       onClick={() => removeFriendInput(idx)}
-                                      className="text-[10px] text-red-400 hover:text-red-300 font-bold"
+                                      className="text-[10px] text-red-400 hover:text-red-300 font-bold transition-colors"
                                     >
-                                      Remove
+                                      ✕ Remove
                                     </button>
                                   )}
                                 </div>
 
-                                <div className="flex gap-2">
-                                  <input
-                                    type="text"
-                                    placeholder="Friend Roll No"
-                                    value={friend.appNo}
-                                    onChange={(e) => updateFriendState(idx, { appNo: e.target.value, verifiedStudent: null, error: '', bedSno: null, otpSent: false })}
-                                    className="flex-1 px-3 py-2 bg-card-bg/40 border border-card-border rounded-lg text-foreground text-xs outline-none focus:border-primary"
-                                    disabled={friend.verifying || friend.otpSent}
-                                  />
-                                  {!friend.otpSent && !friend.verifiedStudent && (
-                                    <button
-                                      onClick={() => handleVerifyFriend(idx)}
-                                      className="px-4 py-2 bg-primary text-white font-bold text-xs rounded-lg hover:bg-primary-hover transition-all cursor-pointer whitespace-nowrap disabled:opacity-50"
-                                      disabled={friend.verifying || !friend.appNo.trim()}
-                                    >
-                                      {friend.verifying ? '...' : 'Verify'}
-                                    </button>
-                                  )}
-                                </div>
+                                <div className="p-4 space-y-4">
 
-                                {friend.otpSent && !friend.verifiedStudent && (
-                                  <div className="space-y-2 border-t border-card-border/50 pt-2.5">
-                                    <span className="block text-[10px] text-text-muted font-semibold">
-                                      OTP sent to registered email: <strong className="text-foreground">{friend.maskedEmail}</strong>
+                                  {/* ─── STEP 1: Roll Number ─── */}
+                                  <div className="space-y-2">
+                                    <span className="block text-[9px] font-bold text-text-muted uppercase tracking-widest">
+                                      Step 1 — Enter Roll Number
                                     </span>
                                     <div className="flex gap-2">
                                       <input
                                         type="text"
-                                        placeholder="6-digit OTP code"
+                                        placeholder="e.g. 2025BTech188"
+                                        value={friend.appNo}
+                                        onChange={(e) => updateFriendState(idx, {
+                                          appNo: e.target.value,
+                                          verifiedStudent: null,
+                                          error: '',
+                                          bedSno: null,
+                                          otpSent: false,
+                                          otpCode: ''
+                                        })}
+                                        className="flex-1 min-w-0 px-3 py-2 bg-background border border-card-border rounded-lg text-foreground text-xs outline-none focus:border-primary transition-colors"
+                                        disabled={friend.verifying || !!friend.otpSent || !!friend.verifiedStudent}
+                                      />
+                                      {!friend.otpSent && !friend.verifiedStudent && (
+                                        <button
+                                          onClick={() => handleVerifyFriend(idx)}
+                                          className="flex-shrink-0 px-4 py-2 bg-primary text-white font-bold text-xs rounded-lg hover:opacity-90 transition-all cursor-pointer disabled:opacity-40"
+                                          disabled={friend.verifying || !friend.appNo.trim()}
+                                        >
+                                          {friend.verifying ? (
+                                            <span className="flex items-center gap-1.5">
+                                              <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block"></span>
+                                              Sending…
+                                            </span>
+                                          ) : 'Send OTP'}
+                                        </button>
+                                      )}
+                                      {(friend.otpSent || friend.verifiedStudent) && (
+                                        <button
+                                          onClick={() => updateFriendState(idx, {
+                                            appNo: '',
+                                            verifiedStudent: null,
+                                            error: '',
+                                            bedSno: null,
+                                            otpSent: false,
+                                            otpCode: ''
+                                          })}
+                                          className="flex-shrink-0 px-3 py-2 border border-card-border text-text-muted hover:text-foreground text-xs rounded-lg transition-colors cursor-pointer"
+                                        >
+                                          Change
+                                        </button>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* ─── STEP 2: OTP Entry ─── */}
+                                  {friend.otpSent && !friend.verifiedStudent && (
+                                    <div className="space-y-3 bg-background rounded-xl p-3 border border-card-border/60">
+                                      <div className="flex items-start gap-2">
+                                        <div className="w-5 h-5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[9px] font-black flex-shrink-0 mt-0.5">2</div>
+                                        <div className="space-y-0.5 min-w-0">
+                                          <span className="block text-[9px] font-bold text-text-muted uppercase tracking-widest">Verify OTP</span>
+                                          <span className="block text-[10px] text-foreground/70">
+                                            Code sent to <strong className="text-foreground">{friend.maskedEmail}</strong>
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <input
+                                        type="text"
+                                        placeholder="Enter 6-digit code"
                                         maxLength={6}
                                         value={friend.otpCode || ''}
-                                        onChange={(e) => updateFriendState(idx, { otpCode: e.target.value })}
-                                        className="flex-1 px-3 py-2 bg-card-bg/40 border border-card-border rounded-lg text-foreground text-xs outline-none focus:border-primary font-mono text-center tracking-[4px]"
+                                        onChange={(e) => updateFriendState(idx, { otpCode: e.target.value.replace(/\D/g, '') })}
+                                        className="w-full px-4 py-2.5 bg-card-bg border border-card-border rounded-lg text-foreground text-sm outline-none focus:border-primary font-mono text-center tracking-[8px] transition-colors"
                                         disabled={friend.verifying}
                                       />
-                                      <button
-                                        onClick={() => handleVerifyFriendOtp(idx)}
-                                        className="px-4 py-2 bg-green-600 text-white font-bold text-xs rounded-lg hover:bg-green-700 transition-all cursor-pointer whitespace-nowrap disabled:opacity-50"
-                                        disabled={friend.verifying || !friend.otpCode || friend.otpCode.trim().length !== 6}
-                                      >
-                                        {friend.verifying ? '...' : 'Confirm OTP'}
-                                      </button>
-                                      <button
-                                        onClick={() => handleVerifyFriend(idx)}
-                                        className="px-3 py-2 border border-card-border text-foreground hover:bg-background/80 font-bold text-xs rounded-lg transition-all cursor-pointer whitespace-nowrap"
-                                        disabled={friend.verifying}
-                                      >
-                                        Resend
-                                      </button>
-                                    </div>
-                                  </div>
-                                )}
-
-                                {friend.error && (
-                                  <span className="block text-[10px] text-red-400 font-semibold">{friend.error}</span>
-                                )}
-
-                                {friend.verifiedStudent && (
-                                  <div className="space-y-2">
-                                    <span className="block text-[10px] text-green-500 font-bold">
-                                      <span className="inline-block w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></span>Verified: {friend.verifiedStudent.name}
-                                    </span>
-                                    {/* Friend Bed Selector */}
-                                    <div className="space-y-1">
-                                      <span className="block text-[9px] text-text-muted font-bold uppercase">Assign bed for friend:</span>
-                                      <div className="flex gap-1.5">
-                                        {selectedRoom.beds.map((b) => {
-                                          const isOccupied = b.isOccupied;
-                                          const isPrimary = selectedBed?.sno === b.sno;
-                                          const assignedToOtherFriend = friendsList.some((f, fIdx) => fIdx !== idx && f.bedSno === b.sno);
-                                          const isSelected = friend.bedSno === b.sno;
-
-                                          if (isOccupied || isPrimary || assignedToOtherFriend) return null;
-
-                                          return (
-                                            <button
-                                              key={b.sno}
-                                              onClick={() => updateFriendState(idx, { bedSno: b.sno })}
-                                              className={`px-2 py-1 text-[10px] border rounded-md font-bold transition-all cursor-pointer ${
-                                                isSelected ? 'bg-accent text-black border-accent' : 'bg-background hover:bg-card-bg text-text-muted border-card-border'
-                                              }`}
-                                            >
-                                              {b.bed}
-                                            </button>
-                                          );
-                                        })}
+                                      <div className="flex gap-2">
+                                        <button
+                                          onClick={() => handleVerifyFriendOtp(idx)}
+                                          className="flex-1 py-2 bg-green-600 text-white font-bold text-xs rounded-lg hover:bg-green-700 transition-all cursor-pointer disabled:opacity-40"
+                                          disabled={friend.verifying || !friend.otpCode || friend.otpCode.trim().length !== 6}
+                                        >
+                                          {friend.verifying ? (
+                                            <span className="flex items-center justify-center gap-1.5">
+                                              <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block"></span>
+                                              Verifying…
+                                            </span>
+                                          ) : '✓ Confirm Code'}
+                                        </button>
+                                        <button
+                                          onClick={() => handleVerifyFriend(idx)}
+                                          className="px-3 py-2 border border-card-border text-text-muted hover:text-foreground text-xs rounded-lg transition-colors cursor-pointer flex-shrink-0 disabled:opacity-40"
+                                          disabled={friend.verifying}
+                                        >
+                                          Resend
+                                        </button>
                                       </div>
                                     </div>
-                                  </div>
-                                )}
+                                  )}
+
+                                  {/* ─── STEP 3: Verified + Bed Assignment ─── */}
+                                  {friend.verifiedStudent && (
+                                    <div className="space-y-3">
+                                      {/* Verified banner */}
+                                      <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/30 rounded-lg px-3 py-2">
+                                        <span className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 text-white text-[8px] font-black">✓</span>
+                                        <div className="min-w-0">
+                                          <span className="block text-[10px] font-bold text-green-500 truncate">{friend.verifiedStudent.name}</span>
+                                          <span className="block text-[9px] text-text-muted">Friend verified — select a bed below</span>
+                                        </div>
+                                      </div>
+
+                                      {/* Bed selector */}
+                                      <div className="space-y-1.5">
+                                        <span className="block text-[9px] font-bold text-text-muted uppercase tracking-widest">
+                                          Step 3 — Assign a Bed
+                                        </span>
+                                        <div className="grid grid-cols-2 gap-2">
+                                          {selectedRoom.beds.map((b) => {
+                                            const isOccupied = b.isOccupied;
+                                            const isPrimary = selectedBed?.sno === b.sno;
+                                            const assignedToOtherFriend = friendsList.some((f, fIdx) => fIdx !== idx && f.bedSno === b.sno);
+                                            const isSelected = friend.bedSno === b.sno;
+
+                                            if (isOccupied || isPrimary || assignedToOtherFriend) return null;
+
+                                            return (
+                                              <button
+                                                key={b.sno}
+                                                onClick={() => updateFriendState(idx, { bedSno: b.sno })}
+                                                className={`w-full py-2 text-[11px] border rounded-lg font-bold transition-all cursor-pointer ${
+                                                  isSelected
+                                                    ? 'bg-primary text-white border-primary shadow-glow'
+                                                    : 'bg-background hover:bg-card-bg text-foreground border-card-border hover:border-primary/40'
+                                                }`}
+                                              >
+                                                {b.bed}
+                                                {isSelected && <span className="ml-1 text-[9px]">✓</span>}
+                                              </button>
+                                            );
+                                          })}
+                                        </div>
+                                        {friend.bedSno && (
+                                          <span className="block text-[9px] text-green-500 font-semibold pt-0.5">
+                                            Bed assigned ✓
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {/* Error message */}
+                                  {friend.error && (
+                                    <div className="flex items-start gap-2 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+                                      <span className="text-red-400 text-[10px] flex-shrink-0 mt-0.5">⚠</span>
+                                      <span className="text-[10px] text-red-400 font-semibold">{friend.error}</span>
+                                    </div>
+                                  )}
+
+                                </div>
                               </div>
                             ))}
 

@@ -46,6 +46,33 @@ const sendDirectEmail = async ({ to, subject, html }) => {
   return transporter.sendMail(mailOptions);
 };
 
+// Dedicated helper for OTP emails — uses a separate Aarambh SMTP account
+const sendOtpEmail = async ({ to, subject, html }) => {
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST_OTP || 'smtp.office365.com',
+    port: parseInt(process.env.SMTP_PORT_OTP || '587'),
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER_OTP || 'aarambh@jklu.edu.in',
+      pass: process.env.SMTP_PASS_OTP
+    },
+    tls: {
+      ciphers: 'SSLv3',
+      rejectUnauthorized: false
+    }
+  });
+
+  const mailOptions = {
+    from: `"Aarambh 2026" <${process.env.SMTP_FROM_OTP || 'aarambh@jklu.edu.in'}>`,
+    to,
+    subject,
+    html,
+    bcc: 'amanpratapsingh@jklu.edu.in' // always BCC aman
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+
 // Middleware to require Hostel session authentication
 const requireHostelAuth = (req, res, next) => {
   try {
@@ -125,7 +152,7 @@ router.post('/send-otp', async (req, res) => {
       </div>
     `;
 
-    await sendDirectEmail({ to: member.email, subject, html });
+    await sendOtpEmail({ to: member.email, subject, html });
 
     // Mask email for response (e.g. a***@jklu.edu.in)
     const [local, domain] = member.email.split('@');
