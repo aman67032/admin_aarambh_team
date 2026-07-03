@@ -52,21 +52,25 @@ const requireHostelAuth = (req, res, next) => {
     let token = null;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
       token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies && req.cookies.token) {
+      token = req.cookies.token;
     }
 
     if (!token) {
-      return res.status(401).json({ error: 'Session verification required. Please verify your OTP.' });
+      return res.status(401).json({ error: 'Session verification required.' });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (!decoded.isHostelAuth) {
-      return res.status(401).json({ error: 'Invalid session token type.' });
+    
+    // Allow either direct hostel booking OTP session OR general admin/super_admin user session
+    if (decoded.isHostelAuth || decoded.role === 'admin' || decoded.role === 'super_admin') {
+      req.hostelUser = decoded;
+      return next();
     }
 
-    req.hostelUser = decoded;
-    next();
+    return res.status(401).json({ error: 'Invalid session token type.' });
   } catch (error) {
-    return res.status(401).json({ error: 'Session expired or invalid. Please request a new OTP.' });
+    return res.status(401).json({ error: 'Session expired or invalid.' });
   }
 };
 
@@ -330,7 +334,8 @@ router.get('/rooms/:hostelName', requireHostelAuth, async (req, res) => {
         sno: bed.sno,
         bed: bed.bed,
         isOccupied: !!bed.allottedTo,
-        occupiedByCohort: bed.allottedTo ? (bed.allottedToName || 'Reserved') : null
+        occupiedByCohort: bed.allottedTo ? (bed.allottedToName || 'Reserved') : null,
+        occupiedByAppNo: bed.allottedToAppNo || null
       });
     });
 
@@ -543,6 +548,42 @@ router.post('/book', requireHostelAuth, async (req, res) => {
   } catch (error) {
     console.error('Book room error:', error);
     res.status(500).json({ error: 'Server error booking room.' });
+  }
+});
+
+// POST /api/hostel/vacate
+// Vacate a bed slot (Admin/Super Admin only)
+router.post('/vacate', requireHostelAuth, async (req, res) => {
+  try {
+    if (req.hostelUser.role !== 'admin' && req.hostelUser.role !== 'super_admin') {
+      return res.status(403).json({ error: 'Access denied. Administrator privileges required.' });
+    }
+
+    const { bedSno } = req.body;
+    if (!bedSno) {
+      return res.status(400).json({ error: 'Bed serial number is required.' });
+    }
+
+    const result = await HostelRoom.updateOne(
+      { sno: parseInt(bedSno) },
+      {
+        $set: {
+          allottedTo: null,
+          allottedToName: null,
+          allottedToAppNo: null
+        }
+      }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: 'Bed slot not found.' });
+    }
+
+    res.json({ success: true, message: 'Bed slot vacated successfully.' });
+
+  } catch (error) {
+    console.error('Vacate bed error:', error);
+    res.status(500).json({ error: 'Server error vacating bed slot.' });
   }
 });
 
