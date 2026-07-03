@@ -391,7 +391,7 @@ export default function HostelBookingPage() {
       <header className="sticky top-0 bg-card-bg/85 backdrop-blur-md border-b border-card-border z-50 transition-all">
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-9 md:h-12 object-contain" />
+            <img src="/JKLU%20Logo.svg" alt="JKLU Logo" className="h-9 md:h-12 object-contain" />
             <div className="w-[1px] h-6 bg-card-border"></div>
             <img src="/Aarambh_logo_Final-01.svg" alt="Aarambh logo" className="h-12 md:h-16 object-contain" />
           </Link>
@@ -979,7 +979,7 @@ export default function HostelBookingPage() {
         {/* Short Stay Form */}
         <div id="short-stay-pdf-template" style={{ padding: '40px', fontFamily: 'serif', color: '#000', backgroundColor: '#fff', fontSize: '12px', lineHeight: '1.6' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #000', paddingBottom: '10px', marginBottom: '20px' }}>
-            <img src="/JKLU Logo.svg" alt="JKLU Logo" style={{ height: '50px' }} />
+            <img src="/JKLU%20Logo.svg" alt="JKLU Logo" style={{ height: '50px' }} />
             <div style={{ textAlign: 'right' }}>
               <h2 style={{ margin: '0', fontSize: '18px', fontWeight: 'bold' }}>JK LAKSHMIPAT UNIVERSITY</h2>
               <span style={{ fontSize: '10px', color: '#666' }}>OFFICE OF STUDENT AFFAIRS</span>
@@ -1081,7 +1081,7 @@ export default function HostelBookingPage() {
         {/* Parent Consent Form */}
         <div id="parent-consent-pdf-template" style={{ padding: '40px', fontFamily: 'serif', color: '#000', backgroundColor: '#fff', fontSize: '11px', lineHeight: '1.5' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #000', paddingBottom: '10px', marginBottom: '20px' }}>
-            <img src="/JKLU Logo.svg" alt="JKLU Logo" style={{ height: '50px' }} />
+            <img src="/JKLU%20Logo.svg" alt="JKLU Logo" style={{ height: '50px' }} />
             <div style={{ textAlign: 'right' }}>
               <h2 style={{ margin: '0', fontSize: '18px', fontWeight: 'bold' }}>JK LAKSHMIPAT UNIVERSITY</h2>
               <span style={{ fontSize: '9px', color: '#666' }}>ANNEXURE - B</span>
