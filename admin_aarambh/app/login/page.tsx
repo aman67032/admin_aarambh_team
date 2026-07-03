@@ -17,7 +17,10 @@ import Link from 'next/link';
 
 export default function LoginPage() {
 
-  const { user, login, loading: authLoading } = useApp();
+  const { user, login, loading: authLoading, theme } = useApp();
+  const isDark = theme === 'fun';
+  const jkluLogo = isDark ? '/white_jklu_logo_upscayl_4x_upscayl-standard-4x.png' : '/JKLU Logo.svg';
+  const aarambhLogo = isDark ? '/new_logo.png' : '/Aarambh_logo_Final-01.svg';
 
   const [email, setEmail] = useState('');
 
@@ -124,11 +127,11 @@ export default function LoginPage() {
 
           <Link href="/" className="flex items-center gap-3">
 
-            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-12 object-contain" />
+            <img src={jkluLogo} alt="JKLU Logo" className="h-12 object-contain" />
 
             <div className="w-[1px] h-6 bg-card-border"></div>
 
-            <img src="/Aarambh_logo_Final-01.svg" alt="Aarambh logo" className="h-16 object-contain" />
+            <img src={aarambhLogo} alt="Aarambh logo" className="h-16 object-contain" />
 
             <div className="flex flex-col hidden sm:flex">
 
@@ -169,11 +172,11 @@ export default function LoginPage() {
 
             <div className="flex justify-center items-center gap-3.5 mb-4">
 
-              <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-16 object-contain" />
+              <img src={jkluLogo} alt="JKLU Logo" className="h-16 object-contain" />
 
               <div className="w-[1px] h-8 bg-card-border"></div>
 
-              <img src="/Aarambh_logo_Final-01.svg" alt="Aarambh logo" className="h-20 object-contain animate-float" />
+              <img src={aarambhLogo} alt="Aarambh logo" className="h-20 object-contain animate-float" />
 
             </div>
 

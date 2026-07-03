@@ -19,7 +19,10 @@ interface ClusterInfo {
 }
 
 export default function PublicHomePage() {
-  const { user } = useApp();
+  const { user, theme } = useApp();
+  const isDark = theme === 'fun';
+  const jkluLogo = isDark ? '/white_jklu_logo_upscayl_4x_upscayl-standard-4x.png' : '/JKLU Logo.svg';
+  const aarambhLogo = isDark ? '/new_logo.png' : '/Aarambh_logo_Final-01.svg';
   const [structure, setStructure] = useState<ClusterInfo[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -75,9 +78,9 @@ export default function PublicHomePage() {
       <header className="sticky top-0 bg-card-bg/85 backdrop-blur-md border-b border-card-border z-50 transition-all">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/JKLU Logo.svg" alt="JKLU Logo" className="h-12 object-contain animate-pulse" />
+            <img src={jkluLogo} alt="JKLU Logo" className="h-12 object-contain animate-pulse" />
             <div className="w-[1px] h-6 bg-card-border"></div>
-            <img src="/Aarambh_logo_Final-01.svg" alt="Aarambh logo" className="h-16 object-contain" />
+            <img src={aarambhLogo} alt="Aarambh logo" className="h-16 object-contain" />
             <div className="flex flex-col hidden sm:flex">
               <span className="text-xs font-bold text-primary font-outfit uppercase tracking-wider leading-none">Aarambh &apos;26</span>
               <span className="text-[8px] text-text-muted font-bold uppercase mt-0.5">JKLU</span>
