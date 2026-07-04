@@ -1002,22 +1002,33 @@ export default function HostelBookingPage() {
                     {/* Friend/Group booking section */}
                     {selectedBed && (
                       <div className="border-t border-card-border pt-4 space-y-4">
-                        <label className="flex items-center gap-2 cursor-pointer select-none">
-                          <input
-                            type="checkbox"
-                            checked={isGroupBooking}
-                            onChange={(e) => {
-                              setIsGroupBooking(e.target.checked);
-                              if (!e.target.checked) {
-                                setFriendsList([{ appNo: '', verifiedStudent: null, bedSno: null, error: '', verifying: false }]);
-                              }
-                            }}
-                            className="w-4 h-4 accent-primary rounded border-card-border bg-background focus:ring-primary cursor-pointer"
-                          />
-                          <span className="text-xs font-bold text-foreground uppercase tracking-wider">
-                            Book with friends (same room)
-                          </span>
-                        </label>
+                        <div className={`p-4 border rounded-xl transition-all select-none ${
+                          isGroupBooking 
+                            ? 'bg-primary/10 border-primary/40 shadow-glow' 
+                            : 'bg-card-bg/40 border-card-border hover:border-primary/20 hover:bg-card-bg/60'
+                        }`}>
+                          <label className="flex items-start gap-3 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={isGroupBooking}
+                              onChange={(e) => {
+                                setIsGroupBooking(e.target.checked);
+                                if (!e.target.checked) {
+                                  setFriendsList([{ appNo: '', verifiedStudent: null, bedSno: null, error: '', verifying: false }]);
+                                }
+                              }}
+                              className="mt-0.5 w-4 h-4 accent-primary rounded border-card-border bg-background focus:ring-primary cursor-pointer shrink-0"
+                            />
+                            <div className="flex-1">
+                              <span className="text-xs font-extrabold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                                👥 Book with friends (same room)
+                              </span>
+                              <span className="block text-[10px] text-text-muted mt-1 leading-normal font-medium">
+                                Select this to lock additional beds in this room for your team members by verifying their roll numbers.
+                              </span>
+                            </div>
+                          </label>
+                        </div>
 
                         {isGroupBooking && (
                           <div className="space-y-4">
