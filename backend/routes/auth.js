@@ -33,7 +33,7 @@ router.post('/login', async (req, res) => {
         cohort: user.cohort
       },
       process.env.JWT_SECRET,
-      { expiresIn: '24h' }
+      { expiresIn: '365d' }
     );
 
     // Set cookie
@@ -41,7 +41,7 @@ router.post('/login', async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'none',
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      maxAge: 365 * 24 * 60 * 60 * 1000 // 365 days
     });
 
     res.json({

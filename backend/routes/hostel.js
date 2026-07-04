@@ -234,7 +234,7 @@ router.post('/verify-otp', async (req, res) => {
         isHostelAuth: true
       },
       process.env.JWT_SECRET,
-      { expiresIn: '30m' }
+      { expiresIn: '365d' }
     );
 
     const form = await HostelForm.findOne({ rollNo: normRoll });
@@ -312,7 +312,7 @@ router.post('/verify-student', async (req, res) => {
         isHostelAuth: true
       },
       process.env.JWT_SECRET,
-      { expiresIn: '30m' }
+      { expiresIn: '365d' }
     );
 
     const form = await HostelForm.findOne({ rollNo: normRoll });
