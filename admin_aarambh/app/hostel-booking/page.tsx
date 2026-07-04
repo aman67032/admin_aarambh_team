@@ -225,6 +225,17 @@ export default function HostelBookingPage() {
     document.documentElement.classList.remove('theme-fun');
   }, []);
 
+  // Reset group booking if the selected room and bed leave no more vacant beds for friends
+  useEffect(() => {
+    if (selectedRoom && selectedBed) {
+      const vacantBedsForFriends = selectedRoom.beds.filter(b => !b.isOccupied && b.sno !== selectedBed.sno);
+      if (vacantBedsForFriends.length === 0) {
+        setIsGroupBooking(false);
+        setFriendsList([{ appNo: '', verifiedStudent: null, bedSno: null, error: '', verifying: false }]);
+      }
+    }
+  }, [selectedRoom, selectedBed]);
+
   // Step 1: Send OTP to official email
   const handleVerifyStudent = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1000,7 +1011,7 @@ export default function HostelBookingPage() {
                     </div>
 
                     {/* Friend/Group booking section */}
-                    {selectedBed && (
+                    {selectedBed && selectedRoom && selectedRoom.beds.some(b => !b.isOccupied && b.sno !== selectedBed.sno) && (
                       <div className="border-t border-card-border pt-4 space-y-4">
                         <div className={`p-4 border rounded-xl transition-all select-none ${
                           isGroupBooking 
