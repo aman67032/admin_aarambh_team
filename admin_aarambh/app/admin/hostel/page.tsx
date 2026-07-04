@@ -65,7 +65,7 @@ export default function HostelManagementPage() {
         return;
       }
       const script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+      script.src = '/html2pdf.bundle.min.js';
       script.onload = () => resolve((window as any).html2pdf);
       document.body.appendChild(script);
     });
