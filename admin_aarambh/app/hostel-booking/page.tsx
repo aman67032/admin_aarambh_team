@@ -1283,7 +1283,7 @@ export default function HostelBookingPage() {
               </div>
 
               <div>
-                <label className="block font-bold text-text-muted mb-1">Parent/Guardian 1 Name *</label>
+                <label className="block font-bold text-text-muted mb-1">Parent/Guardian Name *</label>
                 <input
                   type="text"
                   required
@@ -1294,64 +1294,17 @@ export default function HostelBookingPage() {
                 />
               </div>
               
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block font-bold text-text-muted mb-1">Parent 1 Contact No. *</label>
-                  <input
-                    type="text"
-                    required
-                    value={parentContact}
-                    onChange={(e) => setParentContact(e.target.value.replace(/\D/g, ''))}
-                    placeholder="Mobile Number"
-                    maxLength={10}
-                    className="w-full px-3 py-2 bg-background border border-card-border rounded-lg text-foreground outline-none focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-text-muted mb-1">Parent 1 Email</label>
-                  <input
-                    type="email"
-                    value={parentEmail}
-                    onChange={(e) => setParentEmail(e.target.value)}
-                    placeholder="Email Address"
-                    className="w-full px-3 py-2 bg-background border border-card-border rounded-lg text-foreground outline-none focus:border-primary"
-                  />
-                </div>
-              </div>
-
               <div>
-                <label className="block font-bold text-text-muted mb-1">Parent/Guardian 2 Name (Optional)</label>
+                <label className="block font-bold text-text-muted mb-1">Parent/Guardian Contact No. *</label>
                 <input
                   type="text"
-                  value={parentGuardian2}
-                  onChange={(e) => setParentGuardian2(e.target.value)}
-                  placeholder="Full Name"
+                  required
+                  value={parentContact}
+                  onChange={(e) => setParentContact(e.target.value.replace(/\D/g, ''))}
+                  placeholder="Mobile Number"
+                  maxLength={10}
                   className="w-full px-3 py-2 bg-background border border-card-border rounded-lg text-foreground outline-none focus:border-primary"
                 />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block font-bold text-text-muted mb-1">Parent 2 Contact (Optional)</label>
-                  <input
-                    type="text"
-                    value={parent2Contact}
-                    onChange={(e) => setParent2Contact(e.target.value.replace(/\D/g, ''))}
-                    placeholder="Mobile Number"
-                    maxLength={10}
-                    className="w-full px-3 py-2 bg-background border border-card-border rounded-lg text-foreground outline-none focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-text-muted mb-1">Parent 2 Email (Optional)</label>
-                  <input
-                    type="email"
-                    value={parent2Email}
-                    onChange={(e) => setParent2Email(e.target.value)}
-                    placeholder="Email Address"
-                    className="w-full px-3 py-2 bg-background border border-card-border rounded-lg text-foreground outline-none focus:border-primary"
-                  />
-                </div>
               </div>
 
               <div>

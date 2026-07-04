@@ -101,8 +101,8 @@ export default function HostelManagementPage() {
     }
   };
 
-  // Trigger download of Short Stay Form or Consent Form for a student
-  const triggerSingleDownload = async (bed: BedInfo, roomName: string, floorName: string, type: 'both' | 'stay' | 'consent') => {
+  // Trigger download of Short Stay Form for a student
+  const triggerSingleDownload = async (bed: BedInfo, roomName: string, floorName: string, type: 'stay' = 'stay') => {
     if (!bed.occupiedByAppNo) return;
     const normKey = bed.occupiedByAppNo.toUpperCase().replace(/[\/\.\s-]/g, '').trim();
     const form = forms[normKey];
@@ -136,33 +136,17 @@ export default function HostelManagementPage() {
         const html2pdf = (await loadHtml2Pdf()) as any;
         const opt = {
           margin: 0.5,
-          filename: `${type === 'stay' ? 'Short_Stay_Form' : type === 'consent' ? 'Parent_Consent_Form' : 'Combined_Forms'}_${dataToPrint.studentName.replace(/\s+/g, '_')}.pdf`,
+          filename: `Short_Stay_Form_${dataToPrint.studentName.replace(/\s+/g, '_')}.pdf`,
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 4, useCORS: true },
           jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
 
-        if (type === 'stay') {
-          const element = document.getElementById('admin-short-stay-template');
-          if (element) {
-            element.style.display = 'block';
-            await html2pdf().from(element).set(opt).save();
-            element.style.display = 'none';
-          }
-        } else if (type === 'consent') {
-          const element = document.getElementById('admin-consent-template');
-          if (element) {
-            element.style.display = 'block';
-            await html2pdf().from(element).set(opt).save();
-            element.style.display = 'none';
-          }
-        } else {
-          const element = document.getElementById('admin-both-template');
-          if (element) {
-            element.style.display = 'block';
-            await html2pdf().from(element).set(opt).save();
-            element.style.display = 'none';
-          }
+        const element = document.getElementById('admin-short-stay-template');
+        if (element) {
+          element.style.display = 'block';
+          await html2pdf().from(element).set(opt).save();
+          element.style.display = 'none';
         }
       } catch (error) {
         console.error('PDF generation error:', error);
@@ -433,7 +417,7 @@ export default function HostelManagementPage() {
       const html2pdf = (await loadHtml2Pdf()) as any;
       const opt = {
         margin: 0.5,
-        filename: `All_Hostel_Forms_${activeHostel}_${new Date().toLocaleDateString('en-GB').replace(/\//g, '_')}.pdf`,
+        filename: `All_Short_Stay_Forms_${activeHostel}_${new Date().toLocaleDateString('en-GB').replace(/\//g, '_')}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 3, useCORS: true },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
@@ -547,7 +531,7 @@ export default function HostelManagementPage() {
               </>
             ) : (
               <>
-                📥 Download All Forms (${Object.keys(forms).length} Filled)
+                📥 Download All Stay Forms (${Object.keys(forms).length} Filled)
               </>
             )}
           </button>
@@ -792,22 +776,13 @@ export default function HostelManagementPage() {
                           {bed.isOccupied && (
                             <>
                               {forms[bed.occupiedByAppNo?.toUpperCase().replace(/[\/\.\s-]/g, '') || ''] ? (
-                                <div className="flex items-center gap-1">
-                                  <button
-                                    onClick={() => triggerSingleDownload(bed, room.room, room.floor, 'stay')}
-                                    className="px-2 py-1 bg-primary/10 hover:bg-primary text-primary hover:text-white border border-primary/20 text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
-                                    title="Download Short Stay Form"
-                                  >
-                                    Stay
-                                  </button>
-                                  <button
-                                    onClick={() => triggerSingleDownload(bed, room.room, room.floor, 'consent')}
-                                    className="px-2 py-1 bg-purple-500/10 hover:bg-purple-500 text-purple-500 hover:text-white border border-purple-500/20 text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
-                                    title="Download Parent Consent Form"
-                                  >
-                                    Consent
-                                  </button>
-                                </div>
+                                <button
+                                  onClick={() => triggerSingleDownload(bed, room.room, room.floor, 'stay')}
+                                  className="px-2.5 py-1 bg-primary/10 hover:bg-primary text-primary hover:text-white border border-primary/20 text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
+                                  title="Download Short Stay Form"
+                                >
+                                  Stay Form 📥
+                                </button>
                               ) : (
                                 <span className="px-2 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 text-[9px] font-bold rounded-md uppercase tracking-wider" title="Stay details form pending">
                                   Pending ⏳
@@ -939,285 +914,7 @@ export default function HostelManagementPage() {
             </table>
           </div>
 
-          {/* Admin Single Parent Consent Form */}
-          <div id="admin-consent-template" style={{ padding: '30px 40px', fontFamily: 'serif', color: '#000', backgroundColor: '#fff', fontSize: '10.5px', lineHeight: '1.4' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #000', paddingBottom: '5px', marginBottom: '15px' }}>
-              <img src="/JKLU%20Logo.png" alt="JKLU Logo" style={{ height: '40px' }} />
-              <div style={{ textAlign: 'right' }}>
-                <h2 style={{ margin: '0', fontSize: '15px', fontWeight: 'bold' }}>JK LAKSHMIPAT UNIVERSITY</h2>
-                <span style={{ fontSize: '8px', color: '#666' }}>ANNEXURE - B</span>
-              </div>
-            </div>
 
-            <div style={{ backgroundColor: '#333', color: '#fff', textAlign: 'center', padding: '5px', fontWeight: 'bold', marginBottom: '12px', fontSize: '11px', textTransform: 'uppercase', borderRadius: '4px' }}>
-              Consent Form for Parent(s)/Guardian
-            </div>
-
-            <div style={{ marginBottom: '10px' }}>
-              <h4 style={{ margin: '0 0 3px 0', fontWeight: 'bold', textDecoration: 'underline' }}>University Entry-Exit Procedures</h4>
-              <ul style={{ margin: '0', paddingLeft: '15px', listStyleType: 'disc' }}>
-                <li>Students are not permitted to leave the campus between 10:00 PM and 6:00 AM.</li>
-                <li>Between 6:00 AM and 10:00 PM, students may move in and out of the campus freely.</li>
-                <li>For outstation travel, students must apply for leave via email to the Hostel Warden or submit a leave form at least four hours prior to the scheduled departure to avoid inconvenience.</li>
-              </ul>
-            </div>
-
-            <div style={{ marginBottom: '12px' }}>
-              <h4 style={{ margin: '0 0 3px 0', fontWeight: 'bold', textDecoration: 'underline' }}>Night Attendance</h4>
-              <ul style={{ margin: '0', paddingLeft: '15px', listStyleType: 'disc' }}>
-                <li>Night attendance must be marked between 10:00 PM and 10:30 PM.</li>
-                <li>In case a student fails to mark attendance, the hostel authorities will inform the concerned guardian.</li>
-                <li>Repeated failure to mark attendance will attract disciplinary action, including fines.</li>
-              </ul>
-            </div>
-
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '12px' }}>
-              <tbody>
-                <tr>
-                  <td style={{ width: '20%', padding: '4px 0', fontWeight: 'bold' }}>1- Student Name:</td>
-                  <td style={{ borderBottom: '1px dotted #000', padding: '4px 5px' }} colSpan={3}>{printData.studentName}</td>
-                </tr>
-                <tr>
-                  <td style={{ width: '15%', padding: '4px 0', fontWeight: 'bold' }}>2- Roll NO:</td>
-                  <td style={{ width: '25%', borderBottom: '1px dotted #000', padding: '4px' }}>{printData.rollNo}</td>
-                  <td style={{ width: '25%', padding: '4px 0', fontWeight: 'bold', textAlign: 'center' }}>3- Hostel Block:</td>
-                  <td style={{ width: '35%', borderBottom: '1px dotted #000', padding: '4px' }}>{printData.hostel}</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '4px 0', fontWeight: 'bold' }}>4- Room No.:</td>
-                  <td style={{ borderBottom: '1px dotted #000', padding: '4px' }} colSpan={3}>{printData.room}</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '4px 0', fontWeight: 'bold' }}>Parent/Guardian 1:</td>
-                  <td style={{ borderBottom: '1px dotted #000', padding: '4px' }} colSpan={3}>{printData.parentName}</td>
-                </tr>
-                {printData.parentGuardian2 && (
-                  <tr>
-                    <td style={{ padding: '4px 0', fontWeight: 'bold' }}>Parent/Guardian 2:</td>
-                    <td style={{ borderBottom: '1px dotted #000', padding: '4px' }} colSpan={3}>{printData.parentGuardian2}</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-
-            <p style={{ margin: '0 0 8px 0', textAlign: 'justify', fontSize: '9.5px' }}>
-              I/we have read and clearly understood the University's <strong>ENTRY-EXIT PROCEDURES</strong>.
-            </p>
-            <p style={{ margin: '0 0 8px 0', textAlign: 'justify', fontSize: '9.5px' }}>
-              I/We give my/our consent to university that my/our ward be allowed to check-in and check-out of the University Campus for overnight stay out of the campus, warden office will take prior approval from us. (Please tick):
-            </p>
-            <p style={{ margin: '0 0 8px 0', fontStyle: 'italic', fontWeight: 'bold', fontSize: '9.5px' }}>
-              [Yes] (I/We also agree to submit our permission for night-out via email to <span style={{ textDecoration: 'underline', color: 'blue' }}>wardenboys@jklu.edu.in</span> / <span style={{ textDecoration: 'underline', color: 'blue' }}>wardengirls@jklu.edu.in</span>)
-            </p>
-            <p style={{ margin: '0 0 12px 0', fontSize: '8.5px', textAlign: 'justify', borderLeft: '2px solid #666', paddingLeft: '8px', color: '#444' }}>
-              The request must be submitted latest by 6:00 PM on the day of the student's night-out. If a student is found absent (staying outside the campus) without prior information or approval from the Hostel Warden, the University reserves the right to take appropriate disciplinary action as per rules.
-            </p>
-
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
-              <tbody>
-                <tr>
-                  <td style={{ width: '50%', paddingBottom: '15px', fontWeight: 'bold' }}>Signature of Parent/Guardian: _________________</td>
-                  <td style={{ width: '50%', paddingBottom: '15px', fontWeight: 'bold', paddingLeft: '20px' }}>Date: {new Date().toLocaleDateString('en-GB')}</td>
-                </tr>
-                <tr>
-                  <td style={{ paddingBottom: '15px', fontWeight: 'bold' }}>Mobile 1: {printData.parentContact}</td>
-                  <td style={{ paddingBottom: '15px', fontWeight: 'bold', paddingLeft: '20px' }}>Mobile 2: {printData.parent2Contact || '_________________'}</td>
-                </tr>
-                <tr>
-                  <td style={{ paddingBottom: '25px', fontWeight: 'bold' }}>Email 1: {printData.parentEmail || '_________________'}</td>
-                  <td style={{ paddingBottom: '25px', fontWeight: 'bold', paddingLeft: '20px' }}>Email 2: {printData.parent2Email || '_________________'}</td>
-                </tr>
-                <tr>
-                  <td style={{ fontWeight: 'bold' }}>(Signature of Student)</td>
-                  <td style={{ fontWeight: 'bold', paddingLeft: '20px', textAlign: 'right' }}>(Signature of Hostel Warden)</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* Admin Single Combined Both Form */}
-          <div id="admin-both-template">
-            {/* Page 1: Short Stay Form */}
-            <div style={{ pageBreakAfter: 'always' }}>
-              <div style={{ padding: '40px', fontFamily: 'serif', color: '#000', backgroundColor: '#fff', fontSize: '12px', lineHeight: '1.6' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #000', paddingBottom: '10px', marginBottom: '20px' }}>
-                  <img src="/JKLU%20Logo.png" alt="JKLU Logo" style={{ height: '50px' }} />
-                  <div style={{ textAlign: 'right' }}>
-                    <h2 style={{ margin: '0', fontSize: '18px', fontWeight: 'bold' }}>JK LAKSHMIPAT UNIVERSITY</h2>
-                    <span style={{ fontSize: '10px', color: '#666' }}>OFFICE OF STUDENT AFFAIRS</span>
-                  </div>
-                </div>
-                <h3 style={{ textAlign: 'center', fontSize: '14px', fontWeight: 'bold', textDecoration: 'underline', marginBottom: '25px', textTransform: 'uppercase' }}>
-                  Hostel Stay Permission Form (Short Stay)
-                </h3>
-                <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
-                  <tbody>
-                    <tr>
-                      <td style={{ width: '35%', padding: '6px 0', fontWeight: 'bold' }}>Student Name:</td>
-                      <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px' }}>{printData.studentName}</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '6px 0', fontWeight: 'bold' }}>Roll No:</td>
-                      <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px' }}>{printData.rollNo}</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '6px 0', fontWeight: 'bold' }}>Programme / Position:</td>
-                      <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px' }}>{printData.course}</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '6px 0', fontWeight: 'bold' }}>Contact No:</td>
-                      <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px' }}>{printData.mobile}</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '6px 0', fontWeight: 'bold' }}>JKLU Mail ID:</td>
-                      <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px' }}>{printData.email}</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '6px 0', fontWeight: 'bold' }}>Parent Name:</td>
-                      <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px' }}>{printData.parentName}</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '6px 0', fontWeight: 'bold' }}>Parent Contact No:</td>
-                      <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px' }}>{printData.parentContact}</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '6px 0', fontWeight: 'bold' }}>Address:</td>
-                      <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px' }}>{printData.address}</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '6px 0', fontWeight: 'bold' }}>Purpose of stay:</td>
-                      <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px' }}>Aarambh 2026 Organizing Team Duty</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '6px 0', fontWeight: 'bold' }}>Approved By:</td>
-                      <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px', fontWeight: 'bold' }}>Mr. Deepak Sogani (Head-Student Affairs)</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <h4 style={{ fontSize: '12px', fontWeight: 'bold', borderBottom: '1px solid #000', paddingBottom: '3px', marginBottom: '10px', textTransform: 'uppercase' }}>
-                  Room Allotment Details (To be filled by Wardens)
-                </h4>
-                <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
-                  <tbody>
-                    <tr>
-                      <td style={{ width: '20%', padding: '6px 0', fontWeight: 'bold' }}>Hostel Block:</td>
-                      <td style={{ width: '30%', borderBottom: '1px dotted #000', padding: '6px 5px' }}>{printData.hostel}</td>
-                      <td style={{ width: '20%', padding: '6px 0', fontWeight: 'bold', textAlign: 'center' }}>Room No:</td>
-                      <td style={{ width: '30%', borderBottom: '1px dotted #000', padding: '6px 5px' }}>{printData.room}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '5px', textTransform: 'uppercase' }}>
-                  Undertaking
-                </h4>
-                <p style={{ margin: '0 0 20px 0', textAlign: 'justify', fontSize: '10px' }}>
-                  I hereby declare that I have checked all the items in the room and found them in proper condition at the time of allotment. I understand that I am responsible for maintaining the room and its inventory during my stay. In case of any loss, damage, or missing item, I shall be liable to bear the cost as decided by the hostel authorities.
-                </p>
-                <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px', fontSize: '11px' }}>
-                  <tbody>
-                    <tr>
-                      <td style={{ width: '50%', paddingBottom: '25px', fontWeight: 'bold' }}>Check In Date: _________________</td>
-                      <td style={{ width: '50%', paddingBottom: '25px', fontWeight: 'bold', paddingLeft: '20px' }}>Time: _________________</td>
-                    </tr>
-                    <tr>
-                      <td style={{ fontWeight: 'bold', paddingBottom: '35px' }}>Student Signature: _________________</td>
-                      <td style={{ fontWeight: 'bold', paddingBottom: '35px', paddingLeft: '20px' }}>Warden Signature: _________________</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            
-            {/* Page 2: Consent Form for Parent(s)/Guardian */}
-            <div style={{ padding: '30px 40px', fontFamily: 'serif', color: '#000', backgroundColor: '#fff', fontSize: '10.5px', lineHeight: '1.4' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #000', paddingBottom: '5px', marginBottom: '15px' }}>
-                <img src="/JKLU%20Logo.png" alt="JKLU Logo" style={{ height: '40px' }} />
-                <div style={{ textAlign: 'right' }}>
-                  <h2 style={{ margin: '0', fontSize: '15px', fontWeight: 'bold' }}>JK LAKSHMIPAT UNIVERSITY</h2>
-                  <span style={{ fontSize: '8px', color: '#666' }}>ANNEXURE - B</span>
-                </div>
-              </div>
-              <div style={{ backgroundColor: '#333', color: '#fff', textAlign: 'center', padding: '5px', fontWeight: 'bold', marginBottom: '12px', fontSize: '11px', textTransform: 'uppercase', borderRadius: '4px' }}>
-                Consent Form for Parent(s)/Guardian
-              </div>
-              <div style={{ marginBottom: '10px' }}>
-                <h4 style={{ margin: '0 0 3px 0', fontWeight: 'bold', textDecoration: 'underline' }}>University Entry-Exit Procedures</h4>
-                <ul style={{ margin: '0', paddingLeft: '15px', listStyleType: 'disc' }}>
-                  <li>Students are not permitted to leave the campus between 10:00 PM and 6:00 AM.</li>
-                  <li>Between 6:00 AM and 10:00 PM, students may move in and out of the campus freely.</li>
-                  <li>For outstation travel, students must apply for leave via email to the Hostel Warden or submit a leave form at least four hours prior to the scheduled departure to avoid inconvenience.</li>
-                </ul>
-              </div>
-              <div style={{ marginBottom: '12px' }}>
-                <h4 style={{ margin: '0 0 3px 0', fontWeight: 'bold', textDecoration: 'underline' }}>Night Attendance</h4>
-                <ul style={{ margin: '0', paddingLeft: '15px', listStyleType: 'disc' }}>
-                  <li>Night attendance must be marked between 10:00 PM and 10:30 PM.</li>
-                  <li>In case a student fails to mark attendance, the hostel authorities will inform the concerned guardian.</li>
-                  <li>Repeated failure to mark attendance will attract disciplinary action, including fines.</li>
-                </ul>
-              </div>
-              <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '12px' }}>
-                <tbody>
-                  <tr>
-                    <td style={{ width: '20%', padding: '4px 0', fontWeight: 'bold' }}>1- Student Name:</td>
-                    <td style={{ borderBottom: '1px dotted #000', padding: '4px 5px' }} colSpan={3}>{printData.studentName}</td>
-                  </tr>
-                  <tr>
-                    <td style={{ width: '15%', padding: '4px 0', fontWeight: 'bold' }}>2- Roll NO:</td>
-                    <td style={{ width: '25%', borderBottom: '1px dotted #000', padding: '4px' }}>{printData.rollNo}</td>
-                    <td style={{ width: '25%', padding: '4px 0', fontWeight: 'bold', textAlign: 'center' }}>3- Hostel Block:</td>
-                    <td style={{ width: '35%', borderBottom: '1px dotted #000', padding: '4px' }}>{printData.hostel}</td>
-                  </tr>
-                  <tr>
-                    <td style={{ padding: '4px 0', fontWeight: 'bold' }}>4- Room No.:</td>
-                    <td style={{ borderBottom: '1px dotted #000', padding: '4px' }} colSpan={3}>{printData.room}</td>
-                  </tr>
-                  <tr>
-                    <td style={{ padding: '4px 0', fontWeight: 'bold' }}>Parent/Guardian 1:</td>
-                    <td style={{ borderBottom: '1px dotted #000', padding: '4px' }} colSpan={3}>{printData.parentName}</td>
-                  </tr>
-                  {printData.parentGuardian2 && (
-                    <tr>
-                      <td style={{ padding: '4px 0', fontWeight: 'bold' }}>Parent/Guardian 2:</td>
-                      <td style={{ borderBottom: '1px dotted #000', padding: '4px' }} colSpan={3}>{printData.parentGuardian2}</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-              <p style={{ margin: '0 0 8px 0', textAlign: 'justify', fontSize: '9.5px' }}>
-                I/we have read and clearly understood the University's <strong>ENTRY-EXIT PROCEDURES</strong>.
-              </p>
-              <p style={{ margin: '0 0 8px 0', textAlign: 'justify', fontSize: '9.5px' }}>
-                I/We give my/our consent to university that my/our ward be allowed to check-in and check-out of the University Campus for overnight stay out of the campus, warden office will take prior approval from us. (Please tick):
-              </p>
-              <p style={{ margin: '0 0 8px 0', fontStyle: 'italic', fontWeight: 'bold', fontSize: '9.5px' }}>
-                [Yes] (I/We also agree to submit our permission for night-out via email to wardenboys@jklu.edu.in / wardengirls@jklu.edu.in)
-              </p>
-              <p style={{ margin: '0 0 12px 0', fontSize: '8.5px', textAlign: 'justify', borderLeft: '2px solid #666', paddingLeft: '8px', color: '#444' }}>
-                The request must be submitted latest by 6:00 PM on the day of the student's night-out. If a student is found absent (staying outside the campus) without prior information or approval from the Hostel Warden, the University reserves the right to take appropriate disciplinary action as per rules.
-              </p>
-              <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
-                <tbody>
-                  <tr>
-                    <td style={{ width: '50%', paddingBottom: '15px', fontWeight: 'bold' }}>Signature of Parent/Guardian: _________________</td>
-                    <td style={{ width: '50%', paddingBottom: '15px', fontWeight: 'bold', paddingLeft: '20px' }}>Date: {new Date().toLocaleDateString('en-GB')}</td>
-                  </tr>
-                  <tr>
-                    <td style={{ paddingBottom: '15px', fontWeight: 'bold' }}>Mobile 1: {printData.parentContact}</td>
-                    <td style={{ paddingBottom: '15px', fontWeight: 'bold', paddingLeft: '20px' }}>Mobile 2: {printData.parent2Contact || '_________________'}</td>
-                  </tr>
-                  <tr>
-                    <td style={{ paddingBottom: '25px', fontWeight: 'bold' }}>Email 1: {printData.parentEmail || '_________________'}</td>
-                    <td style={{ paddingBottom: '25px', fontWeight: 'bold', paddingLeft: '20px' }}>Email 2: {printData.parent2Email || '_________________'}</td>
-                  </tr>
-                  <tr>
-                    <td style={{ fontWeight: 'bold' }}>(Signature of Student)</td>
-                    <td style={{ fontWeight: 'bold', paddingLeft: '20px', textAlign: 'right' }}>(Signature of Hostel Warden)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
       )}
     </div>
