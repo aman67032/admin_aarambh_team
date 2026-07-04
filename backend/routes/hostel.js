@@ -247,7 +247,8 @@ router.post('/verify-otp', async (req, res) => {
         course: member.position,
         cohort: member.position,
         cluster: '',
-        email: member.email
+        email: member.email,
+        mobile: member.mobile
       },
       hostel,
       isAllotted: !!allotment,
@@ -322,7 +323,8 @@ router.post('/verify-student', async (req, res) => {
         course: member.position,
         cohort: member.position,
         cluster: '',
-        email: member.email
+        email: member.email,
+        mobile: member.mobile
       },
       hostel,
       isAllotted: !!allotment,

@@ -23,6 +23,7 @@ interface StudentInfo {
   cohort: string;
   cluster: string;
   email: string;
+  mobile?: string;
 }
 
 interface AllotmentInfo {
@@ -1293,7 +1294,7 @@ export default function HostelBookingPage() {
               </tr>
               <tr>
                 <td style={{ padding: '6px 0', fontWeight: 'bold' }}>Contact No:</td>
-                <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px' }}>{student?.email ? 'Listed on Roster' : ''}</td>
+                <td style={{ borderBottom: '1px dotted #000', padding: '6px 5px' }}>{student?.mobile || '___________________________________________________'}</td>
               </tr>
               <tr>
                 <td style={{ padding: '6px 0', fontWeight: 'bold' }}>JKLU Mail ID:</td>
