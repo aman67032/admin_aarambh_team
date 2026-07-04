@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const TeamMember = require('../models/TeamMember');
 const HostelRoom = require('../models/HostelRoom');
 const HostelOtp = require('../models/HostelOtp');
+const HostelForm = require('../models/HostelForm');
 
 // Helper to escape regex special characters to prevent regex injection
 function escapeRegex(text) {
@@ -236,6 +237,7 @@ router.post('/verify-otp', async (req, res) => {
       { expiresIn: '30m' }
     );
 
+    const form = await HostelForm.findOne({ rollNo: normRoll });
     res.json({
       success: true,
       token,
@@ -252,6 +254,7 @@ router.post('/verify-otp', async (req, res) => {
       },
       hostel,
       isAllotted: !!allotment,
+      hasFilledForm: !!form,
       allotment: allotment ? {
         hostel: allotment.hostel,
         floor: allotment.floor,
@@ -312,6 +315,7 @@ router.post('/verify-student', async (req, res) => {
       { expiresIn: '30m' }
     );
 
+    const form = await HostelForm.findOne({ rollNo: normRoll });
     res.json({
       success: true,
       token,
@@ -328,6 +332,7 @@ router.post('/verify-student', async (req, res) => {
       },
       hostel,
       isAllotted: !!allotment,
+      hasFilledForm: !!form,
       allotment: allotment ? {
         hostel: allotment.hostel,
         floor: allotment.floor,
@@ -353,6 +358,9 @@ router.get('/rooms/:hostelName', requireHostelAuth, async (req, res) => {
 
     const beds = await HostelRoom.find({ hostel: hostelName }).sort({ sno: 1 });
 
+    const filledForms = await HostelForm.find({}, 'rollNo');
+    const filledRolls = new Set(filledForms.map(f => normalizeRollNo(f.rollNo)));
+
     // Group beds by room
     const roomsMap = {};
     beds.forEach(bed => {
@@ -364,12 +372,14 @@ router.get('/rooms/:hostelName', requireHostelAuth, async (req, res) => {
           beds: []
         };
       }
+      const normAppNo = bed.allottedToAppNo ? normalizeRollNo(bed.allottedToAppNo) : null;
       roomsMap[roomKey].beds.push({
         sno: bed.sno,
         bed: bed.bed,
         isOccupied: !!bed.allottedTo,
         occupiedByCohort: bed.allottedTo ? (bed.allottedToName || 'Reserved') : null,
-        occupiedByAppNo: bed.allottedToAppNo || null
+        occupiedByAppNo: bed.allottedToAppNo || null,
+        hasFilledForm: normAppNo ? filledRolls.has(normAppNo) : false
       });
     });
 
@@ -618,6 +628,105 @@ router.post('/vacate', requireHostelAuth, async (req, res) => {
   } catch (error) {
     console.error('Vacate bed error:', error);
     res.status(500).json({ error: 'Server error vacating bed slot.' });
+  }
+});
+
+
+// GET /api/hostel/form/:rollNo
+// Retrieve stay permission details for a student
+router.get('/form/:rollNo', async (req, res) => {
+  try {
+    const { rollNo } = req.params;
+    const normRoll = normalizeRollNo(rollNo);
+    const form = await HostelForm.findOne({ rollNo: normRoll });
+    if (!form) {
+      return res.status(404).json({ error: 'Stay permission details not found for this roll number.' });
+    }
+    res.json({ success: true, form });
+  } catch (error) {
+    console.error('Get student form error:', error);
+    res.status(500).json({ error: 'Server error retrieving form details.' });
+  }
+});
+
+// POST /api/hostel/form
+// Submit stay permission form details
+router.post('/form', async (req, res) => {
+  try {
+    const {
+      rollNo,
+      studentContact,
+      parentName,
+      parentContact,
+      parentEmail,
+      parentGuardian2,
+      parent2Contact,
+      parent2Email,
+      address
+    } = req.body;
+
+    if (!rollNo || !studentContact || !parentName || !parentContact || !address) {
+      return res.status(400).json({ error: 'Roll number, student contact, parent name, parent contact, and address are required.' });
+    }
+
+    const normRoll = normalizeRollNo(rollNo);
+    const escapedRoll = escapeRegex(normRoll);
+
+    // Find the student member
+    const member = await TeamMember.findOne({
+      rollNo: { $regex: new RegExp('^' + escapedRoll + '$', 'i') }
+    });
+
+    if (!member) {
+      return res.status(404).json({ error: 'Roster record not found for this roll number.' });
+    }
+
+    // Save or update
+    let form = await HostelForm.findOne({ rollNo: normRoll });
+    if (form) {
+      form.studentContact = studentContact;
+      form.parentName = parentName;
+      form.parentContact = parentContact;
+      form.parentEmail = parentEmail;
+      form.parentGuardian2 = parentGuardian2;
+      form.parent2Contact = parent2Contact;
+      form.parent2Email = parent2Email;
+      form.address = address;
+    } else {
+      form = new HostelForm({
+        studentId: member._id,
+        rollNo: normRoll,
+        studentContact,
+        parentName,
+        parentContact,
+        parentEmail,
+        parentGuardian2,
+        parent2Contact,
+        parent2Email,
+        address
+      });
+    }
+
+    await form.save();
+    res.json({ success: true, message: 'Stay permission details saved successfully.', form });
+  } catch (error) {
+    console.error('Save form error:', error);
+    res.status(500).json({ error: 'Server error saving form details.' });
+  }
+});
+
+// GET /api/hostel/forms
+// Admin endpoint to retrieve all submitted forms
+router.get('/forms', requireHostelAuth, async (req, res) => {
+  try {
+    if (req.hostelUser.role !== 'admin' && req.hostelUser.role !== 'super_admin') {
+      return res.status(403).json({ error: 'Access denied. Administrator privileges required.' });
+    }
+    const forms = await HostelForm.find({}).populate('studentId', 'name rollNo gender position email mobile');
+    res.json({ success: true, forms });
+  } catch (error) {
+    console.error('Get all forms error:', error);
+    res.status(500).json({ error: 'Server error retrieving all forms.' });
   }
 });
 

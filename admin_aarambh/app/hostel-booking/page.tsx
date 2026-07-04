@@ -87,7 +87,7 @@ export default function HostelBookingPage() {
     { appNo: '', verifiedStudent: null, bedSno: null, error: '', verifying: false }
   ]);
 
-  // Document generation states
+  // Document generation & database form states
   const [isDocsModalOpen, setIsDocsModalOpen] = useState(false);
   const [parentName, setParentName] = useState('');
   const [parentContact, setParentContact] = useState('');
@@ -96,6 +96,11 @@ export default function HostelBookingPage() {
   const [parentGuardian2, setParentGuardian2] = useState('');
   const [parent2Contact, setParent2Contact] = useState('');
   const [parent2Email, setParent2Email] = useState('');
+  
+  const [studentContact, setStudentContact] = useState('');
+  const [hasFilledForm, setHasFilledForm] = useState(false);
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [submittingForm, setSubmittingForm] = useState(false);
 
   // Dynamically load html2pdf script
   const loadHtml2Pdf = () => {
@@ -109,6 +114,65 @@ export default function HostelBookingPage() {
       script.onload = () => resolve((window as any).html2pdf);
       document.body.appendChild(script);
     });
+  };
+
+  // Fetch student form details from database if filled
+  const fetchStudentForm = async (rollNo: string) => {
+    try {
+      const res = await fetch(`/api/hostel/form/${rollNo}`);
+      const data = await res.json();
+      if (res.ok && data.form) {
+        setStudentContact(data.form.studentContact || '');
+        setParentName(data.form.parentName || '');
+        setParentContact(data.form.parentContact || '');
+        setParentEmail(data.form.parentEmail || '');
+        setParentGuardian2(data.form.parentGuardian2 || '');
+        setParent2Contact(data.form.parent2Contact || '');
+        setParent2Email(data.form.parent2Email || '');
+        setAddress(data.form.address || '');
+        setHasFilledForm(true);
+      }
+    } catch (err) {
+      console.error('Error fetching student form:', err);
+    }
+  };
+
+  // Submit and save stays permission form details
+  const handleSaveForm = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!student || !studentContact.trim() || !parentName.trim() || !parentContact.trim() || !address.trim()) {
+      alert('Please fill all required fields marked with *');
+      return;
+    }
+    setSubmittingForm(true);
+    try {
+      const res = await fetch('/api/hostel/form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          rollNo: student.applicationNo,
+          studentContact,
+          parentName,
+          parentContact,
+          parentEmail,
+          parentGuardian2,
+          parent2Contact,
+          parent2Email,
+          address
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to save stay permission details.');
+      }
+      setHasFilledForm(true);
+      setIsFormModalOpen(false);
+      alert('Stay permission details saved successfully!');
+    } catch (err: any) {
+      alert(err.message || 'An error occurred.');
+    } finally {
+      setSubmittingForm(false);
+    }
   };
 
   // Load and trigger HTML to PDF conversion
@@ -233,6 +297,13 @@ export default function HostelBookingPage() {
       setSelectedMemberId(data.student.id);
       setHostelToken(data.token);
       setOtpStep(false); // clear OTP step
+      
+      setHasFilledForm(data.hasFilledForm);
+      if (data.hasFilledForm) {
+        fetchStudentForm(data.student.applicationNo);
+      } else if (data.isAllotted) {
+        setIsFormModalOpen(true);
+      }
 
       if (!data.isAllotted && data.hostel) {
         fetchRooms(data.hostel, data.token);
@@ -267,6 +338,13 @@ export default function HostelBookingPage() {
       setSelectedMemberId(member.id);
       setHostelToken(data.token);
       setMultipleMembers([]); // clear list
+      
+      setHasFilledForm(data.hasFilledForm);
+      if (data.hasFilledForm) {
+        fetchStudentForm(data.student.applicationNo);
+      } else if (data.isAllotted) {
+        setIsFormModalOpen(true);
+      }
 
       if (!data.isAllotted && data.hostel) {
         fetchRooms(data.hostel, data.token);
@@ -485,6 +563,8 @@ export default function HostelBookingPage() {
 
       setBookingSuccess(true);
       setBookingDetails(data.details);
+      // Automatically show stay permission details form popup
+      setIsFormModalOpen(true);
     } catch (err: any) {
       alert(err.message || 'An error occurred during booking.');
     } finally {
@@ -564,15 +644,18 @@ export default function HostelBookingPage() {
               </div>
             </div>
 
-            <button
-              onClick={() => setIsDocsModalOpen(true)}
-              className="w-full mb-3 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow flex items-center justify-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Download Required Forms (PDF)
-            </button>
+            {!hasFilledForm ? (
+              <button
+                onClick={() => setIsFormModalOpen(true)}
+                className="w-full mb-3 py-3 bg-primary hover:bg-primary-hover text-white font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow flex items-center justify-center gap-2"
+              >
+                📝 Fill Stay Permission Details
+              </button>
+            ) : (
+              <div className="mb-4 bg-green-500/10 border border-green-500/25 p-3 text-green-500 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
+                <span>✓ Stay permission details saved in database</span>
+              </div>
+            )}
 
             <Link
               href="/"
@@ -736,15 +819,18 @@ export default function HostelBookingPage() {
               </div>
             </div>
 
-            <button
-              onClick={() => setIsDocsModalOpen(true)}
-              className="w-full mb-3 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow flex items-center justify-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Download Required Forms (PDF)
-            </button>
+            {!hasFilledForm ? (
+              <button
+                onClick={() => setIsFormModalOpen(true)}
+                className="w-full mb-3 py-3 bg-primary hover:bg-primary-hover text-white font-bold rounded-xl transition-all cursor-pointer font-outfit uppercase tracking-wider text-xs shadow-glow flex items-center justify-center gap-2"
+              >
+                📝 Fill Stay Permission Details
+              </button>
+            ) : (
+              <div className="mb-4 bg-green-500/10 border border-green-500/25 p-3 text-green-500 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
+                <span>✓ Stay permission details saved in database</span>
+              </div>
+            )}
 
             <Link
               href="/"
@@ -1151,39 +1237,62 @@ export default function HostelBookingPage() {
         )}
       </main>
 
-      {/* Parent consent details modal */}
-      {isDocsModalOpen && (
+      {/* Database stay permission form details modal */}
+      {isFormModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-card-bg border border-card-border rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+          <form onSubmit={handleSaveForm} className="bg-card-bg border border-card-border rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center border-b border-card-border pb-3">
-              <h3 className="text-lg font-bold font-outfit text-foreground">Fill Parent/Guardian Consent Details</h3>
-              <button
-                onClick={() => setIsDocsModalOpen(false)}
-                className="text-text-muted hover:text-foreground text-sm font-bold cursor-pointer"
-              >
-                x
-              </button>
+              <div className="min-w-0">
+                <h3 className="text-base font-bold font-outfit text-foreground">Stay Permission Details</h3>
+                <p className="text-[10px] text-text-muted">Enter your home address and guardian info to confirm stay permission</p>
+              </div>
+              {hasFilledForm && (
+                <button
+                  type="button"
+                  onClick={() => setIsFormModalOpen(false)}
+                  className="text-text-muted hover:text-foreground text-sm font-bold cursor-pointer"
+                >
+                  ✕
+                </button>
+              )}
             </div>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3.5 text-xs">
               <div>
-                <label className="block font-bold text-text-muted mb-1">Parent/Guardian 1 Name</label>
+                <label className="block font-bold text-text-muted mb-1">Student Contact No. *</label>
                 <input
                   type="text"
+                  required
+                  value={studentContact}
+                  onChange={(e) => setStudentContact(e.target.value.replace(/\D/g, ''))}
+                  placeholder="Your 10-digit mobile number"
+                  maxLength={10}
+                  className="w-full px-3 py-2 bg-background border border-card-border rounded-lg text-foreground outline-none focus:border-primary"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-text-muted mb-1">Parent/Guardian 1 Name *</label>
+                <input
+                  type="text"
+                  required
                   value={parentName}
                   onChange={(e) => setParentName(e.target.value)}
                   placeholder="Full Name"
                   className="w-full px-3 py-2 bg-background border border-card-border rounded-lg text-foreground outline-none focus:border-primary"
                 />
               </div>
+              
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-bold text-text-muted mb-1">Parent 1 Contact No.</label>
+                  <label className="block font-bold text-text-muted mb-1">Parent 1 Contact No. *</label>
                   <input
                     type="text"
+                    required
                     value={parentContact}
-                    onChange={(e) => setParentContact(e.target.value)}
+                    onChange={(e) => setParentContact(e.target.value.replace(/\D/g, ''))}
                     placeholder="Mobile Number"
+                    maxLength={10}
                     className="w-full px-3 py-2 bg-background border border-card-border rounded-lg text-foreground outline-none focus:border-primary"
                   />
                 </div>
@@ -1209,14 +1318,16 @@ export default function HostelBookingPage() {
                   className="w-full px-3 py-2 bg-background border border-card-border rounded-lg text-foreground outline-none focus:border-primary"
                 />
               </div>
+              
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="block font-bold text-text-muted mb-1">Parent 2 Contact (Optional)</label>
                   <input
                     type="text"
                     value={parent2Contact}
-                    onChange={(e) => setParent2Contact(e.target.value)}
+                    onChange={(e) => setParent2Contact(e.target.value.replace(/\D/g, ''))}
                     placeholder="Mobile Number"
+                    maxLength={10}
                     className="w-full px-3 py-2 bg-background border border-card-border rounded-lg text-foreground outline-none focus:border-primary"
                   />
                 </div>
@@ -1233,12 +1344,13 @@ export default function HostelBookingPage() {
               </div>
 
               <div>
-                <label className="block font-bold text-text-muted mb-1">Home Address</label>
+                <label className="block font-bold text-text-muted mb-1">Home Address *</label>
                 <textarea
+                  required
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Complete postal address"
-                  rows={2}
+                  rows={2.5}
                   className="w-full px-3 py-2 bg-background border border-card-border rounded-lg text-foreground outline-none focus:border-primary resize-none"
                 />
               </div>
@@ -1246,19 +1358,14 @@ export default function HostelBookingPage() {
 
             <div className="flex gap-2 pt-3 border-t border-card-border">
               <button
-                onClick={downloadShortStayForm}
-                className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs uppercase tracking-wider cursor-pointer transition-all"
+                type="submit"
+                disabled={submittingForm}
+                className="w-full py-3 bg-primary hover:bg-primary-hover text-white font-bold rounded-xl text-xs uppercase tracking-wider cursor-pointer transition-all disabled:opacity-50"
               >
-                Short Stay PDF
-              </button>
-              <button
-                onClick={downloadParentConsentForm}
-                className="flex-1 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs uppercase tracking-wider cursor-pointer transition-all"
-              >
-                Consent PDF
+                {submittingForm ? 'Saving stay permission details...' : '✓ Submit Details'}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       )}
 
