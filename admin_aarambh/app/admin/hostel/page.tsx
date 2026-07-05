@@ -575,9 +575,20 @@ export default function HostelManagementPage() {
           <span className="text-[10px] font-extrabold uppercase tracking-widest text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full">
             Hostel Dashboard
           </span>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight uppercase mt-2.5">
-            Hostel Command Center
-          </h1>
+          <div className="flex items-center gap-2 mt-2.5">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight uppercase">
+              Hostel Command Center
+            </h1>
+            <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">
+              <span className="flex h-1.5 w-1.5 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+              </span>
+              <span className="text-[8px] font-black uppercase tracking-wider text-emerald-500 leading-none">
+                LIVE
+              </span>
+            </div>
+          </div>
           <p className="text-text-muted text-xs mt-1 max-w-xl">
             Monitor real-time bed occupancy, search team allotments, and manage checkout actions.
           </p>
@@ -630,7 +641,7 @@ export default function HostelManagementPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Beds */}
-        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:border-card-border/80 transition-all">
+        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-md hover:border-primary/20 transition-all duration-300">
           <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Total Bed Slots</span>
           <div className="flex items-baseline justify-between mt-3">
             <span className="text-3xl font-extrabold text-foreground">{loading ? '...' : totalBeds}</span>
@@ -639,7 +650,7 @@ export default function HostelManagementPage() {
         </div>
 
         {/* Occupied Beds */}
-        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:border-card-border/80 transition-all">
+        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-md hover:border-red-500/20 transition-all duration-300">
           <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Occupied Beds</span>
           <div className="flex items-baseline justify-between mt-3">
             <span className="text-3xl font-extrabold text-red-500">{loading ? '...' : occupiedBeds}</span>
@@ -648,7 +659,7 @@ export default function HostelManagementPage() {
         </div>
 
         {/* Vacant Beds */}
-        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:border-card-border/80 transition-all">
+        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-md hover:border-green-500/20 transition-all duration-300">
           <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Vacant Beds</span>
           <div className="flex items-baseline justify-between mt-3">
             <span className="text-3xl font-extrabold text-green-500">{loading ? '...' : vacantBeds}</span>
@@ -657,7 +668,7 @@ export default function HostelManagementPage() {
         </div>
 
         {/* Occupancy Rate */}
-        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:border-card-border/80 transition-all">
+        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-md hover:border-primary/20 transition-all duration-300">
           <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Allotment Rate</span>
           <div className="flex items-baseline justify-between mt-3">
             <span className="text-3xl font-extrabold text-primary">{loading ? '...' : `${occupancyRate}%`}</span>
@@ -772,7 +783,7 @@ export default function HostelManagementPage() {
             return (
               <div
                 key={room.room}
-                className="bg-card-bg border border-card-border rounded-2xl p-5 flex flex-col justify-between gap-5 transition-all hover:border-card-border/90 hover:shadow-md relative overflow-hidden"
+                className="bg-card-bg border border-card-border rounded-2xl p-5 flex flex-col justify-between gap-5 transition-all duration-300 hover:-translate-y-1 hover:border-card-border/90 hover:shadow-lg relative overflow-hidden"
               >
                 {/* Visual indicator bar at the top */}
                 <div 
@@ -797,7 +808,7 @@ export default function HostelManagementPage() {
                     return (
                       <div
                         key={bed.sno}
-                        className={`p-3.5 rounded-xl border flex items-center justify-between gap-4 transition-all ${
+                        className={`p-3.5 rounded-xl border flex items-center justify-between gap-4 transition-all duration-300 hover:shadow-sm ${
                           bed.isOccupied
                             ? 'bg-background border-card-border/80'
                             : 'bg-green-500/[0.02] border-dashed border-green-500/20'

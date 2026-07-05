@@ -396,7 +396,11 @@ router.get('/rooms/:hostelName', requireHostelAuth, async (req, res) => {
       });
     });
 
-    const roomsList = Object.values(roomsMap);
+    // Filter out completely empty rooms dynamically
+    const roomsList = Object.values(roomsMap).filter(room => {
+      return room.beds.some(bed => bed.isOccupied);
+    });
+
     res.json({
       success: true,
       hostel: hostelName,
