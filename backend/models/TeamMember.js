@@ -25,6 +25,22 @@ const teamMemberSchema = new mongoose.Schema({
   email: {
     type: String,
     default: ''
+  },
+  arrivalDate: {
+    type: String,
+    default: ''
+  },
+  arrivalTime: {
+    type: String,
+    default: ''
+  },
+  checkedIn: {
+    type: Boolean,
+    default: false
+  },
+  checkedInTime: {
+    type: Date,
+    default: null
   }
 }, {
   timestamps: true

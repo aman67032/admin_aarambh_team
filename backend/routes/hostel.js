@@ -20,58 +20,63 @@ function normalizeRollNo(rollNo) {
   return clean;
 }
 
+// Singleton Transporters for connection pooling (speeds up SMTP delivery and prevents queue buildup)
+const directTransporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || 'smtp.office365.com',
+  port: parseInt(process.env.SMTP_PORT || '587'),
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER || 'amanpratapsingh@jklu.edu.in',
+    pass: process.env.SMTP_PASS
+  },
+  tls: {
+    ciphers: 'SSLv3',
+    rejectUnauthorized: false
+  },
+  pool: true,
+  maxConnections: 5,
+  maxMessages: 100
+});
+
+const otpTransporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST_OTP || 'smtp.office365.com',
+  port: parseInt(process.env.SMTP_PORT_OTP || '587'),
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER_OTP || 'aarambh@jklu.edu.in',
+    pass: process.env.SMTP_PASS_OTP
+  },
+  tls: {
+    ciphers: 'SSLv3',
+    rejectUnauthorized: false
+  },
+  pool: true,
+  maxConnections: 5,
+  maxMessages: 100
+});
+
 // Helper to send email directly using project's configured SMTP settings
 const sendDirectEmail = async ({ to, subject, html }) => {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.office365.com',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER || 'amanpratapsingh@jklu.edu.in',
-      pass: process.env.SMTP_PASS
-    },
-    tls: {
-      ciphers: 'SSLv3',
-      rejectUnauthorized: false
-    }
-  });
-
   const mailOptions = {
     from: process.env.SMTP_USER || 'amanpratapsingh@jklu.edu.in',
     to,
     subject,
     html,
-    bcc: 'amanpratapsingh@jklu.edu.in' // keep aman in bcc, no other cc or bcc
+    bcc: 'amanpratapsingh@jklu.edu.in'
   };
-
-  return transporter.sendMail(mailOptions);
+  return directTransporter.sendMail(mailOptions);
 };
 
 // Dedicated helper for OTP emails — uses a separate Aarambh SMTP account
 const sendOtpEmail = async ({ to, subject, html }) => {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST_OTP || 'smtp.office365.com',
-    port: parseInt(process.env.SMTP_PORT_OTP || '587'),
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER_OTP || 'aarambh@jklu.edu.in',
-      pass: process.env.SMTP_PASS_OTP
-    },
-    tls: {
-      ciphers: 'SSLv3',
-      rejectUnauthorized: false
-    }
-  });
-
   const mailOptions = {
     from: `"Aarambh 2026" <${process.env.SMTP_FROM_OTP || 'aarambh@jklu.edu.in'}>`,
     to,
     subject,
     html,
-    bcc: 'amanpratapsingh@jklu.edu.in' // always BCC aman
+    bcc: 'amanpratapsingh@jklu.edu.in'
   };
-
-  return transporter.sendMail(mailOptions);
+  return otpTransporter.sendMail(mailOptions);
 };
 
 // Middleware to require Hostel session authentication
@@ -153,7 +158,10 @@ router.post('/send-otp', async (req, res) => {
       </div>
     `;
 
-    await sendOtpEmail({ to: member.email, subject, html });
+    // Send OTP in background to prevent blocking the HTTP event loop/queues
+    sendOtpEmail({ to: member.email, subject, html }).catch(err => {
+      console.error('Error sending OTP in background:', err);
+    });
 
     // Mask email for response (e.g. a***@jklu.edu.in)
     const [local, domain] = member.email.split('@');
@@ -356,7 +364,7 @@ router.get('/rooms/:hostelName', requireHostelAuth, async (req, res) => {
       return res.status(400).json({ error: 'Invalid hostel name. Must be BH-1 or GH-2.' });
     }
 
-    const beds = await HostelRoom.find({ hostel: hostelName }).sort({ sno: 1 });
+    const beds = await HostelRoom.find({ hostel: hostelName }).populate('allottedTo').sort({ sno: 1 });
 
     const filledForms = await HostelForm.find({}, 'rollNo');
     const filledRolls = new Set(filledForms.map(f => normalizeRollNo(f.rollNo)));
@@ -379,7 +387,12 @@ router.get('/rooms/:hostelName', requireHostelAuth, async (req, res) => {
         isOccupied: !!bed.allottedTo,
         occupiedByCohort: bed.allottedTo ? (bed.allottedToName || 'Reserved') : null,
         occupiedByAppNo: bed.allottedToAppNo || null,
-        hasFilledForm: normAppNo ? filledRolls.has(normAppNo) : false
+        hasFilledForm: normAppNo ? filledRolls.has(normAppNo) : false,
+        arrivalDate: bed.allottedTo ? (bed.allottedTo.arrivalDate || '') : '',
+        arrivalTime: bed.allottedTo ? (bed.allottedTo.arrivalTime || '') : '',
+        checkedIn: bed.allottedTo ? (bed.allottedTo.checkedIn || false) : false,
+        checkedInTime: bed.allottedTo ? (bed.allottedTo.checkedInTime || null) : null,
+        memberId: bed.allottedTo ? bed.allottedTo._id : null
       });
     });
 
@@ -727,6 +740,68 @@ router.get('/forms', requireHostelAuth, async (req, res) => {
   } catch (error) {
     console.error('Get all forms error:', error);
     res.status(500).json({ error: 'Server error retrieving all forms.' });
+  }
+});
+
+// POST /api/hostel/member/arrival
+// Update team member arrival details (Super Admin only)
+router.post('/member/arrival', requireHostelAuth, async (req, res) => {
+  try {
+    if (req.hostelUser.role !== 'super_admin') {
+      return res.status(403).json({ error: 'Access denied. Super Administrator privileges required.' });
+    }
+
+    const { memberId, arrivalDate, arrivalTime } = req.body;
+    if (!memberId) {
+      return res.status(400).json({ error: 'Team member ID is required.' });
+    }
+
+    const updated = await TeamMember.findByIdAndUpdate(
+      memberId,
+      { $set: { arrivalDate: arrivalDate || '', arrivalTime: arrivalTime || '' } },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Team member not found.' });
+    }
+
+    res.json({ success: true, message: 'Arrival details updated successfully.', member: updated });
+
+  } catch (error) {
+    console.error('Update arrival error:', error);
+    res.status(500).json({ error: 'Server error updating arrival details.' });
+  }
+});
+
+// POST /api/hostel/member/check-in
+// Record team member check-in time (Admin/Super Admin only)
+router.post('/member/check-in', requireHostelAuth, async (req, res) => {
+  try {
+    if (req.hostelUser.role !== 'admin' && req.hostelUser.role !== 'super_admin') {
+      return res.status(403).json({ error: 'Access denied. Administrator privileges required.' });
+    }
+
+    const { memberId } = req.body;
+    if (!memberId) {
+      return res.status(400).json({ error: 'Team member ID is required.' });
+    }
+
+    const updated = await TeamMember.findByIdAndUpdate(
+      memberId,
+      { $set: { checkedIn: true, checkedInTime: new Date() } },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Team member not found.' });
+    }
+
+    res.json({ success: true, message: 'Check-in recorded successfully.', member: updated });
+
+  } catch (error) {
+    console.error('Check-in error:', error);
+    res.status(500).json({ error: 'Server error recording check-in.' });
   }
 });
 

@@ -11,6 +11,11 @@ interface BedInfo {
   occupiedByCohort: string | null;
   occupiedByAppNo?: string | null;
   hasFilledForm?: boolean;
+  arrivalDate?: string;
+  arrivalTime?: string;
+  checkedIn?: boolean;
+  checkedInTime?: string | null;
+  memberId?: string | null;
 }
 
 interface RoomInfo {
@@ -37,6 +42,13 @@ export default function HostelManagementPage() {
   // Form details map from database
   const [forms, setForms] = useState<Record<string, any>>({});
   const [bulkDownloading, setBulkDownloading] = useState(false);
+
+  // Check-in and arrival states
+  const [checkingInSno, setCheckingInSno] = useState<number | null>(null);
+  const [editingMemberId, setEditingMemberId] = useState<string | null>(null);
+  const [editArrivalDate, setEditArrivalDate] = useState('');
+  const [editArrivalTime, setEditArrivalTime] = useState('');
+  const [savingArrivalMemberId, setSavingArrivalMemberId] = useState<string | null>(null);
 
   // Selected student print state
   const [printData, setPrintData] = useState<{
@@ -464,6 +476,60 @@ export default function HostelManagementPage() {
     }
   };
 
+  const handleCheckIn = async (bedSno: number, memberId: string, name: string) => {
+    if (!confirm(`Are you sure you want to check in ${name}?`)) {
+      return;
+    }
+    
+    setCheckingInSno(bedSno);
+    try {
+      const res = await fetch('/api/hostel/member/check-in', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ memberId })
+      });
+      
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to check in.');
+      }
+      
+      // Refresh list
+      fetchHostelData(activeHostel);
+    } catch (err: any) {
+      alert(err.message || 'An error occurred during check in.');
+    } finally {
+      setCheckingInSno(null);
+    }
+  };
+
+  const handleSaveArrival = async (memberId: string) => {
+    setSavingArrivalMemberId(memberId);
+    try {
+      const res = await fetch('/api/hostel/member/arrival', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          memberId,
+          arrivalDate: editArrivalDate,
+          arrivalTime: editArrivalTime
+        })
+      });
+      
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to save arrival details.');
+      }
+      
+      setEditingMemberId(null);
+      fetchHostelData(activeHostel);
+    } catch (err: any) {
+      alert(err.message || 'An error occurred saving arrival details.');
+    } finally {
+      setSavingArrivalMemberId(null);
+    }
+  };
+
   // Stats calculation
   const totalBeds = rooms.reduce((acc, r) => acc + r.beds.length, 0);
   const occupiedBeds = rooms.reduce((acc, r) => acc + r.beds.filter(b => b.isOccupied).length, 0);
@@ -762,6 +828,77 @@ export default function HostelManagementPage() {
                                     {bed.occupiedByAppNo}
                                   </span>
                                 )}
+                                
+                                {/* Arrival details rendering */}
+                                <div className="mt-1.5 text-[10px] text-text-muted">
+                                  {editingMemberId && editingMemberId === bed.memberId ? (
+                                    <div className="flex flex-col gap-1 mt-1 p-1.5 bg-card-border/10 rounded-lg border border-card-border/30">
+                                      <div className="flex gap-1.5 items-center">
+                                        <input
+                                          type="text"
+                                          placeholder="DD-MM-YYYY"
+                                          value={editArrivalDate}
+                                          onChange={(e) => setEditArrivalDate(e.target.value)}
+                                          className="px-1.5 py-0.5 bg-background border border-card-border text-[10px] rounded focus:outline-none focus:ring-1 focus:ring-primary w-24"
+                                        />
+                                        <input
+                                          type="text"
+                                          placeholder="HH:MM AM/PM"
+                                          value={editArrivalTime}
+                                          onChange={(e) => setEditArrivalTime(e.target.value)}
+                                          className="px-1.5 py-0.5 bg-background border border-card-border text-[10px] rounded focus:outline-none focus:ring-1 focus:ring-primary w-24"
+                                        />
+                                      </div>
+                                      <div className="flex gap-1.5 justify-end">
+                                        <button
+                                          onClick={() => setEditingMemberId(null)}
+                                          className="px-2 py-0.5 bg-card-border/30 hover:bg-card-border/50 text-text-muted rounded text-[9px] font-bold transition-all"
+                                        >
+                                          Cancel
+                                        </button>
+                                        <button
+                                          onClick={() => handleSaveArrival(bed.memberId!)}
+                                          disabled={savingArrivalMemberId === bed.memberId}
+                                          className="px-2 py-0.5 bg-primary hover:bg-primary-dark text-white rounded text-[9px] font-bold transition-all"
+                                        >
+                                          {savingArrivalMemberId === bed.memberId ? 'Saving...' : 'Save'}
+                                        </button>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="flex items-center gap-1.5">
+                                      <span>
+                                        Arrival: {bed.arrivalDate || 'Not specified'} {bed.arrivalTime || ''}
+                                      </span>
+                                      {user?.role === 'super_admin' && bed.memberId && (
+                                        <button
+                                          onClick={() => {
+                                            setEditingMemberId(bed.memberId!);
+                                            setEditArrivalDate(bed.arrivalDate || '');
+                                            setEditArrivalTime(bed.arrivalTime || '');
+                                          }}
+                                          className="text-primary hover:text-primary-dark transition-all font-bold cursor-pointer text-[10px]"
+                                          title="Edit Arrival Date/Time"
+                                        >
+                                          ✏️
+                                        </button>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+
+                                {/* Check-In Status rendering */}
+                                <div className="mt-1 text-[10px] font-semibold">
+                                  {bed.checkedIn ? (
+                                    <span className="text-green-500">
+                                      ✓ Checked In: {bed.checkedInTime ? new Date(bed.checkedInTime).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' }) : ''}
+                                    </span>
+                                  ) : (
+                                    <span className="text-amber-500">
+                                      ✗ Not Checked In
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                             ) : (
                               <span className="text-[10px] text-green-500 font-extrabold uppercase mt-0.5 block tracking-wider leading-none">
@@ -775,6 +912,17 @@ export default function HostelManagementPage() {
                         <div className="flex items-center gap-1.5 shrink-0">
                           {bed.isOccupied && (
                             <>
+                              {/* Check In Button */}
+                              {!bed.checkedIn && bed.memberId && (
+                                <button
+                                  onClick={() => handleCheckIn(bed.sno, bed.memberId!, bed.occupiedByCohort || '')}
+                                  disabled={checkingInSno === bed.sno}
+                                  className="px-2.5 py-1 bg-green-500/15 hover:bg-green-500 text-green-500 hover:text-white border border-green-500/20 text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
+                                  title="Check In Member"
+                                >
+                                  {checkingInSno === bed.sno ? '...' : 'Check In 🔑'}
+                                </button>
+                              )}
                               {forms[bed.occupiedByAppNo?.toUpperCase().replace(/[\/\.\s-]/g, '') || ''] ? (
                                 <button
                                   onClick={() => triggerSingleDownload(bed, room.room, room.floor, 'stay')}
