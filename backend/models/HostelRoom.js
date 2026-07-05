@@ -34,10 +34,6 @@ const hostelRoomSchema = new mongoose.Schema({
   allottedToAppNo: {
     type: String,
     default: null
-  },
-  isLocked: {
-    type: Boolean,
-    default: false
   }
 }, {
   timestamps: true

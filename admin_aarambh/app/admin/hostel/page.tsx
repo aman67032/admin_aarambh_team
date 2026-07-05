@@ -16,7 +16,6 @@ interface BedInfo {
   checkedIn?: boolean;
   checkedInTime?: string | null;
   memberId?: string | null;
-  isLocked?: boolean;
 }
 
 interface RoomInfo {
@@ -799,9 +798,7 @@ export default function HostelManagementPage() {
                       <div
                         key={bed.sno}
                         className={`p-3.5 rounded-xl border flex items-center justify-between gap-4 transition-all ${
-                          bed.isLocked
-                            ? 'bg-slate-500/[0.02] border-slate-500/10 opacity-70'
-                            : bed.isOccupied
+                          bed.isOccupied
                             ? 'bg-background border-card-border/80'
                             : 'bg-green-500/[0.02] border-dashed border-green-500/20'
                         }`}
@@ -809,11 +806,7 @@ export default function HostelManagementPage() {
                         {/* Bed Info */}
                         <div className="flex items-center gap-3 min-w-0">
                           {/* Avatar or vacant icon */}
-                          {bed.isLocked ? (
-                            <div className="w-9 h-9 rounded-full bg-slate-500/10 border border-slate-500/20 flex items-center justify-center text-xs shrink-0">
-                              🔒
-                            </div>
-                          ) : bed.isOccupied ? (
+                          {bed.isOccupied ? (
                             <div className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary text-sm shrink-0">
                               {firstLetter}
                             </div>
@@ -825,11 +818,7 @@ export default function HostelManagementPage() {
 
                           <div className="min-w-0">
                             <span className="text-xs font-bold text-foreground block">{bed.bed}</span>
-                            {bed.isLocked ? (
-                              <span className="text-[10px] text-slate-500 font-extrabold uppercase mt-0.5 block tracking-wider leading-none">
-                                Locked Slot
-                              </span>
-                            ) : bed.isOccupied ? (
+                            {bed.isOccupied ? (
                               <div className="mt-1 min-w-0">
                                 <span className="text-[11px] font-extrabold text-foreground truncate block leading-tight">
                                   {bed.occupiedByCohort}
@@ -941,11 +930,7 @@ export default function HostelManagementPage() {
 
                         {/* Action Buttons */}
                         <div className="flex items-center gap-1.5 shrink-0">
-                          {bed.isLocked ? (
-                            <span className="px-2.5 py-1 bg-slate-500/15 text-slate-500 border border-slate-500/20 text-[9px] font-black rounded-md uppercase tracking-wider">
-                              Locked
-                            </span>
-                          ) : bed.isOccupied ? (
+                          {bed.isOccupied && (
                             <>
                               {/* Check In Button */}
                               {!bed.checkedIn && bed.memberId && (
@@ -982,7 +967,7 @@ export default function HostelManagementPage() {
                                 </button>
                               )}
                             </>
-                          ) : null}
+                          )}
                         </div>
                       </div>
                     );
