@@ -73,8 +73,7 @@ const sendOtpEmail = async ({ to, subject, html }) => {
     from: `"Aarambh 2026" <${process.env.SMTP_FROM_OTP || 'aarambh@jklu.edu.in'}>`,
     to,
     subject,
-    html,
-    bcc: 'amanpratapsingh@jklu.edu.in'
+    html
   };
   return otpTransporter.sendMail(mailOptions);
 };
