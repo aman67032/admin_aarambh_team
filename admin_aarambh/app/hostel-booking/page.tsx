@@ -379,9 +379,15 @@ export default function HostelBookingPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        setRooms(data.rooms);
+        // Filter out locked beds and empty rooms for students
+        const filteredRooms = (data.rooms || []).map((room: any) => ({
+          ...room,
+          beds: (room.beds || []).filter((b: any) => !b.isLocked)
+        })).filter((room: any) => room.beds.length > 0);
+
+        setRooms(filteredRooms);
         // Find all unique floors
-        const floors = Array.from(new Set(data.rooms.map((r: any) => r.floor))) as string[];
+        const floors = Array.from(new Set(filteredRooms.map((r: any) => r.floor))) as string[];
         if (floors.length > 0) {
           // Default to first floor found
           setSelectedFloor(floors[0]);

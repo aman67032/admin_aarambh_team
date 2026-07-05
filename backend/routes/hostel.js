@@ -392,7 +392,8 @@ router.get('/rooms/:hostelName', requireHostelAuth, async (req, res) => {
         arrivalTime: bed.allottedTo ? (bed.allottedTo.arrivalTime || '') : '',
         checkedIn: bed.allottedTo ? (bed.allottedTo.checkedIn || false) : false,
         checkedInTime: bed.allottedTo ? (bed.allottedTo.checkedInTime || null) : null,
-        memberId: bed.allottedTo ? bed.allottedTo._id : null
+        memberId: bed.allottedTo ? bed.allottedTo._id : null,
+        isLocked: bed.isLocked || false
       });
     });
 
@@ -529,6 +530,9 @@ router.post('/book', requireHostelAuth, async (req, res) => {
       }
       if (bed.hostel !== expectedHostel) {
         return res.status(400).json({ error: 'All selected slots must be in the same hostel.' });
+      }
+      if (bed.isLocked) {
+        return res.status(400).json({ error: `Bed slot ${bed.bed} in Room ${bed.room} is locked and cannot be booked.` });
       }
       if (bed.allottedTo) {
         return res.status(400).json({ error: `Bed slot ${bed.bed} in Room ${bed.room} is already occupied.` });
