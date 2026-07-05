@@ -839,14 +839,7 @@ export default function HostelManagementPage() {
                                           placeholder="DD-MM-YYYY"
                                           value={editArrivalDate}
                                           onChange={(e) => setEditArrivalDate(e.target.value)}
-                                          className="px-1.5 py-0.5 bg-background border border-card-border text-[10px] rounded focus:outline-none focus:ring-1 focus:ring-primary w-24"
-                                        />
-                                        <input
-                                          type="text"
-                                          placeholder="HH:MM AM/PM"
-                                          value={editArrivalTime}
-                                          onChange={(e) => setEditArrivalTime(e.target.value)}
-                                          className="px-1.5 py-0.5 bg-background border border-card-border text-[10px] rounded focus:outline-none focus:ring-1 focus:ring-primary w-24"
+                                          className="px-1.5 py-0.5 bg-background border border-card-border text-[10px] rounded focus:outline-none focus:ring-1 focus:ring-primary w-28"
                                         />
                                       </div>
                                       <div className="flex gap-1.5 justify-end">
@@ -867,18 +860,45 @@ export default function HostelManagementPage() {
                                     </div>
                                   ) : (
                                     <div className="flex items-center gap-1.5">
-                                      <span>
-                                        Arrival: {bed.arrivalDate || 'Not specified'} {bed.arrivalTime || ''}
-                                      </span>
+                                      <span className="font-semibold text-text-muted">Arrival:</span>
+                                      {bed.arrivalDate ? (() => {
+                                        let isMissed = false;
+                                        try {
+                                          const parts = bed.arrivalDate.split('-');
+                                          if (parts.length === 3) {
+                                            const day = parseInt(parts[0], 10);
+                                            const month = parseInt(parts[1], 10) - 1;
+                                            const year = parseInt(parts[2], 10);
+                                            const arrDate = new Date(year, month, day);
+                                            const today = new Date();
+                                            today.setHours(0, 0, 0, 0);
+                                            isMissed = !bed.checkedIn && today > arrDate;
+                                          }
+                                        } catch (e) {
+                                          console.error("Error parsing date:", e);
+                                        }
+
+                                        return (
+                                          <span className={`px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wide border ${
+                                            isMissed 
+                                              ? 'bg-red-500/10 text-red-500 border-red-500/20' 
+                                              : 'bg-primary/10 text-primary border-primary/20'
+                                          }`}>
+                                            {bed.arrivalDate}
+                                          </span>
+                                        );
+                                      })() : (
+                                        <span className="text-text-muted italic">Not specified</span>
+                                      )}
                                       {user?.role === 'super_admin' && bed.memberId && (
                                         <button
                                           onClick={() => {
                                             setEditingMemberId(bed.memberId!);
                                             setEditArrivalDate(bed.arrivalDate || '');
-                                            setEditArrivalTime(bed.arrivalTime || '');
+                                            setEditArrivalTime(''); // Time is no longer used/edited
                                           }}
                                           className="text-primary hover:text-primary-dark transition-all font-bold cursor-pointer text-[10px]"
-                                          title="Edit Arrival Date/Time"
+                                          title="Edit Arrival Date"
                                         >
                                           ✏️
                                         </button>
