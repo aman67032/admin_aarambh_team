@@ -258,7 +258,7 @@ app.get('/api/public/student-cohorts', async (req, res) => {
   try {
     const Student = require('../models/Student');
     const students = await Student.find({})
-      .select('name applicationNo course gender cohort cluster confirmedJklu confirmedAarambh notContinuing')
+      .select('name applicationNo course gender cohort cluster confirmedJklu confirmedAarambh notContinuing specialization')
       .sort({ name: 1 });
       
     res.json({

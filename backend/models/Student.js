@@ -51,6 +51,10 @@ const studentSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  specialization: {
+    type: String,
+    trim: true
+  },
   mobile: {
     type: String,
     trim: true
