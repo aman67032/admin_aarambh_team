@@ -156,4 +156,11 @@ const studentSchema = new mongoose.Schema({
   timestamps: true
 });
 
+studentSchema.pre('save', function(next) {
+  if (this.confirmedJklu && !this.notContinuing && !this.notComingAarambh) {
+    this.confirmedAarambh = true;
+  }
+  next();
+});
+
 module.exports = mongoose.model('Student', studentSchema);
