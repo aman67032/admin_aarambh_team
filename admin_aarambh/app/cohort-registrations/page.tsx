@@ -437,8 +437,12 @@ export default function CohortRegistrationsPage() {
         {/* Brackets Dashboard */}
         {!loading && !notPublished && cohortsRanked.length > 0 && (
           <div className="max-w-4xl mx-auto space-y-4">
-            <div className="flex items-center gap-2 pb-1 justify-center sm:justify-start">
-              <span className="text-xl font-bold">📊</span>
+            <div className="flex items-center gap-2.5 pb-1 justify-center sm:justify-start">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary shrink-0">
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+              </svg>
               <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Cohort Size Brackets (Database Registered)</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
@@ -508,8 +512,11 @@ export default function CohortRegistrationsPage() {
         {/* Demographics Charts */}
         {!loading && !notPublished && grandRegisteredCount > 0 && (
           <div className="max-w-4xl mx-auto space-y-4">
-            <div className="flex items-center gap-2 pb-1 justify-center sm:justify-start">
-              <span className="text-xl font-bold">🥧</span>
+            <div className="flex items-center gap-2.5 pb-1 justify-center sm:justify-start">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary shrink-0">
+                <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+                <path d="M22 12A10 10 0 0 0 12 2v10z" />
+              </svg>
               <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Registration Demographics</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -603,8 +610,11 @@ export default function CohortRegistrationsPage() {
         {/* Cluster Progress Overview */}
         {!loading && !notPublished && clusterStats.length > 0 && (
           <div className="max-w-4xl mx-auto space-y-4">
-            <div className="flex items-center gap-2 pb-1 justify-center sm:justify-start">
-              <span className="text-xl font-bold">🏫</span>
+            <div className="flex items-center gap-2.5 pb-1 justify-center sm:justify-start">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary shrink-0">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
+              </svg>
               <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Cluster Progress Overview</h2>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
@@ -630,8 +640,11 @@ export default function CohortRegistrationsPage() {
         {/* Registration Daily Velocity */}
         {!loading && !notPublished && activeDays.length > 0 && (
           <div className="max-w-4xl mx-auto space-y-4">
-            <div className="flex items-center gap-2 pb-1 justify-center sm:justify-start">
-              <span className="text-xl font-bold">📈</span>
+            <div className="flex items-center gap-2.5 pb-1 justify-center sm:justify-start">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary shrink-0">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                <polyline points="17 6 23 6 23 12" />
+              </svg>
               <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Registration Daily Velocity</h2>
             </div>
             <div className="glass-card p-6 flex flex-col items-center gap-5">
@@ -671,8 +684,14 @@ export default function CohortRegistrationsPage() {
         {/* Leaderboard */}
         {!loading && !notPublished && cohortsRanked.length > 0 && (
           <div className="max-w-4xl mx-auto space-y-4">
-            <div className="flex items-center gap-2 pb-1 justify-center sm:justify-start">
-              <span className="text-xl">🏆</span>
+            <div className="flex items-center gap-2.5 pb-1 justify-center sm:justify-start">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary shrink-0">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                <path d="M4 22h16" />
+                <path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34" />
+                <path d="M12 2a6 6 0 0 0-6 6v3.5c0 3 2.5 5.5 6 5.5s6-2.5 6-5.5V8a6 6 0 0 0-6-6z" />
+              </svg>
               <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Cohort Leaderboard</h2>
             </div>
 
@@ -683,7 +702,10 @@ export default function CohortRegistrationsPage() {
                 {cohortsRanked[1] && (
                   <div className="glass-card p-2 sm:p-4 flex flex-col items-center border-t-4 border-t-slate-400 relative h-[140px] sm:h-[170px]">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-400 text-white w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-sm">2</div>
-                    <span className="text-xl sm:text-2xl mt-1.5 sm:mt-2">🥈</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-slate-400 shrink-0 mt-2">
+                      <circle cx="12" cy="8" r="7" />
+                      <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                    </svg>
                     <div className="text-center mt-1 sm:mt-2 flex-1 w-full min-w-0">
                       <div className="text-[10px] sm:text-xs font-bold text-foreground truncate w-full">Cohort {cohortsRanked[1].cohortName}</div>
                       <div className="text-[8px] sm:text-[9px] text-text-muted mt-0.5 truncate w-full">{cohortsRanked[1].leaderName}</div>
@@ -698,7 +720,10 @@ export default function CohortRegistrationsPage() {
                 {cohortsRanked[0] && (
                   <div className="glass-card p-2 sm:p-4 flex flex-col items-center border-t-4 border-t-amber-400 relative h-[160px] sm:h-[196px] shadow-md">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-950 w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-sm">1</div>
-                    <span className="text-2xl sm:text-3xl mt-1.5 sm:mt-2">🥇</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-amber-500 shrink-0 mt-2 animate-bounce">
+                      <circle cx="12" cy="8" r="7" />
+                      <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                    </svg>
                     <div className="text-center mt-1 sm:mt-2 flex-1 w-full min-w-0">
                       <div className="text-xs sm:text-sm font-bold text-foreground truncate w-full">Cohort {cohortsRanked[0].cohortName}</div>
                       <div className="text-[8px] sm:text-[9px] text-text-muted mt-0.5 truncate w-full">{cohortsRanked[0].leaderName}</div>
@@ -713,7 +738,10 @@ export default function CohortRegistrationsPage() {
                 {cohortsRanked[2] && (
                   <div className="glass-card p-2 sm:p-4 flex flex-col items-center border-t-4 border-t-amber-600 relative h-[130px] sm:h-[155px]">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-600 text-white w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-sm">3</div>
-                    <span className="text-xl sm:text-2xl mt-1.5 sm:mt-2">🥉</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-amber-700 shrink-0 mt-2">
+                      <circle cx="12" cy="8" r="7" />
+                      <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                    </svg>
                     <div className="text-center mt-1 sm:mt-2 flex-1 w-full min-w-0">
                       <div className="text-[10px] sm:text-xs font-bold text-foreground truncate w-full">Cohort {cohortsRanked[2].cohortName}</div>
                       <div className="text-[8px] sm:text-[9px] text-text-muted mt-0.5 truncate w-full">{cohortsRanked[2].leaderName}</div>
