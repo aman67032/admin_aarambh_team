@@ -131,7 +131,7 @@ function getWarningPenalty(cohortName, cohortStudents, student) {
  * @param {string} csvText - Raw CSV text
  * @returns {Array} - Distributed student objects ready to save
  */
-function distributeStudents(csvText) {
+async function distributeStudents(csvText) {
   // Parse CSV
   const records = parse(csvText, {
     columns: true,
@@ -191,85 +191,51 @@ function distributeStudents(csvText) {
     };
   }).filter(s => s.applicationNo && s.name);
 
-  // Separate South BTech and others
-  const southBTech = students.filter(s => s.region === 'South' && s.course === 'B.Tech');
-  const northPool = students.filter(s => !(s.region === 'South' && s.course === 'B.Tech')); // North students + South BBA + South B.Des
+  // Get existing students from database to get live registration counts per cohort
+  const registeredCounts = {};
+  ALL_COHORTS.forEach(c => {
+    registeredCounts[c] = 0;
+  });
 
-  // Cohort assignments state
+  try {
+    const Student = require('../models/Student');
+    const existingStudents = await Student.find({}).lean();
+    existingStudents.forEach(s => {
+      if (s.cohort && registeredCounts[s.cohort] !== undefined && s.confirmedJklu) {
+        registeredCounts[s.cohort]++;
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching existing student registration counts:', err);
+  }
+
+  // Bracket prioritization mapping
+  const getBracket = (cohortName) => {
+    const reg = registeredCounts[cohortName] || 0;
+    if (reg < 3) return 1;
+    if (reg === 3) return 2;
+    if (reg === 4) return 3;
+    if (reg === 5) return 4;
+    return 5;
+  };
+
   const assignments = {};
   ALL_COHORTS.forEach(c => {
     assignments[c] = [];
   });
 
-  const maxCapacity = 10;
-
-  // 1. Distribute South BTech to I, J, K, L cohorts (12 cohorts) using greedy balance scoring
-  // Interleave genders to alternate processing
-  const southBTechMales = southBTech.filter(s => s.gender === 'Male');
-  const southBTechFemales = southBTech.filter(s => s.gender === 'Female');
-  const interleavedSouthBTech = [];
-  const maxSouthBTechGroupLen = Math.max(southBTechMales.length, southBTechFemales.length);
-  for (let i = 0; i < maxSouthBTechGroupLen; i++) {
-    if (southBTechFemales[i]) interleavedSouthBTech.push(southBTechFemales[i]);
-    if (southBTechMales[i]) interleavedSouthBTech.push(southBTechMales[i]);
-  }
-
-  interleavedSouthBTech.forEach(student => {
-    let bestCohort = null;
-    let bestScore = -Infinity;
-    
-    for (const cohortName of SOUTH_COHORTS) {
-      const cohortStudents = assignments[cohortName];
-      if (cohortStudents.length >= maxCapacity) continue;
-      
-      const clusterChar = cohortName[0];
-      const clusterCount = assignments[clusterChar + '1'].length + 
-                           assignments[clusterChar + '2'].length + 
-                           assignments[clusterChar + '3'].length;
-
-      const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
-      const genderScore = -sameGenderCount;
-      const sizeScore = -cohortStudents.length;
-      const clusterScore = -clusterCount;
-      const penalty = getWarningPenalty(cohortName, cohortStudents, student);
-      const score = (sizeScore * 10) + (genderScore * 5) + (clusterScore * 100) - penalty;
-      
-      if (score > bestScore) {
-        bestScore = score;
-        bestCohort = cohortName;
-      }
-    }
-
-    if (bestCohort) {
-      assignments[bestCohort].push(student);
-      student.cluster = bestCohort[0];
-      student.cohort = bestCohort;
-    } else {
-      student.overflow = true;
-    }
-  });
-
-  // Collect any South BTech overflow
-  const southOverflow = southBTech.filter(s => s.overflow);
-  southOverflow.forEach(s => delete s.overflow);
-
-  // Add South BTech overflow to North Pool
-  const combinedNorthPool = [...northPool, ...southOverflow];
-
-  // 2. Distribute North Pool to A-H cohorts (38 cohorts) using greedy balance scoring
-  // Group by (Course, Gender)
+  // Interleave students by Course and Gender to process in balanced order
   const groups = {
-    'B.Tech_Male': combinedNorthPool.filter(s => s.course === 'B.Tech' && s.gender === 'Male'),
-    'B.Tech_Female': combinedNorthPool.filter(s => s.course === 'B.Tech' && s.gender === 'Female'),
-    'BBA_Male': combinedNorthPool.filter(s => s.course === 'BBA' && s.gender === 'Male'),
-    'BBA_Female': combinedNorthPool.filter(s => s.course === 'BBA' && s.gender === 'Female'),
-    'B.Des_Male': combinedNorthPool.filter(s => s.course === 'B.Des' && s.gender === 'Male'),
-    'B.Des_Female': combinedNorthPool.filter(s => s.course === 'B.Des' && s.gender === 'Female')
+    'B.Tech_Male': students.filter(s => s.course === 'B.Tech' && s.gender === 'Male'),
+    'B.Tech_Female': students.filter(s => s.course === 'B.Tech' && s.gender === 'Female'),
+    'BBA_Male': students.filter(s => s.course === 'BBA' && s.gender === 'Male'),
+    'BBA_Female': students.filter(s => s.course === 'BBA' && s.gender === 'Female'),
+    'B.Des_Male': students.filter(s => s.course === 'B.Des' && s.gender === 'Male'),
+    'B.Des_Female': students.filter(s => s.course === 'B.Des' && s.gender === 'Female')
   };
 
-  // Interleave the groups to process students in balanced order
-  const interleavedNorthPool = [];
-  const maxNorthGroupLen = Math.max(
+  const interleaved = [];
+  const maxGroupLen = Math.max(
     groups['B.Tech_Male'].length,
     groups['B.Tech_Female'].length,
     groups['BBA_Male'].length,
@@ -278,135 +244,110 @@ function distributeStudents(csvText) {
     groups['B.Des_Female'].length
   );
 
-  for (let i = 0; i < maxNorthGroupLen; i++) {
-    if (groups['B.Tech_Male'][i]) interleavedNorthPool.push(groups['B.Tech_Male'][i]);
-    if (groups['B.Tech_Female'][i]) interleavedNorthPool.push(groups['B.Tech_Female'][i]);
-    if (groups['BBA_Male'][i]) interleavedNorthPool.push(groups['BBA_Male'][i]);
-    if (groups['BBA_Female'][i]) interleavedNorthPool.push(groups['BBA_Female'][i]);
-    if (groups['B.Des_Male'][i]) interleavedNorthPool.push(groups['B.Des_Male'][i]);
-    if (groups['B.Des_Female'][i]) interleavedNorthPool.push(groups['B.Des_Female'][i]);
+  for (let i = 0; i < maxGroupLen; i++) {
+    if (groups['B.Tech_Male'][i]) interleaved.push(groups['B.Tech_Male'][i]);
+    if (groups['B.Tech_Female'][i]) interleaved.push(groups['B.Tech_Female'][i]);
+    if (groups['BBA_Male'][i]) interleaved.push(groups['BBA_Male'][i]);
+    if (groups['BBA_Female'][i]) interleaved.push(groups['BBA_Female'][i]);
+    if (groups['B.Des_Male'][i]) interleaved.push(groups['B.Des_Male'][i]);
+    if (groups['B.Des_Female'][i]) interleaved.push(groups['B.Des_Female'][i]);
   }
 
+  // Assign students using priority brackets (irrespective of South/North regions)
   const overflowPool = [];
+  let currentLimit = 8; // Soft initial limit
 
-  interleavedNorthPool.forEach(student => {
-    let bestCohort = null;
-    let bestScore = -Infinity;
+  interleaved.forEach(student => {
+    let placed = false;
 
-    for (const cohortName of NORTH_COHORTS) {
-      const cohortStudents = assignments[cohortName];
-      if (cohortStudents.length >= 8) continue;
+    // Try brackets in order: Bracket 1 (<3), Bracket 2 (=3), Bracket 3 (=4), Bracket 4 (=5), Bracket 5 (>5)
+    for (let bracket = 1; bracket <= 5; bracket++) {
+      let bestCohort = null;
+      let bestScore = -Infinity;
 
-      const cohortCourse = getCohortCourse(cohortName);
+      for (const cohortName of ALL_COHORTS) {
+        // Enforce strict course-cohort matching
+        if (getCohortCourse(cohortName) !== student.course) continue;
 
-      // Enforce strict course match for South non-BTech students
-      if (student.region === 'South' && cohortCourse !== student.course) {
-        continue;
+        // Check if cohort matches the current priority bracket
+        if (getBracket(cohortName) !== bracket) continue;
+
+        const cohortStudents = assignments[cohortName];
+        if (cohortStudents.length >= currentLimit) continue;
+
+        const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
+        const genderScore = -sameGenderCount;
+        const sizeScore = -cohortStudents.length;
+        const penalty = getWarningPenalty(cohortName, cohortStudents, student);
+        const score = (sizeScore * 10) + (genderScore * 5) - penalty;
+
+        if (score > bestScore) {
+          bestScore = score;
+          bestCohort = cohortName;
+        }
       }
 
-      // Prioritize course alignment for all other students
-      const courseMatchScore = (cohortCourse === student.course) ? 100 : 0;
-
-      const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
-      const genderScore = -sameGenderCount;
-
-      const sizeScore = -cohortStudents.length;
-
-      const penalty = getWarningPenalty(cohortName, cohortStudents, student);
-      const score = (sizeScore * 10) + (genderScore * 5) + courseMatchScore - penalty;
-
-      if (score > bestScore) {
-        bestScore = score;
-        bestCohort = cohortName;
+      if (bestCohort) {
+        assignments[bestCohort].push(student);
+        student.cluster = bestCohort[0];
+        student.cohort = bestCohort;
+        placed = true;
+        break; // Placed, stop looking at brackets
       }
     }
 
-    if (bestCohort) {
-      assignments[bestCohort].push(student);
-      student.cluster = bestCohort[0];
-      student.cohort = bestCohort;
-    } else {
+    if (!placed) {
       overflowPool.push(student);
     }
   });
 
-  // 3. Overflow Handling
-  // "if A-H fill and if I-L has slot left then add them"
+  // Handle overflow by expanding capacity limit
   if (overflowPool.length > 0) {
-    overflowPool.forEach((student, idx) => {
-      // Find a slot in South Cohorts (I-L)
-      let bestCohort = null;
-      let bestScore = -Infinity;
-      
-      for (const cohortName of SOUTH_COHORTS) {
-        const cohortStudents = assignments[cohortName];
-        if (cohortStudents.length < maxCapacity) {
+    let currentOverflowLimit = currentLimit + 1;
+    while (overflowPool.length > 0) {
+      const student = overflowPool.shift();
+      let placed = false;
+
+      for (let bracket = 1; bracket <= 5; bracket++) {
+        let bestCohort = null;
+        let bestScore = -Infinity;
+
+        for (const cohortName of ALL_COHORTS) {
+          if (getCohortCourse(cohortName) !== student.course) continue;
+          if (getBracket(cohortName) !== bracket) continue;
+
+          const cohortStudents = assignments[cohortName];
+          if (cohortStudents.length >= currentOverflowLimit) continue;
+
           const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
           const genderScore = -sameGenderCount;
           const sizeScore = -cohortStudents.length;
           const penalty = getWarningPenalty(cohortName, cohortStudents, student);
           const score = (sizeScore * 10) + (genderScore * 5) - penalty;
-          
+
           if (score > bestScore) {
             bestScore = score;
             bestCohort = cohortName;
           }
         }
-      }
 
-      if (bestCohort) {
-        assignments[bestCohort].push(student);
-        student.cluster = bestCohort[0];
-        student.cohort = bestCohort;
-        overflowPool[idx] = null; // Mark as placed
-      }
-    });
-  }
-
-  // Filter out placed students from overflowPool
-  const remainingOverflow = overflowPool.filter(s => s !== null);
-
-  // "and there will no space then it will goes to any cohort increasing number one by one as max limit of each reach 11"
-  if (remainingOverflow.length > 0) {
-    let currentLimit = maxCapacity + 1;
-
-    while (remainingOverflow.length > 0) {
-      const student = remainingOverflow.shift();
-      let bestCohort = null;
-      let bestScore = -Infinity;
-
-      for (const cohortName of ALL_COHORTS) {
-        const cohortStudents = assignments[cohortName];
-        if (cohortStudents.length < currentLimit) {
-          const cohortCourse = getCohortCourse(cohortName);
-          const courseMatchScore = (cohortCourse === student.course) ? 100 : 0;
-
-          const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
-          const genderScore = -sameGenderCount;
-          const sizeScore = -cohortStudents.length;
-          const penalty = getWarningPenalty(cohortName, cohortStudents, student);
-          const score = (sizeScore * 10) + (genderScore * 5) + courseMatchScore - penalty;
-          
-          if (score > bestScore) {
-            bestScore = score;
-            bestCohort = cohortName;
-          }
+        if (bestCohort) {
+          assignments[bestCohort].push(student);
+          student.cluster = bestCohort[0];
+          student.cohort = bestCohort;
+          placed = true;
+          break;
         }
       }
 
-      if (bestCohort) {
-        assignments[bestCohort].push(student);
-        student.cluster = bestCohort[0];
-        student.cohort = bestCohort;
-      } else {
-        // If all cohorts are at currentLimit, increase limit and push back to try again
-        currentLimit++;
-        remainingOverflow.unshift(student);
+      if (!placed) {
+        // If not placed in any cohort under currentOverflowLimit, increase the limit and retry
+        currentOverflowLimit++;
+        overflowPool.unshift(student);
       }
     }
   }
 
-  // Return the students list containing assignments
   return students;
 }
 

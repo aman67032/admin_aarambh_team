@@ -19,7 +19,7 @@ router.post('/preview', requireAuth, requireRole('super_admin'), upload.single('
     }
 
     const csvText = req.file.buffer.toString('utf-8');
-    const distributedStudents = distributeStudents(csvText);
+    const distributedStudents = await distributeStudents(csvText);
 
     // Calculate preview statistics
     const totalCount = distributedStudents.length;

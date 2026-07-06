@@ -23,7 +23,7 @@ async function run() {
     const csvText = fs.readFileSync(csvPath, 'utf-8');
     
     console.log('Running distribution algorithm...');
-    const distributedStudents = distributeStudents(csvText);
+    const distributedStudents = await distributeStudents(csvText);
     
     const totalCount = distributedStudents.length;
     let northCount = 0;
