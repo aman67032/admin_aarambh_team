@@ -303,7 +303,7 @@ app.get('/api/status/cohort-registrations', requireAuth, async (req, res) => {
 
 
     const students = showStudents 
-      ? await Student.find({}).select('name applicationNo course cohort cluster confirmedJklu confirmedAarambh documentsVerified notContinuing notComingAarambh confirmedAt').lean()
+      ? await Student.find({}).select('name gender applicationNo course cohort cluster confirmedJklu confirmedAarambh documentsVerified notContinuing notComingAarambh confirmedAt').lean()
       : [];
 
     // Group by cluster

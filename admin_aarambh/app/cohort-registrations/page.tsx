@@ -164,7 +164,8 @@ export default function CohortRegistrationsPage() {
       
       cohort.students.forEach(s => {
         if (s.confirmedJklu) {
-          if (s.gender === 'Female') regFemales++;
+          const gen = (s.gender || '').trim().toLowerCase();
+          if (gen === 'female' || gen.startsWith('f')) regFemales++;
           else regMales++;
 
           if (s.course === 'B.Tech') regBTech++;
