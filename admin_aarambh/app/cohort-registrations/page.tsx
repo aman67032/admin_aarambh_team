@@ -138,6 +138,12 @@ export default function CohortRegistrationsPage() {
   let grandNotContinuingCount = 0;
   let grandNotComingAarambhCount = 0;
 
+  let regMales = 0;
+  let regFemales = 0;
+  let regBTech = 0;
+  let regBBA = 0;
+  let regBDes = 0;
+
   const cohortsRanked: Array<{
     cohortName: string; leaderName: string; clusterName: string;
     total: number; registered: number; verified: number;
@@ -155,6 +161,17 @@ export default function CohortRegistrationsPage() {
       const aarambhConfirmed = cohort.students.filter(s => s.confirmedAarambh).length;
       const notContinuing = cohort.students.filter(s => s.notContinuing).length;
       const notComingAarambh = cohort.students.filter(s => s.notComingAarambh).length;
+      
+      cohort.students.forEach(s => {
+        if (s.confirmedJklu) {
+          if (s.gender === 'Female') regFemales++;
+          else regMales++;
+
+          if (s.course === 'B.Tech') regBTech++;
+          else if (s.course === 'BBA') regBBA++;
+          else if (s.course === 'B.Des') regBDes++;
+        }
+      });
       
       let latestConfirmTime = Infinity;
       if (registered > 0) {
@@ -422,6 +439,101 @@ export default function CohortRegistrationsPage() {
                   {bracketMore5.length === 0 && <span className="text-[10px] text-text-muted italic">None</span>}
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Demographics Charts */}
+        {!loading && !notPublished && grandRegisteredCount > 0 && (
+          <div className="max-w-4xl mx-auto space-y-4">
+            <div className="flex items-center gap-2 pb-1 justify-center sm:justify-start">
+              <span className="text-xl font-bold">🥧</span>
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Registration Demographics</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {/* Gender Chart Card */}
+              {(() => {
+                const total = regMales + regFemales;
+                const malePct = total > 0 ? Math.round((regMales / total) * 100) : 0;
+                const femalePct = total > 0 ? 100 - malePct : 0;
+                const conicBg = `conic-gradient(#3b82f6 0% ${malePct}%, #ec4899 ${malePct}% 100%)`;
+                return (
+                  <div className="glass-card p-6 flex flex-col sm:flex-row items-center justify-around gap-6">
+                    <div className="relative w-32 h-32 rounded-full shrink-0 flex items-center justify-center shadow-inner border border-card-border" style={{ background: conicBg }}>
+                      {/* Donut Hole */}
+                      <div className="absolute w-24 h-24 rounded-full bg-card-bg flex flex-col items-center justify-center border border-card-border">
+                        <span className="text-2xl font-black text-foreground">{total}</span>
+                        <span className="text-[9px] font-bold text-text-muted uppercase">Registered</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-4 w-full sm:w-auto">
+                      <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider text-center sm:text-left">Gender Distribution</h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between gap-8 text-xs">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded bg-blue-500 shrink-0"></div>
+                            <span className="font-semibold text-foreground">Male</span>
+                          </div>
+                          <span className="font-bold text-text-muted">{regMales} ({malePct}%)</span>
+                        </div>
+                        <div className="flex items-center justify-between gap-8 text-xs">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded bg-pink-500 shrink-0"></div>
+                            <span className="font-semibold text-foreground">Female</span>
+                          </div>
+                          <span className="font-bold text-text-muted">{regFemales} ({femalePct}%)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Course Chart Card */}
+              {(() => {
+                const total = regBTech + regBBA + regBDes;
+                const btechPct = total > 0 ? Math.round((regBTech / total) * 100) : 0;
+                const bbaPct = total > 0 ? Math.round((regBBA / total) * 100) : 0;
+                const bdesPct = total > 0 ? 100 - btechPct - bbaPct : 0;
+                const conicBg = `conic-gradient(#6366f1 0% ${btechPct}%, #10b981 ${btechPct}% ${btechPct + bbaPct}%, #f59e0b ${btechPct + bbaPct}% 100%)`;
+                return (
+                  <div className="glass-card p-6 flex flex-col sm:flex-row items-center justify-around gap-6">
+                    <div className="relative w-32 h-32 rounded-full shrink-0 flex items-center justify-center shadow-inner border border-card-border" style={{ background: conicBg }}>
+                      {/* Donut Hole */}
+                      <div className="absolute w-24 h-24 rounded-full bg-card-bg flex flex-col items-center justify-center border border-card-border">
+                        <span className="text-2xl font-black text-foreground">{total}</span>
+                        <span className="text-[9px] font-bold text-text-muted uppercase">Registered</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-4 w-full sm:w-auto">
+                      <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider text-center sm:text-left">Course Distribution</h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between gap-8 text-xs">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded bg-indigo-500 shrink-0"></div>
+                            <span className="font-semibold text-foreground">B.Tech</span>
+                          </div>
+                          <span className="font-bold text-text-muted">{regBTech} ({btechPct}%)</span>
+                        </div>
+                        <div className="flex items-center justify-between gap-8 text-xs">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded bg-emerald-500 shrink-0"></div>
+                            <span className="font-semibold text-foreground">BBA</span>
+                          </div>
+                          <span className="font-bold text-text-muted">{regBBA} ({bbaPct}%)</span>
+                        </div>
+                        <div className="flex items-center justify-between gap-8 text-xs">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded bg-amber-500 shrink-0"></div>
+                            <span className="font-semibold text-foreground">B.Des</span>
+                          </div>
+                          <span className="font-bold text-text-muted">{regBDes} ({bdesPct}%)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         )}
