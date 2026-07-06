@@ -254,6 +254,67 @@ export default function CohortRegistrationsPage() {
   bracketEqual5.sort();
   bracketMore5.sort();
 
+  // Group statistics by cluster
+  const clusterStats: Array<{
+    clusterName: string;
+    head: string | null;
+    total: number;
+    registered: number;
+    percent: number;
+  }> = [];
+
+  data.forEach(cluster => {
+    let total = 0;
+    let registered = 0;
+    cluster.cohorts.forEach(cohort => {
+      total += cohort.students.length;
+      registered += cohort.students.filter(s => s.confirmedJklu).length;
+    });
+    const percent = total > 0 ? Math.round((registered / total) * 100) : 0;
+    clusterStats.push({
+      clusterName: cluster.clusterName,
+      head: cluster.head,
+      total,
+      registered,
+      percent
+    });
+  });
+
+  clusterStats.sort((a, b) => a.clusterName.localeCompare(b.clusterName));
+
+  // Group registrations by day
+  const dailyRegs: Record<string, number> = {};
+  data.forEach(cluster => {
+    cluster.cohorts.forEach(cohort => {
+      cohort.students.forEach(s => {
+        if (s.confirmedJklu && s.confirmedAt) {
+          try {
+            const dateObj = new Date(s.confirmedAt);
+            if (!isNaN(dateObj.getTime())) {
+              const day = String(dateObj.getDate()).padStart(2, '0');
+              const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+              const month = months[dateObj.getMonth()];
+              const dateStr = `${day} ${month}`;
+              dailyRegs[dateStr] = (dailyRegs[dateStr] || 0) + 1;
+            }
+          } catch (e) {
+            // Ignore format errors
+          }
+        }
+      });
+    });
+  });
+
+  const activeDays = Object.keys(dailyRegs).sort((a, b) => {
+    const parseDate = (dStr: string) => {
+      const [day, mStr] = dStr.split(' ');
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const mIdx = months.indexOf(mStr);
+      return new Date(2026, mIdx, parseInt(day)).getTime();
+    };
+    return parseDate(a) - parseDate(b);
+  }).slice(-7); // Keep last 7 days of activity
+
   if (appLoading || !user || user.email === 'hosteladmin@jklu.edu.in') {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -534,6 +595,74 @@ export default function CohortRegistrationsPage() {
                   </div>
                 );
               })()}
+            </div>
+          </div>
+        )}
+
+        {/* Cluster Progress Overview */}
+        {!loading && !notPublished && clusterStats.length > 0 && (
+          <div className="max-w-4xl mx-auto space-y-4">
+            <div className="flex items-center gap-2 pb-1 justify-center sm:justify-start">
+              <span className="text-xl font-bold">🏫</span>
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Cluster Progress Overview</h2>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
+              {clusterStats.map(c => (
+                <div key={c.clusterName} className="glass-card p-3 flex flex-col gap-1.5 border-t-2 border-t-indigo-500/60">
+                  <div className="flex items-center justify-between text-xs font-bold">
+                    <span className="text-foreground">Cluster {c.clusterName}</span>
+                    <span className="text-indigo-500">{c.percent}%</span>
+                  </div>
+                  <div className="w-full bg-card-border/55 rounded-full h-1.5 overflow-hidden">
+                    <div className="bg-indigo-500 h-full rounded-full" style={{ width: `${c.percent}%` }}></div>
+                  </div>
+                  <div className="flex items-center justify-between text-[9px] text-text-muted mt-0.5">
+                    <span>{c.registered}/{c.total} reg</span>
+                    <span className="truncate max-w-[55px] font-medium text-[8px]" title={c.head || ''}>{c.head || 'N/A'}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Registration Daily Velocity */}
+        {!loading && !notPublished && activeDays.length > 0 && (
+          <div className="max-w-4xl mx-auto space-y-4">
+            <div className="flex items-center gap-2 pb-1 justify-center sm:justify-start">
+              <span className="text-xl font-bold">📈</span>
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Registration Daily Velocity</h2>
+            </div>
+            <div className="glass-card p-6 flex flex-col items-center gap-5">
+              <div className="w-full flex items-end justify-around h-32 pt-4 border-b border-card-border px-2">
+                {(() => {
+                  const maxCount = Math.max(...activeDays.map(d => dailyRegs[d]), 1);
+                  return activeDays.map(day => {
+                    const count = dailyRegs[day];
+                    const heightPercent = Math.round((count / maxCount) * 100);
+                    return (
+                      <div key={day} className="flex flex-col items-center gap-2 group relative w-12" style={{ height: '100%', justifyContent: 'flex-end' }}>
+                        {/* Tooltip */}
+                        <div className="absolute -top-8 bg-foreground text-background text-[10px] font-bold px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-sm whitespace-nowrap z-10">
+                          {count} registrations
+                        </div>
+                        <div 
+                          className="bg-indigo-500/80 hover:bg-indigo-500 w-8 rounded-t transition-all duration-500 shadow-sm"
+                          style={{ height: `${heightPercent}%`, minHeight: count > 0 ? '4px' : '0px' }}
+                        ></div>
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+              <div className="w-full flex justify-around text-[10px] font-bold text-text-muted px-2">
+                {activeDays.map(day => (
+                  <div key={day} className="w-12 text-center flex flex-col gap-0.5">
+                    <span className="text-foreground">{day}</span>
+                    <span className="text-indigo-500 font-semibold">+{dailyRegs[day]}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
