@@ -808,51 +808,61 @@ export default function HostelManagementPage() {
                     return (
                       <div
                         key={bed.sno}
-                        className={`p-3 rounded-xl border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-all duration-300 hover:shadow-sm ${
+                        className={`p-3.5 rounded-xl border flex flex-col gap-3 transition-all duration-300 hover:shadow-sm ${
                           bed.isOccupied
                             ? 'bg-background border-card-border/80'
                             : 'bg-green-500/[0.02] border-dashed border-green-500/20'
                         }`}
                       >
-                        {/* Bed Info */}
-                        <div className="flex items-center gap-3 min-w-0">
+                        {/* Top: Bed & Student Info */}
+                        <div className="flex items-start gap-3 min-w-0">
                           {/* Avatar or vacant icon */}
                           {bed.isOccupied ? (
-                            <div className="w-8 h-8 sm:w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary text-xs sm:text-sm shrink-0">
+                            <div className="w-8 h-8 sm:w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary text-xs sm:text-sm shrink-0 mt-0.5">
                               {firstLetter}
                             </div>
                           ) : (
-                            <div className="w-8 h-8 sm:w-9 h-9 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center text-xs shrink-0">
+                            <div className="w-8 h-8 sm:w-9 h-9 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center text-xs shrink-0 mt-0.5">
                               🛏️
                             </div>
                           )}
 
-                          <div className="min-w-0">
-                            <span className="text-xs font-bold text-foreground block">{bed.bed}</span>
+                          {/* Info Details */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-xs font-black text-foreground">{bed.bed}</span>
+                              {/* Status Badge */}
+                              {bed.isOccupied && (
+                                <span className={`text-[9px] font-black uppercase tracking-wider ${
+                                  bed.checkedIn ? 'text-green-500' : 'text-amber-500'
+                                }`}>
+                                  {bed.checkedIn ? '✓ Checked In' : '✗ Not Checked In'}
+                                </span>
+                              )}
+                            </div>
+
                             {bed.isOccupied ? (
                               <div className="mt-1 min-w-0">
-                                <span className="text-[11px] font-extrabold text-foreground truncate block leading-tight">
+                                <span className="text-xs font-extrabold text-foreground truncate block leading-tight">
                                   {bed.occupiedByCohort}
                                 </span>
                                 {bed.occupiedByAppNo && (
-                                  <span className="text-[9px] bg-background border border-card-border text-text-muted px-1.5 py-0.5 rounded-md font-mono mt-1 inline-block font-semibold">
+                                  <span className="text-[9px] bg-card-bg border border-card-border text-text-muted px-1.5 py-0.5 rounded-md font-mono mt-1 inline-block font-semibold">
                                     {bed.occupiedByAppNo}
                                   </span>
                                 )}
                                 
                                 {/* Arrival details rendering */}
-                                <div className="mt-1.5 text-[10px] text-text-muted">
+                                <div className="mt-2 text-[10px] text-text-muted">
                                   {editingMemberId && editingMemberId === bed.memberId ? (
-                                    <div className="flex flex-col gap-1 mt-1 p-1.5 bg-card-border/10 rounded-lg border border-card-border/30">
-                                      <div className="flex gap-1.5 items-center">
-                                        <input
-                                          type="text"
-                                          placeholder="DD-MM-YYYY"
-                                          value={editArrivalDate}
-                                          onChange={(e) => setEditArrivalDate(e.target.value)}
-                                          className="px-1.5 py-0.5 bg-background border border-card-border text-[10px] rounded focus:outline-none focus:ring-1 focus:ring-primary w-28"
-                                        />
-                                      </div>
+                                    <div className="flex flex-col gap-1.5 mt-1 p-2 bg-card-border/10 rounded-lg border border-card-border/30 w-full">
+                                      <input
+                                        type="text"
+                                        placeholder="DD-MM-YYYY"
+                                        value={editArrivalDate}
+                                        onChange={(e) => setEditArrivalDate(e.target.value)}
+                                        className="px-2 py-1 bg-background border border-card-border text-[10px] rounded focus:outline-none focus:ring-1 focus:ring-primary w-full"
+                                      />
                                       <div className="flex gap-1.5 justify-end">
                                         <button
                                           onClick={() => setEditingMemberId(null)}
@@ -870,7 +880,7 @@ export default function HostelManagementPage() {
                                       </div>
                                     </div>
                                   ) : (
-                                    <div className="flex items-center gap-1.5">
+                                    <div className="flex items-center gap-1.5 flex-wrap">
                                       <span className="font-semibold text-text-muted">Arrival:</span>
                                       {bed.arrivalDate ? (() => {
                                         let isMissed = false;
@@ -885,9 +895,7 @@ export default function HostelManagementPage() {
                                             today.setHours(0, 0, 0, 0);
                                             isMissed = !bed.checkedIn && today > arrDate;
                                           }
-                                        } catch (e) {
-                                          console.error("Error parsing date:", e);
-                                        }
+                                        } catch (e) {}
 
                                         return (
                                           <span className={`px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wide border ${
@@ -906,7 +914,7 @@ export default function HostelManagementPage() {
                                           onClick={() => {
                                             setEditingMemberId(bed.memberId!);
                                             setEditArrivalDate(bed.arrivalDate || '');
-                                            setEditArrivalTime(''); // Time is no longer used/edited
+                                            setEditArrivalTime('');
                                           }}
                                           className="text-primary hover:text-primary-dark transition-all font-bold cursor-pointer text-[10px]"
                                           title="Edit Arrival Date"
@@ -917,69 +925,54 @@ export default function HostelManagementPage() {
                                     </div>
                                   )}
                                 </div>
-
-                                {/* Check-In Status rendering */}
-                                <div className="mt-1 text-[10px] font-semibold">
-                                  {bed.checkedIn ? (
-                                    <span className="text-green-500">
-                                      ✓ Checked In: {bed.checkedInTime ? new Date(bed.checkedInTime).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' }) : ''}
-                                    </span>
-                                  ) : (
-                                    <span className="text-amber-500">
-                                      ✗ Not Checked In
-                                    </span>
-                                  )}
-                                </div>
                               </div>
                             ) : (
-                              <span className="text-[10px] text-green-500 font-extrabold uppercase mt-0.5 block tracking-wider leading-none">
+                              <span className="text-[10px] text-green-500 font-extrabold uppercase mt-1 block tracking-wider leading-none">
                                 + Available Slot
                               </span>
                             )}
                           </div>
                         </div>
 
-                        {/* Action Buttons */}
-                        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 shrink-0 sm:justify-end">
-                          {bed.isOccupied && (
-                            <>
-                              {/* Check In Button */}
-                              {!bed.checkedIn && bed.memberId && (
-                                <button
-                                  onClick={() => handleCheckIn(bed.sno, bed.memberId!, bed.occupiedByCohort || '')}
-                                  disabled={checkingInSno === bed.sno}
-                                  className="px-2 py-0.5 sm:py-1 bg-green-500/15 hover:bg-green-500 text-green-500 hover:text-white border border-green-500/20 text-[8px] sm:text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
-                                  title="Check In Member"
-                                >
-                                  {checkingInSno === bed.sno ? '...' : 'Check In 🔑'}
-                                </button>
-                              )}
-                              {forms[bed.occupiedByAppNo?.toUpperCase().replace(/[\/\.\s-]/g, '') || ''] ? (
-                                <button
-                                  onClick={() => triggerSingleDownload(bed, room.room, room.floor, 'stay')}
-                                  className="px-2 py-0.5 sm:py-1 bg-primary/10 hover:bg-primary text-primary hover:text-white border border-primary/20 text-[8px] sm:text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
-                                  title="Download Short Stay Form"
-                                >
-                                  Stay Form 📥
-                                </button>
-                              ) : (
-                                <span className="px-2 py-0.5 sm:py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 text-[8px] sm:text-[9px] font-bold rounded-md uppercase tracking-wider" title="Stay details form pending">
-                                  Pending ⏳
-                                </span>
-                              )}
-                              {user?.role === 'super_admin' && (
-                                <button
-                                  onClick={() => handleVacateBed(bed.sno, room.room, bed.bed)}
-                                  disabled={vacatingSno === bed.sno}
-                                  className="px-2 py-0.5 sm:py-1 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/20 text-[8px] sm:text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
-                                  title="Vacate Bed Slot"
-                                >
-                                  {vacatingSno === bed.sno ? '...' : 'Vacate'}
-                                </button>
-                              )}
-                            </>
-                          )}
-                        </div>
+                        {/* Bottom: Action Buttons */}
+                        {bed.isOccupied && (
+                          <div className="flex flex-wrap items-center gap-1.5 pt-2.5 border-t border-card-border/40">
+                            {/* Check In Button */}
+                            {!bed.checkedIn && bed.memberId && (
+                              <button
+                                onClick={() => handleCheckIn(bed.sno, bed.memberId!, bed.occupiedByCohort || '')}
+                                disabled={checkingInSno === bed.sno}
+                                className="px-2 py-0.5 sm:py-1 bg-green-500/15 hover:bg-green-500 text-green-500 hover:text-white border border-green-500/20 text-[8px] sm:text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider flex-1 text-center"
+                                title="Check In Member"
+                              >
+                                {checkingInSno === bed.sno ? '...' : 'Check In 🔑'}
+                              </button>
+                            )}
+                            {forms[bed.occupiedByAppNo?.toUpperCase().replace(/[\/\.\s-]/g, '') || ''] ? (
+                              <button
+                                onClick={() => triggerSingleDownload(bed, room.room, room.floor, 'stay')}
+                                className="px-2 py-0.5 sm:py-1 bg-primary/10 hover:bg-primary text-primary hover:text-white border border-primary/20 text-[8px] sm:text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider flex-1 text-center"
+                                title="Download Short Stay Form"
+                              >
+                                Stay Form 📥
+                              </button>
+                            ) : (
+                              <span className="px-2 py-0.5 sm:py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 text-[8px] sm:text-[9px] font-bold rounded-md uppercase tracking-wider flex-1 text-center" title="Stay details form pending">
+                                Pending ⏳
+                              </span>
+                            )}
+                            {user?.role === 'super_admin' && (
+                              <button
+                                onClick={() => handleVacateBed(bed.sno, room.room, bed.bed)}
+                                disabled={vacatingSno === bed.sno}
+                                className="px-2 py-0.5 sm:py-1 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/20 text-[8px] sm:text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider flex-1 text-center"
+                                title="Vacate Bed Slot"
+                              >
+                                {vacatingSno === bed.sno ? '...' : 'Vacate'}
+                              </button>
+                            )}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
