@@ -754,7 +754,7 @@ export default function HostelManagementPage() {
           No room allotments match the selected search filters.
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
           {filteredRooms.map((room) => {
             const occupiedCount = room.beds.filter(b => b.isOccupied).length;
             const totalRoomBeds = room.beds.length;
@@ -808,7 +808,7 @@ export default function HostelManagementPage() {
                     return (
                       <div
                         key={bed.sno}
-                        className={`p-3.5 rounded-xl border flex items-center justify-between gap-4 transition-all duration-300 hover:shadow-sm ${
+                        className={`p-3 rounded-xl border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-all duration-300 hover:shadow-sm ${
                           bed.isOccupied
                             ? 'bg-background border-card-border/80'
                             : 'bg-green-500/[0.02] border-dashed border-green-500/20'
@@ -818,11 +818,11 @@ export default function HostelManagementPage() {
                         <div className="flex items-center gap-3 min-w-0">
                           {/* Avatar or vacant icon */}
                           {bed.isOccupied ? (
-                            <div className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary text-sm shrink-0">
+                            <div className="w-8 h-8 sm:w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary text-xs sm:text-sm shrink-0">
                               {firstLetter}
                             </div>
                           ) : (
-                            <div className="w-9 h-9 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center text-xs shrink-0">
+                            <div className="w-8 h-8 sm:w-9 h-9 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center text-xs shrink-0">
                               🛏️
                             </div>
                           )}
@@ -940,7 +940,7 @@ export default function HostelManagementPage() {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex items-center gap-1.5 shrink-0">
+                        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 shrink-0 sm:justify-end">
                           {bed.isOccupied && (
                             <>
                               {/* Check In Button */}
@@ -948,7 +948,7 @@ export default function HostelManagementPage() {
                                 <button
                                   onClick={() => handleCheckIn(bed.sno, bed.memberId!, bed.occupiedByCohort || '')}
                                   disabled={checkingInSno === bed.sno}
-                                  className="px-2.5 py-1 bg-green-500/15 hover:bg-green-500 text-green-500 hover:text-white border border-green-500/20 text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
+                                  className="px-2 py-0.5 sm:py-1 bg-green-500/15 hover:bg-green-500 text-green-500 hover:text-white border border-green-500/20 text-[8px] sm:text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
                                   title="Check In Member"
                                 >
                                   {checkingInSno === bed.sno ? '...' : 'Check In 🔑'}
@@ -957,13 +957,13 @@ export default function HostelManagementPage() {
                               {forms[bed.occupiedByAppNo?.toUpperCase().replace(/[\/\.\s-]/g, '') || ''] ? (
                                 <button
                                   onClick={() => triggerSingleDownload(bed, room.room, room.floor, 'stay')}
-                                  className="px-2.5 py-1 bg-primary/10 hover:bg-primary text-primary hover:text-white border border-primary/20 text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
+                                  className="px-2 py-0.5 sm:py-1 bg-primary/10 hover:bg-primary text-primary hover:text-white border border-primary/20 text-[8px] sm:text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
                                   title="Download Short Stay Form"
                                 >
                                   Stay Form 📥
                                 </button>
                               ) : (
-                                <span className="px-2 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 text-[9px] font-bold rounded-md uppercase tracking-wider" title="Stay details form pending">
+                                <span className="px-2 py-0.5 sm:py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 text-[8px] sm:text-[9px] font-bold rounded-md uppercase tracking-wider" title="Stay details form pending">
                                   Pending ⏳
                                 </span>
                               )}
@@ -971,7 +971,7 @@ export default function HostelManagementPage() {
                                 <button
                                   onClick={() => handleVacateBed(bed.sno, room.room, bed.bed)}
                                   disabled={vacatingSno === bed.sno}
-                                  className="px-2 py-1 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/20 text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
+                                  className="px-2 py-0.5 sm:py-1 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/20 text-[8px] sm:text-[9px] font-black rounded-md transition-all cursor-pointer uppercase tracking-wider"
                                   title="Vacate Bed Slot"
                                 >
                                   {vacatingSno === bed.sno ? '...' : 'Vacate'}
