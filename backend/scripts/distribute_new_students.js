@@ -296,6 +296,11 @@ async function run() {
           const cohortStudents = assignments[cohortName];
           if (cohortStudents.length >= currentLimit) continue;
 
+          // Ensure equal course distribution: skip cohorts with >= 8 students if underfilled ones exist for this course
+          const eligibleCohorts = ALL_COHORTS.filter(c => getCohortCourse(c) === student.course);
+          const hasUnderfilled = eligibleCohorts.some(c => assignments[c].length < 8);
+          if (hasUnderfilled && cohortStudents.length >= 8) continue;
+
           const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
           const genderScore = -sameGenderCount;
           const sizeScore = -cohortStudents.length;
@@ -340,6 +345,11 @@ async function run() {
 
             const cohortStudents = assignments[cohortName];
             if (cohortStudents.length >= currentOverflowLimit) continue;
+
+            // Ensure equal course distribution: skip cohorts with >= 8 students if underfilled ones exist for this course
+            const eligibleCohorts = ALL_COHORTS.filter(c => getCohortCourse(c) === student.course);
+            const hasUnderfilled = eligibleCohorts.some(c => assignments[c].length < 8);
+            if (hasUnderfilled && cohortStudents.length >= 8) continue;
 
             const sameGenderCount = cohortStudents.filter(s => s.gender === student.gender).length;
             const genderScore = -sameGenderCount;
