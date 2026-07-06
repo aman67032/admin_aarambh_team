@@ -328,6 +328,10 @@ export const api = {
       request<{ success: boolean; studentsPublished: boolean }>('/admin/settings', {
         method: 'POST',
         body: JSON.stringify({ studentsPublished })
+      }),
+    backupDatabase: () =>
+      request<{ success: boolean; message: string }>('/admin/backup', {
+        method: 'POST'
       })
   }
 };

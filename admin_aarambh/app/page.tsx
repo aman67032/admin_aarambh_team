@@ -30,6 +30,7 @@ export default function PublicHomePage() {
   // Search state
   const [searchCity, setSearchCity] = useState('');
   const [searchResult, setSearchResult] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchStructure = async () => {
@@ -67,6 +68,25 @@ export default function PublicHomePage() {
       setSearchResult('Based on your location, you belong to the North Region. You will be assigned to Clusters A-H.');
     }
   };
+
+  // Filter structure based on leader search query
+  const filteredStructure = structure.map(cluster => {
+    const matchesCluster = cluster.clusterName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (cluster.head && cluster.head.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    const filteredCohorts = cluster.cohorts.filter(cohort => 
+      cohort.cohortName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cohort.leaderName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    if (matchesCluster || filteredCohorts.length > 0) {
+      return {
+        ...cluster,
+        cohorts: matchesCluster ? cluster.cohorts : filteredCohorts
+      };
+    }
+    return null;
+  }).filter((c): c is ClusterInfo => c !== null);
 
   return (
     <div className="min-h-screen bg-background fun-bg-pattern flex flex-col justify-between text-foreground relative overflow-hidden">
@@ -140,8 +160,11 @@ export default function PublicHomePage() {
         
         {/* Banner Section */}
         <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="w-16 h-16 bg-card-bg border border-card-border text-3xl rounded-2xl flex items-center justify-center mx-auto animate-float">
-            🎓
+          <div className="w-16 h-16 bg-card-bg border border-card-border rounded-2xl flex items-center justify-center mx-auto animate-float">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-8 h-8 text-primary">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+            </svg>
           </div>
           <h1 className="text-4xl md:text-5xl font-black font-outfit tracking-tight text-foreground leading-none">
             JKLU Orientation Cohorts & Clusters
@@ -173,24 +196,38 @@ export default function PublicHomePage() {
             </button>
           </form>
           {searchResult && (
-            <div className="mt-4 p-3.5 bg-background/40 border border-card-border text-xs font-semibold text-foreground rounded-xl shadow-sm">
-              ℹ️ {searchResult}
+            <div className="mt-4 p-3.5 bg-background/40 border border-card-border text-xs font-semibold text-foreground rounded-xl shadow-sm flex items-start gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4 text-primary shrink-0 mt-0.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{searchResult}</span>
             </div>
           )}
         </div>
 
         {/* Clusters Structure Grid */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-black font-outfit text-foreground text-center">Structure Configuration</h2>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-card-border pb-4">
+            <h2 className="text-2xl font-black font-outfit text-foreground">Structure Configuration</h2>
+            <div className="w-full sm:w-80">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search Leader, Coordinator, Cohort..."
+                className="w-full px-4 py-2 bg-background/50 border border-card-border rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-primary text-foreground font-semibold"
+              />
+            </div>
+          </div>
           {loading ? (
             <div className="min-h-[40vh] flex items-center justify-center">
               <Loader scale={0.7} label="Loading structure configuration..." />
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {structure.map((cluster) => {
+              {filteredStructure.map((cluster) => {
                 return (
-                  <div key={cluster.clusterName} className="glass-card p-6 border border-card-border flex flex-col justify-between">
+                  <div key={cluster.clusterName} className="glass-card p-6 border border-card-border flex flex-col justify-between hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
                     <div>
                       {/* Header */}
                       <div className="flex items-center justify-between mb-4 pb-3 border-b border-card-border">
@@ -224,6 +261,11 @@ export default function PublicHomePage() {
                   </div>
                 );
               })}
+              {filteredStructure.length === 0 && (
+                <div className="col-span-full text-center py-12 text-xs font-bold text-text-muted">
+                  No matching leaders, cohorts, or coordinators found.
+                </div>
+              )}
             </div>
           )}
         </div>

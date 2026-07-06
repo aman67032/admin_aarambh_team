@@ -435,4 +435,41 @@ router.post('/settings', requireAuth, requireRole('super_admin'), async (req, re
   }
 });
 
+// POST /api/admin/backup
+router.post('/backup', requireAuth, requireRole('super_admin'), async (req, res) => {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const Student = require('../models/Student');
+    const User = require('../models/User');
+    const TeamMember = require('../models/TeamMember');
+    const HostelRoom = require('../models/HostelRoom');
+    const EmailLog = require('../models/EmailLog');
+
+    const backupDir = 'E:\\backup';
+    if (!fs.existsSync(backupDir)) {
+      fs.mkdirSync(backupDir, { recursive: true });
+    }
+
+    const collections = {
+      students: await Student.find({}).lean(),
+      users: await User.find({}).lean(),
+      settings: await Settings.find({}).lean(),
+      teammembers: await TeamMember.find({}).lean(),
+      hostelrooms: await HostelRoom.find({}).lean(),
+      emaillogs: await EmailLog.find({}).lean()
+    };
+
+    for (const [name, data] of Object.entries(collections)) {
+      const filePath = path.join(backupDir, `${name}.json`);
+      fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    }
+
+    res.json({ success: true, message: `Successfully backed up all collections to ${backupDir}` });
+  } catch (error) {
+    console.error('Database backup failed:', error);
+    res.status(500).json({ error: 'Failed to create backup: ' + error.message });
+  }
+});
+
 module.exports = router;
