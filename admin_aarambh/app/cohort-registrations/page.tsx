@@ -134,6 +134,9 @@ export default function CohortRegistrationsPage() {
   let grandTotalStudents = 0;
   let grandRegisteredCount = 0;
   let grandVerifiedCount = 0;
+  let grandAarambhConfirmedCount = 0;
+  let grandNotContinuingCount = 0;
+  let grandNotComingAarambhCount = 0;
 
   const cohortsRanked: Array<{
     cohortName: string; leaderName: string; clusterName: string;
@@ -149,6 +152,10 @@ export default function CohortRegistrationsPage() {
       const verified = cohort.students.filter(s => s.documentsVerified).length;
       const percentage = total > 0 ? Math.round((registered / total) * 100) : 0;
       
+      const aarambhConfirmed = cohort.students.filter(s => s.confirmedAarambh).length;
+      const notContinuing = cohort.students.filter(s => s.notContinuing).length;
+      const notComingAarambh = cohort.students.filter(s => s.notComingAarambh).length;
+      
       let latestConfirmTime = Infinity;
       if (registered > 0) {
         const confirmTimes = registeredStudents
@@ -162,6 +169,9 @@ export default function CohortRegistrationsPage() {
       grandTotalStudents += total;
       grandRegisteredCount += registered;
       grandVerifiedCount += verified;
+      grandAarambhConfirmedCount += aarambhConfirmed;
+      grandNotContinuingCount += notContinuing;
+      grandNotComingAarambhCount += notComingAarambh;
       cohortsRanked.push({ 
         cohortName: cohort.cohortName, 
         leaderName: cohort.leaderName, 
@@ -264,22 +274,57 @@ export default function CohortRegistrationsPage() {
 
         {/* Global Stats */}
         {!loading && !notPublished && grandTotalStudents > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 max-w-4xl mx-auto">
-            <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-primary">
-              <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Total Students</div>
-              <div className="text-2xl sm:text-3xl font-bold text-foreground">{grandTotalStudents}</div>
-              <div className="text-xs text-text-muted">Allocated across all cohorts</div>
+          <div className="space-y-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+              <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-primary">
+                <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Total Students</div>
+                <div className="text-2xl sm:text-3xl font-bold text-foreground">{grandTotalStudents}</div>
+                <div className="text-xs text-text-muted">Allocated across all cohorts</div>
+              </div>
+              <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-emerald-500">
+                <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Registered at JKLU</div>
+                <div className="text-2xl sm:text-3xl font-bold text-emerald-600">{grandRegisteredCount}</div>
+                <div className="text-xs text-text-muted">Registered in database</div>
+              </div>
+              <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-indigo-500">
+                <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Documents Verified</div>
+                <div className="text-2xl sm:text-3xl font-bold text-indigo-600">{grandVerifiedCount}</div>
+                <div className="text-xs text-text-muted">Verified by cluster head</div>
+              </div>
             </div>
-            <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-emerald-500">
-              <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Registered at JKLU</div>
-              <div className="text-2xl sm:text-3xl font-bold text-emerald-600">{grandRegisteredCount}</div>
-              <div className="text-xs text-text-muted">Registered in database</div>
-            </div>
-            <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-indigo-500">
-              <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Documents Verified</div>
-              <div className="text-2xl sm:text-3xl font-bold text-indigo-600">{grandVerifiedCount}</div>
-              <div className="text-xs text-text-muted">Verified by cluster head</div>
-            </div>
+
+            {/* Effective Aarambh Progress */}
+            {(() => {
+              const effectiveTarget = grandTotalStudents - grandNotContinuingCount - grandNotComingAarambhCount;
+              const effectivePercent = effectiveTarget > 0 ? Math.round((grandAarambhConfirmedCount / effectiveTarget) * 100) : 0;
+              return (
+                <div className="glass-card p-5 sm:p-6 border-l-4 border-l-amber-500 flex flex-col gap-3">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="space-y-1">
+                      <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Effective Aarambh Progress</div>
+                      <div className="text-xs text-text-muted">
+                        Aarambh Confirmed registrations respective to active target students (Total - [Not Continuing + Not Coming])
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-amber-600">{grandAarambhConfirmedCount} / {effectiveTarget}</div>
+                      <div className="text-xs font-semibold text-amber-500">{effectivePercent}% Completed</div>
+                    </div>
+                  </div>
+                  <div className="w-full bg-card-border/50 rounded-full h-3 overflow-hidden mt-1">
+                    <div 
+                      className="bg-amber-500 h-full rounded-full transition-all duration-500" 
+                      style={{ width: `${effectivePercent}%` }}
+                    ></div>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between text-[10px] text-text-muted font-bold mt-1">
+                    <span>Not Continuing: {grandNotContinuingCount}</span>
+                    <span>Not Coming to Aarambh: {grandNotComingAarambhCount}</span>
+                    <span>Active Target: {effectiveTarget}</span>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         )}
 
