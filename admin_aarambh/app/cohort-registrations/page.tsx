@@ -41,14 +41,10 @@ export default function CohortRegistrationsPage() {
   const aarambhLogo = isDark ? '/new_logo.png' : '/Aarambh_logo_Final-01.svg';
   const router = useRouter();
 
-  // Redirect to login if not authenticated or not authorized
+  // Redirect if not authorized (hostel admin)
   useEffect(() => {
-    if (!appLoading) {
-      if (!user) {
-        router.push('/login');
-      } else if (user.email === 'hosteladmin@jklu.edu.in') {
-        router.push('/admin/hostel');
-      }
+    if (!appLoading && user && user.email === 'hosteladmin@jklu.edu.in') {
+      router.push('/admin/hostel');
     }
   }, [user, appLoading, router]);
 
@@ -339,7 +335,7 @@ export default function CohortRegistrationsPage() {
     return parseDate(a) - parseDate(b);
   }).slice(-7); // Keep last 7 days of activity
 
-  if (appLoading || !user || user.email === 'hosteladmin@jklu.edu.in') {
+  if (appLoading || (user && user.email === 'hosteladmin@jklu.edu.in')) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader scale={0.7} label="Verifying session..." />

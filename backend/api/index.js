@@ -272,7 +272,7 @@ app.get('/api/public/student-cohorts', async (req, res) => {
   }
 });
 
-app.get('/api/status/cohort-registrations', requireAuth, async (req, res) => {
+app.get('/api/status/cohort-registrations', async (req, res) => {
   try {
     const User = require('../models/User');
     const Student = require('../models/Student');
