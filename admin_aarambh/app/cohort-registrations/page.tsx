@@ -277,14 +277,20 @@ export default function CohortRegistrationsPage() {
     total: number;
     registered: number;
     percent: number;
+    notContinuing: number;
+    notComing: number;
   }> = [];
 
   data.forEach(cluster => {
     let total = 0;
     let registered = 0;
+    let notContinuing = 0;
+    let notComing = 0;
     cluster.cohorts.forEach(cohort => {
       total += cohort.students.length;
       registered += cohort.students.filter(s => s.confirmedJklu).length;
+      notContinuing += cohort.students.filter(s => s.notContinuing).length;
+      notComing += cohort.students.filter(s => s.notComingAarambh).length;
     });
     const percent = total > 0 ? Math.round((registered / total) * 100) : 0;
     clusterStats.push({
@@ -292,7 +298,9 @@ export default function CohortRegistrationsPage() {
       head: cluster.head,
       total,
       registered,
-      percent
+      percent,
+      notContinuing,
+      notComing
     });
   });
 
@@ -647,22 +655,45 @@ export default function CohortRegistrationsPage() {
               </svg>
               <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Cluster Progress Overview</h2>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
-              {clusterStats.map(c => (
-                <div key={c.clusterName} className="glass-card p-3 flex flex-col gap-1.5 border-t-2 border-t-indigo-500/60">
-                  <div className="flex items-center justify-between text-xs font-bold">
-                    <span className="text-foreground">Cluster {c.clusterName}</span>
-                    <span className="text-indigo-500">{c.percent}%</span>
-                  </div>
-                  <div className="w-full bg-card-border/55 rounded-full h-1.5 overflow-hidden">
-                    <div className="bg-indigo-500 h-full rounded-full" style={{ width: `${c.percent}%` }}></div>
-                  </div>
-                  <div className="flex items-center justify-between text-[9px] text-text-muted mt-0.5">
-                    <span>{c.registered}/{c.total} reg</span>
-                    <span className="truncate max-w-[55px] font-medium text-[8px]" title={c.head || ''}>{c.head || 'N/A'}</span>
-                  </div>
-                </div>
-              ))}
+            
+            <div className="glass-card overflow-hidden border border-card-border shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="bg-card-bg border-b border-card-border text-text-muted font-bold uppercase tracking-wider text-[10px]">
+                      <th className="px-5 py-3.5">Cluster Name</th>
+                      <th className="px-5 py-3.5 text-center">Total Allotment</th>
+                      <th className="px-5 py-3.5 text-center">Not Coming / Continuing</th>
+                      <th className="px-5 py-3.5 text-center">Registered Number</th>
+                      <th className="px-5 py-3.5 text-center">Pending</th>
+                      <th className="px-5 py-3.5 text-center">Progress</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-card-border font-semibold">
+                    {clusterStats.map(c => {
+                      const notComingOrContinuing = c.notContinuing + c.notComing;
+                      const pending = c.total - notComingOrContinuing - c.registered;
+                      return (
+                        <tr key={c.clusterName} className="hover:bg-background/30 transition-colors">
+                          <td className="px-5 py-3.5 text-foreground font-extrabold">Cluster {c.clusterName}</td>
+                          <td className="px-5 py-3.5 text-center text-foreground">{c.total}</td>
+                          <td className="px-5 py-3.5 text-center text-red-500">{notComingOrContinuing}</td>
+                          <td className="px-5 py-3.5 text-center text-emerald-600">{c.registered}</td>
+                          <td className="px-5 py-3.5 text-center text-amber-500">{pending}</td>
+                          <td className="px-5 py-3.5">
+                            <div className="flex items-center gap-3 justify-center">
+                              <div className="w-24 bg-card-border/60 rounded-full h-1.5 overflow-hidden">
+                                <div className="bg-indigo-500 h-full rounded-full" style={{ width: `${c.percent}%` }}></div>
+                              </div>
+                              <span className="text-[10px] text-text-muted font-bold w-8 text-right">{c.percent}%</span>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}

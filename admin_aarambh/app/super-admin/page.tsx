@@ -486,85 +486,71 @@ export default function SuperAdminDashboard() {
 
               <h2 className="text-xl font-extrabold font-outfit text-foreground">Clusters Performance Summary</h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              
 
-                {adminOverview?.clusters?.map((cluster: any) => (
+              <div className="glass-card overflow-hidden border border-card-border shadow-sm">
 
-                  <div key={cluster.cluster} className="glass-card p-6 border border-card-border/60 flex flex-col justify-between">
+                <div className="overflow-x-auto">
 
-                    <div>
+                  <table className="w-full text-left border-collapse text-xs">
 
-                      <div className="flex items-center justify-between mb-4">
+                    <thead>
 
-                        <span className="text-2xl font-black font-outfit text-foreground">Cluster {cluster.cluster}</span>
+                      <tr className="bg-card-bg border-b border-card-border text-text-muted font-bold uppercase tracking-wider text-[10px]">
 
-                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        <th className="px-5 py-3.5">Cluster Name</th>
 
-                          ['I', 'J', 'K', 'L'].includes(cluster.cluster)
+                        <th className="px-5 py-3.5">Head</th>
 
-                            ? 'bg-teal-50 text-teal-600'
+                        <th className="px-5 py-3.5 text-center">Total Allotment</th>
 
-                            : 'bg-indigo-50 text-indigo-600'
+                        <th className="px-5 py-3.5 text-center">Not Coming / Continuing</th>
 
-                        }`}>
+                        <th className="px-5 py-3.5 text-center">Registered Number</th>
 
-                          {['I', 'J', 'K', 'L'].includes(cluster.cluster) ? 'South BTech' : 'North Pool'}
+                        <th className="px-5 py-3.5 text-center">Pending</th>
 
-                        </span>
+                        <th className="px-5 py-3.5 text-center">Calls</th>
 
-                      </div>
+                      </tr>
 
-                      <div className="space-y-2 text-sm font-semibold">
+                    </thead>
 
-                        <div className="flex justify-between">
+                    <tbody className="divide-y divide-card-border font-semibold">
 
-                          <span className="text-text-muted">Head:</span>
+                      {adminOverview?.clusters?.map((cluster: any) => {
 
-                          <span className="text-foreground">{cluster.headName}</span>
+                        const pending = cluster.total - cluster.notContinuing - cluster.confirmedJklu;
 
-                        </div>
+                        return (
 
-                        <div className="flex justify-between">
+                          <tr key={cluster.cluster} className="hover:bg-background/30 transition-colors">
 
-                          <span className="text-text-muted">Allocated:</span>
+                            <td className="px-5 py-3.5 text-foreground font-extrabold">Cluster {cluster.cluster}</td>
 
-                          <span className="text-foreground">{cluster.total} students</span>
+                            <td className="px-5 py-3.5 text-foreground">{cluster.headName}</td>
 
-                        </div>
+                            <td className="px-5 py-3.5 text-center text-foreground">{cluster.total}</td>
 
-                        <div className="flex justify-between">
+                            <td className="px-5 py-3.5 text-center text-red-500">{cluster.notContinuing}</td>
 
-                          <span className="text-text-muted">Verified:</span>
+                            <td className="px-5 py-3.5 text-center text-emerald-600">{cluster.confirmedJklu}</td>
 
-                          <span className="text-foreground">{cluster.verified} / {cluster.total}</span>
+                            <td className="px-5 py-3.5 text-center text-amber-500">{pending}</td>
 
-                        </div>
+                            <td className="px-5 py-3.5 text-center text-text-muted">{cluster.calls}</td>
 
-                        <div className="flex justify-between">
+                          </tr>
 
-                          <span className="text-text-muted">Confirmed:</span>
+                        );
 
-                          <span className="text-foreground text-emerald-600">{cluster.confirmedAarambh} (Aarambh)</span>
+                      })}
 
-                        </div>
+                    </tbody>
 
-                      </div>
+                  </table>
 
-                    </div>
-
-
-
-                    <div className="mt-6 pt-4 border-t border-slate-50 flex items-center justify-between text-xs font-bold text-text-muted">
-
-                      <span>Call Logs: {cluster.calls}</span>
-
-                      <span className="text-red-500">Not Continuing: {cluster.notContinuing}</span>
-
-                    </div>
-
-                  </div>
-
-                ))}
+                </div>
 
               </div>
 
