@@ -155,6 +155,13 @@ export default function CohortRegistrationsPage() {
   let regBBA = 0;
   let regBDes = 0;
 
+  let btechMales = 0;
+  let btechFemales = 0;
+  let bbaMales = 0;
+  let bbaFemales = 0;
+  let bdesMales = 0;
+  let bdesFemales = 0;
+
   const cohortsRanked: Array<{
     cohortName: string; leaderName: string; clusterName: string;
     total: number; registered: number; verified: number;
@@ -178,12 +185,24 @@ export default function CohortRegistrationsPage() {
       cohort.students.forEach(s => {
         if (s.confirmedJklu) {
           const gen = (s.gender || '').trim().toLowerCase();
-          if (gen === 'female' || gen.startsWith('f')) regFemales++;
+          const isFemale = gen === 'female' || gen.startsWith('f');
+          if (isFemale) regFemales++;
           else regMales++;
 
-          if (s.course === 'B.Tech') regBTech++;
-          else if (s.course === 'BBA') regBBA++;
-          else if (s.course === 'B.Des') regBDes++;
+          const course = (s.course || '').trim().toUpperCase();
+          if (course.includes('B.TECH') || course.includes('BTECH')) {
+            regBTech++;
+            if (isFemale) btechFemales++;
+            else btechMales++;
+          } else if (course.includes('BBA')) {
+            regBBA++;
+            if (isFemale) bbaFemales++;
+            else bbaMales++;
+          } else if (course.includes('B.DES') || course.includes('BDES') || course.includes('DESIGN')) {
+            regBDes++;
+            if (isFemale) bdesFemales++;
+            else bdesMales++;
+          }
         }
       });
       
@@ -647,6 +666,132 @@ export default function CohortRegistrationsPage() {
                           </div>
                           <span className="font-bold text-text-muted">{regBDes} ({bdesPct}%)</span>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+        )}
+
+        {/* Course-Wise Gender Balance (3 Pie Charts) */}
+        {!loading && !notPublished && grandRegisteredCount > 0 && (
+          <div className="max-w-4xl mx-auto space-y-4">
+            <div className="flex items-center gap-2.5 pb-1 justify-center sm:justify-start">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary shrink-0">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 2v10l8-4" />
+                <path d="M12 12l-6 8" />
+              </svg>
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Course-Wise Gender Distribution</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {/* B.Tech Gender Balance */}
+              {(() => {
+                const total = btechMales + btechFemales;
+                const malePct = total > 0 ? Math.round((btechMales / total) * 100) : 0;
+                const femalePct = total > 0 ? 100 - malePct : 0;
+                const conicBg = total > 0 
+                  ? `conic-gradient(#3b82f6 0% ${malePct}%, #ec4899 ${malePct}% 100%)`
+                  : `conic-gradient(#e2e8f0 0% 100%)`;
+                return (
+                  <div className="glass-card p-5 flex flex-col items-center gap-4 text-center">
+                    <h3 className="text-xs font-black text-foreground uppercase tracking-wider">B.Tech Gender</h3>
+                    <div className="relative w-28 h-28 rounded-full shrink-0 flex items-center justify-center shadow-inner border border-card-border" style={{ background: conicBg }}>
+                      <div className="absolute w-20 h-20 rounded-full bg-card-bg flex flex-col items-center justify-center border border-card-border">
+                        <span className="text-xl font-black text-foreground">{total}</span>
+                        <span className="text-[8px] font-bold text-text-muted uppercase">B.Tech</span>
+                      </div>
+                    </div>
+                    <div className="w-full space-y-1.5 text-left text-xs font-semibold">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2.5 h-2.5 rounded bg-blue-500 shrink-0"></div>
+                          <span className="text-text-muted">Male</span>
+                        </div>
+                        <span className="font-bold text-foreground">{btechMales} ({malePct}%)</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2.5 h-2.5 rounded bg-pink-500 shrink-0"></div>
+                          <span className="text-text-muted">Female</span>
+                        </div>
+                        <span className="font-bold text-foreground">{btechFemales} ({femalePct}%)</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* BBA Gender Balance */}
+              {(() => {
+                const total = bbaMales + bbaFemales;
+                const malePct = total > 0 ? Math.round((bbaMales / total) * 100) : 0;
+                const femalePct = total > 0 ? 100 - malePct : 0;
+                const conicBg = total > 0 
+                  ? `conic-gradient(#3b82f6 0% ${malePct}%, #ec4899 ${malePct}% 100%)`
+                  : `conic-gradient(#e2e8f0 0% 100%)`;
+                return (
+                  <div className="glass-card p-5 flex flex-col items-center gap-4 text-center">
+                    <h3 className="text-xs font-black text-foreground uppercase tracking-wider">BBA Gender</h3>
+                    <div className="relative w-28 h-28 rounded-full shrink-0 flex items-center justify-center shadow-inner border border-card-border" style={{ background: conicBg }}>
+                      <div className="absolute w-20 h-20 rounded-full bg-card-bg flex flex-col items-center justify-center border border-card-border">
+                        <span className="text-xl font-black text-foreground">{total}</span>
+                        <span className="text-[8px] font-bold text-text-muted uppercase">BBA</span>
+                      </div>
+                    </div>
+                    <div className="w-full space-y-1.5 text-left text-xs font-semibold">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2.5 h-2.5 rounded bg-blue-500 shrink-0"></div>
+                          <span className="text-text-muted">Male</span>
+                        </div>
+                        <span className="font-bold text-foreground">{bbaMales} ({malePct}%)</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2.5 h-2.5 rounded bg-pink-500 shrink-0"></div>
+                          <span className="text-text-muted">Female</span>
+                        </div>
+                        <span className="font-bold text-foreground">{bbaFemales} ({femalePct}%)</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* B.Des Gender Balance */}
+              {(() => {
+                const total = bdesMales + bdesFemales;
+                const malePct = total > 0 ? Math.round((bdesMales / total) * 100) : 0;
+                const femalePct = total > 0 ? 100 - malePct : 0;
+                const conicBg = total > 0 
+                  ? `conic-gradient(#3b82f6 0% ${malePct}%, #ec4899 ${malePct}% 100%)`
+                  : `conic-gradient(#e2e8f0 0% 100%)`;
+                return (
+                  <div className="glass-card p-5 flex flex-col items-center gap-4 text-center">
+                    <h3 className="text-xs font-black text-foreground uppercase tracking-wider">B.Des Gender</h3>
+                    <div className="relative w-28 h-28 rounded-full shrink-0 flex items-center justify-center shadow-inner border border-card-border" style={{ background: conicBg }}>
+                      <div className="absolute w-20 h-20 rounded-full bg-card-bg flex flex-col items-center justify-center border border-card-border">
+                        <span className="text-xl font-black text-foreground">{total}</span>
+                        <span className="text-[8px] font-bold text-text-muted uppercase">B.Des</span>
+                      </div>
+                    </div>
+                    <div className="w-full space-y-1.5 text-left text-xs font-semibold">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2.5 h-2.5 rounded bg-blue-500 shrink-0"></div>
+                          <span className="text-text-muted">Male</span>
+                        </div>
+                        <span className="font-bold text-foreground">{bdesMales} ({malePct}%)</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2.5 h-2.5 rounded bg-pink-500 shrink-0"></div>
+                          <span className="text-text-muted">Female</span>
+                        </div>
+                        <span className="font-bold text-foreground">{bdesFemales} ({femalePct}%)</span>
                       </div>
                     </div>
                   </div>
