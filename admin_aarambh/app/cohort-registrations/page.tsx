@@ -1,6 +1,6 @@
 'use client';
 
-import AuroraBackground from '../components/AuroraBackground';
+import Ferrofluid from '../components/Ferrofluid';
 import Loader from '../components/Loader';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -379,7 +379,25 @@ export default function CohortRegistrationsPage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col justify-between text-foreground relative overflow-hidden">
-      <AuroraBackground />
+      {/* Background dynamic Ferrofluid waves */}
+      <div className="absolute inset-0 pointer-events-none opacity-20 z-0">
+        <Ferrofluid
+          colors={
+            isDark
+              ? ['#4F46E5', '#7C3AED', '#06B6D4', '#3B82F6']
+              : ['#FF6B00', '#FFA800', '#FFD600', '#FF8A00']
+          }
+          speed={0.5}
+          scale={1.6}
+          turbulence={1}
+          fluidity={0.1}
+          rimWidth={0.2}
+          sharpness={2.5}
+          shimmer={1.5}
+          glow={2}
+          flowDirection="down"
+        />
+      </div>
 
       {/* Header */}
       <header className="sticky top-0 bg-card-bg/85 backdrop-blur-md border-b border-card-border z-50">
