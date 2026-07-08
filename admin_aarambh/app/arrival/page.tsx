@@ -27,6 +27,7 @@ export default function ArrivalDeclarationPage() {
 
   // Step 1: Verification
   const [cohortName, setCohortName] = useState('');
+  const [appNo, setAppNo] = useState('');
   const [accessCode, setAccessCode] = useState('');
   const [verifying, setVerifying] = useState(false);
   const [student, setStudent] = useState<StudentInfo | null>(null);
@@ -45,14 +46,14 @@ export default function ArrivalDeclarationPage() {
   // Step 1 handler: Verify student credentials
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!cohortName.trim() || !accessCode.trim()) return;
+    if (!cohortName.trim() || !appNo.trim() || !accessCode.trim()) return;
 
     setVerifying(true);
     setErrorMsg('');
     setStudent(null);
 
     try {
-      const res = await fetch(`/api/arrival/verify?cohort=${encodeURIComponent(cohortName.trim())}&code=${encodeURIComponent(accessCode.trim())}`);
+      const res = await fetch(`/api/arrival/verify?cohort=${encodeURIComponent(cohortName.trim())}&applicationNo=${encodeURIComponent(appNo.trim())}&code=${encodeURIComponent(accessCode.trim())}`);
       const data = await res.json();
 
       if (!res.ok) {
@@ -100,6 +101,7 @@ export default function ArrivalDeclarationPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cohort: student.cohort,
+          applicationNo: student.applicationNo,
           code: accessCode.trim(),
           isFromJaipur,
           jaipurArea,
@@ -166,6 +168,7 @@ export default function ArrivalDeclarationPage() {
                   setSuccess(false);
                   setStudent(null);
                   setCohortName('');
+                  setAppNo('');
                   setAccessCode('');
                   setIsFromJaipur(null);
                   setJaipurArea('');
@@ -182,31 +185,47 @@ export default function ArrivalDeclarationPage() {
           ) : !student ? (
             /* STEP 1: Verification Form */
             <form onSubmit={handleVerify} className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
-                  Cohort Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. A1, L3"
-                  value={cohortName}
-                  onChange={(e) => setCohortName(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold uppercase"
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
+                    Cohort Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. A1, L3"
+                    value={cohortName}
+                    onChange={(e) => setCohortName(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold uppercase"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
+                    Arrival Access Code *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="6-digit access code"
+                    value={accessCode}
+                    onChange={(e) => setAccessCode(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold"
+                  />
+                </div>
               </div>
 
               <div className="space-y-1.5">
                 <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
-                  Arrival Access Code *
+                  Application Number *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="Enter 6-digit access code"
-                  value={accessCode}
-                  onChange={(e) => setAccessCode(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold"
+                  placeholder="e.g. JKLU/B.TECH/2026/0449"
+                  value={appNo}
+                  onChange={(e) => setAppNo(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold uppercase"
                 />
               </div>
 
@@ -227,7 +246,7 @@ export default function ArrivalDeclarationPage() {
                     Verifying Credentials...
                   </>
                 ) : (
-                  'Verify Code ➔'
+                  'Verify Details ➔'
                 )}
               </button>
             </form>

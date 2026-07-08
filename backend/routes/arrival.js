@@ -10,26 +10,31 @@ const normalizeAppNo = (appNo) => {
 };
 
 // GET /api/arrival/verify
-// Verify student identity using Cohort name and Access Code
+// Verify student identity using Cohort name, Application Number, and Access Code
 router.get('/verify', async (req, res) => {
   try {
-    const { cohort, code } = req.query;
+    const { cohort, applicationNo, code } = req.query;
 
-    if (!cohort || !code) {
-      return res.status(400).json({ error: 'Cohort name and access code are required.' });
+    if (!cohort || !applicationNo || !code) {
+      return res.status(400).json({ error: 'Cohort name, application number, and access code are required.' });
     }
 
     const cleanCohort = cohort.toUpperCase().trim();
+    const cleanAppNo = normalizeAppNo(applicationNo);
     const cleanCode = code.trim();
 
     // Query database for matching student
-    const matchedStudent = await Student.findOne({
+    const students = await Student.find({
       cohort: cleanCohort,
       arrivalCode: cleanCode
     });
 
+    const matchedStudent = students.find(s => 
+      normalizeAppNo(s.applicationNo) === cleanAppNo
+    );
+
     if (!matchedStudent) {
-      return res.status(404).json({ error: 'Invalid cohort name or access code. Please check details with your cohort leader.' });
+      return res.status(404).json({ error: 'Invalid details. Please verify your Cohort Name, Application Number, and Access Code.' });
     }
 
     res.json({
@@ -53,6 +58,7 @@ router.post('/declare', async (req, res) => {
   try {
     const { 
       cohort,
+      applicationNo,
       code,
       isFromJaipur, 
       jaipurArea, 
@@ -62,21 +68,26 @@ router.post('/declare', async (req, res) => {
       transportMode 
     } = req.body;
 
-    if (!cohort || !code) {
-      return res.status(400).json({ error: 'Cohort name and access code are required.' });
+    if (!cohort || !applicationNo || !code) {
+      return res.status(400).json({ error: 'Cohort name, application number, and access code are required.' });
     }
 
     const cleanCohort = cohort.toUpperCase().trim();
+    const cleanAppNo = normalizeAppNo(applicationNo);
     const cleanCode = code.trim();
 
     // Query database for matching student
-    const matchedStudent = await Student.findOne({
+    const students = await Student.find({
       cohort: cleanCohort,
       arrivalCode: cleanCode
     });
 
+    const matchedStudent = students.find(s => 
+      normalizeAppNo(s.applicationNo) === cleanAppNo
+    );
+
     if (!matchedStudent) {
-      return res.status(404).json({ error: 'Invalid cohort name or access code.' });
+      return res.status(404).json({ error: 'Invalid details. Verification failed.' });
     }
 
     // Set arrivalInfo sub-document
