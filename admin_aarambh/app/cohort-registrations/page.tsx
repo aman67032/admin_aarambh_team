@@ -380,7 +380,7 @@ export default function CohortRegistrationsPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col justify-between text-foreground relative overflow-hidden">
       {/* Background dynamic Ferrofluid waves */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 z-0">
+      <div className="fixed inset-0 pointer-events-none opacity-35 z-0">
         <Ferrofluid
           colors={
             isDark
