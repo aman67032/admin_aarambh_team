@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Loader from '../components/Loader';
+import PlasmaWave from '../components/PlasmaWave';
 
 interface StudentInfo {
   name: string;
@@ -128,9 +129,16 @@ export default function ArrivalDeclarationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-outfit text-slate-800">
-      {/* Navbar header */}
-      <header className="w-full bg-white border-b border-slate-200 py-4 px-6 flex items-center justify-between shadow-sm">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-outfit text-slate-800 relative overflow-hidden">
+      {/* Background Interactive Waves */}
+      <div className="absolute inset-0 pointer-events-none opacity-20 z-0">
+        <PlasmaWave speed1={0.03} speed2={0.03} focalLength={0.7} bend1={1} bend2={0.5} dir2={1} rotationDeg={0} />
+      </div>
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-500/10 blur-[130px] opacity-75 pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-violet-500/10 blur-[130px] opacity-75 pointer-events-none"></div>
+
+      {/* Navbar Header */}
+      <header className="w-full bg-white/80 backdrop-blur-md border-b border-slate-200/80 py-4 px-6 flex items-center justify-between shadow-sm z-10">
         <div className="flex items-center gap-4">
           <img src={jkluLogo} alt="JKLU Logo" className="h-10 w-auto" />
           <div className="h-8 w-[1px] bg-slate-200" />
@@ -138,111 +146,128 @@ export default function ArrivalDeclarationPage() {
         </div>
       </header>
 
-      {/* Main Content Form area */}
-      <main className="flex-1 flex items-center justify-center p-6 md:p-12">
-        <div className="w-full max-w-xl bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-md space-y-6">
-          <div className="text-center space-y-2">
-            <span className="text-[9px] font-black uppercase tracking-widest bg-indigo-50 border border-indigo-100 text-indigo-600 px-3 py-1 rounded-full">
-              Transport & Arrival Declaration
+      {/* Main Content Area */}
+      <main className="flex-1 flex items-center justify-center p-4 md:p-8 z-10 my-4">
+        <div className="w-full max-w-xl bg-white/75 backdrop-blur-lg border border-white/40 rounded-3xl p-6 md:p-8 shadow-2xl shadow-slate-200 space-y-6 transition-all duration-300">
+          
+          {/* Header Title Block */}
+          <div className="text-center space-y-2.5">
+            <span className="text-[9px] font-black uppercase tracking-wider bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-3 py-1 rounded-full shadow-sm">
+              Transport & Arrival Portal
             </span>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Arrival at JKLU</h1>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              Please enter your details below to declare your arrival date/time or coordinate day-scholar bus transportation routes.
+            <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Arrival at JKLU</h1>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto font-semibold leading-relaxed">
+              Declare your arrival coordinates or coordinate your local day-scholar bus transportation route preferences.
             </p>
           </div>
 
+          {/* Form Step Indicator UX */}
+          {!success && (
+            <div className="flex items-center justify-center gap-2 py-1 text-[10px] font-black uppercase tracking-wider text-slate-400">
+              <span className={`px-2.5 py-1 rounded-full border transition-all ${!student ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm' : 'bg-emerald-50 border-emerald-200 text-emerald-600'}`}>
+                {!student ? '1. Verify Identity' : '✓ Verified'}
+              </span>
+              <div className={`w-8 h-[2px] ${student ? 'bg-emerald-200' : 'bg-slate-200'}`} />
+              <span className={`px-2.5 py-1 rounded-full border transition-all ${student ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm' : 'bg-slate-100 border-slate-200 text-slate-400'}`}>
+                2. Declaration
+              </span>
+            </div>
+          )}
+
           {success ? (
-            <div className="py-8 text-center space-y-4">
-              <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full border border-emerald-100 flex items-center justify-center text-3xl mx-auto">
+            /* SUCCESS PANEL SCREEN */
+            <div className="py-10 text-center space-y-5 animate-scaleIn">
+              <div className="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-full border border-emerald-100 flex items-center justify-center text-4xl mx-auto shadow-md shadow-emerald-500/10 animate-bounce">
                 ✓
               </div>
-              <div className="space-y-1">
-                <h3 className="text-lg font-black text-slate-900">Details Saved Successfully!</h3>
-                <p className="text-xs text-slate-500">
-                  Thank you! Your arrival and route preference have been logged for AARAMBH 2026.
+              <div className="space-y-2">
+                <h3 className="text-xl font-black text-slate-900 tracking-tight">Details Saved Successfully!</h3>
+                <p className="text-xs text-slate-500 font-semibold max-w-xs mx-auto leading-relaxed">
+                  Thank you! Your arrival coordinates and route preferences have been securely logged in the system for Aarambh 2026.
                 </p>
               </div>
-              <button
-                onClick={() => {
-                  setSuccess(false);
-                  setStudent(null);
-                  setCohortName('');
-                  setAppNo('');
-                  setAccessCode('');
-                  setIsFromJaipur(null);
-                  setJaipurArea('');
-                  setWantsBus(null);
-                  setArrivalDate('');
-                  setArrivalTime('');
-                  setTransportMode('');
-                }}
-                className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl uppercase tracking-wider transition-all cursor-pointer"
-              >
-                Submit Another Form
-              </button>
             </div>
           ) : !student ? (
             /* STEP 1: Verification Form */
-            <form onSubmit={handleVerify} className="space-y-4">
+            <form onSubmit={handleVerify} className="space-y-4 animate-fadeIn">
               <div className="grid grid-cols-2 gap-4">
+                {/* Cohort input with icon */}
                 <div className="space-y-1.5">
                   <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
                     Cohort Name *
                   </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. A1, L3"
-                    value={cohortName}
-                    onChange={(e) => setCohortName(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold uppercase"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. A1, L3"
+                      value={cohortName}
+                      onChange={(e) => setCohortName(e.target.value)}
+                      className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-indigo-500 focus:bg-white rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold uppercase tracking-wide"
+                    />
+                    <svg className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
                 </div>
 
+                {/* Arrival code input with icon */}
                 <div className="space-y-1.5">
                   <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
                     Arrival Access Code *
                   </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="6-digit access code"
-                    value={accessCode}
-                    onChange={(e) => setAccessCode(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      required
+                      placeholder="6-digit code"
+                      value={accessCode}
+                      onChange={(e) => setAccessCode(e.target.value)}
+                      className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-indigo-500 focus:bg-white rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold tracking-wider font-mono"
+                    />
+                    <svg className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
                 </div>
               </div>
 
+              {/* Application No input with icon */}
               <div className="space-y-1.5">
                 <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
                   Application Number *
                 </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. JKLU/B.TECH/2026/0449"
-                  value={appNo}
-                  onChange={(e) => setAppNo(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold uppercase"
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. JKLU/B.TECH/2026/0449"
+                    value={appNo}
+                    onChange={(e) => setAppNo(e.target.value)}
+                    className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-indigo-500 focus:bg-white rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold uppercase tracking-wide"
+                  />
+                  <svg className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                  </svg>
+                </div>
               </div>
 
               {errorMsg && (
-                <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 text-xs font-bold rounded-xl">
-                  ⚠️ {errorMsg}
+                <div className="p-3.5 bg-rose-50 border border-rose-100 text-rose-600 text-xs font-bold rounded-xl shadow-sm flex items-center gap-2">
+                  <span className="text-base shrink-0">⚠️</span>
+                  <span>{errorMsg}</span>
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={verifying}
-                className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 disabled:from-indigo-400 disabled:to-violet-400 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-md shadow-indigo-600/10 cursor-pointer flex items-center justify-center gap-2 hover:-translate-y-[1px]"
               >
                 {verifying ? (
                   <>
                     <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                    Verifying Credentials...
+                    Verifying Details...
                   </>
                 ) : (
                   'Verify Details ➔'
@@ -251,102 +276,108 @@ export default function ArrivalDeclarationPage() {
             </form>
           ) : (
             /* STEP 2: Declaration Details Form */
-            <form onSubmit={handleSubmit} className="space-y-5 border-t border-slate-100 pt-5">
-              <div className="bg-indigo-50/50 border border-indigo-100 p-4 rounded-xl flex items-center justify-between text-xs">
+            <form onSubmit={handleSubmit} className="space-y-6 animate-fadeIn">
+              {/* Account welcome card */}
+              <div className="bg-gradient-to-r from-indigo-50/50 to-violet-50/50 border border-indigo-100/50 p-4 rounded-2xl flex items-center justify-between text-xs shadow-sm">
                 <div>
-                  <span className="text-[10px] font-black text-indigo-600 uppercase">Welcome, Student</span>
-                  <div className="font-black text-slate-900 text-sm">{student.name}</div>
-                  <div className="text-[10px] text-slate-500 font-semibold">{student.course} · Cohort {student.cohort}</div>
+                  <span className="text-[9px] font-black text-indigo-600 uppercase tracking-wider">Welcome, Student</span>
+                  <div className="font-black text-slate-900 text-sm mt-0.5">{student.name}</div>
+                  <div className="text-[10px] text-slate-500 font-semibold mt-0.5">{student.course} · Cohort {student.cohort}</div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setStudent(null)}
-                  className="text-[10px] font-bold text-rose-500 hover:underline"
+                  className="px-3 py-1.5 bg-white border border-slate-200 text-rose-500 hover:text-white hover:bg-rose-500 text-[10px] font-bold rounded-lg transition-all duration-200 shadow-sm"
                 >
                   Change Account
                 </button>
               </div>
 
-              {/* Jaipur Residency Query */}
+              {/* Jaipur Residency Query (Interactive Radio Cards UX) */}
               <div className="space-y-2">
                 <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
                   Are you currently residing in Jaipur? (Day Scholar) *
                 </label>
-                <div className="flex gap-4">
-                  <label className="flex-1 p-3 border border-slate-200 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition-all">
-                    <input
-                      type="radio"
-                      name="isFromJaipur"
-                      checked={isFromJaipur === true}
-                      onChange={() => {
-                        setIsFromJaipur(true);
-                        // Reset other fields
-                        setTransportMode('');
-                      }}
-                      className="accent-indigo-600 w-4 h-4"
-                    />
-                    <span className="text-xs font-bold">Yes, from Jaipur</span>
-                  </label>
-                  <label className="flex-1 p-3 border border-slate-200 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition-all">
-                    <input
-                      type="radio"
-                      name="isFromJaipur"
-                      checked={isFromJaipur === false}
-                      onChange={() => {
-                        setIsFromJaipur(false);
-                        // Reset other fields
-                        setJaipurArea('');
-                        setWantsBus(null);
-                      }}
-                      className="accent-indigo-600 w-4 h-4"
-                    />
-                    <span className="text-xs font-bold">No, from Outside Jaipur</span>
-                  </label>
+                <div className="grid grid-cols-2 gap-4">
+                  <div 
+                    onClick={() => {
+                      setIsFromJaipur(true);
+                      setTransportMode('');
+                    }}
+                    className={`p-4 border rounded-2xl flex flex-col items-center justify-center gap-2.5 cursor-pointer text-center transition-all ${isFromJaipur === true ? 'bg-indigo-500/5 border-indigo-600 text-indigo-700 shadow-md shadow-indigo-600/5' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100/70'}`}
+                  >
+                    <svg className={`w-6 h-6 transition-all ${isFromJaipur === true ? 'text-indigo-600 animate-float' : 'text-slate-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <div className="text-xs font-black uppercase tracking-wider">Yes, Jaipur</div>
+                    <span className="text-[9px] font-semibold text-slate-400">Day Scholar</span>
+                  </div>
+
+                  <div 
+                    onClick={() => {
+                      setIsFromJaipur(false);
+                      setJaipurArea('');
+                      setWantsBus(null);
+                    }}
+                    className={`p-4 border rounded-2xl flex flex-col items-center justify-center gap-2.5 cursor-pointer text-center transition-all ${isFromJaipur === false ? 'bg-indigo-500/5 border-indigo-600 text-indigo-700 shadow-md shadow-indigo-600/5' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100/70'}`}
+                  >
+                    <svg className={`w-6 h-6 transition-all ${isFromJaipur === false ? 'text-indigo-600 animate-float' : 'text-slate-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h2a2.5 2.5 0 002.5-2.5V10a2 2 0 00-2-2h-1a2 2 0 00-2-2V5a2 2 0 00-2-2H9.065m-2.13 14.15l2-2.5" />
+                    </svg>
+                    <div className="text-xs font-black uppercase tracking-wider">No, Outside</div>
+                    <span className="text-[9px] font-semibold text-slate-400">Outstation Arrival</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Conditionally render Jaipur day scholar routes */}
+              {/* Jaipur day scholar details panel */}
               {isFromJaipur === true && (
-                <div className="space-y-4 animate-fadeIn">
+                <div className="space-y-4 animate-slideUp">
                   <div className="space-y-1.5">
                     <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
                       Specify Area / Locality in Jaipur *
                     </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Vaishali Nagar, Mansarovar, C-Scheme"
-                      value={jaipurArea}
-                      onChange={(e) => setJaipurArea(e.target.value)}
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold"
-                    />
+                    <div className="relative">
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Vaishali Nagar, Mansarovar, C-Scheme"
+                        value={jaipurArea}
+                        onChange={(e) => setJaipurArea(e.target.value)}
+                        className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-indigo-500 focus:bg-white rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold"
+                      />
+                      <svg className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
+                    </div>
                   </div>
 
+                  {/* Avail Bus Facility Query (Radio selection) */}
                   <div className="space-y-2">
                     <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
                       Do you wish to avail the University Bus Facility? *
                     </label>
-                    <div className="flex gap-4">
-                      <label className="flex-1 p-3 border border-slate-200 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition-all">
-                        <input
-                          type="radio"
-                          name="wantsBus"
-                          checked={wantsBus === true}
-                          onChange={() => setWantsBus(true)}
-                          className="accent-indigo-600 w-4 h-4"
-                        />
-                        <span className="text-xs font-bold">Yes, I want University Bus</span>
-                      </label>
-                      <label className="flex-1 p-3 border border-slate-200 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition-all">
-                        <input
-                          type="radio"
-                          name="wantsBus"
-                          checked={wantsBus === false}
-                          onChange={() => setWantsBus(false)}
-                          className="accent-indigo-600 w-4 h-4"
-                        />
-                        <span className="text-xs font-bold">No, I have my own transport</span>
-                      </label>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div 
+                        onClick={() => setWantsBus(true)}
+                        className={`p-3 border rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === true ? 'bg-indigo-500/5 border-indigo-600 text-indigo-700 shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100/70'}`}
+                      >
+                        <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${wantsBus === true ? 'border-indigo-600 bg-indigo-600' : 'border-slate-300 bg-white'}`}>
+                          {wantsBus === true && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        </div>
+                        <span className="text-xs font-black uppercase tracking-wider">Yes, Avail Bus</span>
+                      </div>
+
+                      <div 
+                        onClick={() => setWantsBus(false)}
+                        className={`p-3 border rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === false ? 'bg-indigo-500/5 border-indigo-600 text-indigo-700 shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100/70'}`}
+                      >
+                        <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${wantsBus === false ? 'border-indigo-600 bg-indigo-600' : 'border-slate-300 bg-white'}`}>
+                          {wantsBus === false && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        </div>
+                        <span className="text-xs font-black uppercase tracking-wider">No, Own Transport</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -354,8 +385,10 @@ export default function ArrivalDeclarationPage() {
 
               {/* Render arrival date and time selection for all students */}
               {isFromJaipur !== null && (
-                <div className="space-y-4 animate-fadeIn">
+                <div className="space-y-4 animate-slideUp">
                   <div className={(isFromJaipur && wantsBus) ? "space-y-1.5" : "grid grid-cols-2 gap-4"}>
+                    
+                    {/* Arrival Date Input */}
                     <div className="space-y-1.5">
                       <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
                         Date of Arrival at JKLU *
@@ -364,7 +397,7 @@ export default function ArrivalDeclarationPage() {
                         required
                         value={arrivalDate}
                         onChange={(e) => setArrivalDate(e.target.value)}
-                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs outline-none focus:border-indigo-500 font-semibold cursor-pointer"
+                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-indigo-500 focus:bg-white rounded-xl text-slate-800 text-xs outline-none font-semibold cursor-pointer transition-all"
                       >
                         <option value="">Select Date</option>
                         <option value="12-07-2026">July 12, 2026 (Sunday)</option>
@@ -374,7 +407,7 @@ export default function ArrivalDeclarationPage() {
                       </select>
                     </div>
 
-                    {/* Only ask for time if they do not want the bus (or are from outside Jaipur) */}
+                    {/* Arrival Time Input */}
                     {!(isFromJaipur && wantsBus) && (
                       <div className="space-y-1.5">
                         <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
@@ -384,7 +417,7 @@ export default function ArrivalDeclarationPage() {
                           required
                           value={arrivalTime}
                           onChange={(e) => setArrivalTime(e.target.value)}
-                          className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs outline-none focus:border-indigo-500 font-semibold cursor-pointer"
+                          className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-indigo-500 focus:bg-white rounded-xl text-slate-800 text-xs outline-none font-semibold cursor-pointer transition-all"
                         >
                           <option value="">Select Time Slot</option>
                           <option value="Early Morning (6 AM - 9 AM)">Early Morning (6 AM - 9 AM)</option>
@@ -398,9 +431,9 @@ export default function ArrivalDeclarationPage() {
                     )}
                   </div>
 
-                  {/* Mode of Transportation is only required for outstation students */}
+                  {/* Mode of Transportation Input */}
                   {isFromJaipur === false && (
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5 animate-slideUp">
                       <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
                         Mode of Transportation to Campus *
                       </label>
@@ -408,7 +441,7 @@ export default function ArrivalDeclarationPage() {
                         required
                         value={transportMode}
                         onChange={(e) => setTransportMode(e.target.value)}
-                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs outline-none focus:border-indigo-500 font-semibold cursor-pointer"
+                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-indigo-500 focus:bg-white rounded-xl text-slate-800 text-xs outline-none font-semibold cursor-pointer transition-all"
                       >
                         <option value="">Select Mode</option>
                         <option value="Train">Train (Jaipur Railway Station)</option>
@@ -421,11 +454,12 @@ export default function ArrivalDeclarationPage() {
                 </div>
               )}
 
+              {/* Submit declaration button */}
               {isFromJaipur !== null && (
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+                  className="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 disabled:from-indigo-400 disabled:to-violet-400 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-md shadow-indigo-600/10 cursor-pointer flex items-center justify-center gap-2 hover:-translate-y-[1px]"
                 >
                   {submitting ? (
                     <>
