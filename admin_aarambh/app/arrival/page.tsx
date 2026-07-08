@@ -27,7 +27,6 @@ export default function ArrivalDeclarationPage() {
 
   // Step 1: Verification
   const [appNo, setAppNo] = useState('');
-  const [email, setEmail] = useState('');
   const [verifying, setVerifying] = useState(false);
   const [student, setStudent] = useState<StudentInfo | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
@@ -45,14 +44,14 @@ export default function ArrivalDeclarationPage() {
   // Step 1 handler: Verify student credentials
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!appNo.trim() || !email.trim()) return;
+    if (!appNo.trim()) return;
 
     setVerifying(true);
     setErrorMsg('');
     setStudent(null);
 
     try {
-      const res = await fetch(`/api/arrival/student/${encodeURIComponent(appNo.trim())}?email=${encodeURIComponent(email.trim())}`);
+      const res = await fetch(`/api/arrival/student/${encodeURIComponent(appNo.trim())}`);
       const data = await res.json();
 
       if (!res.ok) {
@@ -166,7 +165,6 @@ export default function ArrivalDeclarationPage() {
                   setSuccess(false);
                   setStudent(null);
                   setAppNo('');
-                  setEmail('');
                   setIsFromJaipur(null);
                   setJaipurArea('');
                   setWantsBus(null);
@@ -196,20 +194,6 @@ export default function ArrivalDeclarationPage() {
                 />
               </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
-                  Registered Email Address *
-                </label>
-                <input
-                  type="email"
-                  required
-                  placeholder="e.g. name@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold"
-                />
-              </div>
-
               {errorMsg && (
                 <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 text-xs font-bold rounded-xl">
                   ⚠️ {errorMsg}
@@ -227,7 +211,7 @@ export default function ArrivalDeclarationPage() {
                     Verifying Credentials...
                   </>
                 ) : (
-                  'Verify Details ➔'
+                  'Verify Application ➔'
                 )}
               </button>
             </form>

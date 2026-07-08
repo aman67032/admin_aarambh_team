@@ -10,34 +10,31 @@ const normalizeAppNo = (appNo) => {
 };
 
 // GET /api/arrival/student/:applicationNo
-// Verify student identity using Application No and Email ID
+// Verify student identity using Application No
 router.get('/student/:applicationNo', async (req, res) => {
   try {
-    const { email } = req.query;
     let { applicationNo } = req.params;
 
-    if (!applicationNo || !email) {
-      return res.status(400).json({ error: 'Application number and email ID are required.' });
+    if (!applicationNo) {
+      return res.status(400).json({ error: 'Application number is required.' });
     }
 
     const cleanAppNo = normalizeAppNo(applicationNo);
-    const cleanEmail = email.toLowerCase().trim();
 
     // Query database for matching student
     const students = await Student.find({});
     const matchedStudent = students.find(s => 
-      normalizeAppNo(s.applicationNo) === cleanAppNo && 
-      (s.email || '').toLowerCase().trim() === cleanEmail
+      normalizeAppNo(s.applicationNo) === cleanAppNo
     );
 
     if (!matchedStudent) {
-      return res.status(404).json({ error: 'No student matches the provided Application Number and Email ID.' });
+      return res.status(404).json({ error: 'No student matches the provided Application Number.' });
     }
 
     res.json({
       name: matchedStudent.name,
       applicationNo: matchedStudent.applicationNo,
-      email: matchedStudent.email,
+      email: matchedStudent.email || '',
       course: matchedStudent.course,
       cohort: matchedStudent.cohort,
       arrivalInfo: matchedStudent.arrivalInfo || null
@@ -55,7 +52,6 @@ router.post('/declare', async (req, res) => {
   try {
     const { 
       applicationNo, 
-      email, 
       isFromJaipur, 
       jaipurArea, 
       wantsBus, 
@@ -64,22 +60,20 @@ router.post('/declare', async (req, res) => {
       transportMode 
     } = req.body;
 
-    if (!applicationNo || !email) {
-      return res.status(400).json({ error: 'Application number and email ID are required.' });
+    if (!applicationNo) {
+      return res.status(400).json({ error: 'Application number is required.' });
     }
 
     const cleanAppNo = normalizeAppNo(applicationNo);
-    const cleanEmail = email.toLowerCase().trim();
 
     // Query database for matching student
     const students = await Student.find({});
     const matchedStudent = students.find(s => 
-      normalizeAppNo(s.applicationNo) === cleanAppNo && 
-      (s.email || '').toLowerCase().trim() === cleanEmail
+      normalizeAppNo(s.applicationNo) === cleanAppNo
     );
 
     if (!matchedStudent) {
-      return res.status(404).json({ error: 'No student matches the provided Application Number and Email ID.' });
+      return res.status(404).json({ error: 'No student matches the provided Application Number.' });
     }
 
     // Set arrivalInfo sub-document
