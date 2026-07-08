@@ -152,7 +152,7 @@ export default function ArrivalDeclarationPage() {
         {/* Theme Switcher Button */}
         <button
           onClick={toggleTheme}
-          className={`p-2 rounded-xl border-2 transition-all duration-150 cursor-pointer flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[1px] hover:translate-y-[1px] ${isDark ? 'bg-orange-500 border-[#F3F4F6] text-[#F3F4F6]' : 'bg-amber-100 border-slate-900 text-amber-700'}`}
+          className={`p-2 rounded-xl border-2 transition-all duration-150 cursor-pointer flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[1px] hover:translate-y-[1px] ${isDark ? 'bg-indigo-600 border-[#F3F4F6] text-[#F3F4F6]' : 'bg-amber-100 border-slate-900 text-amber-700'}`}
           title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
         >
           {isDark ? (
@@ -171,12 +171,12 @@ export default function ArrivalDeclarationPage() {
 
       {/* Main Content Area */}
       <main className="flex-1 flex items-center justify-center p-3 sm:p-6 md:p-8 z-10 my-4 sm:my-6">
-        {/* Comical Card: Thick borders and blocky offset shadow */}
-        <div className={`w-full max-w-xl border-4 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(249,115,22,1)] sm:shadow-[8px_8px_0px_0px_rgba(249,115,22,1)] space-y-5 sm:space-y-6 transition-all duration-300 ${isDark ? 'bg-[#121212] border-[#F3F4F6]' : 'bg-white border-slate-900'}`}>
+        {/* Comical Card: Thick borders, 86% opacity + backdrop blur, and offset solid brand color shadow */}
+        <div className={`w-full max-w-xl border-4 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 space-y-5 sm:space-y-6 transition-all duration-300 backdrop-blur-lg ${isDark ? 'bg-[#121212]/86 border-[#F3F4F6] shadow-[6px_6px_0px_0px_rgba(79,70,229,1)] sm:shadow-[8px_8px_0px_0px_rgba(79,70,229,1)]' : 'bg-white/86 border-slate-900 shadow-[6px_6px_0px_0px_rgba(249,115,22,1)] sm:shadow-[8px_8px_0px_0px_rgba(249,115,22,1)]'}`}>
           
           {/* Header Title Block */}
           <div className="text-center space-y-2.5 sm:space-y-3">
-            <span className={`inline-block text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border-2 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] font-outfit bg-gradient-to-r from-orange-500 to-amber-500 ${isDark ? 'border-[#F3F4F6]' : 'border-slate-900'}`}>
+            <span className={`inline-block text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border-2 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] font-outfit ${isDark ? 'bg-gradient-to-r from-indigo-600 to-violet-600 border-[#F3F4F6]' : 'bg-gradient-to-r from-orange-500 to-amber-500 border-slate-900'}`}>
               Transport & Arrival Portal
             </span>
             <h1 className="text-xl sm:text-3xl md:text-4xl font-black tracking-tight font-outfit uppercase">
@@ -190,11 +190,11 @@ export default function ArrivalDeclarationPage() {
           {/* Form Step Indicator UX */}
           {!success && (
             <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 py-1 text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-slate-400">
-              <span className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border-2 transition-all shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] ${!student ? 'bg-orange-500 border-slate-900 text-white' : 'bg-emerald-500 border-slate-900 text-white'} ${isDark ? 'border-[#F3F4F6]' : 'border-slate-900'}`}>
+              <span className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border-2 transition-all shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] ${!student ? (isDark ? 'bg-indigo-600 text-white' : 'bg-orange-500 text-white') : 'bg-emerald-500 text-white'} ${isDark ? 'border-[#F3F4F6]' : 'border-slate-900'}`}>
                 {!student ? '1. Verify Identity' : '✓ Verified'}
               </span>
               <div className={`w-4 sm:w-6 h-[2px] sm:h-[3px] transition-colors duration-300 ${isDark ? 'bg-[#F3F4F6]' : 'bg-slate-900'}`} />
-              <span className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border-2 transition-all ${student ? 'bg-orange-500 text-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]' : 'bg-transparent text-slate-400 border-slate-300'} ${isDark ? 'border-[#F3F4F6]' : 'border-slate-900'}`}>
+              <span className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border-2 transition-all ${student ? (isDark ? 'bg-indigo-600 text-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]' : 'bg-orange-500 text-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]') : 'bg-transparent text-slate-400 border-slate-300'} ${isDark ? 'border-[#F3F4F6]' : 'border-slate-900'}`}>
                 2. Declaration
               </span>
             </div>
@@ -229,7 +229,7 @@ export default function ArrivalDeclarationPage() {
                       placeholder="e.g. A1, L3"
                       value={cohortName}
                       onChange={(e) => setCohortName(e.target.value)}
-                      className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold uppercase tracking-wide focus:border-orange-500 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6]' : 'bg-white text-slate-800 border-slate-900'}`}
+                      className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold uppercase tracking-wide shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500 focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)]'}`}
                     />
                     <svg className={`w-4 h-4 absolute left-3 top-3.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -249,7 +249,7 @@ export default function ArrivalDeclarationPage() {
                       placeholder="6-digit code"
                       value={accessCode}
                       onChange={(e) => setAccessCode(e.target.value)}
-                      className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold tracking-wider font-mono focus:border-orange-500 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6]' : 'bg-white text-slate-800 border-slate-900'}`}
+                      className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold tracking-wider font-mono shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500 focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)]'}`}
                     />
                     <svg className={`w-4 h-4 absolute left-3 top-3.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -270,7 +270,7 @@ export default function ArrivalDeclarationPage() {
                     placeholder="e.g. JKLU/B.TECH/2026/0449"
                     value={appNo}
                     onChange={(e) => setAppNo(e.target.value)}
-                    className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold uppercase tracking-wide focus:border-orange-500 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6]' : 'bg-white text-slate-800 border-slate-900'}`}
+                    className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold uppercase tracking-wide shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500 focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)]'}`}
                   />
                   <svg className={`w-4 h-4 absolute left-3 top-3.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
@@ -289,7 +289,7 @@ export default function ArrivalDeclarationPage() {
               <button
                 type="submit"
                 disabled={verifying}
-                className={`w-full py-3.5 border-2 text-white font-black text-xs uppercase tracking-wider rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-[0px_0px_0px_0px_rgba(15,23,42,1)] active:translate-x-[4px] active:translate-y-[4px] transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${isDark ? 'border-[#F3F4F6]' : 'border-slate-900'}`}
+                className={`w-full py-3.5 border-2 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-[0px_0px_0px_0px_rgba(15,23,42,1)] active:translate-x-[4px] active:translate-y-[4px] transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-indigo-600 to-violet-600 border-[#F3F4F6]' : 'bg-gradient-to-r from-orange-500 to-amber-500 border-slate-900'}`}
               >
                 {verifying ? (
                   <>
@@ -314,7 +314,7 @@ export default function ArrivalDeclarationPage() {
                 <button
                   type="button"
                   onClick={() => setStudent(null)}
-                  className={`px-2.5 sm:px-3 py-1.5 border-2 hover:bg-rose-500 hover:text-white text-[10px] font-black uppercase rounded-xl transition-all duration-150 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[1px] hover:translate-y-[1px] cursor-pointer shrink-0 ${isDark ? 'bg-[#121212] border-[#F3F4F6] text-[#F3F4F6]' : 'bg-white border-slate-900 text-slate-800'}`}
+                  className={`px-2.5 sm:px-3 py-1.5 border-2 hover:bg-rose-500 hover:text-white text-[10px] font-black uppercase rounded-xl transition-all duration-150 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[1px] hover:translate-y-[1px] cursor-pointer shrink-0 ${isDark ? 'bg-[#121212]/80 border-[#F3F4F6] text-[#F3F4F6]' : 'bg-white border-slate-900 text-slate-800'}`}
                 >
                   Change
                 </button>
@@ -331,9 +331,9 @@ export default function ArrivalDeclarationPage() {
                       setIsFromJaipur(true);
                       setTransportMode('');
                     }}
-                    className={`p-3.5 sm:p-4 border-2 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-2.5 cursor-pointer text-left sm:text-center transition-all ${isFromJaipur === true ? 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] translate-y-[-2px] border-orange-500' : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
+                    className={`p-3.5 sm:p-4 border-2 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-2.5 cursor-pointer text-left sm:text-center transition-all ${isFromJaipur === true ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
                   >
-                    <svg className={`w-5 sm:w-6 h-5 sm:h-6 shrink-0 transition-all ${isFromJaipur === true ? 'text-orange-500 animate-float' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <svg className={`w-5 sm:w-6 h-5 sm:h-6 shrink-0 transition-all ${isFromJaipur === true ? (isDark ? 'text-indigo-400' : 'text-orange-500 animate-float') : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
@@ -349,9 +349,9 @@ export default function ArrivalDeclarationPage() {
                       setJaipurArea('');
                       setWantsBus(null);
                     }}
-                    className={`p-3.5 sm:p-4 border-2 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-2.5 cursor-pointer text-left sm:text-center transition-all ${isFromJaipur === false ? 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] translate-y-[-2px] border-orange-500' : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
+                    className={`p-3.5 sm:p-4 border-2 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-2.5 cursor-pointer text-left sm:text-center transition-all ${isFromJaipur === false ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
                   >
-                    <svg className={`w-5 sm:w-6 h-5 sm:h-6 shrink-0 transition-all ${isFromJaipur === false ? 'text-orange-500 animate-float' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <svg className={`w-5 sm:w-6 h-5 sm:h-6 shrink-0 transition-all ${isFromJaipur === false ? (isDark ? 'text-indigo-400' : 'text-orange-500 animate-float') : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h2a2.5 2.5 0 002.5-2.5V10a2 2 0 00-2-2h-1a2 2 0 00-2-2V5a2 2 0 00-2-2H9.065m-2.13 14.15l2-2.5" />
                     </svg>
                     <div className="flex flex-col sm:items-center">
@@ -376,7 +376,7 @@ export default function ArrivalDeclarationPage() {
                         placeholder="e.g. Vaishali Nagar, Mansarovar, C-Scheme"
                         value={jaipurArea}
                         onChange={(e) => setJaipurArea(e.target.value)}
-                        className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] focus:border-orange-500 ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6]' : 'bg-white text-slate-800 border-slate-900'}`}
+                        className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
                       />
                       <svg className={`w-4 h-4 absolute left-3 top-3.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -392,9 +392,9 @@ export default function ArrivalDeclarationPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div 
                         onClick={() => setWantsBus(true)}
-                        className={`p-3.5 border-2 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === true ? 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] translate-y-[-1px] border-orange-500' : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
+                        className={`p-3.5 border-2 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === true ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
                       >
-                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${wantsBus === true ? 'bg-orange-500 border-slate-900' : 'bg-white border-slate-400'}`}>
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${wantsBus === true ? (isDark ? 'bg-indigo-600 border-[#F3F4F6]' : 'bg-orange-500 border-slate-900') : 'bg-white border-slate-400'}`}>
                           {wantsBus === true && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
                         <span className="text-xs font-black uppercase tracking-wider">Yes, Avail Bus</span>
@@ -402,9 +402,9 @@ export default function ArrivalDeclarationPage() {
 
                       <div 
                         onClick={() => setWantsBus(false)}
-                        className={`p-3.5 border-2 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === false ? 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] translate-y-[-1px] border-orange-500' : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
+                        className={`p-3.5 border-2 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === false ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
                       >
-                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${wantsBus === false ? 'bg-orange-500 border-slate-900' : 'bg-white border-slate-400'}`}>
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${wantsBus === false ? (isDark ? 'bg-indigo-600 border-[#F3F4F6]' : 'bg-orange-500 border-slate-900') : 'bg-white border-slate-400'}`}>
                           {wantsBus === false && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
                         <span className="text-xs font-black uppercase tracking-wider">No, Own Option</span>
@@ -428,7 +428,7 @@ export default function ArrivalDeclarationPage() {
                         required
                         value={arrivalDate}
                         onChange={(e) => setArrivalDate(e.target.value)}
-                        className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all focus:border-orange-500 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6]' : 'bg-white text-slate-800 border-slate-900'}`}
+                        className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
                       >
                         <option value="">Select Date</option>
                         <option value="12-07-2026">July 12, 2026 (Sunday)</option>
@@ -448,8 +448,8 @@ export default function ArrivalDeclarationPage() {
                           required
                           value={arrivalTime}
                           onChange={(e) => setArrivalTime(e.target.value)}
-                          className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all focus:border-orange-500 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6]' : 'bg-white text-slate-800 border-slate-900'}`}
-                        >
+                          className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                      >
                           <option value="">Select Time Slot</option>
                           <option value="Early Morning (6 AM - 9 AM)">Early Morning (6 AM - 9 AM)</option>
                           <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
@@ -472,7 +472,7 @@ export default function ArrivalDeclarationPage() {
                         required
                         value={transportMode}
                         onChange={(e) => setTransportMode(e.target.value)}
-                        className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all focus:border-orange-500 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6]' : 'bg-white text-slate-800 border-slate-900'}`}
+                        className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
                       >
                         <option value="">Select Mode</option>
                         <option value="Train">Train (Jaipur Railway Station)</option>
@@ -490,7 +490,7 @@ export default function ArrivalDeclarationPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className={`w-full py-3.5 border-2 text-white font-black text-xs uppercase tracking-wider rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-[0px_0px_0px_0px_rgba(15,23,42,1)] active:translate-x-[4px] active:translate-y-[4px] transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${isDark ? 'border-[#F3F4F6]' : 'border-slate-900'}`}
+                  className={`w-full py-3.5 border-2 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-[0px_0px_0px_0px_rgba(15,23,42,1)] active:translate-x-[4px] active:translate-y-[4px] transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-indigo-600 to-violet-600 border-[#F3F4F6]' : 'bg-gradient-to-r from-orange-500 to-amber-500 border-slate-900'}`}
                 >
                   {submitting ? (
                     <>
