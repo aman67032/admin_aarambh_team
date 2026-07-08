@@ -138,40 +138,40 @@ export default function ArrivalDeclarationPage() {
       <div className="absolute bottom-[-10%] right-[-15%] w-[60%] h-[60%] rounded-full bg-amber-400/10 blur-[130px] opacity-75 pointer-events-none"></div>
 
       {/* Navbar Header */}
-      <header className="w-full bg-white border-b-4 border-slate-900 py-4 px-6 flex items-center justify-between shadow-sm z-10">
-        <div className="flex items-center gap-4">
-          <img src={jkluLogo} alt="JKLU Logo" className="h-10 w-auto" />
-          <div className="h-8 w-[2px] bg-slate-900" />
-          <img src={aarambhLogo} alt="Aarambh Logo" className="h-9 w-auto" />
+      <header className="w-full bg-white border-b-4 border-slate-900 py-3 sm:py-4 px-4 sm:px-6 flex items-center justify-between shadow-sm z-10">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <img src={jkluLogo} alt="JKLU Logo" className="h-8 sm:h-10 w-auto" />
+          <div className="h-6 sm:h-8 w-[2px] bg-slate-900" />
+          <img src={aarambhLogo} alt="Aarambh Logo" className="h-7 sm:h-9 w-auto" />
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex items-center justify-center p-4 md:p-8 z-10 my-6">
+      <main className="flex-1 flex items-center justify-center p-3 sm:p-6 md:p-8 z-10 my-4 sm:my-6">
         {/* Comical Card: Thick borders and blocky offset shadow */}
-        <div className="w-full max-w-xl bg-white border-4 border-slate-900 rounded-3xl p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(249,115,22,1)] space-y-6 transition-all duration-300">
+        <div className="w-full max-w-xl bg-white border-4 border-slate-900 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(249,115,22,1)] sm:shadow-[8px_8px_0px_0px_rgba(249,115,22,1)] space-y-5 sm:space-y-6 transition-all duration-300">
           
           {/* Header Title Block */}
-          <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-orange-500 to-amber-500 text-white px-4 py-1.5 rounded-full border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] font-outfit">
+          <div className="text-center space-y-2.5 sm:space-y-3">
+            <span className="inline-block text-[9px] sm:text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-orange-500 to-amber-500 text-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] font-outfit">
               Transport & Arrival Portal
             </span>
-            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight font-outfit uppercase">
+            <h1 className="text-xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight font-outfit uppercase">
               Arrival at JKLU
             </h1>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto font-semibold leading-relaxed">
+            <p className="text-[10px] sm:text-xs text-slate-500 max-w-sm mx-auto font-semibold leading-relaxed">
               Declare your travel details or choose day-scholar bus transportation route options.
             </p>
           </div>
 
           {/* Form Step Indicator UX */}
           {!success && (
-            <div className="flex items-center justify-center gap-2 py-1 text-[10px] font-black uppercase tracking-wider text-slate-400">
-              <span className={`px-3 py-1.5 rounded-xl border-2 transition-all shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] ${!student ? 'bg-orange-500 border-slate-900 text-white' : 'bg-emerald-500 border-slate-900 text-white'}`}>
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 py-1 text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-slate-400">
+              <span className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border-2 transition-all shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] ${!student ? 'bg-orange-500 border-slate-900 text-white' : 'bg-emerald-500 border-slate-900 text-white'}`}>
                 {!student ? '1. Verify Identity' : '✓ Verified'}
               </span>
-              <div className="w-6 h-[3px] bg-slate-900" />
-              <span className={`px-3 py-1.5 rounded-xl border-2 transition-all ${student ? 'bg-orange-500 border-slate-900 text-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]' : 'bg-white border-slate-200 text-slate-400'}`}>
+              <div className="w-4 sm:w-6 h-[2px] sm:h-[3px] bg-slate-900" />
+              <span className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border-2 transition-all ${student ? 'bg-orange-500 border-slate-900 text-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]' : 'bg-white border-slate-200 text-slate-400'}`}>
                 2. Declaration
               </span>
             </div>
@@ -179,21 +179,21 @@ export default function ArrivalDeclarationPage() {
 
           {success ? (
             /* SUCCESS PANEL SCREEN */
-            <div className="py-10 text-center space-y-6 animate-scaleIn">
-              <div className="w-20 h-20 bg-emerald-50 text-emerald-500 border-4 border-slate-900 rounded-2xl flex items-center justify-center text-4xl mx-auto shadow-[4px_4px_0px_0px_rgba(16,185,129,1)] animate-bounce">
+            <div className="py-8 sm:py-10 text-center space-y-5 sm:space-y-6 animate-scaleIn">
+              <div className="w-16 sm:w-20 h-16 sm:h-20 bg-emerald-50 text-emerald-500 border-4 border-slate-900 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl mx-auto shadow-[4px_4px_0px_0px_rgba(16,185,129,1)] animate-bounce">
                 ✓
               </div>
               <div className="space-y-2">
-                <h3 className="text-2xl font-black text-slate-900 tracking-tight uppercase">Details Saved!</h3>
-                <p className="text-xs text-slate-500 font-semibold max-w-xs mx-auto leading-relaxed">
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight uppercase">Details Saved!</h3>
+                <p className="text-[11px] sm:text-xs text-slate-500 font-semibold max-w-xs mx-auto leading-relaxed">
                   Thank you! Your arrival coordinates and route preferences have been successfully recorded in the system for Aarambh 2026.
                 </p>
               </div>
             </div>
           ) : !student ? (
             /* STEP 1: Verification Form */
-            <form onSubmit={handleVerify} className="space-y-5 animate-fadeIn">
-              <div className="grid grid-cols-2 gap-4">
+            <form onSubmit={handleVerify} className="space-y-4 sm:space-y-5 animate-fadeIn">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Cohort input */}
                 <div className="space-y-1.5">
                   <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
@@ -262,7 +262,7 @@ export default function ArrivalDeclarationPage() {
                 </div>
               )}
 
-              {/* Verify Button with active offset translate shadow click logic */}
+              {/* Verify Button */}
               <button
                 type="submit"
                 disabled={verifying}
@@ -280,18 +280,18 @@ export default function ArrivalDeclarationPage() {
             </form>
           ) : (
             /* STEP 2: Declaration Details Form */
-            <form onSubmit={handleSubmit} className="space-y-6 animate-fadeIn">
+            <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 animate-fadeIn">
               {/* Account welcome card */}
-              <div className="bg-[#FFFDF9] border-2 border-slate-900 p-4 rounded-2xl flex items-center justify-between text-xs shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]">
+              <div className="bg-[#FFFDF9] border-2 border-slate-900 p-3 sm:p-4 rounded-2xl flex items-center justify-between text-xs shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]">
                 <div>
                   <span className="text-[10px] font-black text-orange-600 uppercase tracking-wider">Welcome, Student</span>
-                  <div className="font-black text-slate-900 text-base mt-0.5">{student.name}</div>
+                  <div className="font-black text-slate-900 text-sm sm:text-base mt-0.5">{student.name}</div>
                   <div className="text-[10px] text-slate-500 font-bold mt-0.5">{student.course} · Cohort {student.cohort}</div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setStudent(null)}
-                  className="px-3 py-1.5 bg-white border-2 border-slate-900 hover:bg-rose-500 hover:text-white text-[10px] font-black uppercase rounded-xl transition-all duration-150 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[1px] hover:translate-y-[1px] cursor-pointer"
+                  className="px-2.5 sm:px-3 py-1.5 bg-white border-2 border-slate-900 hover:bg-rose-500 hover:text-white text-[10px] font-black uppercase rounded-xl transition-all duration-150 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[1px] hover:translate-y-[1px] cursor-pointer shrink-0"
                 >
                   Change
                 </button>
@@ -302,20 +302,22 @@ export default function ArrivalDeclarationPage() {
                 <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
                   Are you currently residing in Jaipur? (Day Scholar) *
                 </label>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div 
                     onClick={() => {
                       setIsFromJaipur(true);
                       setTransportMode('');
                     }}
-                    className={`p-4 border-2 border-slate-900 rounded-2xl flex flex-col items-center justify-center gap-2.5 cursor-pointer text-center transition-all ${isFromJaipur === true ? 'bg-orange-500/10 shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] translate-y-[-2px]' : 'bg-white shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'}`}
+                    className={`p-3.5 sm:p-4 border-2 border-slate-900 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-2.5 cursor-pointer text-left sm:text-center transition-all ${isFromJaipur === true ? 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] translate-y-[-2px]' : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'}`}
                   >
-                    <svg className={`w-6 h-6 transition-all ${isFromJaipur === true ? 'text-orange-500 animate-float' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <svg className={`w-5 sm:w-6 h-5 sm:h-6 shrink-0 transition-all ${isFromJaipur === true ? 'text-orange-500 animate-float' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <div className="text-xs font-black uppercase tracking-wider">Yes, Jaipur</div>
-                    <span className="text-[9px] font-bold text-slate-400">Day Scholar</span>
+                    <div className="flex flex-col sm:items-center">
+                      <div className="text-xs font-black uppercase tracking-wider">Yes, Jaipur</div>
+                      <span className="text-[9px] font-bold text-slate-400 mt-0.5 sm:mt-0">Day Scholar</span>
+                    </div>
                   </div>
 
                   <div 
@@ -324,13 +326,15 @@ export default function ArrivalDeclarationPage() {
                       setJaipurArea('');
                       setWantsBus(null);
                     }}
-                    className={`p-4 border-2 border-slate-900 rounded-2xl flex flex-col items-center justify-center gap-2.5 cursor-pointer text-center transition-all ${isFromJaipur === false ? 'bg-orange-500/10 shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] translate-y-[-2px]' : 'bg-white shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'}`}
+                    className={`p-3.5 sm:p-4 border-2 border-slate-900 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-2.5 cursor-pointer text-left sm:text-center transition-all ${isFromJaipur === false ? 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] translate-y-[-2px]' : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'}`}
                   >
-                    <svg className={`w-6 h-6 transition-all ${isFromJaipur === false ? 'text-orange-500 animate-float' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <svg className={`w-5 sm:w-6 h-5 sm:h-6 shrink-0 transition-all ${isFromJaipur === false ? 'text-orange-500 animate-float' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h2a2.5 2.5 0 002.5-2.5V10a2 2 0 00-2-2h-1a2 2 0 00-2-2V5a2 2 0 00-2-2H9.065m-2.13 14.15l2-2.5" />
                     </svg>
-                    <div className="text-xs font-black uppercase tracking-wider">No, Outside</div>
-                    <span className="text-[9px] font-bold text-slate-400">Outstation</span>
+                    <div className="flex flex-col sm:items-center">
+                      <div className="text-xs font-black uppercase tracking-wider">No, Outside</div>
+                      <span className="text-[9px] font-bold text-slate-400 mt-0.5 sm:mt-0">Outstation</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -362,12 +366,12 @@ export default function ArrivalDeclarationPage() {
                     <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
                       Do you wish to avail the University Bus Facility? *
                     </label>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div 
                         onClick={() => setWantsBus(true)}
                         className={`p-3.5 border-2 border-slate-900 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === true ? 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] translate-y-[-1px]' : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'}`}
                       >
-                        <div className={`w-4 h-4 rounded-full border-2 border-slate-900 flex items-center justify-center ${wantsBus === true ? 'bg-orange-500' : 'bg-white'}`}>
+                        <div className={`w-4 h-4 rounded-full border-2 border-slate-900 flex items-center justify-center shrink-0 ${wantsBus === true ? 'bg-orange-500' : 'bg-white'}`}>
                           {wantsBus === true && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
                         <span className="text-xs font-black uppercase tracking-wider">Yes, Avail Bus</span>
@@ -377,7 +381,7 @@ export default function ArrivalDeclarationPage() {
                         onClick={() => setWantsBus(false)}
                         className={`p-3.5 border-2 border-slate-900 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === false ? 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] translate-y-[-1px]' : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'}`}
                       >
-                        <div className={`w-4 h-4 rounded-full border-2 border-slate-900 flex items-center justify-center ${wantsBus === false ? 'bg-orange-500' : 'bg-white'}`}>
+                        <div className={`w-4 h-4 rounded-full border-2 border-slate-900 flex items-center justify-center shrink-0 ${wantsBus === false ? 'bg-orange-500' : 'bg-white'}`}>
                           {wantsBus === false && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
                         <span className="text-xs font-black uppercase tracking-wider">No, Own Option</span>
@@ -390,7 +394,7 @@ export default function ArrivalDeclarationPage() {
               {/* Render arrival date and time selection for all students */}
               {isFromJaipur !== null && (
                 <div className="space-y-4 animate-slideUp">
-                  <div className={(isFromJaipur && wantsBus) ? "space-y-1.5" : "grid grid-cols-2 gap-4"}>
+                  <div className={(isFromJaipur && wantsBus) ? "space-y-1.5" : "grid grid-cols-1 sm:grid-cols-2 gap-4"}>
                     
                     {/* Arrival Date Input */}
                     <div className="space-y-1.5">
