@@ -83,7 +83,9 @@ export default function ArrivalDeclarationPage() {
 
     // Validate fields
     if (isFromJaipur) {
-      if (!jaipurArea.trim() || wantsBus === null) {
+      const isTimeRequired = wantsBus === false;
+      const isTimeFilled = !isTimeRequired || arrivalTime.trim() !== '';
+      if (!jaipurArea.trim() || wantsBus === null || !arrivalDate.trim() || !isTimeFilled) {
         alert('Please fill out all required fields.');
         return;
       }
@@ -279,8 +281,6 @@ export default function ArrivalDeclarationPage() {
                       onChange={() => {
                         setIsFromJaipur(true);
                         // Reset other fields
-                        setArrivalDate('');
-                        setArrivalTime('');
                         setTransportMode('');
                       }}
                       className="accent-indigo-600 w-4 h-4"
@@ -352,10 +352,10 @@ export default function ArrivalDeclarationPage() {
                 </div>
               )}
 
-              {/* Conditionally render outstation arrival details */}
-              {isFromJaipur === false && (
+              {/* Render arrival date and time selection for all students */}
+              {isFromJaipur !== null && (
                 <div className="space-y-4 animate-fadeIn">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className={(isFromJaipur && wantsBus) ? "space-y-1.5" : "grid grid-cols-2 gap-4"}>
                     <div className="space-y-1.5">
                       <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
                         Date of Arrival at JKLU *
@@ -374,44 +374,50 @@ export default function ArrivalDeclarationPage() {
                       </select>
                     </div>
 
+                    {/* Only ask for time if they do not want the bus (or are from outside Jaipur) */}
+                    {!(isFromJaipur && wantsBus) && (
+                      <div className="space-y-1.5">
+                        <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
+                          Approx Arrival Time at JKLU *
+                        </label>
+                        <select
+                          required
+                          value={arrivalTime}
+                          onChange={(e) => setArrivalTime(e.target.value)}
+                          className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs outline-none focus:border-indigo-500 font-semibold cursor-pointer"
+                        >
+                          <option value="">Select Time Slot</option>
+                          <option value="Early Morning (6 AM - 9 AM)">Early Morning (6 AM - 9 AM)</option>
+                          <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
+                          <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
+                          <option value="Evening (4 PM - 8 PM)">Evening (4 PM - 8 PM)</option>
+                          <option value="Night (8 PM - Midnight)">Night (8 PM - Midnight)</option>
+                          <option value="Late Night (Midnight - 6 AM)">Late Night (Midnight - 6 AM)</option>
+                        </select>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Mode of Transportation is only required for outstation students */}
+                  {isFromJaipur === false && (
                     <div className="space-y-1.5">
                       <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
-                        Approx Arrival Time at JKLU *
+                        Mode of Transportation to Campus *
                       </label>
                       <select
                         required
-                        value={arrivalTime}
-                        onChange={(e) => setArrivalTime(e.target.value)}
+                        value={transportMode}
+                        onChange={(e) => setTransportMode(e.target.value)}
                         className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs outline-none focus:border-indigo-500 font-semibold cursor-pointer"
                       >
-                        <option value="">Select Time Slot</option>
-                        <option value="Early Morning (6 AM - 9 AM)">Early Morning (6 AM - 9 AM)</option>
-                        <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
-                        <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
-                        <option value="Evening (4 PM - 8 PM)">Evening (4 PM - 8 PM)</option>
-                        <option value="Night (8 PM - Midnight)">Night (8 PM - Midnight)</option>
-                        <option value="Late Night (Midnight - 6 AM)">Late Night (Midnight - 6 AM)</option>
+                        <option value="">Select Mode</option>
+                        <option value="Train">Train (Jaipur Railway Station)</option>
+                        <option value="Flight">Flight (Jaipur Airport)</option>
+                        <option value="Bus">Bus (Sindhi Camp / Local Stop)</option>
+                        <option value="Personal Vehicle">Personal Vehicle / Cab</option>
                       </select>
                     </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
-                      Mode of Transportation to Campus *
-                    </label>
-                    <select
-                      required
-                      value={transportMode}
-                      onChange={(e) => setTransportMode(e.target.value)}
-                      className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs outline-none focus:border-indigo-500 font-semibold cursor-pointer"
-                    >
-                      <option value="">Select Mode</option>
-                      <option value="Train">Train (Jaipur Railway Station)</option>
-                      <option value="Flight">Flight (Jaipur Airport)</option>
-                      <option value="Bus">Bus (Sindhi Camp / Local Stop)</option>
-                      <option value="Personal Vehicle">Personal Vehicle / Cab</option>
-                    </select>
-                  </div>
+                  )}
                 </div>
               )}
 

@@ -95,8 +95,8 @@ router.post('/declare', async (req, res) => {
       isFromJaipur: !!isFromJaipur,
       jaipurArea: isFromJaipur ? (jaipurArea || '').trim() : undefined,
       wantsBus: isFromJaipur ? !!wantsBus : undefined,
-      arrivalDate: !isFromJaipur ? (arrivalDate || '').trim() : undefined,
-      arrivalTime: !isFromJaipur ? (arrivalTime || '').trim() : undefined,
+      arrivalDate: (arrivalDate || '').trim(),
+      arrivalTime: (isFromJaipur && wantsBus) ? undefined : (arrivalTime || '').trim(),
       transportMode: !isFromJaipur ? (transportMode || '').trim() : undefined,
       declaredAt: new Date()
     };
