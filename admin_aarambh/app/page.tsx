@@ -21,7 +21,7 @@ interface ClusterInfo {
 export default function PublicHomePage() {
   const { user, theme } = useApp();
   const isDark = theme === 'fun';
-  const jkluLogo = isDark ? '/white_jklu_logo_upscayl_4x_upscayl-standard-4x.png' : '/JKLU Logo.svg';
+  const jkluLogo = isDark ? '/white_jklu_logo_upscayl_4x_upscayl-standard-4x.png' : '/JKLU Logo.png';
   const aarambhLogo = isDark ? '/new_logo.png' : '/Aarambh_logo_Final-01.svg';
   const [structure, setStructure] = useState<ClusterInfo[]>([]);
   const [loading, setLoading] = useState(true);

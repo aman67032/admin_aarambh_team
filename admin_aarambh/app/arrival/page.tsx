@@ -23,7 +23,7 @@ interface StudentInfo {
 }
 
 export default function ArrivalDeclarationPage() {
-  const jkluLogo = '/JKLU Logo.svg';
+  const jkluLogo = '/JKLU Logo.png';
   const aarambhLogo = '/Aarambh_logo_Final-01.svg';
 
   // Step 1: Verification

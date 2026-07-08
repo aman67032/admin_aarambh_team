@@ -9,7 +9,7 @@ import { useApp } from '../context/AppContext';
 export default function Sidebar() {
   const { user, logout, theme, toggleTheme } = useApp();
   const isDark = theme === 'fun';
-  const jkluLogo = isDark ? '/white_jklu_logo_upscayl_4x_upscayl-standard-4x.png' : '/JKLU Logo.svg';
+  const jkluLogo = isDark ? '/white_jklu_logo_upscayl_4x_upscayl-standard-4x.png' : '/JKLU Logo.png';
   const aarambhLogo = isDark ? '/new_logo.png' : '/Aarambh_logo_Final-01.svg';
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
