@@ -68,10 +68,11 @@ export default function CohortRegistrationsPage() {
   const backLink = getBackLink();
 
   useEffect(() => {
-    const fetchRegistrations = async () => {
+    let isMounted = true;
+    const fetchRegistrations = async (isFirstLoad = false) => {
       try {
         const res = await fetch('/api/status/cohort-registrations');
-        if (res.ok) {
+        if (res.ok && isMounted) {
           const result = await res.json();
           let allocationsList: ClusterInfo[] = [];
           if (result && typeof result === 'object' && 'allocations' in result) {
@@ -82,21 +83,35 @@ export default function CohortRegistrationsPage() {
             allocationsList = result;
             setData(result);
           }
-          const initialExpanded: Record<string, boolean> = {};
-          allocationsList.forEach((cluster: ClusterInfo) => {
-            cluster.cohorts.forEach((cohort) => {
-              initialExpanded[cohort.cohortName] = true;
+          if (isFirstLoad) {
+            const initialExpanded: Record<string, boolean> = {};
+            allocationsList.forEach((cluster: ClusterInfo) => {
+              cluster.cohorts.forEach((cohort) => {
+                initialExpanded[cohort.cohortName] = true;
+              });
             });
-          });
-          setExpandedCohorts(initialExpanded);
+            setExpandedCohorts(initialExpanded);
+          }
         }
       } catch (err) {
         console.error('Error fetching registrations:', err);
       } finally {
-        setLoading(false);
+        if (isFirstLoad && isMounted) {
+          setLoading(false);
+        }
       }
     };
-    fetchRegistrations();
+
+    fetchRegistrations(true);
+
+    const interval = setInterval(() => {
+      fetchRegistrations(false);
+    }, 15000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   const toggleCohort = (cohortName: string) => {

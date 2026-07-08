@@ -34,7 +34,7 @@ export default function HostelManagementPage() {
   // Filtering and search states
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFloor, setSelectedFloor] = useState<string>('All');
-  const [occupancyFilter, setOccupancyFilter] = useState<'All' | 'Occupied' | 'Vacant'>('All');
+  const [occupancyFilter, setOccupancyFilter] = useState<'All' | 'Occupied' | 'Vacant' | 'CheckedIn' | 'NotCheckedIn'>('All');
   
   // Actions state
   const [vacatingSno, setVacatingSno] = useState<number | null>(null);
@@ -534,6 +534,7 @@ export default function HostelManagementPage() {
   const totalBeds = rooms.reduce((acc, r) => acc + r.beds.length, 0);
   const occupiedBeds = rooms.reduce((acc, r) => acc + r.beds.filter(b => b.isOccupied).length, 0);
   const vacantBeds = totalBeds - occupiedBeds;
+  const checkedInCount = rooms.reduce((acc, r) => acc + r.beds.filter(b => b.isOccupied && b.checkedIn).length, 0);
   const occupancyRate = totalBeds > 0 ? Math.round((occupiedBeds / totalBeds) * 100) : 0;
 
   // Filter unique floors
@@ -547,6 +548,8 @@ export default function HostelManagementPage() {
         // Availability match
         if (occupancyFilter === 'Occupied' && !bed.isOccupied) return false;
         if (occupancyFilter === 'Vacant' && bed.isOccupied) return false;
+        if (occupancyFilter === 'CheckedIn' && (!bed.isOccupied || !bed.checkedIn)) return false;
+        if (occupancyFilter === 'NotCheckedIn' && (!bed.isOccupied || bed.checkedIn)) return false;
         
         // Search match (student name or roll number)
         if (searchQuery.trim() !== '') {
@@ -639,7 +642,7 @@ export default function HostelManagementPage() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Total Beds */}
         <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-md hover:border-primary/20 transition-all duration-300">
           <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Total Bed Slots</span>
@@ -654,7 +657,16 @@ export default function HostelManagementPage() {
           <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Occupied Beds</span>
           <div className="flex items-baseline justify-between mt-3">
             <span className="text-3xl font-extrabold text-red-500">{loading ? '...' : occupiedBeds}</span>
-            <span className="text-[10px] bg-red-500/10 text-red-500 border border-red-500/20 px-2 py-0.5 rounded-md font-bold">Filled</span>
+            <span className="text-[10px] bg-red-500/10 text-red-500 border border-red-500/20 px-2 py-0.5 rounded-md font-bold">Allotted</span>
+          </div>
+        </div>
+
+        {/* Checked In */}
+        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-md hover:border-emerald-500/20 transition-all duration-300">
+          <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Checked In</span>
+          <div className="flex items-baseline justify-between mt-3">
+            <span className="text-3xl font-extrabold text-emerald-500">{loading ? '...' : checkedInCount}</span>
+            <span className="text-[10px] bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 px-2 py-0.5 rounded-md font-bold">Arrived</span>
           </div>
         </div>
 
@@ -702,7 +714,7 @@ export default function HostelManagementPage() {
         </div>
 
         {/* Floor selector */}
-        <div className="w-full md:w-56">
+        <div className="w-full md:w-48">
           <label className="block text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2">
             Floor Level
           </label>
@@ -718,24 +730,29 @@ export default function HostelManagementPage() {
         </div>
 
         {/* Availability Filter */}
-        <div className="w-full md:w-64">
+        <div className="w-full md:w-auto">
           <label className="block text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2">
-            Bed Availability
+            Bed Availability / Check In Status
           </label>
-          <div className="flex border border-card-border p-1 rounded-xl bg-background">
-            {(['All', 'Occupied', 'Vacant'] as const).map(filter => (
-              <button
-                key={filter}
-                onClick={() => setOccupancyFilter(filter)}
-                className={`flex-1 py-2 text-[10px] font-extrabold rounded-lg transition-all cursor-pointer uppercase tracking-wider ${
-                  occupancyFilter === filter
-                    ? 'bg-primary text-white shadow-md'
-                    : 'text-text-muted hover:text-foreground'
-                }`}
-              >
-                {filter}
-              </button>
-            ))}
+          <div className="flex flex-wrap sm:flex-nowrap border border-card-border p-1 rounded-xl bg-background gap-1 sm:gap-0">
+            {(['All', 'Occupied', 'Vacant', 'CheckedIn', 'NotCheckedIn'] as const).map(filter => {
+              let label = filter as string;
+              if (filter === 'CheckedIn') label = 'Checked In';
+              if (filter === 'NotCheckedIn') label = 'Not Checked In';
+              return (
+                <button
+                  key={filter}
+                  onClick={() => setOccupancyFilter(filter)}
+                  className={`px-3 py-2 text-[9px] font-extrabold rounded-lg transition-all cursor-pointer uppercase tracking-wider ${
+                    occupancyFilter === filter
+                      ? 'bg-primary text-white shadow-md'
+                      : 'text-text-muted hover:text-foreground'
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -981,6 +998,83 @@ export default function HostelManagementPage() {
             );
           })}
         </div>
+      )}
+
+      {/* Checked In Team Members Table Section */}
+      {!loading && !error && (
+        (() => {
+          const checkedInBedsList: Array<{
+            room: string;
+            floor: string;
+            bed: string;
+            occupiedByCohort: string;
+            occupiedByAppNo?: string;
+            checkedInTime?: string | null;
+          }> = [];
+          rooms.forEach(r => {
+            r.beds.forEach(b => {
+              if (b.isOccupied && b.checkedIn && b.occupiedByCohort) {
+                checkedInBedsList.push({
+                  room: r.room,
+                  floor: r.floor,
+                  bed: b.bed,
+                  occupiedByCohort: b.occupiedByCohort,
+                  occupiedByAppNo: b.occupiedByAppNo || undefined,
+                  checkedInTime: b.checkedInTime
+                });
+              }
+            });
+          });
+
+          return (
+            <div className="bg-card-bg border border-card-border p-6 rounded-2xl shadow-sm space-y-4">
+              <div className="flex items-center justify-between border-b border-card-border pb-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-black text-foreground uppercase tracking-tight">
+                    📋 Checked In Members Log
+                  </span>
+                  <span className="px-2.5 py-0.5 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-[10px] font-black rounded-full uppercase tracking-wider">
+                    {checkedInBedsList.length} Arrived
+                  </span>
+                </div>
+              </div>
+
+              {checkedInBedsList.length === 0 ? (
+                <p className="text-text-muted text-xs italic py-4 text-center">
+                  No team members have checked in yet in {activeHostel}.
+                </p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-xs">
+                    <thead>
+                      <tr className="border-b border-card-border/60 text-text-muted uppercase tracking-wider font-extrabold text-[10px]">
+                        <th className="py-3 px-4">Student Name</th>
+                        <th className="py-3 px-4">Application / Roll No</th>
+                        <th className="py-3 px-4">Room No</th>
+                        <th className="py-3 px-4">Bed Slot</th>
+                        <th className="py-3 px-4">Floor Level</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-card-border/30 font-semibold text-foreground">
+                      {checkedInBedsList.map((item, idx) => (
+                        <tr 
+                          key={idx} 
+                          className="hover:bg-card-border/10 transition-colors"
+                        >
+                          <td className="py-3 px-4 font-bold text-primary">{item.occupiedByCohort}</td>
+                          <td className="py-3 px-4 font-mono">{item.occupiedByAppNo || 'N/A'}</td>
+                          <td className="py-3 px-4">Room {item.room}</td>
+                          <td className="py-3 px-4">{item.bed}</td>
+                          <td className="py-3 px-4 uppercase text-[10px]">{item.floor} Floor</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          );
+        })()
       )}
 
       {/* Hidden Templates for Single Print/Downloads */}
