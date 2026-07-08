@@ -155,6 +155,15 @@ const studentSchema = new mongoose.Schema({
   confirmedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
+  },
+  arrivalInfo: {
+    isFromJaipur: { type: Boolean },
+    jaipurArea: { type: String, trim: true },
+    wantsBus: { type: Boolean },
+    arrivalDate: { type: String, trim: true },
+    arrivalTime: { type: String, trim: true },
+    transportMode: { type: String, trim: true },
+    declaredAt: { type: Date }
   }
 }, {
   timestamps: true
