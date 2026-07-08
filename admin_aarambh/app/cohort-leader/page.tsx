@@ -343,9 +343,15 @@ export default function CohortLeaderDashboard() {
                             { label: 'Location', value: `${student.city}, ${student.district}, ${student.state}` },
                             { label: 'Arrival Code', value: student.arrivalCode || 'N/A' },
                           ].map(({ label, value }) => (
-                            <div key={label} className="flex gap-3 text-sm">
+                            <div key={label} className="flex gap-3 text-sm items-center">
                               <span className="text-text-muted min-w-[85px] font-medium shrink-0">{label}</span>
-                              <span className="text-foreground font-medium">{value}</span>
+                              {label === 'Arrival Code' ? (
+                                <span className="px-2.5 py-0.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 font-extrabold font-mono tracking-wider text-xs">
+                                  {value}
+                                </span>
+                              ) : (
+                                <span className="text-foreground font-medium">{value}</span>
+                              )}
                             </div>
                           ))}
                         </div>
