@@ -26,7 +26,8 @@ export default function ArrivalDeclarationPage() {
   const aarambhLogo = '/Aarambh_logo_Final-01.svg';
 
   // Step 1: Verification
-  const [appNo, setAppNo] = useState('');
+  const [cohortName, setCohortName] = useState('');
+  const [accessCode, setAccessCode] = useState('');
   const [verifying, setVerifying] = useState(false);
   const [student, setStudent] = useState<StudentInfo | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
@@ -44,14 +45,14 @@ export default function ArrivalDeclarationPage() {
   // Step 1 handler: Verify student credentials
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!appNo.trim()) return;
+    if (!cohortName.trim() || !accessCode.trim()) return;
 
     setVerifying(true);
     setErrorMsg('');
     setStudent(null);
 
     try {
-      const res = await fetch(`/api/arrival/student/${encodeURIComponent(appNo.trim())}`);
+      const res = await fetch(`/api/arrival/verify?cohort=${encodeURIComponent(cohortName.trim())}&code=${encodeURIComponent(accessCode.trim())}`);
       const data = await res.json();
 
       if (!res.ok) {
@@ -98,8 +99,8 @@ export default function ArrivalDeclarationPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          applicationNo: student.applicationNo,
-          email: student.email,
+          cohort: student.cohort,
+          code: accessCode.trim(),
           isFromJaipur,
           jaipurArea,
           wantsBus,
@@ -164,7 +165,8 @@ export default function ArrivalDeclarationPage() {
                 onClick={() => {
                   setSuccess(false);
                   setStudent(null);
-                  setAppNo('');
+                  setCohortName('');
+                  setAccessCode('');
                   setIsFromJaipur(null);
                   setJaipurArea('');
                   setWantsBus(null);
@@ -182,15 +184,29 @@ export default function ArrivalDeclarationPage() {
             <form onSubmit={handleVerify} className="space-y-4">
               <div className="space-y-1.5">
                 <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
-                  Application Number *
+                  Cohort Name *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. JKLU/B.TECH/2026/0449"
-                  value={appNo}
-                  onChange={(e) => setAppNo(e.target.value)}
+                  placeholder="e.g. A1, L3"
+                  value={cohortName}
+                  onChange={(e) => setCohortName(e.target.value)}
                   className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold uppercase"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500">
+                  Arrival Access Code *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Enter 6-digit access code"
+                  value={accessCode}
+                  onChange={(e) => setAccessCode(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-500 rounded-xl text-slate-800 text-xs outline-none transition-all font-semibold"
                 />
               </div>
 
@@ -211,7 +227,7 @@ export default function ArrivalDeclarationPage() {
                     Verifying Credentials...
                   </>
                 ) : (
-                  'Verify Application ➔'
+                  'Verify Code ➔'
                 )}
               </button>
             </form>

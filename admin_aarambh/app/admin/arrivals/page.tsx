@@ -23,6 +23,7 @@ interface StudentDeclaration {
   gender: string;
   cohort: string;
   cluster: string;
+  arrivalCode?: string;
   arrivalInfo: ArrivalInfo;
 }
 
@@ -223,6 +224,7 @@ export default function AdminArrivalsPage() {
                   <th className="px-5 py-3.5">Student Name</th>
                   <th className="px-5 py-3.5">App / Roll No</th>
                   <th className="px-5 py-3.5">Cohort</th>
+                  <th className="px-5 py-3.5">Arrival Code</th>
                   <th className="px-5 py-3.5">Category</th>
                   <th className="px-5 py-3.5">Local Route Area</th>
                   <th className="px-5 py-3.5">Bus Request</th>
@@ -237,6 +239,7 @@ export default function AdminArrivalsPage() {
                     <td className="px-5 py-3.5 font-bold text-primary truncate max-w-[150px]">{item.name}</td>
                     <td className="px-5 py-3.5 font-mono">{item.applicationNo}</td>
                     <td className="px-5 py-3.5">Cohort {item.cohort}</td>
+                    <td className="px-5 py-3.5 font-bold font-mono text-indigo-500">{item.arrivalCode || 'N/A'}</td>
                     <td className="px-5 py-3.5">
                       <span className={`px-2 py-0.5 rounded text-[8px] font-extrabold uppercase tracking-wide border ${
                         item.arrivalInfo.isFromJaipur

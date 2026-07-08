@@ -202,6 +202,7 @@ export default function AdminClusterDetailPage() {
                             <div><span className="text-text-muted">Gender:</span> <span className="text-foreground">{student.gender}</span></div>
                             <div><span className="text-text-muted">Mobile:</span> <span className="text-foreground">{student.mobile}</span></div>
                             <div><span className="text-text-muted">Email:</span> <span className="text-foreground">{student.email}</span></div>
+                            <div><span className="text-text-muted">Arrival Code:</span> <span className="text-foreground text-primary font-bold">{student.arrivalCode || 'N/A'}</span></div>
                             <div><span className="text-text-muted">Father Name:</span> <span className="text-foreground">{student.fatherName}</span></div>
                             <div><span className="text-text-muted">Father Phone:</span> <span className="text-foreground">{student.fatherMobile}</span></div>
                             <div><span className="text-text-muted">Location:</span> <span className="text-foreground">{student.city}, {student.district}, {student.state}</span></div>

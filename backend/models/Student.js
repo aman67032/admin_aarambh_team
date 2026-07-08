@@ -156,6 +156,11 @@ const studentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
+  arrivalCode: {
+    type: String,
+    trim: true,
+    index: true
+  },
   arrivalInfo: {
     isFromJaipur: { type: Boolean },
     jaipurArea: { type: String, trim: true },
@@ -170,6 +175,9 @@ const studentSchema = new mongoose.Schema({
 });
 
 studentSchema.pre('save', function(next) {
+  if (!this.arrivalCode) {
+    this.arrivalCode = Math.floor(100000 + Math.random() * 900000).toString();
+  }
   if (this.confirmedJklu && !this.notContinuing && !this.notComingAarambh) {
     this.confirmedAarambh = true;
   }

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import Loader from '../components/Loader';
 
 import React, { useEffect, useState } from 'react';
@@ -284,9 +284,10 @@ export default function ClusterHeadDashboard() {
                                   { label: 'Father', value: student.fatherName },
                                   { label: 'F.Phone', value: student.fatherMobile },
                                   { label: 'Location', value: `${student.city}, ${student.district}, ${student.state}` },
+                                  { label: 'Arrival Code', value: student.arrivalCode || 'N/A' },
                                 ].map(({ label, value }) => (
                                   <div key={label} className="flex gap-3 text-sm">
-                                    <span className="text-text-muted min-w-[68px] font-medium shrink-0">{label}</span>
+                                    <span className="text-text-muted min-w-[85px] font-medium shrink-0">{label}</span>
                                     <span className="text-foreground font-medium">{value}</span>
                                   </div>
                                 ))}
