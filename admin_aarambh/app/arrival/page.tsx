@@ -134,9 +134,6 @@ export default function ArrivalDeclarationPage() {
           <div className="h-8 w-[1px] bg-slate-200" />
           <img src={aarambhLogo} alt="Aarambh Logo" className="h-9 w-auto" />
         </div>
-        <Link href="/" className="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors uppercase tracking-wider">
-          Exit Portal
-        </Link>
       </header>
 
       {/* Main Content Form area */}
