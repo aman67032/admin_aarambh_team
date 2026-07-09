@@ -11,6 +11,7 @@ interface ArrivalInfo {
   arrivalDate?: string;
   arrivalTime?: string;
   transportMode?: string;
+  pickupPoint?: string;
   declaredAt: string;
 }
 
@@ -227,7 +228,7 @@ export default function AdminArrivalsPage() {
                   <th className="px-5 py-3.5">Arrival Code</th>
                   <th className="px-5 py-3.5">Category</th>
                   <th className="px-5 py-3.5">Local Route Area</th>
-                  <th className="px-5 py-3.5">Bus Request</th>
+                  <th className="px-5 py-3.5">Bus Request / Pickup</th>
                   <th className="px-5 py-3.5">Arrival Date / Time</th>
                   <th className="px-5 py-3.5">Transport Mode</th>
                   <th className="px-5 py-3.5">Submission Date</th>
@@ -259,12 +260,18 @@ export default function AdminArrivalsPage() {
                         }`}>
                           {item.arrivalInfo.wantsBus ? 'Yes (Wants Bus)' : 'No (Self)'}
                         </span>
-                      ) : '-'}
+                      ) : (
+                        item.arrivalInfo.pickupPoint ? (
+                          <span className="px-2 py-0.5 rounded text-[8px] font-extrabold uppercase tracking-wide border bg-indigo-500/15 text-indigo-600 border-indigo-500/20">
+                            {item.arrivalInfo.pickupPoint}
+                          </span>
+                        ) : '-'
+                      )}
                     </td>
                     <td className="px-5 py-3.5">
                       {!item.arrivalInfo.isFromJaipur ? (
                         <div className="space-y-0.5">
-                          <div className="font-bold text-slate-900">{item.arrivalInfo.arrivalDate}</div>
+                          <div className="font-bold text-slate-900 dark:text-slate-100">{item.arrivalInfo.arrivalDate}</div>
                           <div className="text-[10px] text-text-muted font-semibold">{item.arrivalInfo.arrivalTime}</div>
                         </div>
                       ) : '-'}

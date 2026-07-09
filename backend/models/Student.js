@@ -168,6 +168,7 @@ const studentSchema = new mongoose.Schema({
     arrivalDate: { type: String, trim: true },
     arrivalTime: { type: String, trim: true },
     transportMode: { type: String, trim: true },
+    pickupPoint: { type: String, trim: true },
     declaredAt: { type: Date }
   }
 }, {

@@ -19,6 +19,7 @@ interface StudentInfo {
     arrivalDate?: string;
     arrivalTime?: string;
     transportMode?: string;
+    pickupPoint?: string;
     declaredAt?: string;
   };
 }
@@ -45,6 +46,7 @@ export default function ArrivalDeclarationPage() {
   const [arrivalDate, setArrivalDate] = useState('');
   const [arrivalTime, setArrivalTime] = useState('');
   const [transportMode, setTransportMode] = useState('');
+  const [pickupPoint, setPickupPoint] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -73,6 +75,7 @@ export default function ArrivalDeclarationPage() {
         setArrivalDate(data.arrivalInfo.arrivalDate || '');
         setArrivalTime(data.arrivalInfo.arrivalTime || '');
         setTransportMode(data.arrivalInfo.transportMode || '');
+        setPickupPoint(data.arrivalInfo.pickupPoint || '');
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'An error occurred during verification.');
@@ -99,6 +102,11 @@ export default function ArrivalDeclarationPage() {
         alert('Please fill out all required fields.');
         return;
       }
+      const isPickupAvailable = arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026';
+      if (isPickupAvailable && !pickupPoint.trim()) {
+        alert('Please specify if you want to avail of the university pickup bus.');
+        return;
+      }
     }
 
     setSubmitting(true);
@@ -115,7 +123,8 @@ export default function ArrivalDeclarationPage() {
           wantsBus,
           arrivalDate,
           arrivalTime,
-          transportMode
+          transportMode,
+          pickupPoint: (arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026') ? pickupPoint : ''
         })
       });
 
@@ -418,8 +427,7 @@ export default function ArrivalDeclarationPage() {
               {isFromJaipur !== null && (
                 <div className="space-y-4 animate-slideUp">
                   <div className={(isFromJaipur && wantsBus) ? "space-y-1.5" : "grid grid-cols-1 sm:grid-cols-2 gap-4"}>
-                    
-                    {/* Arrival Date Input */}
+                              {/* Arrival Date Input */}
                     <div className="space-y-1.5">
                       <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                         Date of Arrival at JKLU *
@@ -427,13 +435,21 @@ export default function ArrivalDeclarationPage() {
                       <select
                         required
                         value={arrivalDate}
-                        onChange={(e) => setArrivalDate(e.target.value)}
+                        onChange={(e) => {
+                          const date = e.target.value;
+                          setArrivalDate(date);
+                          if (date !== '12-07-2026' && date !== '13-07-2026') {
+                            setPickupPoint('');
+                          }
+                        }}
                         className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
                       >
                         <option value="">Select Date</option>
+                        <option value="09-07-2026">July 09, 2026 (Thursday)</option>
+                        <option value="10-07-2026">July 10, 2026 (Friday)</option>
+                        <option value="11-07-2026">July 11, 2026 (Saturday)</option>
                         <option value="12-07-2026">July 12, 2026 (Sunday)</option>
                         <option value="13-07-2026">July 13, 2026 (Monday)</option>
-                        <option value="14-07-2026">July 14, 2026 (Tuesday)</option>
                         <option value="Other">Other / Delayed</option>
                       </select>
                     </div>
@@ -449,7 +465,7 @@ export default function ArrivalDeclarationPage() {
                           value={arrivalTime}
                           onChange={(e) => setArrivalTime(e.target.value)}
                           className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
-                      >
+                        >
                           <option value="">Select Time Slot</option>
                           <option value="Early Morning (6 AM - 9 AM)">Early Morning (6 AM - 9 AM)</option>
                           <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
@@ -462,24 +478,46 @@ export default function ArrivalDeclarationPage() {
                     )}
                   </div>
 
-                  {/* Mode of Transportation Input */}
+                  {/* Mode of Transportation and Pickup Inputs */}
                   {isFromJaipur === false && (
-                    <div className="space-y-1.5 animate-slideUp">
-                      <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                        Mode of Transportation to Campus *
-                      </label>
-                      <select
-                        required
-                        value={transportMode}
-                        onChange={(e) => setTransportMode(e.target.value)}
-                        className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
-                      >
-                        <option value="">Select Mode</option>
-                        <option value="Train">Train (Jaipur Railway Station)</option>
-                        <option value="Flight">Flight (Jaipur Airport)</option>
-                        <option value="Bus">Bus (Sindhi Camp / Local Stop)</option>
-                        <option value="Personal Vehicle">Personal Vehicle / Cab</option>
-                      </select>
+                    <div className="space-y-4 animate-slideUp">
+                      <div className="space-y-1.5">
+                        <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                          Mode of Transportation to Campus *
+                        </label>
+                        <select
+                          required
+                          value={transportMode}
+                          onChange={(e) => setTransportMode(e.target.value)}
+                          className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                        >
+                          <option value="">Select Mode</option>
+                          <option value="Train">Train (Jaipur Railway Station)</option>
+                          <option value="Flight">Flight (Jaipur Airport)</option>
+                          <option value="Bus">Bus (Sindhi Camp / Local Stop)</option>
+                          <option value="Personal Vehicle">Personal Vehicle / Cab</option>
+                        </select>
+                      </div>
+
+                      {/* University Pickup Bus Option (July 12 & 13 only) */}
+                      {(arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026') && (
+                        <div className="space-y-1.5 animate-slideUp">
+                          <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                            Avail University Pickup Bus? (available on July 12 & 13) *
+                          </label>
+                          <select
+                            required
+                            value={pickupPoint}
+                            onChange={(e) => setPickupPoint(e.target.value)}
+                            className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                          >
+                            <option value="">Select Option</option>
+                            <option value="No">No, I will manage my own transport / cab</option>
+                            <option value="Mansarovar Metro Station">Yes, pickup from Mansarovar Metro Station</option>
+                            <option value="Railway Station">Yes, pickup from Jaipur Railway Station</option>
+                          </select>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

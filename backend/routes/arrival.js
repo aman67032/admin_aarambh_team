@@ -65,7 +65,8 @@ router.post('/declare', async (req, res) => {
       wantsBus, 
       arrivalDate, 
       arrivalTime, 
-      transportMode 
+      transportMode,
+      pickupPoint
     } = req.body;
 
     if (!cohort || !applicationNo || !code) {
@@ -98,6 +99,7 @@ router.post('/declare', async (req, res) => {
       arrivalDate: (arrivalDate || '').trim(),
       arrivalTime: (isFromJaipur && wantsBus) ? undefined : (arrivalTime || '').trim(),
       transportMode: !isFromJaipur ? (transportMode || '').trim() : undefined,
+      pickupPoint: (!isFromJaipur && (arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026')) ? (pickupPoint || '').trim() : undefined,
       declaredAt: new Date()
     };
 
