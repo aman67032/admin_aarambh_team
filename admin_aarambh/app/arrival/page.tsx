@@ -113,6 +113,10 @@ export default function ArrivalDeclarationPage() {
           alert('Please select a pickup point.');
           return;
         }
+        if (!arrivalDate.trim()) {
+          alert('Please select your date of arrival.');
+          return;
+        }
       } else {
         if (!arrivalDate.trim() || !arrivalTime.trim()) {
           alert('Please fill out all required fields.');
@@ -143,7 +147,7 @@ export default function ArrivalDeclarationPage() {
           code: accessCode.trim(),
           isFromJaipur,
           wantsBus,
-          arrivalDate: (isFromJaipur && wantsBus) ? '' : arrivalDate,
+          arrivalDate,
           arrivalTime: (isFromJaipur && wantsBus) ? '' : arrivalTime,
           transportMode,
           pickupPoint: isBusPickupSelected ? pickupPoint : '',
@@ -473,6 +477,29 @@ export default function ArrivalDeclarationPage() {
                           <option value="Railway Station">Jaipur Railway Station</option>
                         </select>
                       </div>
+
+                      {/* Date of Arrival for bus day scholars — shown once pickup point is selected */}
+                      {pickupPoint && (
+                        <div className="space-y-1.5 animate-slideUp">
+                          <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                            Date of Arrival at JKLU *
+                          </label>
+                          <select
+                            required
+                            value={arrivalDate}
+                            onChange={(e) => setArrivalDate(e.target.value)}
+                            className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                          >
+                            <option value="">Select Date</option>
+                            <option value="09-07-2026">July 09, 2026 (Thursday)</option>
+                            <option value="10-07-2026">July 10, 2026 (Friday)</option>
+                            <option value="11-07-2026">July 11, 2026 (Saturday)</option>
+                            <option value="12-07-2026">July 12, 2026 (Sunday)</option>
+                            <option value="13-07-2026">July 13, 2026 (Monday)</option>
+                            <option value="Other">Other / Delayed</option>
+                          </select>
+                        </div>
+                      )}
 
                       {/* Info Alert: time shared on email */}
                       {pickupPoint && (
