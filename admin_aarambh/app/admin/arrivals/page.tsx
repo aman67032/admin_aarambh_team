@@ -5,13 +5,15 @@ import Loader from '../../components/Loader';
 import { useApp } from '../../context/AppContext';
 
 interface ArrivalInfo {
-  isFromJaipur: boolean;
+  isFromJaipur?: boolean;
   jaipurArea?: string;
   wantsBus?: boolean;
   arrivalDate?: string;
   arrivalTime?: string;
   transportMode?: string;
   pickupPoint?: string;
+  city?: string;
+  place?: string;
   declaredAt: string;
 }
 
@@ -36,7 +38,7 @@ export default function AdminArrivalsPage() {
   
   // Search and filter states
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState<'All' | 'Jaipur' | 'Outstation' | 'WantsBus' | 'NoBus'>('All');
+  const [filterType, setFilterType] = useState<'All' | 'WantsBus' | 'NoBus'>('All');
 
   const fetchDeclarations = async () => {
     setLoading(true);
@@ -61,9 +63,8 @@ export default function AdminArrivalsPage() {
 
   // Counters
   const totalCount = declarations.length;
-  const jaipurCount = declarations.filter(d => d.arrivalInfo.isFromJaipur).length;
-  const outstationCount = totalCount - jaipurCount;
-  const wantsBusCount = declarations.filter(d => d.arrivalInfo.isFromJaipur && d.arrivalInfo.wantsBus).length;
+  const wantsBusCount = declarations.filter(d => d.arrivalInfo.wantsBus).length;
+  const noBusCount = totalCount - wantsBusCount;
 
   // Filter declarations
   const filteredDeclarations = declarations.filter(item => {
@@ -73,14 +74,14 @@ export default function AdminArrivalsPage() {
       const nameMatch = item.name.toLowerCase().includes(query);
       const appMatch = item.applicationNo.toLowerCase().includes(query);
       const cohortMatch = item.cohort.toLowerCase().includes(query);
-      if (!nameMatch && !appMatch && !cohortMatch) return false;
+      const cityMatch = (item.arrivalInfo.city || '').toLowerCase().includes(query);
+      const placeMatch = (item.arrivalInfo.place || '').toLowerCase().includes(query);
+      if (!nameMatch && !appMatch && !cohortMatch && !cityMatch && !placeMatch) return false;
     }
 
     // Type filter
-    if (filterType === 'Jaipur' && !item.arrivalInfo.isFromJaipur) return false;
-    if (filterType === 'Outstation' && item.arrivalInfo.isFromJaipur) return false;
-    if (filterType === 'WantsBus' && (!item.arrivalInfo.isFromJaipur || !item.arrivalInfo.wantsBus)) return false;
-    if (filterType === 'NoBus' && (!item.arrivalInfo.isFromJaipur || item.arrivalInfo.wantsBus)) return false;
+    if (filterType === 'WantsBus' && !item.arrivalInfo.wantsBus) return false;
+    if (filterType === 'NoBus' && item.arrivalInfo.wantsBus) return false;
 
     return true;
   });
@@ -120,20 +121,12 @@ export default function AdminArrivalsPage() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-md hover:border-primary/20 transition-all duration-300">
           <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Total Declarations</span>
           <div className="flex items-baseline justify-between mt-3">
             <span className="text-3xl font-extrabold text-foreground">{loading ? '...' : totalCount}</span>
             <span className="text-[10px] bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-md font-bold">Submissions</span>
-          </div>
-        </div>
-
-        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-md hover:border-emerald-500/20 transition-all duration-300">
-          <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Day Scholars (Jaipur)</span>
-          <div className="flex items-baseline justify-between mt-3">
-            <span className="text-3xl font-extrabold text-emerald-500">{loading ? '...' : jaipurCount}</span>
-            <span className="text-[10px] bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 px-2 py-0.5 rounded-md font-bold">Local</span>
           </div>
         </div>
 
@@ -146,10 +139,10 @@ export default function AdminArrivalsPage() {
         </div>
 
         <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-md hover:border-indigo-500/20 transition-all duration-300">
-          <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Outstation Arrivals</span>
+          <span className="text-[10px] font-extrabold text-text-muted uppercase tracking-wider">Self Transport Arrivals</span>
           <div className="flex items-baseline justify-between mt-3">
-            <span className="text-3xl font-extrabold text-indigo-500">{loading ? '...' : outstationCount}</span>
-            <span className="text-[10px] bg-indigo-500/10 text-indigo-500 border border-indigo-200/25 px-2 py-0.5 rounded-md font-bold">Outside Jaipur</span>
+            <span className="text-3xl font-extrabold text-indigo-500">{loading ? '...' : noBusCount}</span>
+            <span className="text-[10px] bg-indigo-500/10 text-indigo-500 border border-indigo-200/25 px-2 py-0.5 rounded-md font-bold">Self Transport</span>
           </div>
         </div>
       </div>
@@ -164,7 +157,7 @@ export default function AdminArrivalsPage() {
           <div className="relative">
             <input
               type="text"
-              placeholder="Search by student name, application no, or cohort..."
+              placeholder="Search name, roll no, cohort, city, or place..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-9 pr-4 py-2.5 bg-background border border-card-border focus:border-primary rounded-xl text-foreground text-xs outline-none transition-all placeholder:text-text-muted/40 font-semibold"
@@ -179,10 +172,8 @@ export default function AdminArrivalsPage() {
             Declaration Category
           </label>
           <div className="flex flex-wrap border border-card-border p-1 rounded-xl bg-background gap-1 sm:gap-0 w-fit">
-            {(['All', 'Jaipur', 'Outstation', 'WantsBus', 'NoBus'] as const).map(type => {
+            {(['All', 'WantsBus', 'NoBus'] as const).map(type => {
               let label = type as string;
-              if (type === 'Jaipur') label = 'Jaipur Day Scholars';
-              if (type === 'Outstation') label = 'Outstation Arrivals';
               if (type === 'WantsBus') label = 'Wants University Bus';
               if (type === 'NoBus') label = 'Self Transport';
               return (
@@ -226,9 +217,9 @@ export default function AdminArrivalsPage() {
                   <th className="px-5 py-3.5">App / Roll No</th>
                   <th className="px-5 py-3.5">Cohort</th>
                   <th className="px-5 py-3.5">Arrival Code</th>
-                  <th className="px-5 py-3.5">Category</th>
-                  <th className="px-5 py-3.5">Local Route Area</th>
-                  <th className="px-5 py-3.5">Bus Request / Pickup</th>
+                  <th className="px-5 py-3.5">City & Boarding Place</th>
+                  <th className="px-5 py-3.5">Bus Request</th>
+                  <th className="px-5 py-3.5">Pickup Point</th>
                   <th className="px-5 py-3.5">Arrival Date / Time</th>
                   <th className="px-5 py-3.5">Transport Mode</th>
                   <th className="px-5 py-3.5">Submission Date</th>
@@ -241,42 +232,35 @@ export default function AdminArrivalsPage() {
                     <td className="px-5 py-3.5 font-mono">{item.applicationNo}</td>
                     <td className="px-5 py-3.5">Cohort {item.cohort}</td>
                     <td className="px-5 py-3.5 font-bold font-mono text-indigo-500">{item.arrivalCode || 'N/A'}</td>
+                    <td className="px-5 py-3.5 truncate max-w-[200px]">
+                      <div className="font-bold text-slate-900 dark:text-slate-100">{item.arrivalInfo.city || 'N/A'}</div>
+                      <div className="text-[10px] text-text-muted font-semibold">{item.arrivalInfo.place || 'N/A'}</div>
+                    </td>
                     <td className="px-5 py-3.5">
                       <span className={`px-2 py-0.5 rounded text-[8px] font-extrabold uppercase tracking-wide border ${
-                        item.arrivalInfo.isFromJaipur
-                          ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-                          : 'bg-indigo-500/10 text-indigo-500 border-indigo-200/25'
+                        item.arrivalInfo.wantsBus
+                          ? 'bg-emerald-500/15 text-emerald-600 border-emerald-500/25'
+                          : 'bg-slate-100 text-slate-500 border-slate-200'
                       }`}>
-                        {item.arrivalInfo.isFromJaipur ? 'Local (Jaipur)' : 'Outstation'}
+                        {item.arrivalInfo.wantsBus ? 'Yes (Wants Bus)' : 'No (Self)'}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 truncate max-w-[120px]">{item.arrivalInfo.isFromJaipur ? (item.arrivalInfo.jaipurArea || 'N/A') : '-'}</td>
                     <td className="px-5 py-3.5">
-                      {item.arrivalInfo.isFromJaipur ? (
-                        <span className={`px-2 py-0.5 rounded text-[8px] font-extrabold uppercase tracking-wide border ${
-                          item.arrivalInfo.wantsBus
-                            ? 'bg-emerald-500/15 text-emerald-600 border-emerald-500/25'
-                            : 'bg-slate-100 text-slate-500 border-slate-200'
-                        }`}>
-                          {item.arrivalInfo.wantsBus ? 'Yes (Wants Bus)' : 'No (Self)'}
+                      {item.arrivalInfo.wantsBus && item.arrivalInfo.pickupPoint ? (
+                        <span className="px-2 py-0.5 rounded text-[8px] font-extrabold uppercase tracking-wide border bg-indigo-500/15 text-indigo-600 border-indigo-500/20">
+                          {item.arrivalInfo.pickupPoint}
                         </span>
                       ) : (
-                        item.arrivalInfo.pickupPoint ? (
-                          <span className="px-2 py-0.5 rounded text-[8px] font-extrabold uppercase tracking-wide border bg-indigo-500/15 text-indigo-600 border-indigo-500/20">
-                            {item.arrivalInfo.pickupPoint}
-                          </span>
-                        ) : '-'
+                        <span className="text-text-muted">-</span>
                       )}
                     </td>
                     <td className="px-5 py-3.5">
-                      {!item.arrivalInfo.isFromJaipur ? (
-                        <div className="space-y-0.5">
-                          <div className="font-bold text-slate-900 dark:text-slate-100">{item.arrivalInfo.arrivalDate}</div>
-                          <div className="text-[10px] text-text-muted font-semibold">{item.arrivalInfo.arrivalTime}</div>
-                        </div>
-                      ) : '-'}
+                      <div className="space-y-0.5">
+                        <div className="font-bold text-slate-900 dark:text-slate-100">{item.arrivalInfo.arrivalDate || 'N/A'}</div>
+                        <div className="text-[10px] text-text-muted font-semibold">{item.arrivalInfo.arrivalTime || 'N/A'}</div>
+                      </div>
                     </td>
-                    <td className="px-5 py-3.5 font-bold">{!item.arrivalInfo.isFromJaipur ? (item.arrivalInfo.transportMode || 'N/A') : '-'}</td>
+                    <td className="px-5 py-3.5 font-bold">{item.arrivalInfo.transportMode || 'N/A'}</td>
                     <td className="px-5 py-3.5 text-text-muted text-[10px] font-bold">
                       {new Date(item.arrivalInfo.declaredAt).toLocaleString('en-GB')}
                     </td>

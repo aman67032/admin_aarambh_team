@@ -40,7 +40,9 @@ export default function ArrivalDeclarationPage() {
   const [errorMsg, setErrorMsg] = useState('');
 
   // Step 2: Form Fields
-  const [isFromJaipur, setIsFromJaipur] = useState<boolean | null>(null);
+  const [isFromJaipur, setIsFromJaipur] = useState<boolean | null>(false);
+  const [city, setCity] = useState('');
+  const [place, setPlace] = useState('');
   const [wantsBus, setWantsBus] = useState<boolean | null>(null);
   const [arrivalDate, setArrivalDate] = useState('');
   const [arrivalTime, setArrivalTime] = useState('');
@@ -70,19 +72,23 @@ export default function ArrivalDeclarationPage() {
       setStudent(data);
       setEmail(data.email || '');
       if (data.arrivalInfo) {
-        setIsFromJaipur(data.arrivalInfo.isFromJaipur);
+        setIsFromJaipur(data.arrivalInfo.isFromJaipur ?? false);
         setWantsBus(data.arrivalInfo.wantsBus ?? null);
         setArrivalDate(data.arrivalInfo.arrivalDate || '');
         setArrivalTime(data.arrivalInfo.arrivalTime || '');
         setTransportMode(data.arrivalInfo.transportMode || '');
         setPickupPoint(data.arrivalInfo.pickupPoint || '');
+        setCity(data.arrivalInfo.city || '');
+        setPlace(data.arrivalInfo.place || '');
       } else {
-        setIsFromJaipur(null);
+        setIsFromJaipur(false);
         setWantsBus(null);
         setArrivalDate('');
         setArrivalTime('');
         setTransportMode('');
         setPickupPoint('');
+        setCity('');
+        setPlace('');
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'An error occurred during verification.');
@@ -94,7 +100,7 @@ export default function ArrivalDeclarationPage() {
   // Step 2 handler: Submit arrival declaration
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!student || isFromJaipur === null) return;
+    if (!student) return;
 
     // Validate email
     if (!email.trim() || !email.includes('@')) {
@@ -102,43 +108,46 @@ export default function ArrivalDeclarationPage() {
       return;
     }
 
-    // Validate fields
-    if (isFromJaipur) {
-      if (wantsBus === null) {
-        alert('Please specify if you want to avail of the university bus facility.');
-        return;
-      }
-      if (wantsBus === true) {
-        if (!pickupPoint.trim()) {
-          alert('Please select a pickup point.');
-          return;
-        }
-        if (!arrivalDate.trim()) {
-          alert('Please select your date of arrival.');
-          return;
-        }
-      } else {
-        if (!arrivalDate.trim() || !arrivalTime.trim()) {
-          alert('Please fill out all required fields.');
-          return;
-        }
-      }
-    } else {
-      if (!arrivalDate.trim() || !arrivalTime.trim() || !transportMode.trim()) {
-        alert('Please fill out all required fields.');
-        return;
-      }
-      const isPickupAvailable = arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026';
-      if (isPickupAvailable && !pickupPoint.trim()) {
-        alert('Please specify if you want to avail of the university pickup bus.');
-        return;
-      }
+    // Validate city & place
+    if (!city.trim()) {
+      alert('Please enter the name of your city.');
+      return;
+    }
+    if (!place.trim()) {
+      alert('Please enter your specific place/area.');
+      return;
+    }
+
+    // Validate transport mode
+    if (!transportMode) {
+      alert('Please select your mode of transportation.');
+      return;
+    }
+
+    // Validate wantsBus selection
+    if (wantsBus === null) {
+      alert('Please specify if you want to avail of the university bus service.');
+      return;
+    }
+
+    // Validate date and time slot
+    if (!arrivalDate) {
+      alert('Please select your date of arrival.');
+      return;
+    }
+    if (!arrivalTime) {
+      alert('Please select your arrival/pickup time slot.');
+      return;
+    }
+
+    // Validate pickupPoint if using bus
+    if (wantsBus === true && !pickupPoint) {
+      alert('Please select your bus pickup point.');
+      return;
     }
 
     setSubmitting(true);
     try {
-      // Bus is selected if: Jaipur day scholar chose bus, OR outstation picked a real pickup point (not 'No')
-      const isBusPickupSelected = (isFromJaipur && wantsBus === true) || (!isFromJaipur && (pickupPoint === 'Mansarovar Metro Station' || pickupPoint === 'Railway Station'));
       const res = await fetch('/api/arrival/declare', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -146,13 +155,15 @@ export default function ArrivalDeclarationPage() {
           cohort: student.cohort,
           applicationNo: student.applicationNo,
           code: accessCode.trim(),
-          isFromJaipur,
+          isFromJaipur: false, // dummy value to avoid schema/API errors if required
           wantsBus,
           arrivalDate,
-          arrivalTime: (isFromJaipur && wantsBus) ? '' : arrivalTime,
+          arrivalTime,
           transportMode,
-          pickupPoint: isBusPickupSelected ? pickupPoint : '',
-          email: email.trim()
+          pickupPoint: wantsBus ? pickupPoint : '',
+          email: email.trim(),
+          city: city.trim(),
+          place: place.trim()
         })
       });
 
@@ -380,175 +391,148 @@ export default function ArrivalDeclarationPage() {
                 </div>
               </div>
 
-              {/* Jaipur Residency Query */}
-              <div className="space-y-2">
-                <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Are you currently residing in Jaipur? (Day Scholar) *
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div 
-                    onClick={() => {
-                      setIsFromJaipur(true);
-                      setTransportMode('');
-                      setPickupPoint('');
-                    }}
-                    className={`p-3.5 sm:p-4 border-2 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-2.5 cursor-pointer text-left sm:text-center transition-all ${isFromJaipur === true ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
-                  >
-                    <svg className={`w-5 sm:w-6 h-5 sm:h-6 shrink-0 transition-all ${isFromJaipur === true ? (isDark ? 'text-indigo-400' : 'text-orange-500 animate-float') : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <div className="flex flex-col sm:items-center">
-                      <div className="text-xs font-black uppercase tracking-wider">Yes, Jaipur</div>
-                      <span className="text-[9px] font-bold text-slate-400 mt-0.5 sm:mt-0">Day Scholar</span>
-                    </div>
+              {/* City and Place of travel/origin */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                    City of Travel / Origin *
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. New Delhi"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                    />
+                    <span className="absolute left-3 top-3 text-xs">🏙️</span>
                   </div>
+                </div>
 
-                  <div 
-                    onClick={() => {
-                      setIsFromJaipur(false);
-                      setWantsBus(null);
-                      setPickupPoint('');
-                    }}
-                    className={`p-3.5 sm:p-4 border-2 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-2.5 cursor-pointer text-left sm:text-center transition-all ${isFromJaipur === false ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
-                  >
-                    <svg className={`w-5 sm:w-6 h-5 sm:h-6 shrink-0 transition-all ${isFromJaipur === false ? (isDark ? 'text-indigo-400' : 'text-orange-500 animate-float') : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h2a2.5 2.5 0 002.5-2.5V10a2 2 0 00-2-2h-1a2 2 0 00-2-2V5a2 2 0 00-2-2H9.065m-2.13 14.15l2-2.5" />
-                    </svg>
-                    <div className="flex flex-col sm:items-center">
-                      <div className="text-xs font-black uppercase tracking-wider">No, Outside</div>
-                      <span className="text-[9px] font-bold text-slate-400 mt-0.5 sm:mt-0">Outstation</span>
-                    </div>
+                <div className="space-y-1.5">
+                  <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                    Specific Boarding Place / Stay *
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Connaught Place"
+                      value={place}
+                      onChange={(e) => setPlace(e.target.value)}
+                      className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                    />
+                    <span className="absolute left-3 top-3 text-xs">📍</span>
                   </div>
                 </div>
               </div>
 
-              {/* Jaipur day scholar details panel */}
-              {isFromJaipur === true && (
-                <div className="space-y-4 animate-slideUp">
-                  {/* Avail Bus Facility Query */}
-                  <div className="space-y-2">
-                    <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                      Do you wish to avail the University Bus Facility? *
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                      <div 
-                        onClick={() => {
-                          setWantsBus(true);
-                          setPickupPoint('');
-                        }}
-                        className={`p-3.5 border-2 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === true ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
-                      >
-                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${wantsBus === true ? (isDark ? 'bg-indigo-600 border-[#F3F4F6]' : 'bg-orange-500 border-slate-900') : 'bg-white border-slate-400'}`}>
-                          {wantsBus === true && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                        </div>
-                        <span className="text-xs font-black uppercase tracking-wider">Yes, Avail Bus</span>
-                      </div>
+              {/* Mode of Transportation */}
+              <div className="space-y-1.5">
+                <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  Mode of Transportation to Campus / Jaipur *
+                </label>
+                <div className="relative">
+                  <select
+                    required
+                    value={transportMode}
+                    onChange={(e) => setTransportMode(e.target.value)}
+                    className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                  >
+                    <option value="">Select Mode</option>
+                    <option value="Train">Train (Jaipur Railway Station)</option>
+                    <option value="Flight">Flight (Jaipur Airport)</option>
+                    <option value="Bus">Bus (Sindhi Camp / Local Stop)</option>
+                    <option value="Personal Vehicle">Personal Vehicle / Cab</option>
+                  </select>
+                </div>
+              </div>
 
-                      <div 
-                        onClick={() => {
-                          setWantsBus(false);
-                          setPickupPoint('');
-                        }}
-                        className={`p-3.5 border-2 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === false ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
-                      >
-                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${wantsBus === false ? (isDark ? 'bg-indigo-600 border-[#F3F4F6]' : 'bg-orange-500 border-slate-900') : 'bg-white border-slate-400'}`}>
-                          {wantsBus === false && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                        </div>
-                        <span className="text-xs font-black uppercase tracking-wider">No, Own Option</span>
-                      </div>
+              {/* Avail Bus Facility Query */}
+              <div className="space-y-2">
+                <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  Do you wish to avail the University Bus Service? *
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div 
+                    onClick={() => {
+                      setWantsBus(true);
+                      setArrivalDate('');
+                      setArrivalTime('');
+                      setPickupPoint('');
+                    }}
+                    className={`p-3.5 border-2 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === true ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
+                  >
+                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${wantsBus === true ? (isDark ? 'bg-indigo-600 border-[#F3F4F6]' : 'bg-orange-500 border-slate-900') : 'bg-white border-slate-400'}`}>
+                      {wantsBus === true && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                     </div>
+                    <span className="text-xs font-black uppercase tracking-wider">Yes, Avail Bus</span>
                   </div>
 
-                  {/* University Pickup Bus Option for Day Scholars (if wantsBus is true) */}
-                  {wantsBus === true && (
-                    <div className="space-y-4 animate-slideUp">
-                      <div className="space-y-1.5">
-                        <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                          Select Your University Bus Pickup Point *
-                        </label>
-                        <select
-                          required
-                          value={pickupPoint}
-                          onChange={(e) => setPickupPoint(e.target.value)}
-                          className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
-                        >
-                          <option value="">Select Option</option>
-                          <option value="Mansarovar Metro Station">Mansarovar Metro Station</option>
-                          <option value="Railway Station">Jaipur Railway Station</option>
-                        </select>
-                      </div>
-
-                      {/* Date of Arrival for bus day scholars — only July 12 & 13 (bus available those days only) */}
-                      {pickupPoint && (
-                        <div className="space-y-1.5 animate-slideUp">
-                          <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                            Date of Arrival at JKLU *
-                          </label>
-                          <select
-                            required
-                            value={arrivalDate}
-                            onChange={(e) => setArrivalDate(e.target.value)}
-                            className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
-                          >
-                            <option value="">Select Date</option>
-                            <option value="12-07-2026">July 12, 2026 (Sunday)</option>
-                            <option value="13-07-2026">July 13, 2026 (Monday)</option>
-                          </select>
-                        </div>
-                      )}
-
-                      {/* Info Alert: time shared on email */}
-                      {pickupPoint && (
-                        <div className="p-3.5 bg-indigo-50 border-2 border-indigo-500 text-indigo-700 text-xs font-bold rounded-xl flex flex-col gap-1.5 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)]">
-                          <div className="flex items-center gap-2">
-                            <span className="text-base shrink-0">📍</span>
-                            <span>Bus location: Outside {pickupPoint}.</span>
-                          </div>
-                          <div className="flex items-center gap-2 border-t border-indigo-200 pt-1.5">
-                            <span className="text-base shrink-0">✉️</span>
-                            <span>Note: Precise pickup timings will be shared with you via email.</span>
-                          </div>
-                        </div>
-                      )}
+                  <div 
+                    onClick={() => {
+                      setWantsBus(false);
+                      setArrivalDate('');
+                      setArrivalTime('');
+                      setPickupPoint('');
+                    }}
+                    className={`p-3.5 border-2 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === false ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
+                  >
+                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${wantsBus === false ? (isDark ? 'bg-indigo-600 border-[#F3F4F6]' : 'bg-orange-500 border-slate-900') : 'bg-white border-slate-400'}`}>
+                      {wantsBus === false && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                     </div>
-                  )}
+                    <span className="text-xs font-black uppercase tracking-wider">No, Own Transport</span>
+                  </div>
                 </div>
-              )}
+              </div>
 
-              {/* Render arrival date and time selection for all students who are NOT day scholars availing the bus */}
-              {isFromJaipur !== null && !(isFromJaipur && wantsBus === true) && (
+              {/* Conditional Sub-options based on Bus Selection */}
+              {wantsBus === true && (
                 <div className="space-y-4 animate-slideUp">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Arrival Date Input */}
-                    <div className="space-y-1.5">
-                      <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                        Date of Arrival at JKLU *
-                      </label>
-                      <select
-                        required
-                        value={arrivalDate}
-                        onChange={(e) => {
-                          const date = e.target.value;
-                          setArrivalDate(date);
-                          if (date !== '12-07-2026' && date !== '13-07-2026') {
-                            setPickupPoint('');
-                          }
-                        }}
-                        className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
-                      >
-                        <option value="">Select Date</option>
-                        <option value="11-07-2026">July 11, 2026 (Saturday)</option>
-                        <option value="12-07-2026">July 12, 2026 (Sunday)</option>
-                        <option value="13-07-2026">July 13, 2026 (Monday)</option>
-                        <option value="14-07-2026">July 14, 2026 (Tuesday)</option>
-                      </select>
-                    </div>
+                  {/* Select Pickup Point */}
+                  <div className="space-y-1.5">
+                    <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      Select Bus Pickup Point *
+                    </label>
+                    <select
+                      required
+                      value={pickupPoint}
+                      onChange={(e) => setPickupPoint(e.target.value)}
+                      className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                    >
+                      <option value="">Select Option</option>
+                      <option value="Mansarovar Metro Station">Mansarovar Metro Station</option>
+                      <option value="Railway Station">Jaipur Railway Station</option>
+                    </select>
+                  </div>
 
-                    {/* Arrival Time Input */}
-                    <div className="space-y-1.5">
+                  {/* Select Bus Date (July 12, 13, 14 only) */}
+                  <div className="space-y-1.5">
+                    <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      Date of Arrival (Bus Date) *
+                    </label>
+                    <select
+                      required
+                      value={arrivalDate}
+                      onChange={(e) => {
+                        setArrivalDate(e.target.value);
+                        setArrivalTime(''); // reset time
+                      }}
+                      className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                    >
+                      <option value="">Select Date</option>
+                      <option value="12-07-2026">July 12, 2026 (Sunday)</option>
+                      <option value="13-07-2026">July 13, 2026 (Monday)</option>
+                      <option value="14-07-2026">July 14, 2026 (Tuesday)</option>
+                    </select>
+                  </div>
+
+                  {/* Select Bus Time Slot (Based on Date) */}
+                  {arrivalDate && (
+                    <div className="space-y-1.5 animate-slideUp">
                       <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                        Approx Arrival Time at JKLU *
+                        Select Bus Departure Time slot from {pickupPoint || 'Pickup Point'} *
                       </label>
                       <select
                         required
@@ -556,89 +540,108 @@ export default function ArrivalDeclarationPage() {
                         onChange={(e) => setArrivalTime(e.target.value)}
                         className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
                       >
-                        <option value="">Select Time Slot</option>
-                        <option value="Early Morning (6 AM - 9 AM)">Early Morning (6 AM - 9 AM)</option>
-                        <option value="Morning (9 AM - 11 AM)">Morning (9 AM - 11 AM)</option>
+                        <option value="">Select Bus Time</option>
+                        {arrivalDate === '12-07-2026' && (
+                          <>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="1:00 PM">1:00 PM</option>
+                            <option value="4:00 PM">4:00 PM</option>
+                            <option value="7:00 PM">7:00 PM</option>
+                          </>
+                        )}
+                        {arrivalDate === '13-07-2026' && (
+                          <>
+                            <option value="9:00 AM">9:00 AM</option>
+                            <option value="11:00 AM">11:00 AM</option>
+                            <option value="1:00 PM">1:00 PM</option>
+                            <option value="3:00 PM">3:00 PM</option>
+                            <option value="5:00 PM">5:00 PM</option>
+                            <option value="7:00 PM">7:00 PM</option>
+                          </>
+                        )}
+                        {arrivalDate === '14-07-2026' && (
+                          <>
+                            <option value="8:00 AM">8:00 AM</option>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="2:00 PM">2:00 PM</option>
+                            <option value="5:00 PM">5:00 PM</option>
+                          </>
+                        )}
                       </select>
                     </div>
-                  </div>
+                  )}
 
-                  {/* Mode of Transportation and Pickup Inputs */}
-                  {isFromJaipur === false && (
-                    <div className="space-y-4 animate-slideUp">
-                      <div className="space-y-1.5">
-                        <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                          Mode of Transportation to Campus *
-                        </label>
-                        <select
-                          required
-                          value={transportMode}
-                          onChange={(e) => setTransportMode(e.target.value)}
-                          className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
-                        >
-                          <option value="">Select Mode</option>
-                          <option value="Train">Train (Jaipur Railway Station)</option>
-                          <option value="Flight">Flight (Jaipur Airport)</option>
-                          <option value="Bus">Bus (Sindhi Camp / Local Stop)</option>
-                          <option value="Personal Vehicle">Personal Vehicle / Cab</option>
-                        </select>
+                  {/* Info notice block */}
+                  {pickupPoint && arrivalDate && arrivalTime && (
+                    <div className="p-3.5 bg-indigo-50 border-2 border-indigo-500 text-indigo-700 text-xs font-bold rounded-xl flex flex-col gap-1.5 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)]">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base shrink-0">📍</span>
+                        <span>Bus Pickup location: Outside {pickupPoint}.</span>
                       </div>
-
-                      {/* University Pickup Bus Option (July 12 & 13 only) */}
-                      {(arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026') && (
-                        <div className="space-y-1.5 animate-slideUp">
-                          <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                            Avail University Pickup Bus? (available on July 12 & 13) *
-                          </label>
-                          <select
-                            required
-                            value={pickupPoint}
-                            onChange={(e) => setPickupPoint(e.target.value)}
-                            className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
-                          >
-                            <option value="">Select Option</option>
-                            <option value="No">No, I will manage my own transport / cab</option>
-                            <option value="Mansarovar Metro Station">Yes, pickup from Mansarovar Metro Station</option>
-                            <option value="Railway Station">Yes, pickup from Jaipur Railway Station</option>
-                          </select>
-                        </div>
-                      )}
-
-                      {/* Info Alert for Outstation pick up: time shared on email */}
-                      {(pickupPoint === 'Mansarovar Metro Station' || pickupPoint === 'Railway Station') && (
-                        <div className="p-3.5 bg-indigo-50 border-2 border-indigo-500 text-indigo-700 text-xs font-bold rounded-xl flex flex-col gap-1.5 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)]">
-                          <div className="flex items-center gap-2">
-                            <span className="text-base shrink-0">📍</span>
-                            <span>Bus location: Outside {pickupPoint}.</span>
-                          </div>
-                          <div className="flex items-center gap-2 border-t border-indigo-200 pt-1.5">
-                            <span className="text-base shrink-0">✉️</span>
-                            <span>Note: Precise pickup timings will be shared with you via email.</span>
-                          </div>
-                        </div>
-                      )}
+                      <div className="flex items-center gap-2 border-t border-indigo-200 pt-1.5">
+                        <span className="text-base shrink-0">✉️</span>
+                        <span>Note: Precise arrival coordinates and timings will be shared with you via email.</span>
+                      </div>
                     </div>
                   )}
                 </div>
               )}
 
-              {/* Submit declaration button with click offset drop shadow */}
-              {isFromJaipur !== null && (
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className={`w-full py-3.5 border-2 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-[0px_0px_0px_0px_rgba(15,23,42,1)] active:translate-x-[4px] active:translate-y-[4px] transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-indigo-600 to-violet-600 border-[#F3F4F6]' : 'bg-gradient-to-r from-orange-500 to-amber-500 border-slate-900'}`}
-                >
-                  {submitting ? (
-                    <>
-                      <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                      Submitting Declaration...
-                    </>
-                  ) : (
-                    'Submit Arrival Declaration ✓'
-                  )}
-                </button>
+              {wantsBus === false && (
+                <div className="space-y-4 animate-slideUp">
+                  {/* Select Own Date (July 11, 12, 13, 14) */}
+                  <div className="space-y-1.5">
+                    <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      Date of Arrival on Campus *
+                    </label>
+                    <select
+                      required
+                      value={arrivalDate}
+                      onChange={(e) => setArrivalDate(e.target.value)}
+                      className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                    >
+                      <option value="">Select Date</option>
+                      <option value="11-07-2026">July 11, 2026 (Saturday)</option>
+                      <option value="12-07-2026">July 12, 2026 (Sunday)</option>
+                      <option value="13-07-2026">July 13, 2026 (Monday)</option>
+                      <option value="14-07-2026">July 14, 2026 (Tuesday)</option>
+                    </select>
+                  </div>
+
+                  {/* Select Own Time Slot (Morning till 11 AM) */}
+                  <div className="space-y-1.5 animate-slideUp">
+                    <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      Arrival Time Slot on Campus (morning slots only) *
+                    </label>
+                    <select
+                      required
+                      value={arrivalTime}
+                      onChange={(e) => setArrivalTime(e.target.value)}
+                      className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                    >
+                      <option value="">Select Time Slot</option>
+                      <option value="Early Morning (6 AM - 9 AM)">Early Morning (6 AM - 9 AM)</option>
+                      <option value="Morning (9 AM - 11 AM)">Morning (9 AM - 11 AM)</option>
+                    </select>
+                  </div>
+                </div>
               )}
+
+              {/* Submit declaration button with click offset drop shadow */}
+              <button
+                type="submit"
+                disabled={submitting}
+                className={`w-full py-3.5 border-2 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-[0px_0px_0px_0px_rgba(15,23,42,1)] active:translate-x-[4px] active:translate-y-[4px] transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-indigo-600 to-violet-600 border-[#F3F4F6]' : 'bg-gradient-to-r from-orange-500 to-amber-500 border-slate-900'}`}
+              >
+                {submitting ? (
+                  <>
+                    <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                    Submitting Declaration...
+                  </>
+                ) : (
+                  'Submit Arrival Declaration ✓'
+                )}
+              </button>
             </form>
           )}
         </div>

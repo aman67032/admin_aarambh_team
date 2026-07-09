@@ -425,6 +425,48 @@ export default function ClusterHeadDashboard() {
                             </div>
                           </div>
  
+                          {student.arrivalInfo && (
+                            <div className="p-4 bg-indigo-500/5 border border-indigo-500/10 rounded-2xl space-y-3 mt-4 animate-slideUp">
+                              <h4 className="text-xs font-black text-indigo-500 uppercase tracking-widest flex items-center gap-1.5">
+                                <span>📅</span> Declared Arrival Details
+                              </h4>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2.5 text-xs text-foreground font-semibold">
+                                <div>
+                                  <span className="text-text-muted mr-1.5 font-medium">Origin City:</span>
+                                  {student.arrivalInfo.city || 'N/A'}
+                                </div>
+                                <div>
+                                  <span className="text-text-muted mr-1.5 font-medium">Boarding Place:</span>
+                                  {student.arrivalInfo.place || 'N/A'}
+                                </div>
+                                <div>
+                                  <span className="text-text-muted mr-1.5 font-medium">Transport Mode:</span>
+                                  {student.arrivalInfo.transportMode || 'N/A'}
+                                </div>
+                                <div>
+                                  <span className="text-text-muted mr-1.5 font-medium">Bus Service:</span>
+                                  <span className={`px-2 py-0.5 rounded text-[9px] font-extrabold uppercase border ${student.arrivalInfo.wantsBus ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-slate-100 text-slate-500 border-slate-200'}`}>
+                                    {student.arrivalInfo.wantsBus ? 'Yes, Availing Bus' : 'No, Own Option'}
+                                  </span>
+                                </div>
+                                {student.arrivalInfo.wantsBus && student.arrivalInfo.pickupPoint && (
+                                  <div>
+                                    <span className="text-text-muted mr-1.5 font-medium">Bus Pickup Point:</span>
+                                    {student.arrivalInfo.pickupPoint}
+                                  </div>
+                                )}
+                                <div>
+                                  <span className="text-text-muted mr-1.5 font-medium">Arrival Date:</span>
+                                  {student.arrivalInfo.arrivalDate || 'N/A'}
+                                </div>
+                                <div>
+                                  <span className="text-text-muted mr-1.5 font-medium">Arrival Time:</span>
+                                  {student.arrivalInfo.arrivalTime || 'N/A'}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
                           {/* Call Logging (Only if Verified) */}
                           {isVerified && !student.notContinuing && !student.notComingAarambh && (
                             <div className="pt-5 border-t border-card-border grid grid-cols-1 md:grid-cols-2 gap-6">

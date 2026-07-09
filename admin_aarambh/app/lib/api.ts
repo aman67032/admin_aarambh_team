@@ -51,6 +51,8 @@ export interface Student {
     arrivalTime?: string;
     transportMode?: string;
     pickupPoint?: string;
+    city?: string;
+    place?: string;
     declaredAt?: string;
   };
 }

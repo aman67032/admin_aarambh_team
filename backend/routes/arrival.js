@@ -66,7 +66,9 @@ router.post('/declare', async (req, res) => {
       arrivalTime, 
       transportMode,
       pickupPoint,
-      email
+      email,
+      city,
+      place
     } = req.body;
 
     if (!cohort || !applicationNo || !code) {
@@ -98,14 +100,13 @@ router.post('/declare', async (req, res) => {
     // Set arrivalInfo sub-document
     matchedStudent.arrivalInfo = {
       isFromJaipur: !!isFromJaipur,
-      wantsBus: isFromJaipur ? !!wantsBus : undefined,
+      wantsBus: !!wantsBus,
       arrivalDate: (arrivalDate || '').trim(),
-      arrivalTime: (isFromJaipur && wantsBus) ? undefined : (arrivalTime || '').trim(),
-      transportMode: !isFromJaipur ? (transportMode || '').trim() : undefined,
-      pickupPoint: (
-        (isFromJaipur && wantsBus) || 
-        (!isFromJaipur && (arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026'))
-      ) ? (pickupPoint || '').trim() : undefined,
+      arrivalTime: (arrivalTime || '').trim(),
+      transportMode: (transportMode || '').trim(),
+      pickupPoint: wantsBus ? (pickupPoint || '').trim() : undefined,
+      city: (city || '').trim(),
+      place: (place || '').trim(),
       declaredAt: new Date()
     };
 
