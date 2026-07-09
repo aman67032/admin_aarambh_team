@@ -396,6 +396,9 @@ export default function ArrivalDeclarationPage() {
                 <div className="space-y-1.5">
                   <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     City of Travel / Origin *
+                    <span className={`block text-[8px] font-bold mt-0.5 normal-case tracking-normal ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      (Jaipur residents: enter &quot;Jaipur&quot;)
+                    </span>
                   </label>
                   <div className="relative">
                     <input
@@ -413,6 +416,9 @@ export default function ArrivalDeclarationPage() {
                 <div className="space-y-1.5">
                   <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     Specific Boarding Place / Stay *
+                    <span className={`block text-[8px] font-bold mt-0.5 normal-case tracking-normal ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      (Jaipur residents: enter residential colony/area)
+                    </span>
                   </label>
                   <div className="relative">
                     <input
@@ -490,6 +496,30 @@ export default function ArrivalDeclarationPage() {
               {/* Conditional Sub-options based on Bus Selection */}
               {wantsBus === true && (
                 <div className="space-y-4 animate-slideUp">
+                  {/* Bus schedule info card */}
+                  <div className={`p-3.5 border-2 rounded-xl text-xs space-y-2.5 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] ${isDark ? 'bg-indigo-950/20 border-[#F3F4F6] text-slate-300' : 'bg-orange-50 border-slate-900 text-slate-700'}`}>
+                    <div className="font-extrabold uppercase tracking-wider flex items-center gap-1.5 text-primary text-[10px]">
+                      <span>🚌</span> Welcome Bus Timings (Mansarovar Metro Station)
+                    </div>
+                    <div className="grid grid-cols-1 gap-2 text-[10px] font-semibold leading-relaxed">
+                      <div className={`p-2 rounded border ${isDark ? 'bg-zinc-950/50 border-[#F3F4F6]/20' : 'bg-white border-slate-900/10'}`}>
+                        <span className="font-bold text-orange-600">July 12 (Sunday):</span>
+                        <span className="font-mono ml-1 text-slate-500">10:00 AM, 1:00 PM, 4:00 PM, 7:00 PM</span>
+                      </div>
+                      <div className={`p-2 rounded border ${isDark ? 'bg-zinc-950/50 border-[#F3F4F6]/20' : 'bg-white border-slate-900/10'}`}>
+                        <span className="font-bold text-orange-600">July 13 (Monday):</span>
+                        <span className="font-mono ml-1 text-slate-500">9:00 AM, 11:00 AM, 1:00 PM, 3:00 PM, 5:00 PM, 7:00 PM</span>
+                      </div>
+                      <div className={`p-2 rounded border ${isDark ? 'bg-zinc-950/50 border-[#F3F4F6]/20' : 'bg-white border-slate-900/10'}`}>
+                        <span className="font-bold text-orange-600">July 14 (Tuesday):</span>
+                        <span className="font-mono ml-1 text-slate-500">8:00 AM, 10:00 AM, 2:00 PM, 5:00 PM</span>
+                      </div>
+                    </div>
+                    <div className="text-[9px] font-bold text-slate-500 italic mt-0.5 leading-normal">
+                      * Note: Welcome buses operate exclusively from Mansarovar Metro Station. For day-scholars or other local travel, please select &quot;No, Own Transport&quot;.
+                    </div>
+                  </div>
+
                   {/* Select Pickup Point */}
                   <div className="space-y-1.5">
                     <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
