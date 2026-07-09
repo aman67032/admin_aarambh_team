@@ -460,7 +460,7 @@ export default function ArrivalDeclarationPage() {
                       setWantsBus(true);
                       setArrivalDate('');
                       setArrivalTime('');
-                      setPickupPoint('');
+                      setPickupPoint('Mansarovar Metro Station');
                     }}
                     className={`p-3.5 border-2 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === true ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
                   >
@@ -493,18 +493,14 @@ export default function ArrivalDeclarationPage() {
                   {/* Select Pickup Point */}
                   <div className="space-y-1.5">
                     <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                      Select Bus Pickup Point *
+                      Bus Pickup Point *
                     </label>
-                    <select
-                      required
-                      value={pickupPoint}
-                      onChange={(e) => setPickupPoint(e.target.value)}
-                      className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
-                    >
-                      <option value="">Select Option</option>
-                      <option value="Mansarovar Metro Station">Mansarovar Metro Station</option>
-                      <option value="Railway Station">Jaipur Railway Station</option>
-                    </select>
+                    <input
+                      type="text"
+                      readOnly
+                      value="Mansarovar Metro Station"
+                      className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-bold transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] ${isDark ? 'bg-zinc-900 border-[#F3F4F6] text-[#F3F4F6]' : 'bg-slate-100 border-slate-900 text-slate-700'}`}
+                    />
                   </div>
 
                   {/* Select Bus Date (July 12, 13, 14 only) */}
@@ -608,10 +604,10 @@ export default function ArrivalDeclarationPage() {
                     </select>
                   </div>
 
-                  {/* Select Own Time Slot (Morning till 11 AM) */}
+                  {/* Select Own Time Slot (Any time interval in 24 hours) */}
                   <div className="space-y-1.5 animate-slideUp">
                     <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                      Arrival Time Slot on Campus (morning slots only) *
+                      Arrival Time Slot on Campus *
                     </label>
                     <select
                       required
@@ -620,8 +616,13 @@ export default function ArrivalDeclarationPage() {
                       className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
                     >
                       <option value="">Select Time Slot</option>
+                      <option value="Midnight to Early Morning (12 AM - 6 AM)">Midnight to Early Morning (12 AM - 6 AM)</option>
                       <option value="Early Morning (6 AM - 9 AM)">Early Morning (6 AM - 9 AM)</option>
-                      <option value="Morning (9 AM - 11 AM)">Morning (9 AM - 11 AM)</option>
+                      <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
+                      <option value="Afternoon (12 PM - 3 PM)">Afternoon (12 PM - 3 PM)</option>
+                      <option value="Late Afternoon (3 PM - 6 PM)">Late Afternoon (3 PM - 6 PM)</option>
+                      <option value="Evening (6 PM - 9 PM)">Evening (6 PM - 9 PM)</option>
+                      <option value="Night (9 PM - 12 AM)">Night (9 PM - 12 AM)</option>
                     </select>
                   </div>
                 </div>
