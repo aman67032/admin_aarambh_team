@@ -137,7 +137,8 @@ export default function ArrivalDeclarationPage() {
 
     setSubmitting(true);
     try {
-      const isBusPickupSelected = (isFromJaipur && wantsBus === true) || (!isFromJaipur && (arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026'));
+      // Bus is selected if: Jaipur day scholar chose bus, OR outstation picked a real pickup point (not 'No')
+      const isBusPickupSelected = (isFromJaipur && wantsBus === true) || (!isFromJaipur && (pickupPoint === 'Mansarovar Metro Station' || pickupPoint === 'Railway Station'));
       const res = await fetch('/api/arrival/declare', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -537,12 +538,10 @@ export default function ArrivalDeclarationPage() {
                         className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
                       >
                         <option value="">Select Date</option>
-                        <option value="09-07-2026">July 09, 2026 (Thursday)</option>
-                        <option value="10-07-2026">July 10, 2026 (Friday)</option>
                         <option value="11-07-2026">July 11, 2026 (Saturday)</option>
                         <option value="12-07-2026">July 12, 2026 (Sunday)</option>
                         <option value="13-07-2026">July 13, 2026 (Monday)</option>
-                        <option value="Other">Other / Delayed</option>
+                        <option value="14-07-2026">July 14, 2026 (Tuesday)</option>
                       </select>
                     </div>
 
@@ -559,11 +558,7 @@ export default function ArrivalDeclarationPage() {
                       >
                         <option value="">Select Time Slot</option>
                         <option value="Early Morning (6 AM - 9 AM)">Early Morning (6 AM - 9 AM)</option>
-                        <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
-                        <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
-                        <option value="Evening (4 PM - 8 PM)">Evening (4 PM - 8 PM)</option>
-                        <option value="Night (8 PM - Midnight)">Night (8 PM - Midnight)</option>
-                        <option value="Late Night (Midnight - 6 AM)">Late Night (Midnight - 6 AM)</option>
+                        <option value="Morning (9 AM - 11 AM)">Morning (9 AM - 11 AM)</option>
                       </select>
                     </div>
                   </div>
