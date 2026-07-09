@@ -43,6 +43,16 @@ export interface Student {
   confirmationNote?: string;
   confirmedAt?: string;
   confirmedBy?: string;
+  arrivalCode?: string;
+  arrivalInfo?: {
+    isFromJaipur: boolean;
+    wantsBus?: boolean;
+    arrivalDate?: string;
+    arrivalTime?: string;
+    transportMode?: string;
+    pickupPoint?: string;
+    declaredAt?: string;
+  };
 }
 
 export interface CallLog {

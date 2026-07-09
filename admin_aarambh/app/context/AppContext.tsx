@@ -41,7 +41,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       } catch (error) {
         setUser(null);
         // Redirect to login if on protected page
-        if (pathname !== '/login' && pathname !== '/' && pathname !== '/cohort-registrations' && pathname !== '/hostel-booking') {
+        if (pathname !== '/login' && pathname !== '/' && pathname !== '/cohort-registrations' && pathname !== '/hostel-booking' && pathname !== '/arrival') {
           router.push('/login');
         }
       } finally {
