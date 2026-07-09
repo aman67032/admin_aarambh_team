@@ -41,12 +41,12 @@ export default function ArrivalDeclarationPage() {
 
   // Step 2: Form Fields
   const [isFromJaipur, setIsFromJaipur] = useState<boolean | null>(null);
-  const [jaipurArea, setJaipurArea] = useState('');
   const [wantsBus, setWantsBus] = useState<boolean | null>(null);
   const [arrivalDate, setArrivalDate] = useState('');
   const [arrivalTime, setArrivalTime] = useState('');
   const [transportMode, setTransportMode] = useState('');
   const [pickupPoint, setPickupPoint] = useState('');
+  const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -68,14 +68,21 @@ export default function ArrivalDeclarationPage() {
       }
 
       setStudent(data);
+      setEmail(data.email || '');
       if (data.arrivalInfo) {
         setIsFromJaipur(data.arrivalInfo.isFromJaipur);
-        setJaipurArea(data.arrivalInfo.jaipurArea || '');
         setWantsBus(data.arrivalInfo.wantsBus ?? null);
         setArrivalDate(data.arrivalInfo.arrivalDate || '');
         setArrivalTime(data.arrivalInfo.arrivalTime || '');
         setTransportMode(data.arrivalInfo.transportMode || '');
         setPickupPoint(data.arrivalInfo.pickupPoint || '');
+      } else {
+        setIsFromJaipur(null);
+        setWantsBus(null);
+        setArrivalDate('');
+        setArrivalTime('');
+        setTransportMode('');
+        setPickupPoint('');
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'An error occurred during verification.');
@@ -89,13 +96,28 @@ export default function ArrivalDeclarationPage() {
     e.preventDefault();
     if (!student || isFromJaipur === null) return;
 
+    // Validate email
+    if (!email.trim() || !email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
     // Validate fields
     if (isFromJaipur) {
-      const isTimeRequired = wantsBus === false;
-      const isTimeFilled = !isTimeRequired || arrivalTime.trim() !== '';
-      if (!jaipurArea.trim() || wantsBus === null || !arrivalDate.trim() || !isTimeFilled) {
-        alert('Please fill out all required fields.');
+      if (wantsBus === null) {
+        alert('Please specify if you want to avail of the university bus facility.');
         return;
+      }
+      if (wantsBus === true) {
+        if (!pickupPoint.trim()) {
+          alert('Please select a pickup point.');
+          return;
+        }
+      } else {
+        if (!arrivalDate.trim() || !arrivalTime.trim()) {
+          alert('Please fill out all required fields.');
+          return;
+        }
       }
     } else {
       if (!arrivalDate.trim() || !arrivalTime.trim() || !transportMode.trim()) {
@@ -111,6 +133,7 @@ export default function ArrivalDeclarationPage() {
 
     setSubmitting(true);
     try {
+      const isBusPickupSelected = (isFromJaipur && wantsBus === true) || (!isFromJaipur && (arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026'));
       const res = await fetch('/api/arrival/declare', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -119,12 +142,12 @@ export default function ArrivalDeclarationPage() {
           applicationNo: student.applicationNo,
           code: accessCode.trim(),
           isFromJaipur,
-          jaipurArea,
           wantsBus,
-          arrivalDate,
-          arrivalTime,
+          arrivalDate: (isFromJaipur && wantsBus) ? '' : arrivalDate,
+          arrivalTime: (isFromJaipur && wantsBus) ? '' : arrivalTime,
           transportMode,
-          pickupPoint: (arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026') ? pickupPoint : ''
+          pickupPoint: isBusPickupSelected ? pickupPoint : '',
+          email: email.trim()
         })
       });
 
@@ -314,7 +337,7 @@ export default function ArrivalDeclarationPage() {
             /* STEP 2: Declaration Details Form */
             <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 animate-fadeIn">
               {/* Account welcome card */}
-              <div className={`border-2 p-3 sm:p-4 rounded-2xl flex items-center justify-between text-xs shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-colors duration-300 ${isDark ? 'bg-black border-[#F3F4F6]' : 'bg-[#FFFDF9] border-slate-900'}`}>
+              <div className={`border-2 p-3 sm:p-4 rounded-2xl flex items-center justify-between text-xs shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-colors duration-300 ${isDark ? 'bg-black border-[#F3F4F6]' : 'bg-white border-slate-900'}`}>
                 <div>
                   <span className="text-[10px] font-black text-orange-600 uppercase tracking-wider">Welcome, Student</span>
                   <div className="font-black text-sm sm:text-base mt-0.5">{student.name}</div>
@@ -322,11 +345,34 @@ export default function ArrivalDeclarationPage() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => setStudent(null)}
+                  onClick={() => {
+                    setStudent(null);
+                    setEmail('');
+                  }}
                   className={`px-2.5 sm:px-3 py-1.5 border-2 hover:bg-rose-500 hover:text-white text-[10px] font-black uppercase rounded-xl transition-all duration-150 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[1px] hover:translate-y-[1px] cursor-pointer shrink-0 ${isDark ? 'bg-[#121212]/80 border-[#F3F4F6] text-[#F3F4F6]' : 'bg-white border-slate-900 text-slate-800'}`}
                 >
                   Change
                 </button>
+              </div>
+
+              {/* Email Verification Section */}
+              <div className="space-y-1.5 animate-fadeIn">
+                <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  Verify / Specify Your Email Address *
+                </label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    required
+                    placeholder="e.g. yourname@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                  />
+                  <svg className={`w-4 h-4 absolute left-3 top-3.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
               </div>
 
               {/* Jaipur Residency Query */}
@@ -339,6 +385,7 @@ export default function ArrivalDeclarationPage() {
                     onClick={() => {
                       setIsFromJaipur(true);
                       setTransportMode('');
+                      setPickupPoint('');
                     }}
                     className={`p-3.5 sm:p-4 border-2 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-2.5 cursor-pointer text-left sm:text-center transition-all ${isFromJaipur === true ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
                   >
@@ -355,8 +402,8 @@ export default function ArrivalDeclarationPage() {
                   <div 
                     onClick={() => {
                       setIsFromJaipur(false);
-                      setJaipurArea('');
                       setWantsBus(null);
+                      setPickupPoint('');
                     }}
                     className={`p-3.5 sm:p-4 border-2 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-2.5 cursor-pointer text-left sm:text-center transition-all ${isFromJaipur === false ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
                   >
@@ -374,25 +421,6 @@ export default function ArrivalDeclarationPage() {
               {/* Jaipur day scholar details panel */}
               {isFromJaipur === true && (
                 <div className="space-y-4 animate-slideUp">
-                  <div className="space-y-1.5">
-                    <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                      Specify Area / Locality in Jaipur *
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Vaishali Nagar, Mansarovar, C-Scheme"
-                        value={jaipurArea}
-                        onChange={(e) => setJaipurArea(e.target.value)}
-                        className={`w-full pl-9 pr-4 py-2.5 border-2 rounded-xl text-xs outline-none transition-all font-semibold shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
-                      />
-                      <svg className={`w-4 h-4 absolute left-3 top-3.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                      </svg>
-                    </div>
-                  </div>
-
                   {/* Avail Bus Facility Query */}
                   <div className="space-y-2">
                     <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
@@ -400,7 +428,10 @@ export default function ArrivalDeclarationPage() {
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div 
-                        onClick={() => setWantsBus(true)}
+                        onClick={() => {
+                          setWantsBus(true);
+                          setPickupPoint('');
+                        }}
                         className={`p-3.5 border-2 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === true ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
                       >
                         <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${wantsBus === true ? (isDark ? 'bg-indigo-600 border-[#F3F4F6]' : 'bg-orange-500 border-slate-900') : 'bg-white border-slate-400'}`}>
@@ -410,7 +441,10 @@ export default function ArrivalDeclarationPage() {
                       </div>
 
                       <div 
-                        onClick={() => setWantsBus(false)}
+                        onClick={() => {
+                          setWantsBus(false);
+                          setPickupPoint('');
+                        }}
                         className={`p-3.5 border-2 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-all ${wantsBus === false ? (isDark ? 'bg-indigo-500/10 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)] border-indigo-500' : 'bg-orange-500/10 shadow-[3px_3px_0px_0px_rgba(249,115,22,1)] border-orange-500') : 'bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50'} ${isDark ? 'border-[#F3F4F6] bg-black' : 'border-slate-900 bg-white'}`}
                       >
                         <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${wantsBus === false ? (isDark ? 'bg-indigo-600 border-[#F3F4F6]' : 'bg-orange-500 border-slate-900') : 'bg-white border-slate-400'}`}>
@@ -420,14 +454,49 @@ export default function ArrivalDeclarationPage() {
                       </div>
                     </div>
                   </div>
+
+                  {/* University Pickup Bus Option for Day Scholars (if wantsBus is true) */}
+                  {wantsBus === true && (
+                    <div className="space-y-4 animate-slideUp">
+                      <div className="space-y-1.5">
+                        <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                          Select Your University Bus Pickup Point *
+                        </label>
+                        <select
+                          required
+                          value={pickupPoint}
+                          onChange={(e) => setPickupPoint(e.target.value)}
+                          className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                        >
+                          <option value="">Select Option</option>
+                          <option value="Mansarovar Metro Station">Mansarovar Metro Station</option>
+                          <option value="Railway Station">Jaipur Railway Station</option>
+                        </select>
+                      </div>
+
+                      {/* Info Alert: time shared on email */}
+                      {pickupPoint && (
+                        <div className="p-3.5 bg-indigo-50 border-2 border-indigo-500 text-indigo-700 text-xs font-bold rounded-xl flex flex-col gap-1.5 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)]">
+                          <div className="flex items-center gap-2">
+                            <span className="text-base shrink-0">📍</span>
+                            <span>Bus location: Outside {pickupPoint}.</span>
+                          </div>
+                          <div className="flex items-center gap-2 border-t border-indigo-200 pt-1.5">
+                            <span className="text-base shrink-0">✉️</span>
+                            <span>Note: Precise pickup timings will be shared with you via email.</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
 
-              {/* Render arrival date and time selection for all students */}
-              {isFromJaipur !== null && (
+              {/* Render arrival date and time selection for all students who are NOT day scholars availing the bus */}
+              {isFromJaipur !== null && !(isFromJaipur && wantsBus === true) && (
                 <div className="space-y-4 animate-slideUp">
-                  <div className={(isFromJaipur && wantsBus) ? "space-y-1.5" : "grid grid-cols-1 sm:grid-cols-2 gap-4"}>
-                              {/* Arrival Date Input */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Arrival Date Input */}
                     <div className="space-y-1.5">
                       <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                         Date of Arrival at JKLU *
@@ -455,27 +524,25 @@ export default function ArrivalDeclarationPage() {
                     </div>
 
                     {/* Arrival Time Input */}
-                    {!(isFromJaipur && wantsBus) && (
-                      <div className="space-y-1.5">
-                        <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                          Approx Arrival Time at JKLU *
-                        </label>
-                        <select
-                          required
-                          value={arrivalTime}
-                          onChange={(e) => setArrivalTime(e.target.value)}
-                          className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
-                        >
-                          <option value="">Select Time Slot</option>
-                          <option value="Early Morning (6 AM - 9 AM)">Early Morning (6 AM - 9 AM)</option>
-                          <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
-                          <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
-                          <option value="Evening (4 PM - 8 PM)">Evening (4 PM - 8 PM)</option>
-                          <option value="Night (8 PM - Midnight)">Night (8 PM - Midnight)</option>
-                          <option value="Late Night (Midnight - 6 AM)">Late Night (Midnight - 6 AM)</option>
-                        </select>
-                      </div>
-                    )}
+                    <div className="space-y-1.5">
+                      <label className={`block text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                        Approx Arrival Time at JKLU *
+                      </label>
+                      <select
+                        required
+                        value={arrivalTime}
+                        onChange={(e) => setArrivalTime(e.target.value)}
+                        className={`w-full px-3 py-2.5 border-2 rounded-xl text-xs outline-none font-semibold cursor-pointer transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] focus:shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] ${isDark ? 'bg-black text-[#F3F4F6] border-[#F3F4F6] focus:border-indigo-500 focus:shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]' : 'bg-white text-slate-800 border-slate-900 focus:border-orange-500'}`}
+                      >
+                        <option value="">Select Time Slot</option>
+                        <option value="Early Morning (6 AM - 9 AM)">Early Morning (6 AM - 9 AM)</option>
+                        <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
+                        <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
+                        <option value="Evening (4 PM - 8 PM)">Evening (4 PM - 8 PM)</option>
+                        <option value="Night (8 PM - Midnight)">Night (8 PM - Midnight)</option>
+                        <option value="Late Night (Midnight - 6 AM)">Late Night (Midnight - 6 AM)</option>
+                      </select>
+                    </div>
                   </div>
 
                   {/* Mode of Transportation and Pickup Inputs */}
@@ -516,6 +583,20 @@ export default function ArrivalDeclarationPage() {
                             <option value="Mansarovar Metro Station">Yes, pickup from Mansarovar Metro Station</option>
                             <option value="Railway Station">Yes, pickup from Jaipur Railway Station</option>
                           </select>
+                        </div>
+                      )}
+
+                      {/* Info Alert for Outstation pick up: time shared on email */}
+                      {(pickupPoint === 'Mansarovar Metro Station' || pickupPoint === 'Railway Station') && (
+                        <div className="p-3.5 bg-indigo-50 border-2 border-indigo-500 text-indigo-700 text-xs font-bold rounded-xl flex flex-col gap-1.5 shadow-[3px_3px_0px_0px_rgba(79,70,229,1)]">
+                          <div className="flex items-center gap-2">
+                            <span className="text-base shrink-0">📍</span>
+                            <span>Bus location: Outside {pickupPoint}.</span>
+                          </div>
+                          <div className="flex items-center gap-2 border-t border-indigo-200 pt-1.5">
+                            <span className="text-base shrink-0">✉️</span>
+                            <span>Note: Precise pickup timings will be shared with you via email.</span>
+                          </div>
                         </div>
                       )}
                     </div>

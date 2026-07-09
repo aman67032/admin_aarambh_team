@@ -61,12 +61,12 @@ router.post('/declare', async (req, res) => {
       applicationNo,
       code,
       isFromJaipur, 
-      jaipurArea, 
       wantsBus, 
       arrivalDate, 
       arrivalTime, 
       transportMode,
-      pickupPoint
+      pickupPoint,
+      email
     } = req.body;
 
     if (!cohort || !applicationNo || !code) {
@@ -91,15 +91,21 @@ router.post('/declare', async (req, res) => {
       return res.status(404).json({ error: 'Invalid details. Verification failed.' });
     }
 
+    if (email && email.trim()) {
+      matchedStudent.email = email.trim().toLowerCase();
+    }
+
     // Set arrivalInfo sub-document
     matchedStudent.arrivalInfo = {
       isFromJaipur: !!isFromJaipur,
-      jaipurArea: isFromJaipur ? (jaipurArea || '').trim() : undefined,
       wantsBus: isFromJaipur ? !!wantsBus : undefined,
       arrivalDate: (arrivalDate || '').trim(),
       arrivalTime: (isFromJaipur && wantsBus) ? undefined : (arrivalTime || '').trim(),
       transportMode: !isFromJaipur ? (transportMode || '').trim() : undefined,
-      pickupPoint: (!isFromJaipur && (arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026')) ? (pickupPoint || '').trim() : undefined,
+      pickupPoint: (
+        (isFromJaipur && wantsBus) || 
+        (!isFromJaipur && (arrivalDate === '12-07-2026' || arrivalDate === '13-07-2026'))
+      ) ? (pickupPoint || '').trim() : undefined,
       declaredAt: new Date()
     };
 
