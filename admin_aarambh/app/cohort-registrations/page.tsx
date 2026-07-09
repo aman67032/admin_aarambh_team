@@ -268,11 +268,11 @@ export default function CohortRegistrationsPage() {
   }
 
   // Group cohorts into brackets
-  const bracketLess3: BracketItem[] = [];
-  const bracketEqual3: BracketItem[] = [];
-  const bracketEqual4: BracketItem[] = [];
+  const bracketLess5: BracketItem[] = [];
   const bracketEqual5: BracketItem[] = [];
-  const bracketMore5: BracketItem[] = [];
+  const bracketEqual6: BracketItem[] = [];
+  const bracketEqual7: BracketItem[] = [];
+  const bracketMore7: BracketItem[] = [];
 
   cohortsRanked.forEach(c => {
     const item = {
@@ -280,25 +280,25 @@ export default function CohortRegistrationsPage() {
       registered: c.registered,
       activeTarget: c.activeTarget
     };
-    if (c.registered < 3) {
-      bracketLess3.push(item);
-    } else if (c.registered === 3) {
-      bracketEqual3.push(item);
-    } else if (c.registered === 4) {
-      bracketEqual4.push(item);
+    if (c.registered < 5) {
+      bracketLess5.push(item);
     } else if (c.registered === 5) {
       bracketEqual5.push(item);
+    } else if (c.registered === 6) {
+      bracketEqual6.push(item);
+    } else if (c.registered === 7) {
+      bracketEqual7.push(item);
     } else {
-      bracketMore5.push(item);
+      bracketMore7.push(item);
     }
   });
 
   const sortFn = (a: BracketItem, b: BracketItem) => a.cohortName.localeCompare(b.cohortName);
-  bracketLess3.sort(sortFn);
-  bracketEqual3.sort(sortFn);
-  bracketEqual4.sort(sortFn);
+  bracketLess5.sort(sortFn);
   bracketEqual5.sort(sortFn);
-  bracketMore5.sort(sortFn);
+  bracketEqual6.sort(sortFn);
+  bracketEqual7.sort(sortFn);
+  bracketMore7.sort(sortFn);
 
   // Group statistics by cluster
   const clusterStats: Array<{
@@ -499,58 +499,28 @@ export default function CohortRegistrationsPage() {
               <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Cohort Size Brackets (Database Registered)</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
-              {/* Bracket <3 */}
+              {/* Bracket <5 */}
               <div className="glass-card p-4 flex flex-col gap-2 border-t-4 border-t-rose-500 bg-rose-500/5">
-                <div className="text-[10px] font-bold text-rose-500 uppercase tracking-wider">Bracket &lt; 3</div>
-                <div className="text-2xl font-black text-rose-600">{bracketLess3.length} <span className="text-xs font-normal text-text-muted">cohorts</span></div>
+                <div className="text-[10px] font-bold text-rose-500 uppercase tracking-wider">Bracket &lt; 5</div>
+                <div className="text-2xl font-black text-rose-600">{bracketLess5.length} <span className="text-xs font-normal text-text-muted">cohorts</span></div>
                 <div className="flex flex-col gap-1 mt-1 overflow-y-auto max-h-[140px] scrollbar-thin">
-                  {bracketLess3.map(item => (
+                  {bracketLess5.map(item => (
                     <div key={item.cohortName} className="flex items-center justify-between text-[10px] font-bold px-2 py-1 rounded bg-rose-100 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200/50">
                       <span>Cohort {item.cohortName}</span>
                       <span className="font-extrabold text-[11px]">{item.registered}/{item.activeTarget}</span>
                     </div>
                   ))}
-                  {bracketLess3.length === 0 && <span className="text-[10px] text-text-muted italic">None</span>}
-                </div>
-              </div>
-
-              {/* Bracket =3 */}
-              <div className="glass-card p-4 flex flex-col gap-2 border-t-4 border-t-orange-500 bg-orange-500/5">
-                <div className="text-[10px] font-bold text-orange-500 uppercase tracking-wider">Bracket = 3</div>
-                <div className="text-2xl font-black text-orange-600">{bracketEqual3.length} <span className="text-xs font-normal text-text-muted">cohorts</span></div>
-                <div className="flex flex-col gap-1 mt-1 overflow-y-auto max-h-[140px] scrollbar-thin">
-                  {bracketEqual3.map(item => (
-                    <div key={item.cohortName} className="flex items-center justify-between text-[10px] font-bold px-2 py-1 rounded bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200/50">
-                      <span>Cohort {item.cohortName}</span>
-                      <span className="font-extrabold text-[11px]">{item.registered}/{item.activeTarget}</span>
-                    </div>
-                  ))}
-                  {bracketEqual3.length === 0 && <span className="text-[10px] text-text-muted italic">None</span>}
-                </div>
-              </div>
-
-              {/* Bracket =4 */}
-              <div className="glass-card p-4 flex flex-col gap-2 border-t-4 border-t-amber-500 bg-amber-500/5">
-                <div className="text-[10px] font-bold text-amber-500 uppercase tracking-wider">Bracket = 4</div>
-                <div className="text-2xl font-black text-amber-600">{bracketEqual4.length} <span className="text-xs font-normal text-text-muted">cohorts</span></div>
-                <div className="flex flex-col gap-1 mt-1 overflow-y-auto max-h-[140px] scrollbar-thin">
-                  {bracketEqual4.map(item => (
-                    <div key={item.cohortName} className="flex items-center justify-between text-[10px] font-bold px-2 py-1 rounded bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/50">
-                      <span>Cohort {item.cohortName}</span>
-                      <span className="font-extrabold text-[11px]">{item.registered}/{item.activeTarget}</span>
-                    </div>
-                  ))}
-                  {bracketEqual4.length === 0 && <span className="text-[10px] text-text-muted italic">None</span>}
+                  {bracketLess5.length === 0 && <span className="text-[10px] text-text-muted italic">None</span>}
                 </div>
               </div>
 
               {/* Bracket =5 */}
-              <div className="glass-card p-4 flex flex-col gap-2 border-t-4 border-t-emerald-500 bg-emerald-500/5">
-                <div className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Bracket = 5</div>
-                <div className="text-2xl font-black text-emerald-600">{bracketEqual5.length} <span className="text-xs font-normal text-text-muted">cohorts</span></div>
+              <div className="glass-card p-4 flex flex-col gap-2 border-t-4 border-t-orange-500 bg-orange-500/5">
+                <div className="text-[10px] font-bold text-orange-500 uppercase tracking-wider">Bracket = 5</div>
+                <div className="text-2xl font-black text-orange-600">{bracketEqual5.length} <span className="text-xs font-normal text-text-muted">cohorts</span></div>
                 <div className="flex flex-col gap-1 mt-1 overflow-y-auto max-h-[140px] scrollbar-thin">
                   {bracketEqual5.map(item => (
-                    <div key={item.cohortName} className="flex items-center justify-between text-[10px] font-bold px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50">
+                    <div key={item.cohortName} className="flex items-center justify-between text-[10px] font-bold px-2 py-1 rounded bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200/50">
                       <span>Cohort {item.cohortName}</span>
                       <span className="font-extrabold text-[11px]">{item.registered}/{item.activeTarget}</span>
                     </div>
@@ -559,18 +529,48 @@ export default function CohortRegistrationsPage() {
                 </div>
               </div>
 
-              {/* Bracket >5 */}
-              <div className="glass-card p-4 flex flex-col gap-2 border-t-4 border-t-indigo-500 bg-indigo-500/5">
-                <div className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">Bracket &gt; 5</div>
-                <div className="text-2xl font-black text-indigo-600">{bracketMore5.length} <span className="text-xs font-normal text-text-muted">cohorts</span></div>
+              {/* Bracket =6 */}
+              <div className="glass-card p-4 flex flex-col gap-2 border-t-4 border-t-amber-500 bg-amber-500/5">
+                <div className="text-[10px] font-bold text-amber-500 uppercase tracking-wider">Bracket = 6</div>
+                <div className="text-2xl font-black text-amber-600">{bracketEqual6.length} <span className="text-xs font-normal text-text-muted">cohorts</span></div>
                 <div className="flex flex-col gap-1 mt-1 overflow-y-auto max-h-[140px] scrollbar-thin">
-                  {bracketMore5.map(item => (
+                  {bracketEqual6.map(item => (
+                    <div key={item.cohortName} className="flex items-center justify-between text-[10px] font-bold px-2 py-1 rounded bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/50">
+                      <span>Cohort {item.cohortName}</span>
+                      <span className="font-extrabold text-[11px]">{item.registered}/{item.activeTarget}</span>
+                    </div>
+                  ))}
+                  {bracketEqual6.length === 0 && <span className="text-[10px] text-text-muted italic">None</span>}
+                </div>
+              </div>
+
+              {/* Bracket =7 */}
+              <div className="glass-card p-4 flex flex-col gap-2 border-t-4 border-t-emerald-500 bg-emerald-500/5">
+                <div className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Bracket = 7</div>
+                <div className="text-2xl font-black text-emerald-600">{bracketEqual7.length} <span className="text-xs font-normal text-text-muted">cohorts</span></div>
+                <div className="flex flex-col gap-1 mt-1 overflow-y-auto max-h-[140px] scrollbar-thin">
+                  {bracketEqual7.map(item => (
+                    <div key={item.cohortName} className="flex items-center justify-between text-[10px] font-bold px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50">
+                      <span>Cohort {item.cohortName}</span>
+                      <span className="font-extrabold text-[11px]">{item.registered}/{item.activeTarget}</span>
+                    </div>
+                  ))}
+                  {bracketEqual7.length === 0 && <span className="text-[10px] text-text-muted italic">None</span>}
+                </div>
+              </div>
+
+              {/* Bracket >7 */}
+              <div className="glass-card p-4 flex flex-col gap-2 border-t-4 border-t-indigo-500 bg-indigo-500/5">
+                <div className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">Bracket &gt; 7</div>
+                <div className="text-2xl font-black text-indigo-600">{bracketMore7.length} <span className="text-xs font-normal text-text-muted">cohorts</span></div>
+                <div className="flex flex-col gap-1 mt-1 overflow-y-auto max-h-[140px] scrollbar-thin">
+                  {bracketMore7.map(item => (
                     <div key={item.cohortName} className="flex items-center justify-between text-[10px] font-bold px-2 py-1 rounded bg-indigo-100 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-200/50">
                       <span>Cohort {item.cohortName}</span>
                       <span className="font-extrabold text-[11px]">{item.registered}/{item.activeTarget}</span>
                     </div>
                   ))}
-                  {bracketMore5.length === 0 && <span className="text-[10px] text-text-muted italic">None</span>}
+                  {bracketMore7.length === 0 && <span className="text-[10px] text-text-muted italic">None</span>}
                 </div>
               </div>
             </div>
