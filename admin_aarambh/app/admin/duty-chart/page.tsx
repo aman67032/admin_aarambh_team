@@ -11,7 +11,9 @@ import {
   PHOTO_VOLUNTEERS,
   PHOTO_ASSIGNMENTS,
   FOOD_RECORDS,
-  MEDIA_RECORDS
+  MEDIA_RECORDS,
+  DISCIPLINE_RECORDS,
+  REGISTRATION_RECORDS
 } from '../../lib/dutyChartData';
 
 type TabType = 'master' | 'social_media' | 'photography' | 'media' | 'food';
@@ -179,12 +181,41 @@ export default function DutyChartPage() {
       }
     });
 
+    // 6. Search Discipline & Patrolling Records
+    const personalDiscipline: Array<{ day: string; timeSlot: string; event: string; venue: string; zone: string }> = [];
+    DISCIPLINE_RECORDS.forEach(dr => {
+      if (matchesQuery(dr.volunteer)) {
+        personalDiscipline.push({
+          day: dr.day,
+          timeSlot: dr.timeSlot,
+          event: dr.event,
+          venue: dr.venue,
+          zone: dr.zone
+        });
+      }
+    });
+
+    // 7. Search Registration & Feedback Records
+    const personalRegistration: Array<{ day: string; timeSlot: string; event: string; venue: string }> = [];
+    REGISTRATION_RECORDS.forEach(rr => {
+      if (matchesQuery(rr.volunteer)) {
+        personalRegistration.push({
+          day: rr.day,
+          timeSlot: rr.timeSlot,
+          event: rr.event,
+          venue: rr.venue
+        });
+      }
+    });
+
     return {
       master: personalMaster,
       social: personalSocial,
       photo: personalPhoto,
       food: personalFood,
-      media: personalMedia
+      media: personalMedia,
+      discipline: personalDiscipline,
+      registration: personalRegistration
     };
   };
 
@@ -194,7 +225,9 @@ export default function DutyChartPage() {
     personalData.social.length > 0 ||
     personalData.photo.length > 0 ||
     personalData.food.length > 0 ||
-    personalData.media.length > 0
+    personalData.media.length > 0 ||
+    personalData.discipline.length > 0 ||
+    personalData.registration.length > 0
   );
 
   return (
@@ -355,6 +388,56 @@ export default function DutyChartPage() {
                         <div>
                           <div className="font-extrabold text-foreground">{s.details}</div>
                           <div className="text-[10px] text-text-muted font-bold mt-0.5">{s.type}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Discipline & Patrolling Matches */}
+              {personalData.discipline.length > 0 && (
+                <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-3">
+                  <h3 className="text-xs font-black uppercase text-sky-500 tracking-wider">
+                    🛡️ Discipline & Patrolling Duties
+                  </h3>
+                  <div className="divide-y divide-card-border">
+                    {personalData.discipline.map((d, idx) => (
+                      <div key={idx} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                        <div>
+                          <div className="font-extrabold text-foreground">{d.zone}</div>
+                          <div className="text-[10px] text-text-muted font-bold mt-0.5">{d.day} | Event: {d.event}</div>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <span className="px-2 py-0.5 bg-sky-500/10 border border-sky-500/20 text-sky-600 rounded text-[9px] font-extrabold uppercase tracking-wide">
+                            {d.venue}
+                          </span>
+                          <div className="font-mono font-bold mt-1 text-[10px]">{d.timeSlot}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Registration & Feedback Matches */}
+              {personalData.registration.length > 0 && (
+                <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-3">
+                  <h3 className="text-xs font-black uppercase text-teal-500 tracking-wider">
+                    📝 Registration & Feedback Shifts
+                  </h3>
+                  <div className="divide-y divide-card-border">
+                    {personalData.registration.map((r, idx) => (
+                      <div key={idx} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                        <div>
+                          <div className="font-extrabold text-foreground">{r.event}</div>
+                          <div className="text-[10px] text-text-muted font-bold mt-0.5">{r.day}</div>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <span className="px-2 py-0.5 bg-teal-500/10 border border-teal-500/20 text-teal-600 rounded text-[9px] font-extrabold uppercase tracking-wide">
+                            {r.venue}
+                          </span>
+                          <div className="font-mono font-bold mt-1 text-[10px]">{r.timeSlot}</div>
                         </div>
                       </div>
                     ))}

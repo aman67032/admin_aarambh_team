@@ -13,6 +13,10 @@ import {
   PHOTO_ASSIGNMENTS,
   FOOD_RECORDS,
   MEDIA_RECORDS,
+  DISCIPLINE_RECORDS,
+  DisciplineRecord,
+  REGISTRATION_RECORDS,
+  RegistrationRecord,
   TEAM_MEMBERS_DB,
   TeamMemberDB
 } from '../lib/dutyChartData';
@@ -206,12 +210,41 @@ export default function PublicDutyChartPage() {
       }
     });
 
+    // 6. Search Discipline & Patrolling Records
+    const personalDiscipline: Array<{ day: string; timeSlot: string; event: string; venue: string; zone: string }> = [];
+    DISCIPLINE_RECORDS.forEach(dr => {
+      if (matchesQuery(dr.volunteer, name)) {
+        personalDiscipline.push({
+          day: dr.day,
+          timeSlot: dr.timeSlot,
+          event: dr.event,
+          venue: dr.venue,
+          zone: dr.zone
+        });
+      }
+    });
+
+    // 7. Search Registration & Feedback Records
+    const personalRegistration: Array<{ day: string; timeSlot: string; event: string; venue: string }> = [];
+    REGISTRATION_RECORDS.forEach(rr => {
+      if (matchesQuery(rr.volunteer, name)) {
+        personalRegistration.push({
+          day: rr.day,
+          timeSlot: rr.timeSlot,
+          event: rr.event,
+          venue: rr.venue
+        });
+      }
+    });
+
     return {
       master: personalMaster,
       social: personalSocial,
       photo: personalPhoto,
       food: personalFood,
-      media: personalMedia
+      media: personalMedia,
+      discipline: personalDiscipline,
+      registration: personalRegistration
     };
   };
 
@@ -221,61 +254,138 @@ export default function PublicDutyChartPage() {
     personalData.social.length > 0 ||
     personalData.photo.length > 0 ||
     personalData.food.length > 0 ||
-    personalData.media.length > 0
+    personalData.media.length > 0 ||
+    personalData.discipline.length > 0 ||
+    personalData.registration.length > 0
   );
 
   const getCommitteeDescription = (position: string) => {
     const pos = position.toLowerCase();
+    const isTeamLeader = pos.includes('team leader');
+
     if (pos.includes('cohort leader')) {
       return {
-        title: '🌟 Cohort Leader Responsibilities',
-        desc: 'As a Cohort Leader, you are the primary point of contact for your cohort of students. Guide them to venues, ensure attendance, resolve queries, and coordinate with your Cluster Head.'
+        title: '🌟 Cohort Leader',
+        desc: 'You are the primary point of contact for your cohort of new students. Guide them to every session venue, take attendance, resolve their queries on the spot, and escalate issues to your Cluster Head. You are present for all 8 days.',
+        noShiftNote: 'Cohort Leaders are on full-time duty throughout Aarambh — no individual shift slots are assigned in the roster.'
       };
     }
     if (pos.includes('cluster head')) {
       return {
-        title: '👑 Cluster Head Responsibilities',
-        desc: 'As a Cluster Head, you supervise a cluster of cohorts. Oversee and guide your Cohort Leaders, handle escalations, verify student registrations, and coordinate with the main organizing committee.'
+        title: '👑 Cluster Head',
+        desc: 'You oversee a cluster of cohorts and their Cohort Leaders. Ensure smooth coordination between leaders, verify student registrations, handle escalations, and liaise directly with the main organizing committee for the full 8 days.',
+        noShiftNote: 'Cluster Heads operate at a coordination level — no individual shift slots are assigned in the roster.'
+      };
+    }
+    if (pos.includes('internal arrangement')) {
+      return {
+        title: '🏛️ Internal Arrangements Committee',
+        desc: isTeamLeader
+          ? 'As Team Leader, you oversee all Internal Arrangements volunteers, confirm venue readiness, chair setup/teardown meetings, and act as the primary contact for venue-related issues across all 8 days.'
+          : 'Responsible for setting up event venues — arranging chairs, tables, podiums, signage, banners, and stage décor. Ensures each venue is ready before every session and packed up after. Works across New Tech Block, IM Amphitheater, and Sabrang Ground.',
+        noShiftNote: isTeamLeader
+          ? 'Team Leaders coordinate the committee — individual shift slots in the duty chart belong to your volunteers.'
+          : 'Your specific shift slots are assigned directly by your Team Leader based on the day\'s venue needs.'
+      };
+    }
+    if (pos.includes('events') || pos.includes('venue')) {
+      return {
+        title: '🎪 Events & Venue Committee',
+        desc: isTeamLeader
+          ? 'As Team Leader, you manage all Events & Venue volunteers, confirm speaker/performer schedules, and ensure each event runs on time and at the correct venue.'
+          : 'Responsible for managing event flow on the ground — welcoming speakers, guiding students to correct halls, managing queues, coordinating venue changeovers, and ensuring smooth transitions between sessions.',
+        noShiftNote: isTeamLeader
+          ? 'Team Leaders coordinate the committee — individual shift slots belong to your volunteers.'
+          : 'Your specific shift slots are assigned directly by your Team Leader.'
+      };
+    }
+    if (pos.includes('hospitality')) {
+      return {
+        title: '🤝 Hospitality Committee',
+        desc: isTeamLeader
+          ? 'As Team Leader, you supervise all Hospitality volunteers, manage guest reception, and ensure high-quality interaction at all events across 8 days.'
+          : 'Responsible for welcoming and escorting guests, speakers, and dignitaries. Manage guest registration tables, provide refreshments coordination during sessions, and represent Aarambh\'s hospitality at Alumni Connect, orientation sessions, and cultural events.',
+        noShiftNote: isTeamLeader
+          ? 'Team Leaders coordinate the committee — individual shift slots belong to your volunteers.'
+          : 'Your specific shift assignments rotate across Alumni Connect, orientation sessions, and cultural events.'
       };
     }
     if (pos.includes('technical')) {
       return {
-        title: '💻 Technical Committee Responsibilities',
-        desc: 'Responsible for managing audio-visual (AV) setups, microphones, speakers, stage lighting, laptops, presentations, and technical requirements across all venues (Seminar Hall, Auditorium, Central Plaza).'
+        title: '💻 Technical Committee',
+        desc: isTeamLeader
+          ? 'As Team Leader, you oversee all AV setups, manage the technical crew roster, and are the last line of troubleshooting for any equipment failure during events.'
+          : 'Responsible for audio-visual (AV) setups — microphones, speakers, projectors, stage lighting, laptops, and presentation displays — at Sabrang Ground (Main Stage), IM Amphitheater, IET Amphitheater, and all Tech Block rooms. On-call during every major event.',
+        noShiftNote: isTeamLeader
+          ? 'Team Leaders coordinate the technical crew — your volunteers hold the rostered shift slots.'
+          : 'Your shift slots are assigned per event/venue. You may be called on-duty for unscheduled technical needs.'
       };
     }
     if (pos.includes('feedback') || pos.includes('registration')) {
       return {
-        title: '📝 Feedback & Registration Committee Responsibilities',
-        desc: 'Responsible for student check-ins, registration desks, distribution of welcome kits, ID cards, and coordinating feedback forms/surveys after orientation sessions.'
+        title: '📝 Feedback & Registration Committee',
+        desc: isTeamLeader
+          ? 'As Team Leader, you manage registration desks, oversee welcome kit distribution, ensure feedback forms are collected after each session, and compile all registration data for the organizing team.'
+          : 'Responsible for student check-ins at registration desks, distributing welcome kits, ID cards, and event booklets, setting up feedback collection stations after every orientation session, and reporting registration completion to Team Leaders.',
+        noShiftNote: isTeamLeader
+          ? 'Team Leaders coordinate the committee — individual roster slots belong to your volunteers. You are present at all key check-in moments.'
+          : 'The Feedback & Registration schedule is managed directly by your Team Leader — check with Pulkit Dosi for your assigned post and timing each day.'
       };
     }
     if (pos.includes('social media')) {
       return {
-        title: '📱 Social Media Committee Responsibilities',
-        desc: 'Responsible for capturing content, managing official social media handles, posting live updates, stories, reels, and maintaining high digital engagement throughout Aarambh 2026.'
+        title: '📱 Social Media Committee',
+        desc: isTeamLeader
+          ? 'As Team Leader, you manage content calendars, approve posts, coordinate with photography, and ensure consistent brand voice across all official handles for the full 8 days.'
+          : 'Responsible for live social media coverage — capturing behind-the-scenes moments, drafting captions, posting stories and reels on official handles, engaging with audience comments, and maintaining Aarambh\'s online presence throughout the event.',
+        noShiftNote: 'Social Media duty is continuous across all 8 days — co-ordinate daily posting schedules with your Team Leader.'
       };
     }
     if (pos.includes('photography')) {
       return {
-        title: '📸 Photography Committee Responsibilities',
-        desc: 'Responsible for professional photography and videography coverage of all major sessions, student interactions, performances, and venue setups. Coordinate with the Media team for uploads.'
+        title: '📸 Photography Committee',
+        desc: isTeamLeader
+          ? 'As Team Leader, you allocate photographers to venues, review and curate daily shoots, coordinate uploads to shared drives, and liaise with the Media committee for press coverage.'
+          : 'Responsible for professional photography and videography at all major sessions — Inaugural Ceremony, Alumni Connect, cultural performances, sports activities, and the Valedictory. Cover both candid and formal shots. Upload edited photos to shared drives daily.',
+        noShiftNote: isTeamLeader
+          ? 'Team Leaders coordinate the photography crew — your volunteers hold individual venue/slot assignments.'
+          : 'Your photography slots are assigned per venue by your Team Leader. Carry equipment briefing pass always.'
       };
     }
     if (pos.includes('media')) {
       return {
-        title: '🎥 Media Committee Responsibilities',
-        desc: 'Manage press coordination, news coverage, photography curation, content drafting, and writing daily newsletters/press releases for Aarambh 2026.'
+        title: '🎥 Media Committee',
+        desc: isTeamLeader
+          ? 'As Team Leader, you manage media relationships, review daily newsletters/press releases, coordinate with photography and social media, and ensure complete and accurate coverage throughout Aarambh.'
+          : 'Responsible for press coordination, writing daily newsletters, drafting press releases, and curating media content. Work closely with photography and social media teams to maintain narrative consistency across all Aarambh channels.',
+        noShiftNote: 'Media duties are continuous — shifts are assigned by your Team Leader based on the daily event schedule.'
       };
     }
-    if (pos.includes('food') || pos.includes('accommodation') || pos.includes('hospitality')) {
+    if (pos.includes('food') || pos.includes('accommodation')) {
       return {
-        title: '🍽️ Food & Accommodation Committee Responsibilities',
-        desc: 'Manage hostel arrival receptions, mess entry coordination, room keys distribution, hospitality for guests, and help desk services for new students at BH-1 and GH-2.'
+        title: '🍽️ Food & Accommodation Committee',
+        desc: isTeamLeader
+          ? 'As Team Leader, you manage hostel check-in operations, coordinate with mess/canteen supervisors, oversee room key distribution, and resolve accommodation issues for all 174+ incoming students.'
+          : 'Responsible for hostel arrival reception, distributing room keys and welcome letters, coordinating meal-time entry at the mess, managing the help desk at BH-1 and GH-2, and assisting students with accommodation queries for all 8 days.',
+        noShiftNote: isTeamLeader
+          ? 'Team Leaders coordinate the committee — individual hostel/mess shift slots belong to your volunteers.'
+          : 'Your specific hostel and mess duty slots are listed in the Food & Accommodation Duty Chart. Check with your Team Leader for your assigned hostel block.'
+      };
+    }
+    if (pos.includes('discipline')) {
+      return {
+        title: '🛡️ Discipline Committee',
+        desc: isTeamLeader
+          ? 'As Team Leader, you supervise the entire Discipline Committee, manage active venue security and patrolling rosters, coordinate with the Office of Student Affairs, and handle escalations and emergency security concerns.'
+          : 'Responsible for maintaining order, crowd flow, and security at all Aarambh events, venues, and restricted campus zones. Ensure safety protocols are followed and report incidents immediately to Team Leaders.',
+        noShiftNote: isTeamLeader
+          ? 'Team Leaders coordinate the discipline rosters — individual venue security and patrolling shifts belong to your volunteers/cohort leaders.'
+          : 'Discipline and patrolling shifts rotate based on active session schedules. Check the Discipline Roster or contact Kartik Sharma / Pratigya Bomb for your daily assignments.'
       };
     }
     return null;
   };
+
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden text-foreground flex flex-col justify-between font-outfit">
@@ -391,21 +501,31 @@ export default function PublicDutyChartPage() {
             {/* TAB: PERSONAL */}
             {activeTab === 'personal' && (
               <div className="space-y-6">
-                {matchedMember && getCommitteeDescription(matchedMember.position) && (
-                  <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-2">
-                    <h3 className="text-xs font-black uppercase text-primary tracking-wider">
-                      {getCommitteeDescription(matchedMember.position)?.title}
-                    </h3>
-                    <p className="text-xs text-text-muted leading-relaxed font-semibold">
-                      {getCommitteeDescription(matchedMember.position)?.desc}
-                    </p>
-                  </div>
-                )}
+                {matchedMember && getCommitteeDescription(matchedMember.position) && (() => {
+                  const cd = getCommitteeDescription(matchedMember.position)!;
+                  return (
+                    <div className="bg-card-bg border border-primary/30 p-5 rounded-2xl shadow-sm space-y-2">
+                      <h3 className="text-xs font-black uppercase text-primary tracking-wider">
+                        {cd.title}
+                      </h3>
+                      <p className="text-xs text-text-muted leading-relaxed font-semibold">
+                        {cd.desc}
+                      </p>
+                      {!hasPersonalResults && cd.noShiftNote && (
+                        <p className="text-[11px] text-amber-500 leading-relaxed font-bold bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2 mt-2">
+                          ℹ️ {cd.noShiftNote}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 {!hasPersonalResults ? (
-                  <div className="py-16 text-center text-text-muted text-sm border border-dashed border-card-border rounded-2xl bg-card-bg/25">
-                    No active shift assignments were found in the duty spreadsheets for &quot;{matchedMember.name}&quot;.
-                  </div>
+                  !getCommitteeDescription(matchedMember.position)?.noShiftNote && (
+                    <div className="py-16 text-center text-text-muted text-sm border border-dashed border-card-border rounded-2xl bg-card-bg/25">
+                      No active shift assignments were found in the duty spreadsheets for &quot;{matchedMember.name}&quot;.
+                    </div>
+                  )
                 ) : (
                   <div className="grid grid-cols-1 gap-6">
                     {/* Master Schedule Matches */}
@@ -506,6 +626,56 @@ export default function PublicDutyChartPage() {
                               <div>
                                 <div className="font-extrabold text-foreground">{s.details}</div>
                                 <div className="text-[10px] text-text-muted font-bold mt-0.5">{s.type}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Discipline & Patrolling Matches */}
+                    {personalData.discipline.length > 0 && (
+                      <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-3">
+                        <h3 className="text-xs font-black uppercase text-sky-500 tracking-wider">
+                          🛡️ Discipline & Patrolling Duties
+                        </h3>
+                        <div className="divide-y divide-card-border">
+                          {personalData.discipline.map((d, idx) => (
+                            <div key={idx} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                              <div>
+                                <div className="font-extrabold text-foreground">{d.zone}</div>
+                                <div className="text-[10px] text-text-muted font-bold mt-0.5">{d.day} | Event: {d.event}</div>
+                              </div>
+                              <div className="text-right shrink-0">
+                                <span className="px-2 py-0.5 bg-sky-500/10 border border-sky-500/20 text-sky-600 rounded text-[9px] font-extrabold uppercase tracking-wide">
+                                  {d.venue}
+                                </span>
+                                <div className="font-mono font-bold mt-1 text-[10px]">{d.timeSlot}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Registration & Feedback Matches */}
+                    {personalData.registration.length > 0 && (
+                      <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-3">
+                        <h3 className="text-xs font-black uppercase text-teal-500 tracking-wider">
+                          📝 Registration & Feedback Shifts
+                        </h3>
+                        <div className="divide-y divide-card-border">
+                          {personalData.registration.map((r, idx) => (
+                            <div key={idx} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                              <div>
+                                <div className="font-extrabold text-foreground">{r.event}</div>
+                                <div className="text-[10px] text-text-muted font-bold mt-0.5">{r.day}</div>
+                              </div>
+                              <div className="text-right shrink-0">
+                                <span className="px-2 py-0.5 bg-teal-500/10 border border-teal-500/20 text-teal-600 rounded text-[9px] font-extrabold uppercase tracking-wide">
+                                  {r.venue}
+                                </span>
+                                <div className="font-mono font-bold mt-1 text-[10px]">{r.timeSlot}</div>
                               </div>
                             </div>
                           ))}

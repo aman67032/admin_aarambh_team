@@ -49,6 +49,23 @@ export interface MediaRecord {
   volunteers: string;
 }
 
+export interface RegistrationRecord {
+  day: string;
+  timeSlot: string;
+  event: string;
+  venue: string;
+  volunteer: string;
+}
+
+export interface DisciplineRecord {
+  day: string;
+  timeSlot: string;
+  event: string;
+  venue: string;
+  zone: string;
+  volunteer: string;
+}
+
 export interface TeamMemberDB {
   name: string;
   rollNo: string;
@@ -60,39 +77,30 @@ export interface TeamMemberDB {
 
 export const MASTER_SCHEDULE: Record<string, MasterDay> = {
   "DAY1": {
-    "label": "DAY 01  Tuesday 14th July 2026  Open Skies Day",
+    "label": "Tue 14 Jul",
     "events": [
       {
         "time": "11:00am - 12:30pm",
-        "event": "Inaugural Ceremony\nVenue: Sabrang Ground \u2013 Main Stage",
+        "event": "Full Team - 14",
         "duties": {
-          "Internal Arrangments": "Full Team - 14",
-          "Events & Venue": "FULL TEAM",
-          "Hospitality": "Below",
-          "Technical": "Full Team"
+          "Internal Arrangments": "Full Team - 14"
         }
       },
       {
         "time": "12:30pm - 1:00pm",
-        "event": "Aarambh Schedule | Rules & Regulations\nMr. Deepak Sogani, Head - Student Affairs \nVenue: Sabrang Ground \u2013 Main Stage",
+        "event": "Full Team - 14",
         "duties": {
-          "Internal Arrangments": "Full Team - 14",
-          "Events & Venue": "FULL TEAM",
-          "Technical": "Full Team"
+          "Internal Arrangments": "Full Team - 14"
         }
       },
       {
         "time": "1:00pm - 2:30pm",
-        "event": "Lunch",
-        "duties": {
-          "Internal Arrangments": "FREE",
-          "Events & Venue": "FREE",
-          "Feedback & Registration": "FREE"
-        }
+        "event": "",
+        "duties": {}
       },
       {
         "time": "2:30pm -5:30 pm",
-        "event": "Ice Breaking Session by Manish Freeman & Team\nVenue: New Tech Block",
+        "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
         "duties": {
           "Internal Arrangments": "Pari Maloo, Lakshay, Priyanshu, Raghav",
           "Events & Venue": "Navya and Shubhangi , Navya and Shubhangi , Priyanshi and Pari, Manvik and Tanvi",
@@ -101,16 +109,12 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
       },
       {
         "time": "5:30 pm - 6:30 pm",
-        "event": "High-Tea",
-        "duties": {
-          "Internal Arrangments": "FREE",
-          "Events & Venue": "FREE",
-          "Technical": "FREE"
-        }
+        "event": "",
+        "duties": {}
       },
       {
         "time": "6:30 pm - 9:00pm",
-        "event": "Treasure Hunt by Manish Freeman & Team\nVenue: New Tech Block",
+        "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
         "duties": {
           "Internal Arrangments": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
           "Events & Venue": "Aman and Himangi, Parihaan and Priecy, Yatharth and Anvi, Naresh and Navya",
@@ -119,109 +123,161 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
       },
       {
         "time": "9:00 pm - 10:30pm",
-        "event": "Dinner",
-        "duties": {
-          "Internal Arrangments": "FREE",
-          "Events & Venue": "FREE",
-          "Technical": "FREE"
-        }
+        "event": "",
+        "duties": {}
       },
       {
         "time": "10:30pm - 11:30pm",
-        "event": "Kingdom Game Night by Manish Freeman & Team \nVenue: New Tech Block",
+        "event": "",
         "duties": {
           "Internal Arrangments": "Shrestha, Raghuraj, Harshvardhan Singh",
           "Events & Venue": "Subhangi and Yatharth , Siddhi and Priecy ,Tarushi and Aman, Himangi and Parihaan",
           "Technical": "Manant, Udit, Arihant"
         }
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {
+          "Feedback & Registration": "Full Day",
+          "Media": "Aadi",
+          "Photography": "Mr. Manish Freeman"
+        }
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {
+          "Feedback & Registration": "Full Day",
+          "Media": "Aadrika",
+          "Photography": "Ashutosh"
+        }
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {
+          "Feedback & Registration": "Full Day",
+          "Media": "Abhimanyu Singh",
+          "Photography": "Amreen"
+        }
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {
+          "Feedback & Registration": "Full Day",
+          "Media": "Anubha Sharma",
+          "Photography": "Chetan"
+        }
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {
+          "Feedback & Registration": "Full Day",
+          "Media": "Bhavya Doshi",
+          "Photography": "Vidushi"
+        }
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {
+          "Feedback & Registration": "Full Day",
+          "Media": "Sanskriti & Rahul Gorani",
+          "Photography": "Help Desk"
+        }
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {
+          "Feedback & Registration": "Full Day",
+          "Media": "Pawanii Sharma",
+          "Photography": "Available"
+        }
       }
     ]
   },
   "DAY2": {
-    "label": "DAY 02  Wednesday 15th July 2026  Bollywood Day",
+    "label": "Wed 15 Jul",
     "events": [
       {
         "time": "6:30am - 7:30am",
         "event": "Sports Activities",
         "duties": {
           "Internal Arrangments": "Pari Maloo, Lakshay, Raghav",
-          "Events & Venue": "Naresh, Priecy,Yatharth,Aman,Anvi,Priyanshi,Parihaan and Manvik",
-          "Hospitality": "Below"
+          "Events & Venue": "Naresh, Priecy,Yatharth,Aman,Anvi,Priyanshi,Parihaan and Manvik"
         }
       },
       {
         "time": "7:30am - 8:50am",
-        "event": "Breakfast",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "9:30am - 1:00pm",
+        "event": "",
         "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
+          "Internal Arrangments": "Saanchi, Priyanshu, Jitendra, Hardik Kumawat",
+          "Events & Venue": "Himangi and Tarushi , Siddhi and Navya , Pari and Subhangi , Tanvi"
         }
       },
       {
         "time": "9:30am - 1:00pm",
-        "event": "Youth UnConference  by Manish Freeman and Team",
-        "duties": {
-          "Internal Arrangments": "Saanchi, Priyanshu, Jitendra, Hardik Kumawat",
-          "Events & Venue": "Himangi and Tarushi , Siddhi and Navya , Pari and Subhangi , Tanvi",
-          "Technical": "Full Team"
-        }
-      },
-      {
-        "time": "",
-        "event": "Venue: New Tech Block",
+        "event": "",
         "duties": {}
       },
       {
         "time": "1:00pm - 2:30pm",
-        "event": "Lunch",
-        "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
-        }
+        "event": "",
+        "duties": {}
       },
       {
         "time": "2:30pm -5:30pm",
         "event": "Auction Arena",
         "duties": {
-          "Internal Arrangments": "1st venue(Rahuraj& Shrestha), 2nd Venue(Harshvardhan), 3rd Venue(Pari & Anoushka), 4th Venue(Hardik Sain)",
-          "Events & Venue": "Naresh , Yatharth , Aman , Manvik",
-          "Technical": "Full Team"
+          "Events & Venue": "Naresh , Yatharth , Aman , Manvik"
         }
       },
       {
-        "time": "",
-        "event": "Venue: All four Batches Together in four venues By Team Aarambh",
+        "time": "2:30pm -5:30pm",
+        "event": "",
         "duties": {}
       },
       {
         "time": "5:30 pm - 6:30 pm",
-        "event": "High-Tea",
-        "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
-        }
+        "event": "",
+        "duties": {}
       },
       {
         "time": "6:30 pm - 9:00pm",
         "event": "Decode the Drama",
         "duties": {
-          "Internal Arrangments": "1st venue(Ghyan & Farhan), 2nd Venue(Saanchi & Priyanshu) 3rd Venue(Jitendra & Hardik Kumawat), 4th Venue(Raghav & Lakshay)",
           "Events & Venue": "Anvi,Parihaan, Priecy, Priyanshi, Tarushi",
           "Technical": "Pratham, Ashutosh , Arihant"
         }
       },
       {
-        "time": "",
-        "event": "Venue: All four Batches Together in four venues By Team Aarambh",
+        "time": "6:30 pm - 9:00pm",
+        "event": "",
         "duties": {}
       },
       {
         "time": "9:00 pm - 10:30pm",
-        "event": "Dinner",
-        "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
-        }
+        "event": "",
+        "duties": {}
       },
       {
         "time": "10:30pm - 11:30pm",
@@ -231,20 +287,49 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
         }
       },
       {
-        "time": "",
-        "event": "Venue: Sabrang Ground \u2013 Main Stage",
+        "time": "10:30pm - 11:30pm",
+        "event": "",
         "duties": {}
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {
+          "Feedback & Registration": "Half Day",
+          "Media": "Aadi , Aadrika  , Abhimanyu Singh  , Anubha Sharma , Bhavya Doshi",
+          "Photography": "Continue with Manish Freeman + Team"
+        }
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {
+          "Media": "Rahul Gorani  , Sanskriti",
+          "Photography": "Help Desk"
+        }
+      },
+      {
+        "time": "10:30pm - 11:30pm",
+        "event": "",
+        "duties": {
+          "Media": "Pawanii Sharma",
+          "Photography": "Available"
+        }
       }
     ]
   },
   "DAY3": {
-    "label": "DAY 03 Thursday 16th July 2026  Canvas Day",
+    "label": "Thu 16 Jul",
     "events": [
       {
         "time": "6:30am - 7:30am",
-        "event": "",
+        "event": "Sports Activities",
         "duties": {
-          "Event": "Sports Activities",
           "Internal Arrangments": "Saanchi, Priyanshu, Hardik Kumawat",
           "Events & Venue": "Naresh, Priecy,Yatharth,Aman,Anvi,Priyanshi,Parihaan and Manvik"
         }
@@ -252,25 +337,12 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
       {
         "time": "7:30am - 8:50am",
         "event": "",
-        "duties": {
-          "Event": "Breakfast",
-          "Internal Arrangments": "FREE"
-        }
+        "duties": {}
       },
       {
         "time": "Batch 1",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "1",
-          "Events & Venue": "1",
-          "Food & Accommodation": "1",
-          "Hospitality": "1",
-          "Feedback & Registration": "1",
-          "Media": "1",
-          "Photography": "1",
-          "Social Media": "1",
-          "Technical": "1"
-        }
+        "duties": {}
       },
       {
         "time": "Time",
@@ -279,76 +351,113 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
       },
       {
         "time": "9:30am - 1:00pm",
+        "event": "Session on POSH and Digital Well Being",
+        "duties": {
+          "Internal Arrangments": "Hardik Kumawat / Raghav & Saanchi / Raghuraj, Hardik Sain, Lakshya & Shrestha / Pari Maloo & Ghyan",
+          "Events & Venue": "Pari and Himangi / Tarushi and Subhangi / Siddhi and Tanvi / Navya & Yatharth",
+          "Hospitality": "Rahul Gorani / Sanskriti / Pawanii Sharma / Abhimanyu Singh & Anubha Sharma",
+          "Technical": "Ashutosh, Manant / Heramb, Udit / Arihant, Aalap, Amrit / Rashi, Pratham"
+        }
+      },
+      {
+        "time": "9:30am - 1:00pm",
+        "event": "Mrs. Anjali Suneja",
+        "duties": {}
+      },
+      {
+        "time": "9:30am - 1:00pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "9:30am - 1:00pm",
         "event": "",
         "duties": {
-          "Internal Arrangments": "Hardik Kumawat",
-          "Events & Venue": "Pari and Himangi",
-          "Hospitality": "Rahul Gorani",
-          "Technical": "Ashutosh, Manant"
+          "Internal Arrangments": "Anoushka & Farhan",
+          "Hospitality": "Bhavya Doshi & Aadrika"
         }
+      },
+      {
+        "time": "9:30am - 1:00pm",
+        "event": "",
+        "duties": {}
       },
       {
         "time": "Lunch",
         "event": "",
+        "duties": {}
+      },
+      {
+        "time": "2:00pm \u2013 5:30pm",
+        "event": "Craft Appreciation and Art Workshop",
         "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
+          "Internal Arrangments": "Pari Maloo,Harshvardhan Singh & Hardik Sain / Shrestha & Hardik Kumawat / Raghav & Priyanshu / Anoushka, Farhan, Ghyan & Lakshya",
+          "Events & Venue": "Priecy & Manvik / Priyanshi & Anvi / Parihaan & Tarushi / Naresh & Siddhi",
+          "Hospitality": "Sanskriti / Bhavya Doshi & Aadrika / Rahul Gorani / Pawanii Sharma",
+          "Technical": "Ashutosh, Manant / Heramb, Udit / Arihant, Aalap, Amrit / Rashi, Pratham"
         }
+      },
+      {
+        "time": "2:00pm \u2013 5:30pm",
+        "event": "Mr. Amitanshu Shrivastava",
+        "duties": {}
       },
       {
         "time": "2:00pm \u2013 5:30pm",
         "event": "",
         "duties": {
-          "Internal Arrangments": "Pari Maloo,Harshvardhan Singh & Hardik Sain",
-          "Events & Venue": "Priecy & Manvik",
-          "Hospitality": "Sanskriti",
-          "Technical": "Ashutosh, Manant"
+          "Internal Arrangments": "Jitendra & Saanchi",
+          "Hospitality": "Abhimanyu Singh & Anubha Sharma"
         }
+      },
+      {
+        "time": "2:00pm \u2013 5:30pm",
+        "event": "",
+        "duties": {}
       },
       {
         "time": "High-Tea",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
-        }
+        "duties": {}
+      },
+      {
+        "time": "6:30 pm - 8:30pm",
+        "event": "Canvas Connections",
+        "duties": {}
       },
       {
         "time": "6:30 pm - 8:30pm",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "FULL TEAM",
-          "Technical": "FULL TEAM"
-        }
+        "duties": {}
       },
       {
         "time": "Dinner",
         "event": "",
+        "duties": {}
+      },
+      {
+        "time": "10:00pm -11:30pm",
+        "event": "Own the Stage",
         "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
+          "Internal Arrangments": "Raghuraj, Harshvardhan Singh , Jitendra",
+          "Events & Venue": "Subhangi & Pari & Manvik & Anvi",
+          "Technical": "Rashi, Heramb, Ashutosh"
         }
       },
       {
         "time": "10:00pm -11:30pm",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "Raghuraj, Harshvardhan Singh , Jitendra",
-          "Events & Venue": "Subhangi & Pari & Manvik & Anvi",
-          "Hospitality": "FREE",
-          "Technical": "Rashi, Heramb, Ashutosh"
-        }
+        "duties": {}
       }
     ]
   },
   "DAY4": {
-    "label": "DAY 04 Friday 17th July 2026 Anime & Toons Day",
+    "label": "Fri 17 Jul",
     "events": [
       {
         "time": "6:30am - 7:30am",
-        "event": "",
+        "event": "Sports Activities",
         "duties": {
-          "Event": "Sports Activities",
           "Internal Arrangments": "Pari Maloo,Harshvardhan Singh & Hardik Sain",
           "Events & Venue": "(Navya,Himangi,Subhangi,Tarushi"
         }
@@ -356,26 +465,12 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
       {
         "time": "7:30am - 8:50am",
         "event": "",
-        "duties": {
-          "Event": "Breakfast",
-          "Internal Arrangments": "FREE",
-          "Events & Venue": "FREE"
-        }
+        "duties": {}
       },
       {
         "time": "Batch 1",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "1",
-          "Events & Venue": "1",
-          "Food & Accommodation": "1",
-          "Hospitality": "1",
-          "Feedback & Registration": "1",
-          "Media": "1",
-          "Photography": "1",
-          "Social Media": "1",
-          "Technical": "1"
-        }
+        "duties": {}
       },
       {
         "time": "Time",
@@ -384,31 +479,51 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
       },
       {
         "time": "9:30am - 1:00pm",
+        "event": "Clay All Day",
+        "duties": {
+          "Internal Arrangments": "Raghuraj, Hardik Sain, Lakshya & Shrestha / Hardik Kumawat / Pari Maloo & Ghyan / Raghav & Saanchi",
+          "Events & Venue": "Naresh and Anvi / Priecy and Siddhi / Parihaan & Pari / Priyanshi and Tanvi",
+          "Hospitality": "Pawanii Sharma / Rahul Gorani / Abhimanyu Singh & Anubha Sharma / Sanskriti",
+          "Technical": "Ashutosh, Manant / Heramb, Udit / Arihant, Aalap, Amrit / Rashi, Pratham"
+        }
+      },
+      {
+        "time": "9:30am - 1:00pm",
+        "event": "Mr. Kunal Agarwal",
+        "duties": {}
+      },
+      {
+        "time": "9:30am - 1:00pm",
         "event": "",
         "duties": {
-          "Internal Arrangments": "Raghuraj, Hardik Sain, Lakshya & Shrestha",
-          "Events & Venue": "Naresh and Anvi",
-          "Hospitality": "Pawanii Sharma",
-          "Technical": "Ashutosh, Manant"
+          "Internal Arrangments": "Anoushka & Farhan",
+          "Hospitality": "Bhavya Doshi & Aadrika"
         }
+      },
+      {
+        "time": "9:30am - 1:00pm",
+        "event": "",
+        "duties": {}
       },
       {
         "time": "Lunch",
         "event": "",
+        "duties": {}
+      },
+      {
+        "time": "2:00pm - 3:00pm",
+        "event": "Session on Art of Living",
         "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
+          "Internal Arrangments": "Shrestha & Hardik Kumawat / Anoushka, Farhan, Ghyan & Lakshya / Pari Maloo,Harshvardhan Singh & Hardik Sain / Raghav & Priyanshu",
+          "Events & Venue": "pari & Himangi / Manvik and Yatharth / Parihaan and Priyanshi / Aman and Navya",
+          "Hospitality": "Bhavya Doshi & Aadrika / Pawanii Sharma / Sanskriti / Rahul Gorani",
+          "Technical": "Ashutosh, Manant / Heramb, Udit / Arihant, Aalap, Amrit / Rashi, Pratham"
         }
       },
       {
         "time": "2:00pm - 3:00pm",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "Shrestha & Hardik Kumawat",
-          "Events & Venue": "pari & Himangi",
-          "Hospitality": "Bhavya Doshi & Aadrika",
-          "Technical": "Ashutosh, Manant"
-        }
+        "duties": {}
       },
       {
         "time": "3:00pm \u2013 5:30pm",
@@ -419,16 +534,18 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
         }
       },
       {
+        "time": "3:00pm \u2013 5:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
         "time": "High-Tea",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
-        }
+        "duties": {}
       },
       {
         "time": "6:30 pm - 8:30pm",
-        "event": "",
+        "event": "Dance-Verse",
         "duties": {
           "Internal Arrangments": "Ghyan & Lakshya",
           "Events & Venue": "Pari,Aman,Tanvi , Subhangi,Siddhi",
@@ -437,61 +554,55 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
         }
       },
       {
+        "time": "6:30 pm - 8:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
         "time": "Dinner",
         "event": "",
+        "duties": {}
+      },
+      {
+        "time": "10:00pm - 11:30pm",
+        "event": "Lights. Camera. Chill.",
         "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
+          "Internal Arrangments": "Shrestha & Hardik Kumawat",
+          "Events & Venue": "Naresh,Aman,Anvi,Manvik,Navya,Priecy,Pari"
         }
       },
       {
         "time": "10:00pm - 11:30pm",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "Shrestha & Hardik Kumawat",
-          "Events & Venue": "Naresh,Aman,Anvi,Manvik,Navya,Priecy,Pari",
-          "Hospitality": "Free",
-          "Technical": "Full team"
-        }
+        "duties": {}
+      },
+      {
+        "time": "10:00pm - 11:30pm",
+        "event": "",
+        "duties": {}
       }
     ]
   },
   "DAY5": {
-    "label": "DAY 05 Saturday 18th July 2026 Ethnic Day",
+    "label": "Sat 18 Jul",
     "events": [
       {
         "time": "6:30am - 7:30am",
-        "event": "",
+        "event": "Sports Activities",
         "duties": {
-          "Event": "Sports Activities",
           "Internal Arrangments": "Anoushka, Farhan, Ghyan & Lakshya",
-          "Events & Venue": "Naresh, Priecy,Yatharth,Aman,Anvi,Priyanshi,Parihaan and Manvik",
-          "Hospitality": "FREE"
+          "Events & Venue": "Naresh, Priecy,Yatharth,Aman,Anvi,Priyanshi,Parihaan and Manvik"
         }
       },
       {
         "time": "7:30am - 8:50am",
         "event": "",
-        "duties": {
-          "Event": "Breakfast",
-          "Internal Arrangments": "FREE",
-          "Events & Venue": "FREE"
-        }
+        "duties": {}
       },
       {
         "time": "Batch 1",
-        "event": "",
-        "duties": {
-          "Internal Arrangments": "1",
-          "Events & Venue": "1",
-          "Food & Accommodation": "1",
-          "Hospitality": "1",
-          "Feedback & Registration": "1",
-          "Media": "1",
-          "Photography": "1",
-          "Social Media": "1",
-          "Technical": "1"
-        }
+        "event": "Batch 2",
+        "duties": {}
       },
       {
         "time": "Time",
@@ -502,89 +613,149 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
         "time": "9:00am - 11:00am",
         "event": "Mind Hacks: The Hidden Psychology Behind Every Decision",
         "duties": {
-          "Internal Arrangments": "Raghuraj & Hardik Sain",
-          "Events & Venue": "Himangi & Siddhi",
-          "Hospitality": "Aadipoojya Mehra",
-          "Technical": "Ashutosh , Arihant"
+          "Internal Arrangments": "Raghuraj & Hardik Sain / Harshvardhan Singh &Anoushka / Priyanshu & Saanchi / Pari  & Lakshay",
+          "Events & Venue": "Himangi & Siddhi / Pari & Tanvi / Tarushi & Navya / Subhangi & Priyanshi",
+          "Hospitality": "Aadipoojya Mehra / Bhavya Doshi / Sanskriti / Aadrika",
+          "Technical": "Ashutosh , Arihant / Rashi, Heramb / Aalap, Pratham / Amrit,Manant"
         }
       },
       {
-        "time": "",
+        "time": "9:00am - 11:00am",
         "event": "Mr. Manan Pahwa",
         "duties": {}
       },
       {
-        "time": "",
-        "event": "Venue: IM Amphitheater",
+        "time": "9:00am - 11:00am",
+        "event": "",
+        "duties": {
+          "Hospitality": "Rahul Gorani"
+        }
+      },
+      {
+        "time": "9:00am - 11:00am",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "9:00am - 11:00am",
+        "event": "",
+        "duties": {
+          "Internal Arrangments": "Farhan , Shrestha",
+          "Hospitality": "Abhimanyu Singh"
+        }
+      },
+      {
+        "time": "9:00am - 11:00am",
+        "event": "",
         "duties": {}
       },
       {
         "time": "11:00am-12:00pm",
-        "event": "",
+        "event": "TV9 Director Session",
         "duties": {
-          "Event": "TV9 Director Session",
-          "Internal Arrangments": "FULL TEAM",
-          "Events & Venue": "FULL TEAM",
           "Hospitality": "Anubha Sharma",
           "Technical": "Rashi, Heramb, Ashutosh"
         }
       },
       {
+        "time": "11:00am-12:00pm",
+        "event": "",
+        "duties": {}
+      },
+      {
         "time": "12:00pm \u2013 1:00pm",
-        "event": "Decode Academics by Academic Affairs",
+        "event": "",
         "duties": {
-          "Internal Arrangments": "Ghyan & Raghav",
-          "Events & Venue": "Himangi & Siddhi",
-          "Hospitality": "Abhimanyu Singh",
-          "Technical": "Rashi"
+          "Internal Arrangments": "Ghyan & Raghav / Hardik  &  Jitendra / Priyanshu & Saanchi",
+          "Events & Venue": "Himangi & Siddhi / Pari & Tanvi / Manvik,Subhangi / Subhangi & Priyanshi",
+          "Hospitality": "Abhimanyu Singh / Pawanii Sharma / Bhavya Doshi",
+          "Technical": "Rashi / Udit / Ashutosh"
         }
       },
       {
-        "time": "",
-        "event": "Venue: IM Amphitheater",
+        "time": "12:00pm \u2013 1:00pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "12:00pm \u2013 1:00pm",
+        "event": "",
+        "duties": {
+          "Internal Arrangments": "Raghuraj & Hardik Sain",
+          "Hospitality": "Aadrika",
+          "Technical": "Heramb"
+        }
+      },
+      {
+        "time": "12:00pm \u2013 1:00pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "12:00pm \u2013 1:00pm",
+        "event": "",
         "duties": {}
       },
       {
         "time": "Lunch",
         "event": "",
         "duties": {
-          "Internal Arrangments": "LUNCH",
-          "Events & Venue": "LUNCH",
-          "Hospitality": "FREE",
-          "Technical": "FREE"
+          "Internal Arrangments": "LUNCH / Farhan , Shrestha / LUNCH",
+          "Events & Venue": "LUNCH / Navya , SubhangI / LUNCH",
+          "Hospitality": "Pawanii Sharma",
+          "Technical": "Pratham"
         }
+      },
+      {
+        "time": "Lunch",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "Lunch",
+        "event": "",
+        "duties": {}
       },
       {
         "time": "1:30pm-3:00pm",
         "event": "Alumni Connect",
         "duties": {
-          "Internal Arrangments": "Harshvardhan Singh &Anoushka",
-          "Events & Venue": "Aman , Anvi & Pari",
-          "Hospitality": "Abhimanyu Singh",
-          "Technical": "Rashi"
+          "Internal Arrangments": "Harshvardhan Singh &Anoushka / Ghyan & Raghav / Hardik  &  Jitendra / Pari  & Lakshay",
+          "Events & Venue": "Aman , Anvi & Pari / Naresh , Priecy / Manvik,Subhangi / Tanvi and Tarushi",
+          "Hospitality": "Abhimanyu Singh / Aadrika / Aadipoojya Mehra",
+          "Technical": "Rashi / Aalap,Manant / Ashutosh, Arihant"
         }
       },
       {
-        "time": "",
-        "event": "Venue: 009 New Tech Block",
+        "time": "1:30pm-3:00pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "1:30pm-3:00pm",
+        "event": "",
         "duties": {}
       },
       {
         "time": "3:00pm- 4:30pm",
         "event": "Cyber Security for All",
         "duties": {
-          "Hospitality": "Pawanii Sharma"
+          "Hospitality": "Pawanii Sharma / Sanskriti / Aadrika",
+          "Technical": "Amrit, Heramb"
         }
       },
       {
-        "time": "",
+        "time": "3:00pm- 4:30pm",
         "event": "Mr. Mukesh Choudhary",
         "duties": {}
       },
       {
-        "time": "",
-        "event": "Venue: 008 New Tech Block",
-        "duties": {}
+        "time": "3:00pm- 4:30pm",
+        "event": "",
+        "duties": {
+          "Hospitality": "Pawanii Sharma",
+          "Technical": "Aalap"
+        }
       },
       {
         "time": "4:30pm- 5:00pm",
@@ -595,63 +766,73 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
         }
       },
       {
-        "time": "",
-        "event": "Venue: New Tech Block 006 & 001",
+        "time": "4:30pm- 5:00pm",
+        "event": "",
         "duties": {}
       },
       {
         "time": "5:00pm - 5:30pm",
         "event": "Hostel 101",
         "duties": {
-          "Hospitality": "Bhavya Doshi"
+          "Hospitality": "Bhavya Doshi / Anubha Sharma / Aadrika"
         }
       },
       {
-        "time": "",
-        "event": "Venue: New Tech Block 006 & 001",
+        "time": "5:00pm - 5:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "5:00pm - 5:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "5:00pm - 5:30pm",
+        "event": "",
         "duties": {}
       },
       {
         "time": "High-Tea",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
-        }
+        "duties": {}
+      },
+      {
+        "time": "6:30 pm - 8:30pm",
+        "event": "The Culture Walk",
+        "duties": {}
       },
       {
         "time": "6:30 pm - 8:30pm",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "FULL TEAM",
-          "Technical": "FULL TEAM"
-        }
+        "duties": {}
       },
       {
         "time": "Dinner",
         "event": "",
+        "duties": {}
+      },
+      {
+        "time": "10:00pm - 11:30pm",
+        "event": "JKLU Unfiltered: No Script Attached",
         "duties": {
-          "Internal Arrangments": "FREE"
+          "Events & Venue": "Naresh,Anvi,Manvik,Subhangi,Siddhi,Tanvi,Tarushi,Navya and Pari"
         }
       },
       {
         "time": "10:00pm - 11:30pm",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "FREE",
-          "Events & Venue": "Naresh,Anvi,Manvik,Subhangi,Siddhi,Tanvi,Tarushi,Navya and Pari"
-        }
+        "duties": {}
       }
     ]
   },
   "DAY6": {
-    "label": "DAY 05 Saturday 18th July 2026 Ethnic Day",
+    "label": "Sun 19 Jul",
     "events": [
       {
         "time": "6:30am - 7:30am",
-        "event": "",
+        "event": "Sports Activities",
         "duties": {
-          "Event": "Sports Activities",
           "Internal Arrangments": "Pari Maloo,Harshvardhan Singh & Hardik Sain",
           "Events & Venue": "Naresh, Priecy,Yatharth,Aman,Anvi,Priyanshi,Parihaan and Manvik"
         }
@@ -659,26 +840,12 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
       {
         "time": "7:30am - 8:50am",
         "event": "",
-        "duties": {
-          "Event": "Breakfast",
-          "Internal Arrangments": "FREE",
-          "Events & Venue": "FREE"
-        }
+        "duties": {}
       },
       {
         "time": "Batch 1",
-        "event": "",
-        "duties": {
-          "Internal Arrangments": "1",
-          "Events & Venue": "1",
-          "Food & Accommodation": "1",
-          "Hospitality": "1",
-          "Feedback & Registration": "1",
-          "Media": "1",
-          "Photography": "1",
-          "Social Media": "1",
-          "Technical": "1"
-        }
+        "event": "Batch 2",
+        "duties": {}
       },
       {
         "time": "Time",
@@ -689,32 +856,32 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
         "time": "9:30am - 10:30am",
         "event": "Creating Your Own Path",
         "duties": {
-          "Internal Arrangments": "Raghuraj & Hardik Sain",
-          "Events & Venue": "Himangi & Siddhi",
-          "Hospitality": "Aadrika",
-          "Technical": "Amrit,Manant"
+          "Internal Arrangments": "Raghuraj & Hardik Sain / Harshvardhan Singh &Anoushka / Priyanshu & Saanchi / Pari  & Lakshay",
+          "Events & Venue": "Himangi & Siddhi / Pari & Tanvi / Tarushi & Navya / Subhangi & Manvik",
+          "Hospitality": "Aadrika / Aadipoojya Mehra / Pawanii Sharma / Bhavya Doshi",
+          "Technical": "Amrit,Manant / Aalap, Pratham / Rashi, Heramb / Ashutosh , Arihant"
         }
       },
       {
-        "time": "",
+        "time": "9:30am - 10:30am",
         "event": "Mr. RamG Vallath",
         "duties": {}
       },
       {
-        "time": "",
-        "event": "Venue: IM Amphitheater",
+        "time": "9:30am - 10:30am",
+        "event": "",
         "duties": {}
       },
       {
         "time": "10:30am-11:00am",
         "event": "Global Learning Opportunities at JKLU",
         "duties": {
-          "Hospitality": "Abhimanyu Singh"
+          "Hospitality": "Abhimanyu Singh / Abhimanyu Singh / Aadrika"
         }
       },
       {
-        "time": "",
-        "event": "Venue: 008 New Tech Block",
+        "time": "10:30am-11:00am",
+        "event": "",
         "duties": {}
       },
       {
@@ -725,152 +892,190 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
         }
       },
       {
-        "time": "",
-        "event": "Venue: 008 New Tech Block",
+        "time": "11:00am-11:30am",
+        "event": "",
         "duties": {}
       },
       {
         "time": "11:30am-1:00pm",
         "event": "Session on Mental Health",
         "duties": {
-          "Internal Arrangments": "Ghyan & Raghav",
-          "Hospitality": "Rahul Gorani"
+          "Internal Arrangments": "Ghyan & Raghav / Farhan , Shrestha / Hardik  &  Jitendra",
+          "Hospitality": "Rahul Gorani / Anubha Sharma / Sanskriti / Pawanii Sharma",
+          "Technical": "Ashutosh, Udit / Rashi, Heramb"
         }
       },
       {
-        "time": "",
-        "event": "Venue: IET Amphitheater",
+        "time": "11:30am-1:00pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "11:30am-1:00pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "11:30am-1:00pm",
+        "event": "",
         "duties": {}
       },
       {
         "time": "Lunch",
         "event": "",
+        "duties": {}
+      },
+      {
+        "time": "2:00pm -3:30pm",
+        "event": "",
         "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
+          "Internal Arrangments": "Harshvardhan Singh &  Anoushka / Ghyan & Raghav / Hardik  &  Jitendra / Farhan , Shrestha",
+          "Events & Venue": "Parihaan & Anvi / Priecy & Tanvi / Yatharth & Tarushi / Naresh &  Siddhi",
+          "Hospitality": "Pawanii Sharma / Bhavya Doshi / Aadipoojya Mehra / Sanskriti",
+          "Technical": "Rashi, Heramb / Ashutosh , Arihant / Aalap, Pratham / Amrit,Manant,Udit"
         }
       },
       {
         "time": "2:00pm -3:30pm",
-        "event": "Student Central by Student Affairs",
-        "duties": {
-          "Internal Arrangments": "Harshvardhan Singh &  Anoushka",
-          "Events & Venue": "Parihaan & Anvi",
-          "Hospitality": "Pawanii Sharma",
-          "Technical": "Rashi, Heramb"
-        }
+        "event": "",
+        "duties": {}
       },
       {
-        "time": "",
-        "event": "Venue: IM Amphitheater",
+        "time": "2:00pm -3:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "2:00pm -3:30pm",
+        "event": "",
         "duties": {}
       },
       {
         "time": "3:30pm",
         "event": "JKLU Essentials",
         "duties": {
-          "Hospitality": "Aadrika"
+          "Hospitality": "Aadrika / Abhimanyu Singh"
         }
       },
       {
         "time": "-4:00pm",
-        "event": "By IT/LRC/Accounts",
+        "event": "",
         "duties": {}
       },
       {
-        "time": "",
-        "event": "Venue: New Tech Block 006 & 001",
+        "time": "-4:00pm",
+        "event": "",
         "duties": {}
       },
       {
         "time": "4:00pm-5:30pm",
-        "event": "Innovation and Entrepreneurship at JKLU by AIC",
+        "event": "",
         "duties": {
-          "Hospitality": "Pawanii Sharma"
+          "Hospitality": "Pawanii Sharma / Abhimanyu Singh / Rahul Gorani / Anubha Sharma"
         }
       },
       {
-        "time": "",
-        "event": "Venue: IET Amphitheater",
+        "time": "4:00pm-5:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "4:00pm-5:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "4:00pm-5:30pm",
+        "event": "",
+        "duties": {
+          "Hospitality": "Sanskriti"
+        }
+      },
+      {
+        "time": "4:00pm-5:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "4:00pm-5:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
+        "time": "4:00pm-5:30pm",
+        "event": "",
         "duties": {}
       },
       {
         "time": "High-Tea",
         "event": "",
-        "duties": {
-          "Internal Arrangments": "FREE",
-          "Technical": "FREE"
-        }
+        "duties": {}
       },
       {
         "time": "6:30 pm - 8:30pm",
-        "event": "",
+        "event": "Loud Enough?",
         "duties": {
           "Technical": "Rashi, Heramb, Ashutosh"
         }
       },
       {
+        "time": "6:30 pm - 8:30pm",
+        "event": "",
+        "duties": {}
+      },
+      {
         "time": "Dinner",
         "event": "",
-        "duties": {
-          "Technical": "FREE"
-        }
+        "duties": {}
+      },
+      {
+        "time": "Midnight",
+        "event": "Live telecast of FIFA Final",
+        "duties": {}
       },
       {
         "time": "Midnight",
         "event": "",
-        "duties": {
-          "Technical": "FREE"
-        }
+        "duties": {}
       }
     ]
   },
   "DAY7": {
-    "label": "DAY 07 Monday 20th July 2026 Fresh and fun day",
+    "label": "Mon 20 Jul",
     "events": [
       {
         "time": "4:30am - 12:30pm",
         "event": "Outing Activity",
-        "duties": {
-          "Internal Arrangments": "FULL TEAM",
-          "Hospitality": "FULL TEAM",
-          "Technical": "FULL TEAM"
-        }
+        "duties": {}
       },
       {
         "time": "1:00 pm-2:00 pm",
-        "event": "Lunch",
-        "duties": {
-          "Internal Arrangments": "FREE"
-        }
+        "event": "",
+        "duties": {}
       },
       {
         "time": "2:00pm - 5:30pm",
         "event": "Fold & Design",
-        "duties": {
-          "Internal Arrangments": "On basis of requirement",
-          "Hospitality": "On basis of requirement",
-          "Technical": "On basis of requirement"
-        }
+        "duties": {}
       },
       {
-        "time": "",
+        "time": "2:00pm - 5:30pm",
         "event": "Design Club",
         "duties": {}
       },
       {
-        "time": "",
-        "event": "Venue: IM Amphitheater",
+        "time": "2:00pm - 5:30pm",
+        "event": "",
         "duties": {}
       },
       {
-        "time": "",
+        "time": "2:00pm - 5:30pm",
         "event": "& IET Amphitheater",
         "duties": {}
       },
       {
         "time": "5:30 pm - 6:30 pm",
-        "event": "High-Tea",
+        "event": "",
         "duties": {}
       },
       {
@@ -879,66 +1084,58 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
         "duties": {}
       },
       {
-        "time": "",
-        "event": "Venue: Sabrang Ground \u2013 Main Stage",
+        "time": "6:30 pm - 9:00pm",
+        "event": "",
         "duties": {}
       },
       {
         "time": "9:00 pm - 10:30pm",
-        "event": "Dinner",
+        "event": "",
         "duties": {}
       },
       {
         "time": "10:30pm - 11:30pm",
-        "event": "Star Gazing By Astronomy Club & Aarambh Team & Vibe Check",
+        "event": "",
         "duties": {}
       },
       {
-        "time": "",
-        "event": "Venue: Sabrang Ground \u2013 Main Stage (Cohort Wise)",
+        "time": "10:30pm - 11:30pm",
+        "event": "",
         "duties": {}
       }
     ]
   },
   "DAY8": {
-    "label": "DAY 08 Tuesday 21th July 2026    Formal Day",
+    "label": "Tue 21 Jul",
     "events": [
       {
         "time": "6:30am - 7:30am",
-        "event": "Rest",
+        "event": "",
         "duties": {}
       },
       {
         "time": "7:30am-9:00am",
-        "event": "Breakfast",
+        "event": "",
         "duties": {}
       },
       {
         "time": "9:30am - 1:00pm",
         "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
-        "duties": {
-          "Internal Arrangments": "FULL TEAM",
-          "Hospitality": "FULL TEAM",
-          "Technical": "FULL TEAM"
-        }
+        "duties": {}
       },
       {
         "time": "1:00pm - 2:30pm",
-        "event": "Lunch",
+        "event": "",
         "duties": {}
       },
       {
         "time": "2.30 pm \u2013 5:30pm",
         "event": "Battle of the Clusters &   Valedictory Ceremony",
-        "duties": {
-          "Internal Arrangments": "FULL TEAM",
-          "Hospitality": "FULL TEAM",
-          "Technical": "FULL TEAM"
-        }
+        "duties": {}
       },
       {
         "time": "5:30 pm - 6:30 pm",
-        "event": "Check-out by Day Scholars.",
+        "event": "",
         "duties": {}
       },
       {
@@ -947,12 +1144,12 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
         "duties": {}
       },
       {
-        "time": "",
+        "time": "6:30 pm - 9:00pm",
         "event": "at 6:30 PM from",
         "duties": {}
       },
       {
-        "time": "",
+        "time": "6:30 pm - 9:00pm",
         "event": "JKLU Main Gate",
         "duties": {}
       }
@@ -2206,6 +2403,9985 @@ export const MEDIA_RECORDS: MediaRecord[] = [
     "timeSlot": "2:30\u20134:00pm",
     "duration": "1.5h",
     "volunteers": "Darshita Gouranshi Yuvraj Aryan"
+  }
+];
+
+export const REGISTRATION_RECORDS: RegistrationRecord[] = [
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "Aarambh  Schedule  | Rules  &",
+    "event": "Mr. Deepak  Sogani",
+    "venue": "Tech  Lawn",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "Aarambh  Schedule  | Rules  &",
+    "event": "Mr. Deepak  Sogani",
+    "venue": "Tech  Lawn",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "Aarambh  Schedule  | Rules  &",
+    "event": "Ice Breaking  Session  by Manish  Freeman  & Team",
+    "venue": "Tech Block",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "Aarambh  Schedule  | Rules  &",
+    "event": "Ice Breaking  Session  by Manish  Freeman  & Team",
+    "venue": "Tech Block",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "& Team",
+    "event": "& Team",
+    "venue": "Tech  Block",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Yoga",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Yoga",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Venue : Tech Block",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Venue : Tech Block",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "Session Timing",
+    "event": "The League  Room:  Peer Connect",
+    "venue": "All four Batches  Together  in four venues  By Team  Aarambh",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "Session Timing",
+    "event": "The League  Room:  Peer Connect",
+    "venue": "All four Batches  Together  in four venues  By Team  Aarambh",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "venues By Team Aarambh",
+    "event": "venues By Team Aarambh",
+    "venue": "All four Batches  Together  in four",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "venues By Team Aarambh",
+    "event": "venues By Team Aarambh",
+    "venue": "All four Batches  Together  in four",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "venues By Team Aarambh",
+    "event": "DJ Vibe Check",
+    "venue": "Tech  Lawn",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "venues By Team Aarambh",
+    "event": "DJ Vibe Check",
+    "venue": "Tech  Lawn",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Yoga",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Yoga",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Venue:IM  Amphi",
+    "event": "By Mrs. Anjali Suneja",
+    "venue": "IM  Amphi",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Mr. Amitanshu Shrivastava",
+    "event": "Mr. Amitanshu Shrivastava",
+    "venue": "Tech Block Rooms",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Mr. Amitanshu Shrivastava",
+    "event": "Brush & Bond",
+    "venue": "Tech  Lawn",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Mr. Amitanshu Shrivastava",
+    "event": "Brush & Bond",
+    "venue": "Tech  Lawn",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Venue : Tech Lawn",
+    "venue": "Tech  Lawn",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Venue : Tech Lawn",
+    "venue": "Tech  Lawn",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Venue : Tech Lawn",
+    "venue": "Tech  Lawn",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Mr. Amitanshu Shrivastava",
+    "event": "Mr. Amitanshu Shrivastava",
+    "venue": "Tech Block Rooms",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Mr. Amitanshu Shrivastava",
+    "event": "Mr. Amitanshu Shrivastava",
+    "venue": "IM",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Mr. Amitanshu Shrivastava",
+    "event": "Mr. Amitanshu Shrivastava",
+    "venue": "IM",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Venue: IET Amphi (Vaishali)",
+    "event": "Mr. Kunal Agarwal",
+    "venue": "Tech  Block  Rooms",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Venue:IM  Amphi",
+    "event": "By Mrs. Anjali Suneja",
+    "venue": "IM  Amphi",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Venue:IM  Amphi",
+    "event": "Batch  4 Goal Setting  Workshop  By CCCT",
+    "venue": "IM  Amphi",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Venue:IM  Amphi",
+    "event": "Batch  4 Goal Setting  Workshop  By CCCT",
+    "venue": "Livin g  IET",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Venue:IM  Amphi",
+    "event": "Mr. Kunal Agarwal",
+    "venue": "Tech  Block  Rooms",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Yoga",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Yoga",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Mr. Kunal Agarwal",
+    "venue": "Tech  Block  Rooms",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Mr. Kunal Agarwal",
+    "venue": "IM",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Mr. Kunal Agarwal",
+    "venue": "IM",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Venue: IET Amphi (Garvistha)",
+    "event": "Night",
+    "venue": "Tech  Lawn",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Venue: IET Amphi (Garvistha)",
+    "event": "Night",
+    "venue": "Tech  Lawn",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Session Timing",
+    "event": "All volunteer",
+    "venue": "Batch  Wise",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Session Timing",
+    "event": "By Mrs. Anjali Suneja",
+    "venue": "Batch  Wise",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Mr. Kunal Agarwal",
+    "venue": "IM  Amphi (Garvishtha)  Pottery  & Clay Art Workshop",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Batch  3 Goal Setting  Workshop  By CCCT",
+    "venue": "Tech  Block  Rooms (Kavita)",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Batch  3 Goal Setting  Workshop  By CCCT",
+    "venue": "IET",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Mr. Amitanshu Shrivastava",
+    "event": "Mr. Amitanshu Shrivastava",
+    "venue": "Tech Block",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Mr. Amitanshu Shrivastava",
+    "event": "Mr. Amitanshu Shrivastava",
+    "venue": "Tech Block",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Mr. Amitanshu Shrivastava",
+    "event": "By Mrs. Anjali Suneja",
+    "venue": "Tech Block",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Yoga",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Yoga",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Session Timing",
+    "event": "by Mr. Mukesh Choudhary",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Session Timing",
+    "event": "by Mr. Mukesh Choudhary",
+    "venue": "IM Amphi (Ishvit)  Mr. Manan  Pahwa  Sessions",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "LUNCH  Examination",
+    "event": "by Mr. Mukesh Choudhary",
+    "venue": "(1HR) 008",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "LUNCH  Examination",
+    "event": "by Mr. Mukesh Choudhary",
+    "venue": "(1HR) 008",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "LUNCH  Examination",
+    "event": "Fashion  Show",
+    "venue": "Tech  Lawn",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "LUNCH  Examination",
+    "event": "Fashion  Show",
+    "venue": "Tech  Lawn",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch  2 Examination  (1hr)",
+    "event": "Batch  2 Examination  (1hr)",
+    "venue": "IET",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch  2 Examination  (1hr)",
+    "event": "Batch  2 Examination  (1hr)",
+    "venue": "IET",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch  2 Examination  (1hr)",
+    "event": "by Mr. Mukesh Choudhary",
+    "venue": "IET Amphi (Manvi)  Workshop  on Cyber  Security  (*From  11:30am)",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Mr. RamG Vallath",
+    "event": "Mr. RamG Vallath",
+    "venue": "IM",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Mr. RamG Vallath",
+    "event": "Mr. RamG Vallath",
+    "venue": "IM",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Mr. RamG Vallath",
+    "event": "Batch  3 Student  Affairs (1.5Hr)",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Mr. RamG Vallath",
+    "event": "Batch  3 Student  Affairs (1.5Hr)",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Mr. RamG Vallath",
+    "event": "Batch  3 Student  Affairs (1.5Hr)",
+    "venue": "008TB (Ishvit)  Accounts  + IT + LRC Session(1hr)",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "By Mr. RamG Vallath",
+    "event": "By Mr. RamG Vallath",
+    "venue": "IET",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "By Mr. RamG Vallath",
+    "event": "By Mr. Mukesh  Choudhary",
+    "venue": "IET",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Venue:  IM Amphi (Kavita)",
+    "event": "Batch  4 Hostel(1hr) | Anti -Ragging(30min)",
+    "venue": "006TB &",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Venue:  IM Amphi (Kavita)",
+    "event": "Batch  4 Hostel(1hr) | Anti -Ragging(30min)",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Venue:  IM Amphi (Kavita)",
+    "event": "Batch  4 Hostel(1hr) | Anti -Ragging(30min)",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Venue:  IM Amphi (Kavita)",
+    "event": "by Mr. Mukesh Choudhary",
+    "venue": "009TB (Manvi ) Workshop  on Cyber  Security  (till 3:30pm)",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Venue:  IM Amphi (Kavita)",
+    "event": "by Mr. Mukesh Choudhary",
+    "venue": "IET Amphi (Vaishali)  Mr. Manan  Pahwa  Sessions  (From  3:30pm)",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Yoga",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Yoga",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Mr. RamG Vallath",
+    "event": "Mr. RamG Vallath",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Venue:  IM Amphi (Vaishali)",
+    "event": "Admin  Session(30min)",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Venue:  IM Amphi (Vaishali)",
+    "event": "International studies (30min)",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Venue:  IM Amphi (Vaishali)",
+    "event": "Accounts  + IT + LRC Session(1hr)",
+    "venue": "008TB (Kavita)",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Introduction  to AIC session(1hr)  | Alumni  of JKLU(1.5hr)",
+    "venue": "006TB & 001TB (Ishvit)",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Brief  about  Outing",
+    "venue": "Tech  Lawn",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Brief  about  Outing",
+    "venue": "Tech  Lawn",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Batch  2 Mr. Manan  Pahwa  Sessions",
+    "venue": "Tech  Lawn",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Health(1hr)",
+    "venue": "IET Amphi (Kavita)  Introduction  to AIC session(1hr)  | Session  on Mental",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Health(1hr)",
+    "venue": "009TB (Manvi)  Alumni  of JKLU(1.5hr) (*Till  3:30pm)",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Session Timing",
+    "event": "studies  (30min)",
+    "venue": "IM Amphi (Vaishali)  Student Affairs (1.5Hr) (*from 3:30pm)  | Session  on International",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Venue:  IM Amphi (Manvi)",
+    "event": "Batch  3 Session on Mental",
+    "venue": "Health(1hr)",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Venue:  IM Amphi (Manvi)",
+    "event": "Batch  3 Session on Mental",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Venue:  IM Amphi (Manvi)",
+    "event": "Batch  3 Session on Mental",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Venue:  IM Amphi (Manvi)",
+    "event": "Batch  3 Session on Mental",
+    "venue": "IET Amphi (Vaishali)  Mr. Manan  Pahwa  Sessions  (till 4pm)",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Venue:  IM Amphi (Manvi)",
+    "event": "Introduction to AIC session(1hr)",
+    "venue": "IET Amphi (Garvistha)  Session  on International  studies  (30min)  (*From  4pm)  |",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am)",
+    "event": "11:30am)",
+    "venue": "tha)  008TB  Creating  Your  Own Path (*Till",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Venue:  IM Amphi",
+    "event": "Student  Affairs  (1.5Hr)  (*From  11:30)",
+    "venue": "IM Amphi",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Examination  (1HR)",
+    "event": "| Session  on Mental  Health(1hr)",
+    "venue": "008TB (M",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Outing  Activity",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "Session Timing",
+    "event": "Outing  Activity",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "Session Timing",
+    "event": "JKLU Got Latent",
+    "venue": "Tech  Lawn",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "Session Timing",
+    "event": "JKLU Got Latent",
+    "venue": "Tech  Lawn",
+    "volunteer": "Vaishali Agarwal"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "By Art Club & Aarambh Team",
+    "event": "By Art Club & Aarambh Team",
+    "venue": "Tech  Lawn  (Start  From  8pm*  (Cohort",
+    "volunteer": "Garvishtha Asnani"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "By Art Club & Aarambh Team",
+    "event": "By Art Club & Aarambh Team",
+    "venue": "Tech  Lawn  (Start  From  8pm*  (Cohort",
+    "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "By Art Club & Aarambh Team",
+    "event": "Batch  3 VR Zone  By Tech  Club & Aarambh  Team  (Cohort  Wise)",
+    "venue": "008TB  (Manvi&Garvishtha)",
+    "volunteer": "Ishvit Bhardwaj"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "Session Timing",
+    "event": "REST",
+    "venue": "Registration Desk / Event Venue",
+    "volunteer": "Garvishtha Asnani"
+  }
+];
+
+export const DISCIPLINE_RECORDS: DisciplineRecord[] = [
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "Lights. Camera. Chill.",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "2:00pm - 3:00pm",
+    "event": "Session on Art of Living",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Dance-Verse",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Clay All Day / Mr. Kunal Agarwal",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Fri 17 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "2:00pm - 5:30pm",
+    "event": "Fold & Design / Design Club / & IET Amphitheater",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "4:30am - 12:30pm",
+    "event": "Outing Activity",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Stories Framed",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "10:00pm - 11:30pm",
+    "event": "JKLU Unfiltered: No Script Attached",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "11:00am-12:00pm",
+    "event": "TV9 Director Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "1:30pm-3:00pm",
+    "event": "Alumni Connect",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "3:00pm- 4:30pm",
+    "event": "Cyber Security for All / Mr. Mukesh Choudhary",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "4:30pm- 5:00pm",
+    "event": "Anti-Ragging Awareness and Prevention Session",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "5:00pm - 5:30pm",
+    "event": "Hostel 101",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "The Culture Walk",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "9:00am - 11:00am",
+    "event": "Mind Hacks: The Hidden Psychology Behind Every Decision / Mr. Manan Pahwa",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Sat 18 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "10:30am-11:00am",
+    "event": "Global Learning Opportunities at JKLU",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "IM Amphitheater",
+    "zone": "Discipline - Venue duty (IM Amphitheater)",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "IM Amphitheater",
+    "zone": "Discipline - Venue duty (IM Amphitheater)",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "IM Amphitheater",
+    "zone": "Discipline - Venue duty (IM Amphitheater)",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "IM Amphitheater",
+    "zone": "Discipline - Venue duty (IM Amphitheater)",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "IM Amphitheater",
+    "zone": "Discipline - Venue duty (IM Amphitheater)",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "IM Amphitheater",
+    "zone": "Discipline - Venue duty (IM Amphitheater)",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "IM Amphitheater",
+    "zone": "Discipline - Venue duty (IM Amphitheater)",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "IM Amphitheater",
+    "zone": "Discipline - Venue duty (IM Amphitheater)",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:00am-11:30am",
+    "event": "The Admin Guide",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "11:30am-1:00pm",
+    "event": "Session on Mental Health",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "3:30pm",
+    "event": "JKLU Essentials",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Loud Enough?",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "9:30am - 10:30am",
+    "event": "Creating Your Own Path / Mr. RamG Vallath",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Batch 1",
+    "event": "Batch 2",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Midnight",
+    "event": "Live telecast of FIFA Final",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Sun 19 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "10:00pm -11:30pm",
+    "event": "Own the Stage",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "2:00pm \u2013 5:30pm",
+    "event": "Craft Appreciation and Art Workshop / Mr. Amitanshu Shrivastava",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30 pm - 8:30pm",
+    "event": "Canvas Connections",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "IET Amphitheater",
+    "zone": "Discipline - Venue duty (IET Amphitheater)",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Session on POSH and Digital Well Being / Mrs. Anjali Suneja",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Thu 16 Jul",
+    "timeSlot": "Time",
+    "event": "Event",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "11:00am - 12:30pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "12:30pm - 1:00pm",
+    "event": "Full Team - 14",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "2:30pm -5:30 pm",
+    "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "2.30 pm \u2013 5:30pm",
+    "event": "Battle of the Clusters &   Valedictory Ceremony",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Departure of Buses / at 6:30 PM from / JKLU Main Gate",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Tue 21 Jul",
+    "timeSlot": "9:30am - 1:00pm",
+    "event": "Know Your Institution & Placement Cell Orientation (Institute wise)",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "10:30pm - 11:30pm",
+    "event": "Drop The Beat",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "V Tanvi Reddy"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "VARUN TEJA ANKARLA"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "2:30pm -5:30pm",
+    "event": "Auction Arena",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Vaishnavi Gajjala"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Vansh Bhatia"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Yashsvi Bothra"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "droni sehgal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Aditi Agarwal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Aditi Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Akshat Murarka"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Ananya Singh"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Anushri Falor"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Arshiyaa Yadav"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Avika soni"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Charvi Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Chelsytanwar"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Dishika Pancholi"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Diya Shah"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Garvit Agrawal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Gauri Singhi"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Hansika Agarwal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Himani Menghani"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Himani Saraf"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Himanshu"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Jainam Jain"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Kajal Agarwal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Karnam Hasini"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30 pm - 9:00pm",
+    "event": "Decode the Drama",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "Kavya Gupta"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Khanak Jain"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - VC BANGLOW",
+    "volunteer": "Khushi Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Lakshita Tanwar"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Lenkalapally Ravi Teja"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "MANSI SOMANI"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - BEHIND HOSTELS",
+    "volunteer": "Naina Dayaramani"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Nakkalapally Omruthik"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - PAKING AREA",
+    "volunteer": "Nikita bhatia"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Pendyala Sri Vaibhav"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Poorna Tejitha"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Prekshya Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - MAIN GATE DUTY",
+    "volunteer": "Purvee Dudheria"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Purvi jain"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - HSB STAFF ROOM",
+    "volunteer": "Risha Saini"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Ruchi choudhary"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - CRICKET AND FOOTBALL GROUND",
+    "volunteer": "Saanchi Vijayvergia"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Shreya Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - LAB CLASSES",
+    "volunteer": "Siya Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "Sudhi Chaurasia"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - TECH BLOCK (POST EVENT HOURS)",
+    "volunteer": "SuryavanshiSridevi"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Suvarna Keziah Digwal"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - IOD/AIC/CCCT BULDING",
+    "volunteer": "Teeda Sri Ramya"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "U Vishnu"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "6:30am - 7:30am",
+    "event": "Sports Activities",
+    "venue": "Campus Patrolling",
+    "zone": "Patrolling - FIRST AND SECOND FLOOR OF IET AND IM",
+    "volunteer": "V Tanvi Reddy"
   }
 ];
 
