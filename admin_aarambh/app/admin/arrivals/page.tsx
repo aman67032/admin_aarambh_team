@@ -39,6 +39,12 @@ export default function AdminArrivalsPage() {
   // Search and filter states
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<'All' | 'WantsBus' | 'NoBus'>('All');
+  const [filterDate, setFilterDate] = useState('All');
+  const [filterTime, setFilterTime] = useState('All');
+
+  // Extract unique dates and times from declarations
+  const uniqueDates = Array.from(new Set(declarations.map(d => d.arrivalInfo?.arrivalDate).filter(Boolean))).sort();
+  const uniqueTimes = Array.from(new Set(declarations.map(d => d.arrivalInfo?.arrivalTime).filter(Boolean))).sort();
 
   const fetchDeclarations = async () => {
     setLoading(true);
@@ -82,6 +88,12 @@ export default function AdminArrivalsPage() {
     // Type filter
     if (filterType === 'WantsBus' && !item.arrivalInfo.wantsBus) return false;
     if (filterType === 'NoBus' && item.arrivalInfo.wantsBus) return false;
+
+    // Date filter
+    if (filterDate !== 'All' && item.arrivalInfo.arrivalDate !== filterDate) return false;
+
+    // Time filter
+    if (filterTime !== 'All' && item.arrivalInfo.arrivalTime !== filterTime) return false;
 
     return true;
   });
@@ -148,48 +160,86 @@ export default function AdminArrivalsPage() {
       </div>
 
       {/* Filters Bar */}
-      <div className="bg-card-bg border border-card-border p-5 rounded-2xl flex flex-col md:flex-row md:items-center gap-5 shadow-sm">
-        {/* Search */}
-        <div className="flex-1">
-          <label className="block text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2">
-            Search Declarations
-          </label>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search name, roll no, cohort, city, or place..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 bg-background border border-card-border focus:border-primary rounded-xl text-foreground text-xs outline-none transition-all placeholder:text-text-muted/40 font-semibold"
-            />
-            <span className="absolute left-3.5 top-3.5 text-xs text-text-muted">🔍</span>
+      <div className="bg-card-bg border border-card-border p-5 rounded-2xl space-y-4 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center gap-5">
+          {/* Search */}
+          <div className="flex-1">
+            <label className="block text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2">
+              Search Declarations
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search name, roll no, cohort, city, or place..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-2.5 bg-background border border-card-border focus:border-primary rounded-xl text-foreground text-xs outline-none transition-all placeholder:text-text-muted/40 font-semibold"
+              />
+              <span className="absolute left-3.5 top-3.5 text-xs text-text-muted">🔍</span>
+            </div>
+          </div>
+
+          {/* Filter Type Tabs */}
+          <div className="w-full md:w-auto">
+            <label className="block text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2">
+              Declaration Category
+            </label>
+            <div className="flex flex-wrap border border-card-border p-1 rounded-xl bg-background gap-1 sm:gap-0 w-fit">
+              {(['All', 'WantsBus', 'NoBus'] as const).map(type => {
+                let label = type as string;
+                if (type === 'WantsBus') label = 'Wants University Bus';
+                if (type === 'NoBus') label = 'Self Transport';
+                return (
+                  <button
+                    key={type}
+                    onClick={() => setFilterType(type)}
+                    className={`px-3 py-2 text-[9px] font-extrabold rounded-lg transition-all cursor-pointer uppercase tracking-wider ${
+                      filterType === type
+                        ? 'bg-primary text-white shadow-md'
+                        : 'text-text-muted hover:text-foreground'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* Filter Type Tabs */}
-        <div className="w-full md:w-auto">
-          <label className="block text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2">
-            Declaration Category
-          </label>
-          <div className="flex flex-wrap border border-card-border p-1 rounded-xl bg-background gap-1 sm:gap-0 w-fit">
-            {(['All', 'WantsBus', 'NoBus'] as const).map(type => {
-              let label = type as string;
-              if (type === 'WantsBus') label = 'Wants University Bus';
-              if (type === 'NoBus') label = 'Self Transport';
-              return (
-                <button
-                  key={type}
-                  onClick={() => setFilterType(type)}
-                  className={`px-3 py-2 text-[9px] font-extrabold rounded-lg transition-all cursor-pointer uppercase tracking-wider ${
-                    filterType === type
-                      ? 'bg-primary text-white shadow-md'
-                      : 'text-text-muted hover:text-foreground'
-                  }`}
-                >
-                  {label}
-                </button>
-              );
-            })}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-card-border/50 pt-4">
+          {/* Date Filter */}
+          <div>
+            <label className="block text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2">
+              Filter by Arrival Date
+            </label>
+            <select
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+              className="w-full px-3 py-2 bg-background border border-card-border focus:border-primary rounded-xl text-foreground text-xs outline-none transition-all font-semibold cursor-pointer"
+            >
+              <option value="All">All Dates</option>
+              {uniqueDates.map(d => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Time Filter */}
+          <div>
+            <label className="block text-[10px] font-extrabold text-text-muted uppercase tracking-wider mb-2">
+              Filter by Time slot / Interval
+            </label>
+            <select
+              value={filterTime}
+              onChange={(e) => setFilterTime(e.target.value)}
+              className="w-full px-3 py-2 bg-background border border-card-border focus:border-primary rounded-xl text-foreground text-xs outline-none transition-all font-semibold cursor-pointer"
+            >
+              <option value="All">All Time Intervals</option>
+              {uniqueTimes.map(t => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
