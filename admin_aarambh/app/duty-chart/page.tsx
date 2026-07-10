@@ -51,20 +51,77 @@ export default function PublicDutyChartPage() {
     }
   };
 
+  // Edit distance calculation for fuzzy matching
+  const getEditDistance = (a: string, b: string): number => {
+    if (a.length === 0) return b.length;
+    if (b.length === 0) return a.length;
+    const matrix: number[][] = [];
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
+    }
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // substitution
+            Math.min(
+              matrix[i][j - 1] + 1, // insertion
+              matrix[i - 1][j] + 1 // deletion
+            )
+          );
+        }
+      }
+    }
+    return matrix[b.length][a.length];
+  };
+
+  const isFuzzyWordMatch = (w1: string, w2: string): boolean => {
+    if (w1 === w2) return true;
+    if (w1.startsWith(w2) && w1.length - w2.length <= 3) return true;
+    if (w2.startsWith(w1) && w2.length - w1.length <= 3) return true;
+    const len = Math.max(w1.length, w2.length);
+    const dist = getEditDistance(w1, w2);
+    if (len <= 4) return dist <= 1;
+    if (len <= 7) return dist <= 1;
+    return dist <= 2;
+  };
+
   // Helper to check if a volunteer name matches the query
   const matchesQuery = (text: string, nameToMatch: string) => {
     if (!text || !nameToMatch) return false;
-    const cleanText = text.toLowerCase();
-    const cleanName = nameToMatch.toLowerCase();
-    
-    // Direct substring or first name match
-    if (cleanText.includes(cleanName)) return true;
-    
-    // Check first name (e.g. if roster has "Samridhi 1" or "Samridhi" and database has "Samridhi Singh")
-    const firstName = cleanName.split(' ')[0];
-    if (firstName && firstName.length > 2 && cleanText.includes(firstName)) return true;
+    const cleanText = text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ');
+    const cleanName = nameToMatch.toLowerCase().replace(/[^a-z0-9\s]/g, ' ');
 
-    return false;
+    const textTokens = cleanText.split(/\s+/).filter(t => t.length >= 3);
+    const nameTokens = cleanName.split(/\s+/).filter(t => t.length >= 3);
+
+    if (nameTokens.length === 0 || textTokens.length === 0) {
+      return text.toLowerCase().includes(nameToMatch.toLowerCase());
+    }
+
+    // 1. First name must fuzzy-match something in the cell text
+    const firstName = nameTokens[0];
+    const hasFirstMatch = textTokens.some(tTok => isFuzzyWordMatch(tTok, firstName));
+    if (!hasFirstMatch) return false;
+
+    // 2. If both sides have a last name, prevent false cross-surname matches
+    const commonLastNames = ['singh', 'sharma', 'gupta', 'kumar', 'jain', 'agarwal', 'rathore', 'chhabra', 'garhwal', 'tanwar', 'vyas', 'bisht', 'suwalka', 'chauhan', 'malvi', 'shah', 'sabnani', 'choudhary', 'mundra', 'yadav', 'srivastava', 'goswami', 'lalwani', 'katiyar', 'mishra', 'agrawal', 'dosi', 'asnani', 'bhardwaj', 'saxena', 'pancholi', 'singhi', 'saraf', 'chaurasia', 'somani', 'bang', 'bothra', 'vijayvergia', 'sehgal', 'saini', 'dayaramani'];
+
+    if (nameTokens.length > 1 && textTokens.length > 1) {
+      const dbLastName = nameTokens[1];
+      for (const cellTok of textTokens.slice(1)) {
+        if (commonLastNames.includes(cellTok)) {
+          if (!isFuzzyWordMatch(cellTok, dbLastName)) return false;
+        }
+      }
+    }
+
+    return true;
   };
 
   // Compile matched member's schedule across all rosters
@@ -141,13 +198,11 @@ export default function PublicDutyChartPage() {
 
     // 5. Search Media PDF Records
     MEDIA_RECORDS.forEach(mr => {
-      if (matchesQuery(mr.line, name)) {
-        if (!mr.line.includes('Hours Summary') && !mr.line.includes('Totals:')) {
-          personalMedia.push({
-            day: mr.day,
-            details: mr.line
-          });
-        }
+      if (matchesQuery(mr.volunteers, name)) {
+        personalMedia.push({
+          day: mr.day,
+          details: `${mr.timeSlot} (${mr.duration}) — Volunteers: ${mr.volunteers}`
+        });
       }
     });
 
@@ -168,6 +223,59 @@ export default function PublicDutyChartPage() {
     personalData.food.length > 0 ||
     personalData.media.length > 0
   );
+
+  const getCommitteeDescription = (position: string) => {
+    const pos = position.toLowerCase();
+    if (pos.includes('cohort leader')) {
+      return {
+        title: '🌟 Cohort Leader Responsibilities',
+        desc: 'As a Cohort Leader, you are the primary point of contact for your cohort of students. Guide them to venues, ensure attendance, resolve queries, and coordinate with your Cluster Head.'
+      };
+    }
+    if (pos.includes('cluster head')) {
+      return {
+        title: '👑 Cluster Head Responsibilities',
+        desc: 'As a Cluster Head, you supervise a cluster of cohorts. Oversee and guide your Cohort Leaders, handle escalations, verify student registrations, and coordinate with the main organizing committee.'
+      };
+    }
+    if (pos.includes('technical')) {
+      return {
+        title: '💻 Technical Committee Responsibilities',
+        desc: 'Responsible for managing audio-visual (AV) setups, microphones, speakers, stage lighting, laptops, presentations, and technical requirements across all venues (Seminar Hall, Auditorium, Central Plaza).'
+      };
+    }
+    if (pos.includes('feedback') || pos.includes('registration')) {
+      return {
+        title: '📝 Feedback & Registration Committee Responsibilities',
+        desc: 'Responsible for student check-ins, registration desks, distribution of welcome kits, ID cards, and coordinating feedback forms/surveys after orientation sessions.'
+      };
+    }
+    if (pos.includes('social media')) {
+      return {
+        title: '📱 Social Media Committee Responsibilities',
+        desc: 'Responsible for capturing content, managing official social media handles, posting live updates, stories, reels, and maintaining high digital engagement throughout Aarambh 2026.'
+      };
+    }
+    if (pos.includes('photography')) {
+      return {
+        title: '📸 Photography Committee Responsibilities',
+        desc: 'Responsible for professional photography and videography coverage of all major sessions, student interactions, performances, and venue setups. Coordinate with the Media team for uploads.'
+      };
+    }
+    if (pos.includes('media')) {
+      return {
+        title: '🎥 Media Committee Responsibilities',
+        desc: 'Manage press coordination, news coverage, photography curation, content drafting, and writing daily newsletters/press releases for Aarambh 2026.'
+      };
+    }
+    if (pos.includes('food') || pos.includes('accommodation') || pos.includes('hospitality')) {
+      return {
+        title: '🍽️ Food & Accommodation Committee Responsibilities',
+        desc: 'Manage hostel arrival receptions, mess entry coordination, room keys distribution, hospitality for guests, and help desk services for new students at BH-1 and GH-2.'
+      };
+    }
+    return null;
+  };
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden text-foreground flex flex-col justify-between font-outfit">
@@ -283,9 +391,20 @@ export default function PublicDutyChartPage() {
             {/* TAB: PERSONAL */}
             {activeTab === 'personal' && (
               <div className="space-y-6">
+                {matchedMember && getCommitteeDescription(matchedMember.position) && (
+                  <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-2">
+                    <h3 className="text-xs font-black uppercase text-primary tracking-wider">
+                      {getCommitteeDescription(matchedMember.position)?.title}
+                    </h3>
+                    <p className="text-xs text-text-muted leading-relaxed font-semibold">
+                      {getCommitteeDescription(matchedMember.position)?.desc}
+                    </p>
+                  </div>
+                )}
+
                 {!hasPersonalResults ? (
                   <div className="py-16 text-center text-text-muted text-sm border border-dashed border-card-border rounded-2xl bg-card-bg/25">
-                    No active assignments were found in the duty spreadsheets for &quot;{matchedMember.name}&quot;.
+                    No active shift assignments were found in the duty spreadsheets for &quot;{matchedMember.name}&quot;.
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-6">
@@ -299,7 +418,7 @@ export default function PublicDutyChartPage() {
                           {personalData.master.map((m, idx) => (
                             <div key={idx} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
                               <div>
-                                <div className="font-extrabold text-foreground">{m.event}</div>
+                                <div className="font-extrabold text-foreground">{m.event || 'General Orientation Duty'}</div>
                                 <div className="text-[10px] text-text-muted font-bold mt-0.5">{m.day}</div>
                               </div>
                               <div className="text-right shrink-0">
@@ -578,13 +697,27 @@ export default function PublicDutyChartPage() {
                 <h2 className="text-xs font-black uppercase text-rose-500 tracking-widest pb-2 border-b border-card-border">
                   🎥 Media Shift Roster Details
                 </h2>
-                <div className="divide-y divide-card-border">
-                  {MEDIA_RECORDS.map((mr, idx) => (
-                    <div key={idx} className="py-3.5 flex flex-col sm:flex-row sm:items-start justify-between gap-3 text-xs">
-                      <span className="font-extrabold text-rose-600 min-w-[120px]">{mr.day}</span>
-                      <span className="font-semibold text-foreground flex-1">{mr.line}</span>
-                    </div>
-                  ))}
+                <div className="overflow-x-auto border border-card-border rounded-xl">
+                  <table className="w-full text-left border-collapse text-xs">
+                    <thead>
+                      <tr className="bg-card-bg border-b border-card-border text-text-muted font-bold uppercase tracking-wider text-[9px]">
+                        <th className="px-4 py-3">Day / Date</th>
+                        <th className="px-4 py-3">Time Slot</th>
+                        <th className="px-4 py-3">Duration</th>
+                        <th className="px-4 py-3">Volunteers on Duty</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-card-border font-semibold">
+                      {MEDIA_RECORDS.map((mr, idx) => (
+                        <tr key={idx} className="hover:bg-background/20 transition-colors">
+                          <td className="px-4 py-3 font-bold text-rose-600">{mr.day}</td>
+                          <td className="px-4 py-3 text-foreground">{mr.timeSlot}</td>
+                          <td className="px-4 py-3 text-text-muted font-mono">{mr.duration}</td>
+                          <td className="px-4 py-3 text-foreground">{mr.volunteers}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             )}

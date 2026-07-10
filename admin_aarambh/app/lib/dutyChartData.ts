@@ -44,7 +44,9 @@ export interface FoodRecord {
 
 export interface MediaRecord {
   day: string;
-  line: string;
+  timeSlot: string;
+  duration: string;
+  volunteers: string;
 }
 
 export interface TeamMemberDB {
@@ -1985,155 +1987,225 @@ export const FOOD_RECORDS: FoodRecord[] = [
 export const MEDIA_RECORDS: MediaRecord[] = [
   {
     "day": "",
-    "line": "Aarambh 2026 \u2014 Volunteer Duty Chart"
-  },
-  {
-    "day": "",
-    "line": "14\u201321 July 2026 \u00b7 Max 6 hrs/person/day \u00b7 Each person covers AM or PM batch only, not both \u00b7 Mon 4:30am slot removed"
-  },
-  {
-    "day": "Tue 14 Jul",
-    "line": "9:30\u201310:45am"
+    "timeSlot": "Aarambh 2026 \u2014 Volunteer Duty Chart",
+    "duration": "14\u201321 July 2026 \u00b7 Max 6 hrs/person/day \u00b7 Each person covers AM or PM batch only, not both \u00b7 Mon 4:30am slot removed",
+    "volunteers": "Day"
   },
   {
     "day": "Tue 14 Jul",
-    "line": "11:10am\u201312:30pm"
+    "timeSlot": "9:30\u201310:45am",
+    "duration": "1.2h",
+    "volunteers": "Shouryaveer"
   },
   {
     "day": "Tue 14 Jul",
-    "line": "12:30\u20131:00pm"
+    "timeSlot": "11:10am\u201312:30pm",
+    "duration": "1.3h",
+    "volunteers": "Yuvraj Gouranshi Shivia"
   },
   {
     "day": "Tue 14 Jul",
-    "line": "2:30\u20135:30pm"
+    "timeSlot": "12:30\u20131:00pm",
+    "duration": "0.5h",
+    "volunteers": "Darshita Dhruv"
   },
   {
     "day": "Tue 14 Jul",
-    "line": "6:30\u20139:00pm"
+    "timeSlot": "2:30\u20135:30pm",
+    "duration": "3.0h",
+    "volunteers": "Aryan Dhruv Shouryaveer Komal"
   },
   {
     "day": "Tue 14 Jul",
-    "line": "10:30\u201311:30pm"
+    "timeSlot": "6:30\u20139:00pm",
+    "duration": "2.5h",
+    "volunteers": "Shivia Yuvraj Harshita Gouranshi"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "10:30\u201311:30pm",
+    "duration": "1.0h",
+    "volunteers": "Shouryaveer Darshita"
   },
   {
     "day": "Wed 15 Jul",
-    "line": "6:30\u20137:30am"
+    "timeSlot": "6:30\u20137:30am",
+    "duration": "1.0h",
+    "volunteers": "Dhruv Komal"
   },
   {
     "day": "Wed 15 Jul",
-    "line": "9:30am\u20131:00pm"
+    "timeSlot": "9:30am\u20131:00pm",
+    "duration": "3.5h",
+    "volunteers": "Aryan Yuvraj Harshita Shivia"
   },
   {
     "day": "Wed 15 Jul",
-    "line": "2:30\u20135:30pm"
+    "timeSlot": "2:30\u20135:30pm",
+    "duration": "3.0h",
+    "volunteers": "Darshita Dhruv Shouryaveer Gouranshi"
   },
   {
     "day": "Wed 15 Jul",
-    "line": "6:30\u20139:00pm"
+    "timeSlot": "6:30\u20139:00pm",
+    "duration": "2.5h",
+    "volunteers": "Komal Aryan Yuvraj Shivia"
   },
   {
     "day": "Wed 15 Jul",
-    "line": "10:30\u201311:30pm"
+    "timeSlot": "10:30\u201311:30pm",
+    "duration": "1.0h",
+    "volunteers": "Harshita Shouryaveer"
   },
   {
     "day": "Thu 16 Jul",
-    "line": "6:30\u20137:30am"
+    "timeSlot": "6:30\u20137:30am",
+    "duration": "1.0h",
+    "volunteers": "Shivia Gouranshi"
   },
   {
     "day": "Thu 16 Jul",
-    "line": "AM 9:30\u20131:00pm"
+    "timeSlot": "AM 9:30\u20131:00pm",
+    "duration": "3.5h",
+    "volunteers": "B1: Aryan | B2: Darshita | B3: Komal | B4: Dhruv"
   },
   {
     "day": "Thu 16 Jul",
-    "line": "PM 2:00\u20135:30pm"
+    "timeSlot": "PM 2:00\u20135:30pm",
+    "duration": "3.5h",
+    "volunteers": "B1: Gouranshi | B2: Harshita | B3: Shouryaveer | B4: Yuvraj"
   },
   {
     "day": "Thu 16 Jul",
-    "line": "6:30\u20139:00pm"
+    "timeSlot": "6:30\u20139:00pm",
+    "duration": "2.5h",
+    "volunteers": "Aryan Shivia"
   },
   {
     "day": "Thu 16 Jul",
-    "line": "10:30\u201311:30pm"
+    "timeSlot": "10:30\u201311:30pm",
+    "duration": "1.0h",
+    "volunteers": "Darshita Komal"
   },
   {
     "day": "Fri 17 Jul",
-    "line": "6:30\u20137:30am"
+    "timeSlot": "6:30\u20137:30am",
+    "duration": "1.0h",
+    "volunteers": "Shivia Harshita"
   },
   {
     "day": "Fri 17 Jul",
-    "line": "AM 9:30\u20131:00pm"
+    "timeSlot": "AM 9:30\u20131:00pm",
+    "duration": "3.5h",
+    "volunteers": "B1: Dhruv | B2: Harshita | B3: Shouryaveer | B4: Yuvraj"
   },
   {
     "day": "Fri 17 Jul",
-    "line": "PM 2:00\u20135:30pm"
+    "timeSlot": "PM 2:00\u20135:30pm",
+    "duration": "3.5h",
+    "volunteers": "B1: Aryan | B2: Darshita | B3: Gouranshi | B4: Komal"
   },
   {
     "day": "Fri 17 Jul",
-    "line": "6:30\u20139:00pm"
+    "timeSlot": "6:30\u20139:00pm",
+    "duration": "2.5h",
+    "volunteers": "Dhruv Darshita"
   },
   {
     "day": "Fri 17 Jul",
-    "line": "10:30\u201311:30pm"
+    "timeSlot": "10:30\u201311:30pm",
+    "duration": "1.0h",
+    "volunteers": "Aryan Komal"
   },
   {
     "day": "Sat 18 Jul",
-    "line": "6:30\u20137:30am"
+    "timeSlot": "6:30\u20137:30am",
+    "duration": "1.0h",
+    "volunteers": "Shouryaveer Yuvraj"
   },
   {
     "day": "Sat 18 Jul",
-    "line": "AM 9:30\u20131:00pm"
+    "timeSlot": "AM 9:30\u20131:00pm",
+    "duration": "3.5h",
+    "volunteers": "B1: Aryan | B2: Gouranshi | B3: Komal | B4: Shivia"
   },
   {
     "day": "Sat 18 Jul",
-    "line": "PM 2:00\u20135:30pm"
+    "timeSlot": "PM 2:00\u20135:30pm",
+    "duration": "3.5h",
+    "volunteers": "B1: Darshita | B2: Dhruv | B3: Harshita | B4: Yuvraj"
   },
   {
     "day": "Sat 18 Jul",
-    "line": "6:30\u20139:00pm"
+    "timeSlot": "6:30\u20139:00pm",
+    "duration": "2.5h",
+    "volunteers": "Dhruv Shouryaveer"
   },
   {
     "day": "Sat 18 Jul",
-    "line": "10:30\u201311:30pm"
+    "timeSlot": "10:30\u201311:30pm",
+    "duration": "1.0h",
+    "volunteers": "Gouranshi Shivia"
   },
   {
     "day": "Sun 19 Jul",
-    "line": "6:30\u20137:30am"
+    "timeSlot": "6:30\u20137:30am",
+    "duration": "1.0h",
+    "volunteers": "Darshita Harshita"
   },
   {
     "day": "Sun 19 Jul",
-    "line": "AM 9:30\u20131:00pm"
+    "timeSlot": "AM 9:30\u20131:00pm",
+    "duration": "3.5h",
+    "volunteers": "B1: Shivia | B2: Harshita | B3: Shouryaveer | B4: Komal"
   },
   {
     "day": "Sun 19 Jul",
-    "line": "PM 2:00\u20135:30pm"
+    "timeSlot": "PM 2:00\u20135:30pm",
+    "duration": "3.5h",
+    "volunteers": "B1: Aryan | B2: Gouranshi | B3: Dhruv | B4: Yuvraj"
   },
   {
     "day": "Sun 19 Jul",
-    "line": "6:30\u20139:00pm"
+    "timeSlot": "6:30\u20139:00pm",
+    "duration": "2.5h",
+    "volunteers": "Darshita Gouranshi"
   },
   {
     "day": "Sun 19 Jul",
-    "line": "10:30\u201311:30pm"
+    "timeSlot": "10:30\u201311:30pm",
+    "duration": "1.0h",
+    "volunteers": "Shouryaveer Darshita"
   },
   {
     "day": "Mon 20 Jul",
-    "line": "2:00\u20135:30pm"
+    "timeSlot": "2:00\u20135:30pm",
+    "duration": "3.5h",
+    "volunteers": "B1: Harshita Darshita | B2: Shouryaveer Gouranshi | B3&4: Shivia Yuvraj"
   },
   {
     "day": "Mon 20 Jul",
-    "line": "6:30\u20139:00pm"
+    "timeSlot": "6:30\u20139:00pm",
+    "duration": "2.5h",
+    "volunteers": "Komal Dhruv"
   },
   {
     "day": "Mon 20 Jul",
-    "line": "10:30\u201311:30pm"
+    "timeSlot": "10:30\u201311:30pm",
+    "duration": "1.0h",
+    "volunteers": "Aryan Shivia"
   },
   {
     "day": "Tue 21 Jul",
-    "line": "9:30am\u20131:00pm"
+    "timeSlot": "9:30am\u20131:00pm",
+    "duration": "3.5h",
+    "volunteers": "Harshita Shivia Shouryaveer Komal"
   },
   {
     "day": "Tue 21 Jul",
-    "line": "2:30\u20134:00pm"
+    "timeSlot": "2:30\u20134:00pm",
+    "duration": "1.5h",
+    "volunteers": "Darshita Gouranshi Yuvraj Aryan"
   }
 ];
 

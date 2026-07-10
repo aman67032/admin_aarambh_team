@@ -27,9 +27,76 @@ export default function DutyChartPage() {
   // Clean and parse search query
   const query = searchQuery.trim().toLowerCase();
 
+  // Edit distance calculation for fuzzy matching
+  const getEditDistance = (a: string, b: string): number => {
+    if (a.length === 0) return b.length;
+    if (b.length === 0) return a.length;
+    const matrix: number[][] = [];
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
+    }
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // substitution
+            Math.min(
+              matrix[i][j - 1] + 1, // insertion
+              matrix[i - 1][j] + 1 // deletion
+            )
+          );
+        }
+      }
+    }
+    return matrix[b.length][a.length];
+  };
+
+  const isFuzzyWordMatch = (w1: string, w2: string): boolean => {
+    if (w1 === w2) return true;
+    if (w1.startsWith(w2) && w1.length - w2.length <= 3) return true;
+    if (w2.startsWith(w1) && w2.length - w1.length <= 3) return true;
+    const len = Math.max(w1.length, w2.length);
+    const dist = getEditDistance(w1, w2);
+    if (len <= 4) return dist <= 1;
+    if (len <= 7) return dist <= 1;
+    return dist <= 2;
+  };
+
   // Helper to check if a volunteer name matches the query
   const matchesQuery = (text: string) => {
-    return text && text.toLowerCase().includes(query);
+    if (!text || !query) return false;
+    const cleanText = text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ');
+    const cleanQuery = query.toLowerCase().replace(/[^a-z0-9\s]/g, ' ');
+    const textTokens = cleanText.split(/\s+/).filter(t => t.length >= 3);
+    const queryTokens = cleanQuery.split(/\s+/).filter(t => t.length >= 3);
+
+    if (queryTokens.length === 0 || textTokens.length === 0) {
+      return text.toLowerCase().includes(query.toLowerCase());
+    }
+
+    // 1. First name (queryTokens[0]) must fuzzy-match something in the cell
+    const firstToken = queryTokens[0];
+    const hasFirstMatch = textTokens.some(tTok => isFuzzyWordMatch(tTok, firstToken));
+    if (!hasFirstMatch) return false;
+
+    // 2. If both sides have a last name, prevent false cross-matches
+    const commonLastNames = ['singh', 'sharma', 'gupta', 'kumar', 'jain', 'agarwal', 'rathore', 'chhabra', 'garhwal', 'tanwar', 'vyas', 'bisht', 'suwalka', 'chauhan', 'malvi', 'shah', 'sabnani', 'choudhary', 'mundra', 'yadav', 'srivastava', 'goswami', 'lalwani', 'katiyar', 'mishra', 'agrawal', 'dosi', 'asnani', 'bhardwaj', 'saxena', 'pancholi', 'singhi', 'saraf', 'chaurasia', 'somani', 'bang', 'bothra', 'vijayvergia', 'sehgal', 'saini', 'dayaramani'];
+
+    if (queryTokens.length > 1 && textTokens.length > 1) {
+      const dbLastName = queryTokens[1];
+      for (const cellTok of textTokens.slice(1)) {
+        if (commonLastNames.includes(cellTok)) {
+          if (!isFuzzyWordMatch(cellTok, dbLastName)) return false;
+        }
+      }
+    }
+
+    return true;
   };
 
   // Perform global lookup search for a volunteer across all schedules
@@ -104,14 +171,11 @@ export default function DutyChartPage() {
 
     // 5. Search Media PDF Records
     MEDIA_RECORDS.forEach(mr => {
-      if (matchesQuery(mr.line)) {
-        // Strip hours summary if it matches header block
-        if (!mr.line.includes('Hours Summary') && !mr.line.includes('Totals:')) {
-          personalMedia.push({
-            day: mr.day,
-            details: mr.line
-          });
-        }
+      if (matchesQuery(mr.volunteers)) {
+        personalMedia.push({
+          day: mr.day,
+          details: `${mr.timeSlot} (${mr.duration}) — Volunteers: ${mr.volunteers}`
+        });
       }
     });
 
@@ -201,7 +265,7 @@ export default function DutyChartPage() {
                     {personalData.master.map((m, idx) => (
                       <div key={idx} className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
                         <div>
-                          <div className="font-extrabold text-foreground">{m.event}</div>
+                          <div className="font-extrabold text-foreground">{m.event || 'General Orientation Duty'}</div>
                           <div className="text-[10px] text-text-muted font-bold mt-0.5">{m.day}</div>
                         </div>
                         <div className="text-right shrink-0">
@@ -508,13 +572,27 @@ export default function DutyChartPage() {
               <h2 className="text-xs font-black uppercase text-rose-500 tracking-widest pb-2 border-b border-card-border">
                 🎥 Media Shift Roster Details
               </h2>
-              <div className="divide-y divide-card-border">
-                {MEDIA_RECORDS.map((mr, idx) => (
-                  <div key={idx} className="py-3.5 flex flex-col sm:flex-row sm:items-start justify-between gap-3 text-xs">
-                    <span className="font-extrabold text-rose-600 min-w-[120px]">{mr.day}</span>
-                    <span className="font-semibold text-foreground flex-1">{mr.line}</span>
-                  </div>
-                ))}
+              <div className="overflow-x-auto border border-card-border rounded-xl">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="bg-card-bg border-b border-card-border text-text-muted font-bold uppercase tracking-wider text-[9px]">
+                      <th className="px-4 py-3">Day / Date</th>
+                      <th className="px-4 py-3">Time Slot</th>
+                      <th className="px-4 py-3">Duration</th>
+                      <th className="px-4 py-3">Volunteers on Duty</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-card-border font-semibold">
+                    {MEDIA_RECORDS.map((mr, idx) => (
+                      <tr key={idx} className="hover:bg-background/20 transition-colors">
+                        <td className="px-4 py-3 font-bold text-rose-600">{mr.day}</td>
+                        <td className="px-4 py-3 text-foreground">{mr.timeSlot}</td>
+                        <td className="px-4 py-3 text-text-muted font-mono">{mr.duration}</td>
+                        <td className="px-4 py-3 text-foreground">{mr.volunteers}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           )}
