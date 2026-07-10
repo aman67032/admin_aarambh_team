@@ -27,7 +27,9 @@ interface RoomInfo {
 export default function HostelManagementPage() {
   const { user } = useApp();
   const [activeHostel, setActiveHostel] = useState<'BH-1' | 'GH-2'>('BH-1');
-  const [rooms, setRooms] = useState<RoomInfo[]>([]);
+  const [bhRooms, setBhRooms] = useState<RoomInfo[]>([]);
+  const [ghRooms, setGhRooms] = useState<RoomInfo[]>([]);
+  const rooms = activeHostel === 'BH-1' ? bhRooms : ghRooms;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   
@@ -83,7 +85,7 @@ export default function HostelManagementPage() {
     });
   };
 
-  const fetchHostelData = async (hostel: 'BH-1' | 'GH-2') => {
+  const fetchHostelData = async () => {
     setLoading(true);
     setError('');
     try {
@@ -99,13 +101,21 @@ export default function HostelManagementPage() {
         setForms(formsMap);
       }
 
-      // 2. Fetch rooms
-      const res = await fetch(`/api/hostel/rooms/${hostel}`);
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to fetch rooms.');
+      // 2. Fetch BH-1 rooms
+      const bhRes = await fetch('/api/hostel/rooms/BH-1');
+      const bhData = await bhRes.json();
+      if (!bhRes.ok) {
+        throw new Error(bhData.error || 'Failed to fetch BH-1 rooms.');
       }
-      setRooms(data.rooms);
+      setBhRooms(bhData.rooms);
+
+      // 3. Fetch GH-2 rooms
+      const ghRes = await fetch('/api/hostel/rooms/GH-2');
+      const ghData = await ghRes.json();
+      if (!ghRes.ok) {
+        throw new Error(ghData.error || 'Failed to fetch GH-2 rooms.');
+      }
+      setGhRooms(ghData.rooms);
     } catch (err: any) {
       setError(err.message || 'An error occurred fetching hostel room allotments.');
     } finally {
@@ -445,8 +455,8 @@ export default function HostelManagementPage() {
   };
 
   useEffect(() => {
-    fetchHostelData(activeHostel);
-  }, [activeHostel]);
+    fetchHostelData();
+  }, []);
 
   // Handle vacate bed slot
   const handleVacateBed = async (bedSno: number, roomName: string, bedLabel: string) => {
@@ -468,7 +478,7 @@ export default function HostelManagementPage() {
       }
       
       // Refresh list
-      fetchHostelData(activeHostel);
+      fetchHostelData();
     } catch (err: any) {
       alert(err.message || 'An error occurred during vacate.');
     } finally {
@@ -495,7 +505,7 @@ export default function HostelManagementPage() {
       }
       
       // Refresh list
-      fetchHostelData(activeHostel);
+      fetchHostelData();
     } catch (err: any) {
       alert(err.message || 'An error occurred during check in.');
     } finally {
@@ -522,7 +532,7 @@ export default function HostelManagementPage() {
       }
       
       setEditingMemberId(null);
-      fetchHostelData(activeHostel);
+      fetchHostelData();
     } catch (err: any) {
       alert(err.message || 'An error occurred saving arrival details.');
     } finally {
@@ -530,7 +540,19 @@ export default function HostelManagementPage() {
     }
   };
 
-  // Stats calculation
+  // BH-1 (Boys) Stats calculation
+  const bhTotal = bhRooms.reduce((acc, r) => acc + r.beds.length, 0);
+  const bhOccupied = bhRooms.reduce((acc, r) => acc + r.beds.filter(b => b.isOccupied).length, 0);
+  const bhVacant = bhTotal - bhOccupied;
+  const bhCheckedIn = bhRooms.reduce((acc, r) => acc + r.beds.filter(b => b.isOccupied && b.checkedIn).length, 0);
+
+  // GH-2 (Girls) Stats calculation
+  const ghTotal = ghRooms.reduce((acc, r) => acc + r.beds.length, 0);
+  const ghOccupied = ghRooms.reduce((acc, r) => acc + r.beds.filter(b => b.isOccupied).length, 0);
+  const ghVacant = ghTotal - ghOccupied;
+  const ghCheckedIn = ghRooms.reduce((acc, r) => acc + r.beds.filter(b => b.isOccupied && b.checkedIn).length, 0);
+
+  // Selected Hostel Stats calculation
   const totalBeds = rooms.reduce((acc, r) => acc + r.beds.length, 0);
   const occupiedBeds = rooms.reduce((acc, r) => acc + r.beds.filter(b => b.isOccupied).length, 0);
   const vacantBeds = totalBeds - occupiedBeds;
@@ -637,6 +659,87 @@ export default function HostelManagementPage() {
             >
               👩‍💻 GH-2
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Boys & Girls Live Check-In Status Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-card-bg border border-card-border p-6 rounded-2xl shadow-sm">
+        {/* Boys Hostel (BH-1) Status */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between border-b border-card-border pb-3">
+            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+              <span>👦</span> Boys Hostel (BH-1) Live Status
+            </h3>
+            <span className="text-[10px] bg-amber-500/10 text-amber-500 border border-amber-500/20 px-2.5 py-1 rounded-full font-extrabold uppercase">
+              BH-1
+            </span>
+          </div>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="bg-background/50 border border-card-border p-3 rounded-xl">
+              <span className="block text-[9px] font-bold text-text-muted uppercase tracking-wider">Checked In</span>
+              <span className="block text-2xl font-black text-emerald-500 mt-1">{loading ? '...' : bhCheckedIn}</span>
+            </div>
+            <div className="bg-background/50 border border-card-border p-3 rounded-xl">
+              <span className="block text-[9px] font-bold text-text-muted uppercase tracking-wider">Allotted</span>
+              <span className="block text-2xl font-black text-red-500 mt-1">{loading ? '...' : bhOccupied}</span>
+            </div>
+            <div className="bg-background/50 border border-card-border p-3 rounded-xl">
+              <span className="block text-[9px] font-bold text-text-muted uppercase tracking-wider">Vacant</span>
+              <span className="block text-2xl font-black text-green-500 mt-1">{loading ? '...' : bhVacant}</span>
+            </div>
+          </div>
+          {/* Progress bar */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-[10px] font-bold text-text-muted">
+              <span>Arrival Progress</span>
+              <span>{bhOccupied > 0 ? Math.round((bhCheckedIn / bhOccupied) * 100) : 0}%</span>
+            </div>
+            <div className="w-full bg-card-border rounded-full h-2 overflow-hidden">
+              <div 
+                className="bg-emerald-500 h-2 transition-all duration-500" 
+                style={{ width: `${bhOccupied > 0 ? (bhCheckedIn / bhOccupied) * 100 : 0}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Girls Hostel (GH-2) Status */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between border-b border-card-border pb-3">
+            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+              <span>👧</span> Girls Hostel (GH-2) Live Status
+            </h3>
+            <span className="text-[10px] bg-teal-500/10 text-teal-500 border border-teal-500/20 px-2.5 py-1 rounded-full font-extrabold uppercase">
+              GH-2
+            </span>
+          </div>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="bg-background/50 border border-card-border p-3 rounded-xl">
+              <span className="block text-[9px] font-bold text-text-muted uppercase tracking-wider">Checked In</span>
+              <span className="block text-2xl font-black text-emerald-500 mt-1">{loading ? '...' : ghCheckedIn}</span>
+            </div>
+            <div className="bg-background/50 border border-card-border p-3 rounded-xl">
+              <span className="block text-[9px] font-bold text-text-muted uppercase tracking-wider">Allotted</span>
+              <span className="block text-2xl font-black text-red-500 mt-1">{loading ? '...' : ghOccupied}</span>
+            </div>
+            <div className="bg-background/50 border border-card-border p-3 rounded-xl">
+              <span className="block text-[9px] font-bold text-text-muted uppercase tracking-wider">Vacant</span>
+              <span className="block text-2xl font-black text-green-500 mt-1">{loading ? '...' : ghVacant}</span>
+            </div>
+          </div>
+          {/* Progress bar */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-[10px] font-bold text-text-muted">
+              <span>Arrival Progress</span>
+              <span>{ghOccupied > 0 ? Math.round((ghCheckedIn / ghOccupied) * 100) : 0}%</span>
+            </div>
+            <div className="w-full bg-card-border rounded-full h-2 overflow-hidden">
+              <div 
+                className="bg-emerald-500 h-2 transition-all duration-500" 
+                style={{ width: `${ghOccupied > 0 ? (ghCheckedIn / ghOccupied) * 100 : 0}%` }}
+              />
+            </div>
           </div>
         </div>
       </div>
