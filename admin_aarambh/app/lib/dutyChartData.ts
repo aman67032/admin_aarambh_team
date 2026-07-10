@@ -47,6 +47,15 @@ export interface MediaRecord {
   line: string;
 }
 
+export interface TeamMemberDB {
+  name: string;
+  rollNo: string;
+  gender: string;
+  position: string;
+  mobile: string;
+  email: string;
+}
+
 export const MASTER_SCHEDULE: Record<string, MasterDay> = {
   "DAY1": {
     "label": "DAY 01  Tuesday 14th July 2026  Open Skies Day",
@@ -1973,7 +1982,6 @@ export const FOOD_RECORDS: FoodRecord[] = [
   }
 ];
 
-// Raw Media PDF Lines for reference
 export const MEDIA_RECORDS: MediaRecord[] = [
   {
     "day": "",
@@ -2126,5 +2134,1400 @@ export const MEDIA_RECORDS: MediaRecord[] = [
   {
     "day": "Tue 21 Jul",
     "line": "2:30\u20134:00pm"
+  }
+];
+
+export const TEAM_MEMBERS_DB: TeamMemberDB[] = [
+  {
+    "name": "Vedika Agrawal",
+    "rollNo": "2023BTECH096",
+    "gender": "Female",
+    "position": "Organizing Head",
+    "mobile": "9772219303",
+    "email": "vedikaagrawal@jklu.edu.in"
+  },
+  {
+    "name": "Aman Pratap Singh",
+    "rollNo": "2024BTECH136",
+    "gender": "Male",
+    "position": "Organizing Head",
+    "mobile": "9456608637",
+    "email": "amanpratapsingh@jklu.edu.in"
+  },
+  {
+    "name": "Vaishnavi Shukla",
+    "rollNo": "2024BTECH143",
+    "gender": "Female",
+    "position": "Organizing Head",
+    "mobile": "8769276288",
+    "email": "vaishnavishukla@jklu.edu.in"
+  },
+  {
+    "name": "Tanik Gupta",
+    "rollNo": "2024BTECH234",
+    "gender": "Male",
+    "position": "Organizing Head",
+    "mobile": "9929396663",
+    "email": "tanikgupta@jklu.edu.in"
+  },
+  {
+    "name": "Ambika Dalmia",
+    "rollNo": "2024BDES002",
+    "gender": "Female",
+    "position": "Organizing Head",
+    "mobile": "9679220337",
+    "email": "ambikadalmia@jklu.edu.in"
+  },
+  {
+    "name": "Kartik Sharma",
+    "rollNo": "2024BTECH092",
+    "gender": "Male",
+    "position": "Discipline Committee - Team Leader",
+    "mobile": "8769329369",
+    "email": "kartiksharma2024@jklu.edu.in"
+  },
+  {
+    "name": "Pratigya Bomb",
+    "rollNo": "2024BTECH140",
+    "gender": "Female",
+    "position": "Discipline Committee - Team Leader",
+    "mobile": "6264667506",
+    "email": "pratigyabomb@jklu.edu.in"
+  },
+  {
+    "name": "Naman Shukla",
+    "rollNo": "2024BBA054",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Team Leader",
+    "mobile": "9929727849",
+    "email": "namanshukla@jklu.edu.in"
+  },
+  {
+    "name": "Mayank Gautam",
+    "rollNo": "2024BTECH001",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Team Leader",
+    "mobile": "8949349516",
+    "email": "mayank@jklu.edu.in"
+  },
+  {
+    "name": "Anoushka Singh",
+    "rollNo": "2025BDES006",
+    "gender": "Female",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "8949038616",
+    "email": "anushka1235.ka@gmail.com"
+  },
+  {
+    "name": "Hardik Sain",
+    "rollNo": "2025BTECH256",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "8000554092",
+    "email": "hardiksain@jklu.edu.in"
+  },
+  {
+    "name": "Farhan khan",
+    "rollNo": "2025BBA042",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "8852080171",
+    "email": "farhankhan7861458@gmail.com"
+  },
+  {
+    "name": "Ghyan chechani",
+    "rollNo": "2025BTECH304",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "8824600720",
+    "email": "ghyanchechani@jklu.edu.in"
+  },
+  {
+    "name": "Hardik kumawat",
+    "rollNo": "2025BBA46",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "9001023997",
+    "email": "hardikkumawat3997@gmail.com"
+  },
+  {
+    "name": "Harshvardhan Singh",
+    "rollNo": "2025BTECH141",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "7568434676",
+    "email": "harshvardhansingh@jklu.edu.in"
+  },
+  {
+    "name": "jitendra",
+    "rollNo": "2025BBA051",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "9653840559",
+    "email": "js7149448@gmail.com"
+  },
+  {
+    "name": "Pari maloo",
+    "rollNo": "2025BBA081",
+    "gender": "Female",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "9351313345",
+    "email": "parimaloo2007@gmail.com"
+  },
+  {
+    "name": "Lakshya Gupta",
+    "rollNo": "2025BTECH203",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "7597370438",
+    "email": "lakshyagupta1549@gmail.com"
+  },
+  {
+    "name": "Priyanshu kumar",
+    "rollNo": "2025BTECH271",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "9891660352",
+    "email": "priyanshu333k@gmail.com"
+  },
+  {
+    "name": "Raghav sharma",
+    "rollNo": "2025BTECH099",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "7849902293",
+    "email": "raghavsharma2025@jklu.edu.in"
+  },
+  {
+    "name": "Raghuraj Jangid",
+    "rollNo": "2025BTECH100",
+    "gender": "Male",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "8306203348",
+    "email": "raghurajjangid@jklu.edu.in"
+  },
+  {
+    "name": "Sanchi Dhoopia",
+    "rollNo": "2025BTECH338",
+    "gender": "Female",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "9664356901",
+    "email": "dhoopiasanchi@gmail.com"
+  },
+  {
+    "name": "Shreshtha sharma",
+    "rollNo": "2025BBA106",
+    "gender": "Female",
+    "position": "Internal Arrangements Committee - Volunteer",
+    "mobile": "9660599045",
+    "email": "shreshthasharma@jklu.edu.in"
+  },
+  {
+    "name": "Parth Bhardwaj",
+    "rollNo": "2024BBA059",
+    "gender": "Male",
+    "position": "Event &Venue Committee - Team Leader",
+    "mobile": "7850993545",
+    "email": "parthbhardwaj@jklu.edu.in"
+  },
+  {
+    "name": "Shlok chaturvedi",
+    "rollNo": "2024BTECH010",
+    "gender": "Male",
+    "position": "Event &Venue Committee - Team Leader",
+    "mobile": "7737257861",
+    "email": "shlokchaturvedi@jklu.edu.in"
+  },
+  {
+    "name": "Aman Anchaliya",
+    "rollNo": "2025BBA007",
+    "gender": "Male",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "9549696968",
+    "email": "amananchaliya7@gmail.com"
+  },
+  {
+    "name": "Anvi Vashist",
+    "rollNo": "2025BBA013",
+    "gender": "Female",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "8875513050",
+    "email": "anvivashist@jklu.edu.in"
+  },
+  {
+    "name": "Hemangi Sancheti",
+    "rollNo": "2025BBA047",
+    "gender": "Female",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "7357956666",
+    "email": "hemangisancheti@jklu.edu.in"
+  },
+  {
+    "name": "Naresh roj",
+    "rollNo": "2025BTECH158",
+    "gender": "Male",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "9509879995",
+    "email": "nareshroj@jklu.edu.in"
+  },
+  {
+    "name": "Nawya dusad",
+    "rollNo": "2025BBA075",
+    "gender": "Female",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "8279220922",
+    "email": "nawyadusad2007@gmail.com"
+  },
+  {
+    "name": "Pari Nahata",
+    "rollNo": "2025BBA082",
+    "gender": "Female",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "8209095137",
+    "email": "parinahata@jklu.edu.in"
+  },
+  {
+    "name": "PARIHAAN KABRA",
+    "rollNo": "2025BBA083",
+    "gender": "Female",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "9057123555",
+    "email": "parihaankabra@jklu.edu.in"
+  },
+  {
+    "name": "Priecy Gandhi",
+    "rollNo": "2025BTECH270",
+    "gender": "Female",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "7378100524",
+    "email": "priecygandhi@jklu.edu.in"
+  },
+  {
+    "name": "Priyanshi Agnani",
+    "rollNo": "2025BTECH096",
+    "gender": "Female",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "9772217788",
+    "email": "priyanshiagnani@jklu.edu.in"
+  },
+  {
+    "name": "Shubhangi Bhanawat",
+    "rollNo": "2025BTECH357",
+    "gender": "Female",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "9829015671",
+    "email": "shubhangibhanawat@jklu.edu.in"
+  },
+  {
+    "name": "Siddhi khandelwal",
+    "rollNo": "2025BBA108",
+    "gender": "Female",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "8852824149",
+    "email": "siddhikhandelwal@jklu.edu.in"
+  },
+  {
+    "name": "Tanvi Gupta",
+    "rollNo": "2025BBA111",
+    "gender": "Female",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "8302847403",
+    "email": "tanvigupta@jklu.edu.in"
+  },
+  {
+    "name": "Tarushi Agarwal",
+    "rollNo": "2025BBA112",
+    "gender": "Female",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "7588883230",
+    "email": "tarushiagarwal@jklu.edu.in"
+  },
+  {
+    "name": "Yatharth Chaturvedi",
+    "rollNo": "2025BBA121",
+    "gender": "Male",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "8529958544",
+    "email": "yatharthchaturvedi@jklu.edu.in"
+  },
+  {
+    "name": "Mradul Saxena",
+    "rollNo": "2025BTECH087",
+    "gender": "Male",
+    "position": "Event &Venue Committee - Volunteer",
+    "mobile": "8767289743",
+    "email": "mradulsaxena@jklu.edu.in"
+  },
+  {
+    "name": "Jheel jain",
+    "rollNo": "2024BTECH277",
+    "gender": "Female",
+    "position": "Hospitality Committee - Team Leader",
+    "mobile": "9929001325",
+    "email": "jainjheel1406@gmail.com"
+  },
+  {
+    "name": "Gourang Tak",
+    "rollNo": "2024BTECH090",
+    "gender": "Male",
+    "position": "Hospitality Committee - Team Leader",
+    "mobile": "8058477540",
+    "email": "gaurang@jklu.edu.in"
+  },
+  {
+    "name": "Aadrika Roy",
+    "rollNo": "2025BTECH291",
+    "gender": "Female",
+    "position": "Hospitality Committee - Volunteer",
+    "mobile": "9423486807",
+    "email": "aadrikaroy@jklu.edu.in"
+  },
+  {
+    "name": "Abhimanyu Singh katiyar",
+    "rollNo": "2025BTECH004",
+    "gender": "Male",
+    "position": "Hospitality Committee - Volunteer",
+    "mobile": "9257266461",
+    "email": "abhimanyusinghkatiyar@jklu.edu.in"
+  },
+  {
+    "name": "Anubha Sharma",
+    "rollNo": "2025BTECH071",
+    "gender": "Female",
+    "position": "Hospitality Committee - Volunteer",
+    "mobile": "9829820425",
+    "email": "anubhasharma@jklu.edu.in"
+  },
+  {
+    "name": "Aadipoojya Mehra",
+    "rollNo": "2025BTECH061",
+    "gender": "Male",
+    "position": "Hospitality Committee - Volunteer",
+    "mobile": "7742314923",
+    "email": "aadipoojyamehra@jklu.edu.in"
+  },
+  {
+    "name": "Pawani sharma",
+    "rollNo": "2025BTECH041",
+    "gender": "Female",
+    "position": "Hospitality Committee - Volunteer",
+    "mobile": "8905818323",
+    "email": "pawanisharma@jklu.edu.in"
+  },
+  {
+    "name": "Sanskriti gehlot",
+    "rollNo": "2025BBA104",
+    "gender": "Female",
+    "position": "Hospitality Committee - Volunteer",
+    "mobile": "8824500776",
+    "email": "sanskritigehlot@jklu.edu.in"
+  },
+  {
+    "name": "Rahul Gorani",
+    "rollNo": "2025BBA092",
+    "gender": "Male",
+    "position": "Hospitality Committee - Volunteer",
+    "mobile": "6367427790",
+    "email": "rahulgorani@jklu.edu.in"
+  },
+  {
+    "name": "Bhavya Doshi",
+    "rollNo": "2025BBA024",
+    "gender": "Male",
+    "position": "Hospitality Committee - Volunteer",
+    "mobile": "7014763106",
+    "email": "bhavyadoshi@jklu.edu.in"
+  },
+  {
+    "name": "Arjun Singh Tanwar",
+    "rollNo": "2024BTECH018",
+    "gender": "Male",
+    "position": "Food & Accommodation Committee - Team Leader",
+    "mobile": "9166130402",
+    "email": "arjunsinghtanwar@jklu.edu.in"
+  },
+  {
+    "name": "Smile chhabra",
+    "rollNo": "2024BBA084",
+    "gender": "Female",
+    "position": "Food & Accommodation Committee - Team Leader",
+    "mobile": "9571839843",
+    "email": "smilechhabra@jklu.edu.in"
+  },
+  {
+    "name": "Kartavya Garhwal",
+    "rollNo": "2024BTECH079",
+    "gender": "Male",
+    "position": "Food & Accommodation Committee - Team Leader",
+    "mobile": "8233848184",
+    "email": "kartavyagarhwal@jklu.edu.in"
+  },
+  {
+    "name": "Bhavya Gupta",
+    "rollNo": "2025BBA025",
+    "gender": "Male",
+    "position": "Food & Accommodation Committee - Volunteer",
+    "mobile": "8302914430",
+    "email": "bhavyagupta@jklu.edu.in"
+  },
+  {
+    "name": "Aditi Sharma",
+    "rollNo": "2025BBA005",
+    "gender": "Female",
+    "position": "Food & Accommodation Committee - Volunteer",
+    "mobile": "9928456059",
+    "email": "aditisharma@jklu.edu.in"
+  },
+  {
+    "name": "Samridhi Singh",
+    "rollNo": "2025BTECH225",
+    "gender": "Female",
+    "position": "Food & Accommodation Committee - Volunteer",
+    "mobile": "8851168424",
+    "email": "samridhisingh@jklu.edu.in"
+  },
+  {
+    "name": "Samriddhi Singh",
+    "rollNo": "2025BBA103",
+    "gender": "Female",
+    "position": "Food & Accommodation Committee - Volunteer",
+    "mobile": "7974779477",
+    "email": "samriddhis797@gmail.com"
+  },
+  {
+    "name": "Krish Bhola",
+    "rollNo": "2025BBA060",
+    "gender": "Male",
+    "position": "Food & Accommodation Committee - Volunteer",
+    "mobile": "7073517788",
+    "email": "krishbhola@jklu.edu.in"
+  },
+  {
+    "name": "Harshul agarwal",
+    "rollNo": "2025BTECH258",
+    "gender": "Male",
+    "position": "Food & Accommodation Committee - Volunteer",
+    "mobile": "7742991906",
+    "email": "harshulagarwal@jklu.edu.in"
+  },
+  {
+    "name": "pratiki agarwal",
+    "rollNo": "2025BBA086",
+    "gender": "Female",
+    "position": "Food & Accommodation Committee - Volunteer",
+    "mobile": "8000021198",
+    "email": "pratikiagarwal@jklu.edu.in"
+  },
+  {
+    "name": "Chanchal karanani",
+    "rollNo": "2025BTECH019",
+    "gender": "Male",
+    "position": "Food & Accommodation Committee - Volunteer",
+    "mobile": "7297066050",
+    "email": "chanchalkaranani@jklu.edu.in"
+  },
+  {
+    "name": "Pranjal jangid",
+    "rollNo": "2025BTECH094",
+    "gender": "Female",
+    "position": "Food & Accommodation Committee - Volunteer",
+    "mobile": "9828188830",
+    "email": "pranjaljangid@jklu.edu.in"
+  },
+  {
+    "name": "Roshan jangir",
+    "rollNo": "2024BTECH147",
+    "gender": "Male",
+    "position": "Photography Committee - Team Leader",
+    "mobile": "7877552810",
+    "email": "roshanjangir@jklu.edu.in"
+  },
+  {
+    "name": "Mohit Khurana",
+    "rollNo": "2024BTECH155",
+    "gender": "Male",
+    "position": "Photography Committee - Team Leader",
+    "mobile": "8905744728",
+    "email": "mohitkhurana@jklu.edu.in"
+  },
+  {
+    "name": "Shambhavi Singh",
+    "rollNo": "2025BTECH049",
+    "gender": "Female",
+    "position": "Photography Committee - Volunteer",
+    "mobile": "9452588089",
+    "email": "shambhavisingh@jklu.edu.in"
+  },
+  {
+    "name": "Aditya Vyas",
+    "rollNo": "2025BTECH293",
+    "gender": "Male",
+    "position": "Photography Committee - Volunteer",
+    "mobile": "8955637102",
+    "email": "adityavyas@jklu.edu.in"
+  },
+  {
+    "name": "Sunay kundalwal",
+    "rollNo": "2025BTECH175",
+    "gender": "Male",
+    "position": "Photography Committee - Volunteer",
+    "mobile": "8619804776",
+    "email": "sunaykundalwal@jklu.edu.in"
+  },
+  {
+    "name": "Riddhi Sharma",
+    "rollNo": "2025BTECH166",
+    "gender": "Female",
+    "position": "Photography Committee - Volunteer",
+    "mobile": "7014857867",
+    "email": "riddhisharma@jklu.edu.in"
+  },
+  {
+    "name": "akshat bisht",
+    "rollNo": "2025BTECH067",
+    "gender": "Male",
+    "position": "Photography Committee - Volunteer",
+    "mobile": "9509693736",
+    "email": "akshatbisht@jklu.edu.in"
+  },
+  {
+    "name": "Mohit Suwalka",
+    "rollNo": "2025BTECH267",
+    "gender": "Male",
+    "position": "Photography Committee - Volunteer",
+    "mobile": "8005961269",
+    "email": "mohitsuwalka@jklu.edu.in"
+  },
+  {
+    "name": "Niharika Chauhan",
+    "rollNo": "2025BBA076",
+    "gender": "Female",
+    "position": "Photography Committee - Volunteer",
+    "mobile": "9660622428",
+    "email": "niharikachauhan2607@gmail.com"
+  },
+  {
+    "name": "Tarun Kumar",
+    "rollNo": "2025BTECH055",
+    "gender": "Male",
+    "position": "Photography Committee - Volunteer",
+    "mobile": "8764191998",
+    "email": "tarunkumar2025@jklu.edu.in"
+  },
+  {
+    "name": "Aditya Nayak",
+    "rollNo": "2024BTECH032",
+    "gender": "Male",
+    "position": "Social media -Team Leader",
+    "mobile": "9116727168",
+    "email": "aadinayak2006@gmail.com"
+  },
+  {
+    "name": "Vaibhav Khandelwal",
+    "rollNo": "2024BTECH110",
+    "gender": "Male",
+    "position": "Social media -Team Leader",
+    "mobile": "6376511127",
+    "email": "vaibhavkhandelwal@jklu.edu.in"
+  },
+  {
+    "name": "Kaushal Malvi",
+    "rollNo": "2025BTECH263",
+    "gender": "Male",
+    "position": "Social media - Volunteer",
+    "mobile": "9644679988",
+    "email": "kaushalmalvi@jklu.edu.in"
+  },
+  {
+    "name": "Nandini Shah",
+    "rollNo": "2025BBA073",
+    "gender": "Female",
+    "position": "Social media - Volunteer",
+    "mobile": "9358369605",
+    "email": "nandinishah@jklu.edu.in"
+  },
+  {
+    "name": "Bhavisha Sabnani",
+    "rollNo": "2025BBA023",
+    "gender": "Female",
+    "position": "Social media - Volunteer",
+    "mobile": "7878530529",
+    "email": "bhavishasabnani@jklu.edu.in"
+  },
+  {
+    "name": "Anukriti Choudhary",
+    "rollNo": "2025BBA011",
+    "gender": "Female",
+    "position": "Social media - Volunteer",
+    "mobile": "7424841969",
+    "email": "anukritichoudhary@jklu.edu.in"
+  },
+  {
+    "name": "Vidhaan Shah",
+    "rollNo": "2025BTECH059",
+    "gender": "Male",
+    "position": "Social media - Volunteer",
+    "mobile": "7357252112",
+    "email": "vidhaanpshah@jkllu.edu.in"
+  },
+  {
+    "name": "Parth Mundra",
+    "rollNo": "2025BBA085",
+    "gender": "Male",
+    "position": "Social media - Volunteer",
+    "mobile": "9664098829",
+    "email": "parthmundra@jklu.edu.in"
+  },
+  {
+    "name": "Chestha kulshrestha",
+    "rollNo": "2024BTECH185",
+    "gender": "Female",
+    "position": "Media Committee - Team Leader",
+    "mobile": "9928883938",
+    "email": "chesthakulshrestha@jklu.edu.in"
+  },
+  {
+    "name": "Adityavardhan Singh Chauhan",
+    "rollNo": "2024BTECH118",
+    "gender": "Male",
+    "position": "Media Committee - Team Leader",
+    "mobile": "8955738808",
+    "email": "adityavardhansinghchauhan@jklu.edu.in"
+  },
+  {
+    "name": "Gouranshi Sharma",
+    "rollNo": "2025BBA045",
+    "gender": "Female",
+    "position": "Media Committee - Volunteer",
+    "mobile": "8890174914",
+    "email": "gouranshisharma@jklu.edu.in"
+  },
+  {
+    "name": "Aryan Ajay Bhaskat",
+    "rollNo": "2025BBA015",
+    "gender": "Male",
+    "position": "Media Committee - Volunteer",
+    "mobile": "9351362479",
+    "email": "aryanajaybhaskar@jklu.edu.in"
+  },
+  {
+    "name": "Darshita Jain",
+    "rollNo": "2025BBA034",
+    "gender": "Female",
+    "position": "Media Committee - Volunteer",
+    "mobile": "6378803495",
+    "email": "darshitajain@jklu.edu.in"
+  },
+  {
+    "name": "Shivia rawat",
+    "rollNo": "2025BTECH276",
+    "gender": "Female",
+    "position": "Media Committee - Volunteer",
+    "mobile": "7849833123",
+    "email": "shiviarawat@jklu.edu.in"
+  },
+  {
+    "name": "Shouryaveer Bishnoi",
+    "rollNo": "2025BTECH111",
+    "gender": "Male",
+    "position": "Media Committee - Volunteer",
+    "mobile": "9828692129",
+    "email": "shouryaveerbishnoi@jklu.edu.in"
+  },
+  {
+    "name": "Harshita Harchandani",
+    "rollNo": "2025BTECH193",
+    "gender": "Female",
+    "position": "Media Committee - Volunteer",
+    "mobile": "7470808031",
+    "email": "harshitaharchandani@jklu.edu.in"
+  },
+  {
+    "name": "Komal verma",
+    "rollNo": "2025BBA058",
+    "gender": "Female",
+    "position": "Media Committee - Volunteer",
+    "mobile": "8209421348",
+    "email": "komal13072007@gmail.com"
+  },
+  {
+    "name": "Yuvraj Singh Rathore",
+    "rollNo": "2025BTECH290",
+    "gender": "Male",
+    "position": "Media Committee - Volunteer",
+    "mobile": "9351912044",
+    "email": "yuvrajsinghrathore2025@jklu.edu.in"
+  },
+  {
+    "name": "Dhruv kumar",
+    "rollNo": "2025BTECH023",
+    "gender": "Male",
+    "position": "Media Committee - Volunteer",
+    "mobile": "8979809484",
+    "email": "dhruvkumar@jklu.edu.in"
+  },
+  {
+    "name": "Medha Gupta",
+    "rollNo": "2024BDES013",
+    "gender": "Female",
+    "position": "Design Committee - Team Leader",
+    "mobile": "9116117889",
+    "email": "medhagupta@jklu.edu.in"
+  },
+  {
+    "name": "Janapaati Rohith",
+    "rollNo": "2025BTECH260",
+    "gender": "Male",
+    "position": "Design Committee - Volunteer",
+    "mobile": "8309571278",
+    "email": "janapaatirohith@jklu.edu.in"
+  },
+  {
+    "name": "Raghav Soni",
+    "rollNo": "2025BDES032",
+    "gender": "Male",
+    "position": "Design Committee - Volunteer",
+    "mobile": "9140338834",
+    "email": "raghavsoni2025@jklu.edu.in"
+  },
+  {
+    "name": "Srijan Sharma",
+    "rollNo": "2025BDES037",
+    "gender": "Male",
+    "position": "Design Committee - Volunteer",
+    "mobile": "7007904127",
+    "email": "srijansharma@jklu.edu.in"
+  },
+  {
+    "name": "Devam Gupta",
+    "rollNo": "2024BTECH014",
+    "gender": "Male",
+    "position": "Technical Committee - Team Leader",
+    "mobile": "7340015201",
+    "email": "devamgupta@jklu.edu.in"
+  },
+  {
+    "name": "Yash Bansal",
+    "rollNo": "2024BTECH128",
+    "gender": "Male",
+    "position": "Technical Committee - Team Leader",
+    "mobile": "8619011601",
+    "email": "yashbansal@jklu.edu.in"
+  },
+  {
+    "name": "Ashutosh Yadav",
+    "rollNo": "2025BTECH188",
+    "gender": "Male",
+    "position": "Technical Committee - Volunteer",
+    "mobile": "9259068512",
+    "email": "ashutoshyadav@jklu.edu.in"
+  },
+  {
+    "name": "Manant Srivastava",
+    "rollNo": "2025BTECH265",
+    "gender": "Male",
+    "position": "Technical Committee - Volunteer",
+    "mobile": "9451021467",
+    "email": "manantsrivastava@jklu.edu.in"
+  },
+  {
+    "name": "Aalap Goswami",
+    "rollNo": "2025BTECH002",
+    "gender": "Male",
+    "position": "Technical Committee - Volunteer",
+    "mobile": "9783081486",
+    "email": "aalapgoswami@jklu.edu.in"
+  },
+  {
+    "name": "Pratham lalwani",
+    "rollNo": "2025BTECH095",
+    "gender": "Male",
+    "position": "Technical Committee - Volunteer",
+    "mobile": "7232857451",
+    "email": "prathamlalwani@jklu.edu.in"
+  },
+  {
+    "name": "Rashi Katiyar",
+    "rollNo": "2025BTECH042",
+    "gender": "Female",
+    "position": "Technical Committee - Volunteer",
+    "mobile": "7878437857",
+    "email": "rashikatiyar@jklu.edu.in"
+  },
+  {
+    "name": "Udit Mishra",
+    "rollNo": "2025BTECH056",
+    "gender": "Male",
+    "position": "Technical Committee - Volunteer",
+    "mobile": "9509908119",
+    "email": "uditmishra@jklu.edu.in"
+  },
+  {
+    "name": "Amrit Agrawal",
+    "rollNo": "2025BTECH009",
+    "gender": "Male",
+    "position": "Technical Committee - Volunteer",
+    "mobile": "95889 34442",
+    "email": "amritagrawal@jklu.edu.in"
+  },
+  {
+    "name": "Arihant Jain",
+    "rollNo": "2025BTECH186",
+    "gender": "Male",
+    "position": "Technical Committee - Volunteer",
+    "mobile": "63670 45695",
+    "email": "arihantjain2025@jklu.edu.in"
+  },
+  {
+    "name": "Heramb Sharma",
+    "rollNo": "2025BTECH028",
+    "gender": "Male",
+    "position": "Technical Committee - Volunteer",
+    "mobile": "6377827962",
+    "email": "herambsharma@jklu.edu.in"
+  },
+  {
+    "name": "Pulkit Dosi",
+    "rollNo": "2024BBA067",
+    "gender": "Male",
+    "position": "Feedback & Registration Committee - Team Leader",
+    "mobile": "9887788899",
+    "email": "pulkitdosi16@gmail.com"
+  },
+  {
+    "name": "Kavita Sharma",
+    "rollNo": "2025BTECH083",
+    "gender": "Female",
+    "position": "Feedback & Registration Committee - Volunteer",
+    "mobile": "94621 49044",
+    "email": "kavitasharma946214@gmail.com"
+  },
+  {
+    "name": "Garvishtha Asnani",
+    "rollNo": "2025BBA044",
+    "gender": "Female",
+    "position": "Feedback & Registration Committee - Volunteer",
+    "mobile": "7878504420",
+    "email": "garvishthaasnani@jklu.edu.in"
+  },
+  {
+    "name": "Ishvit Bhardwaj",
+    "rollNo": "2025BTECH032",
+    "gender": "Male",
+    "position": "Feedback & Registration Committee - Volunteer",
+    "mobile": "6375056015",
+    "email": "ishvitbhardwaj@jklu.edu.in"
+  },
+  {
+    "name": "Manvi Singh",
+    "rollNo": "2025BTECH154",
+    "gender": "Female",
+    "position": "Feedback & Registration Committee - Volunteer",
+    "mobile": "9024411648",
+    "email": "manvisingh@jklu.edu.in"
+  },
+  {
+    "name": "Vaishali agarwal",
+    "rollNo": "2025BTECH057",
+    "gender": "Female",
+    "position": "Feedback & Registration Committee - Volunteer",
+    "mobile": "9521273276",
+    "email": "vaishaliagarwal@jklu.edu.in"
+  },
+  {
+    "name": "Rishika Singh",
+    "rollNo": "2024BTECH168",
+    "gender": "Female",
+    "position": "Cluster Head",
+    "mobile": "7300118679",
+    "email": "rishikasingh2024@jklu.edu.in"
+  },
+  {
+    "name": "Ananya Singh",
+    "rollNo": "2025BTECH184",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9509946112",
+    "email": "ananyasingh2025@jklu.edu.in"
+  },
+  {
+    "name": "Aditi Agarwal",
+    "rollNo": "2025BBA004",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8529341939",
+    "email": "aditiagarwal2025@jklu.edu.in"
+  },
+  {
+    "name": "Siya Sharma",
+    "rollNo": "2025BTECH051",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9119218502",
+    "email": "siyasharma@jklu.edu.in"
+  },
+  {
+    "name": "Himani Menghani",
+    "rollNo": "2025BBA048",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9509221101",
+    "email": "himanimenghani@jklu.edu.in"
+  },
+  {
+    "name": "Prekshya Sharma",
+    "rollNo": "2025BTECH164",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "7850984940",
+    "email": "prekshasharma277@gmail.com"
+  },
+  {
+    "name": "Swadha Saxena",
+    "rollNo": "2024BBA086",
+    "gender": "Female",
+    "position": "Cluster Head",
+    "mobile": "9079707725",
+    "email": "swadhasaxena5@gmail.com"
+  },
+  {
+    "name": "Nikita bhatia",
+    "rollNo": "2025BTECH161",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "7742314923",
+    "email": "nikitabhatia@jklu.edu.in"
+  },
+  {
+    "name": "Purvi jain",
+    "rollNo": "2025BTECH098",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "7877082586",
+    "email": "purvijain@jklu.edu.in"
+  },
+  {
+    "name": "Anushri Falor",
+    "rollNo": "2025BTECH011",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9314267009",
+    "email": "anushrifalor@jklu.edu.in"
+  },
+  {
+    "name": "Dishika Pancholi",
+    "rollNo": "2025BBA039",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9588934442",
+    "email": "dishikapancholi00@gmail.com"
+  },
+  {
+    "name": "Vidhi Chamaria",
+    "rollNo": "2024BDES035",
+    "gender": "Female",
+    "position": "Cluster Head",
+    "mobile": "9829883263",
+    "email": "vidhichamaria@jklu.edu.in"
+  },
+  {
+    "name": "Gauri Singhi",
+    "rollNo": "2025BDES015",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8305015800",
+    "email": "gaurisinghi@jklu.edu.in"
+  },
+  {
+    "name": "Khushi Sharma",
+    "rollNo": "2025BTECH197",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8949969152",
+    "email": "khushisharma@jklu.edu.in"
+  },
+  {
+    "name": "Purvee Dudheria",
+    "rollNo": "2025BBA090",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9352221827",
+    "email": "purveedudheria@jklu.edu.in"
+  },
+  {
+    "name": "Himani Saraf",
+    "rollNo": "2025BBA049",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "7229990039",
+    "email": "himanisaraf@jklu.edu.in"
+  },
+  {
+    "name": "Daksh Kumar",
+    "rollNo": "2024BTECH031",
+    "gender": "Male",
+    "position": "Cluster Head",
+    "mobile": "8949291337",
+    "email": "dakshkumar@jklu.edu.in"
+  },
+  {
+    "name": "Sudhi Chaurasia",
+    "rollNo": "2025BTECH053",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8966873111",
+    "email": "sudhichaurasia@jklu.edu.in"
+  },
+  {
+    "name": "Chelsytanwar",
+    "rollNo": "2025BTECH250",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9119289533",
+    "email": "chelsytanwar@gmail.com"
+  },
+  {
+    "name": "Garvit Agrawal",
+    "rollNo": "2025BTECH025",
+    "gender": "Male",
+    "position": "Cohort Leader",
+    "mobile": "9024079027",
+    "email": "garvitagrawal@jklu.edu.in"
+  },
+  {
+    "name": "Vansh Bhatia",
+    "rollNo": "2025BBA115",
+    "gender": "Male",
+    "position": "Cohort Leader",
+    "mobile": "9413833334",
+    "email": "vanshbhatia@jklu.edu.in"
+  },
+  {
+    "name": "MANSI SOMANI",
+    "rollNo": "2025BTECH086",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9636866919",
+    "email": "mansisomani@jklu.edu.in"
+  },
+  {
+    "name": "Bhavya Bang",
+    "rollNo": "2024BDES009",
+    "gender": "Female",
+    "position": "Cluster Head",
+    "mobile": "7023282838",
+    "email": "bhavya@jklu.edu.in"
+  },
+  {
+    "name": "Kavya Gupta",
+    "rollNo": "2025BDES018",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "6263137120",
+    "email": "kavyagupta1635@gmail.com"
+  },
+  {
+    "name": "Lakshita Tanwar",
+    "rollNo": "2025BBA063",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9251016998",
+    "email": "lakshitatanwar@jklu.edu.in"
+  },
+  {
+    "name": "Kajal Agarwal",
+    "rollNo": "2025BTECH195",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9660595115",
+    "email": "kajalagarwal@jklu.edu.in"
+  },
+  {
+    "name": "Hansika Agarwal",
+    "rollNo": "2025BTECH027",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8824325776",
+    "email": "hansikaagarwal@jklu.edu.in"
+  },
+  {
+    "name": "Yashsvi Bothra",
+    "rollNo": "2025BBA120",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9875765696",
+    "email": "yashsvibothra@jklu.edu.in"
+  },
+  {
+    "name": "Khushi Soni",
+    "rollNo": "2024BTECH054",
+    "gender": "Female",
+    "position": "Cluster Head",
+    "mobile": "9024877641",
+    "email": "khushisoni@jklu.edu.in"
+  },
+  {
+    "name": "Ruchi choudhary",
+    "rollNo": "2025BBA098",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8905185761",
+    "email": "ruchichoudhary@jklu.edu.in"
+  },
+  {
+    "name": "Saanchi Vijayvergia",
+    "rollNo": "2025BBA100",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9509481665",
+    "email": "saanchivijayvergia@jklu.edu.in"
+  },
+  {
+    "name": "droni sehgal",
+    "rollNo": "2025BBA041",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "7737984411",
+    "email": "dronisehgal@jklu.edu.in"
+  },
+  {
+    "name": "Diya Shah",
+    "rollNo": "2025BBA124",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8866560966",
+    "email": "shahdiyaankitbhai@jklu.edu.in"
+  },
+  {
+    "name": "Risha Saini",
+    "rollNo": "2025BBA095",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "7296947096",
+    "email": "rishasaini@jklu.edu.in"
+  },
+  {
+    "name": "Aryan Gupta",
+    "rollNo": "2024BTECH036",
+    "gender": "Male",
+    "position": "Cluster Head",
+    "mobile": "8302958564",
+    "email": "aryangupta2024@jklu.edu.in"
+  },
+  {
+    "name": "Khanak Jain",
+    "rollNo": "2025BBA057",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8104805555",
+    "email": "khanakjain@jklu.edu.in"
+  },
+  {
+    "name": "Jainam Jain",
+    "rollNo": "2025BTECH306",
+    "gender": "Male",
+    "position": "Cohort Leader",
+    "mobile": "8000796223",
+    "email": "jainamjain@jklu.edu.in"
+  },
+  {
+    "name": "Arshiyaa Yadav",
+    "rollNo": "2025BTECH073",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "7976616005",
+    "email": "arshiyaayadav@jklu.edu.in"
+  },
+  {
+    "name": "Akshat Murarka",
+    "rollNo": "2025BTECH068",
+    "gender": "Male",
+    "position": "Cohort Leader",
+    "mobile": "9153498719",
+    "email": "akshatmurarka@jklu.edu.in"
+  },
+  {
+    "name": "Himanshu",
+    "rollNo": "2025BTECH142",
+    "gender": "Male",
+    "position": "Cohort Leader",
+    "mobile": "9251015254",
+    "email": "himanshu@jklu.edu.in"
+  },
+  {
+    "name": "Rishika Sharma",
+    "rollNo": "2024BBA072",
+    "gender": "Female",
+    "position": "Cluster Head",
+    "mobile": "9929175875",
+    "email": "herrishika03@gmail.com"
+  },
+  {
+    "name": "Naina Dayaramani",
+    "rollNo": "2025BTECH156",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8982800788",
+    "email": "nainadayaramani@gmail.com"
+  },
+  {
+    "name": "Avika soni",
+    "rollNo": "2025BBA017",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9828239900",
+    "email": "avikasonijain@jklu.edu.in"
+  },
+  {
+    "name": "Aditi Sharma",
+    "rollNo": "2025BTECH121",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8769266444",
+    "email": "aditisharma2025@jklu.edu.in"
+  },
+  {
+    "name": "Charvi Sharma",
+    "rollNo": "2025BBA029",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8847490178",
+    "email": "charvisharma@jklu.edu.in"
+  },
+  {
+    "name": "Shreya Sharma",
+    "rollNo": "2025BTECH277",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "7895887371",
+    "email": "shreyasharma@jklu.edu.in"
+  },
+  {
+    "name": "Vankayala Pavani",
+    "rollNo": "2024BTECH171",
+    "gender": "Female",
+    "position": "Cluster Head",
+    "mobile": "7842114595",
+    "email": "vankayalapavani@jklu.edu.in"
+  },
+  {
+    "name": "Karnam Hasini",
+    "rollNo": "2025BTECH309",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "6303751019",
+    "email": "karnamhasini@jklu.edu.in"
+  },
+  {
+    "name": "SuryavanshiSridevi",
+    "rollNo": "2025BTECH115",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8639190326",
+    "email": "sridevimadhavsuryavanshi@jklu.edu.in"
+  },
+  {
+    "name": "Pendyala Sri Vaibhav",
+    "rollNo": "2025BTECH217",
+    "gender": "Male",
+    "position": "Cohort Leader",
+    "mobile": "9398897495",
+    "email": "pendyalasrivaibhav@jklu.edu.in"
+  },
+  {
+    "name": "Varra srivalli",
+    "rollNo": "2024BTECH261",
+    "gender": "Female",
+    "position": "Cluster Head",
+    "mobile": "9502303519",
+    "email": "varrasrivalli@jklu.edu.in"
+  },
+  {
+    "name": "Lenkalapally Ravi Teja",
+    "rollNo": "2025BTECH221",
+    "gender": "Male",
+    "position": "Cohort Leader",
+    "mobile": "7416090030",
+    "email": "raviteja@jklu.edu.in"
+  },
+  {
+    "name": "V Tanvi Reddy",
+    "rollNo": "2025BTECH324",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "6301758988",
+    "email": "vtanvireddy@jklu.edu.in"
+  },
+  {
+    "name": "Suvarna Keziah Digwal",
+    "rollNo": "2025BTECH075",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "7032764515",
+    "email": "digwalsuvarnakeziah@jklu.edu.in"
+  },
+  {
+    "name": "Doddapuneni jahanavi",
+    "rollNo": "2024BTECH040",
+    "gender": "Female",
+    "position": "Cluster Head",
+    "mobile": "9515934329",
+    "email": "doddapunenijahanavi@jklu.edu.in"
+  },
+  {
+    "name": "Vaishnavi Gajjala",
+    "rollNo": "2025BTECH303",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8309299039",
+    "email": "gajjalavaishnavi@jklu.edu.in"
+  },
+  {
+    "name": "Nakkalapally Omruthik",
+    "rollNo": "2025BTECH157",
+    "gender": "Male",
+    "position": "Cohort Leader",
+    "mobile": "9014857921",
+    "email": "nakkalapallyomruthik@jklu.edu.in"
+  },
+  {
+    "name": "Poorna Tejitha",
+    "rollNo": "2025BTECH333",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "8247754198",
+    "email": "gaddampoornatejitha@jklu.edu.in"
+  },
+  {
+    "name": "Kandela Nandini",
+    "rollNo": "2024BTECH204",
+    "gender": "Female",
+    "position": "Cluster Head",
+    "mobile": "9391774008",
+    "email": "kandelanandini5@gmail.com"
+  },
+  {
+    "name": "Teeda Sri Ramya",
+    "rollNo": "2025BTECH236",
+    "gender": "Female",
+    "position": "Cohort Leader",
+    "mobile": "9346228928",
+    "email": "teedasriramya@jklu.edu.in"
+  },
+  {
+    "name": "U Vishnu",
+    "rollNo": "2025BTECH238",
+    "gender": "Male",
+    "position": "Cohort Leader",
+    "mobile": "9059814029",
+    "email": "vishnuu461@gmail.com"
+  },
+  {
+    "name": "VARUN TEJA ANKARLA",
+    "rollNo": "2025BTECH241",
+    "gender": "Male",
+    "position": "Cohort Leader",
+    "mobile": "9573857352",
+    "email": "a.varunteja@jklu.edu.in"
   }
 ];

@@ -18,8 +18,16 @@ export default function AdminDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!appLoading && user && user.email === 'hosteladmin@jklu.edu.in') {
-      router.push('/admin/hostel');
+    if (!appLoading && user) {
+      if (user.email === 'hosteladmin@jklu.edu.in') {
+        router.push('/admin/hostel');
+      } else if (user.role === 'teammember') {
+        router.push('/admin/duty-chart');
+      } else if (user.role === 'cohort_leader') {
+        router.push('/cohort-leader');
+      } else if (user.role === 'cluster_head') {
+        router.push('/cluster-head');
+      }
     }
   }, [user, appLoading, router]);
 

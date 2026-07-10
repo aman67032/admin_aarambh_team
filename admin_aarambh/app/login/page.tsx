@@ -37,17 +37,13 @@ export default function LoginPage() {
   // Redirect if already logged in
 
   useEffect(() => {
-
     if (user) {
-
       if (user.role === 'super_admin') router.push('/super-admin');
-
       else if (user.role === 'admin') router.push('/admin');
-
       else if (user.role === 'cluster_head') router.push('/cluster-head');
-
+      else if (user.role === 'cohort_leader') router.push('/cohort-leader');
+      else if (user.role === 'teammember') router.push('/admin/duty-chart');
     }
-
   }, [user, router]);
 
 

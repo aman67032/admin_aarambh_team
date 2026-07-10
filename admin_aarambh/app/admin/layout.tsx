@@ -2,7 +2,7 @@
 import Loader from '../components/Loader';
 
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useApp } from '../context/AppContext';
 import Sidebar from '../components/Sidebar';
 import PlasmaWave from '../components/PlasmaWave';
@@ -14,12 +14,29 @@ export default function AdminLayout({
 }) {
   const { user, loading } = useApp();
   const router = useRouter();
+  const pathname = usePathname();
+
+  const allowedRoles = ['admin', 'super_admin', 'cluster_head', 'cohort_leader', 'teammember'];
 
   useEffect(() => {
-    if (!loading && (!user || (user.role !== 'admin' && user.role !== 'super_admin'))) {
-      router.push('/login');
+    if (!loading) {
+      if (!user || !allowedRoles.includes(user.role)) {
+        router.push('/login');
+      } else if (user.role === 'teammember') {
+        if (pathname !== '/admin/duty-chart') {
+          router.push('/admin/duty-chart');
+        }
+      } else if (user.role === 'cohort_leader') {
+        if (pathname !== '/admin/duty-chart' && pathname !== '/cohort-registrations' && !pathname.startsWith('/cohort-leader')) {
+          router.push('/cohort-leader');
+        }
+      } else if (user.role === 'cluster_head') {
+        if (pathname !== '/admin/duty-chart' && pathname !== '/cohort-registrations' && !pathname.startsWith('/cluster-head')) {
+          router.push('/cluster-head');
+        }
+      }
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, pathname]);
 
   if (loading) {
     return (
@@ -29,7 +46,7 @@ export default function AdminLayout({
     );
   }
 
-  if (!user || (user.role !== 'admin' && user.role !== 'super_admin')) {
+  if (!user || !allowedRoles.includes(user.role)) {
     return null;
   }
 

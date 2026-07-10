@@ -109,6 +109,12 @@ export default function PublicHomePage() {
 
           <div className="flex items-center gap-4">
             <Link
+              href="/duty-chart"
+              className="px-4 py-2 border border-violet-500/20 hover:border-violet-500/50 text-violet-600 bg-violet-500/5 hover:bg-violet-500/10 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              📅 Volunteer Duty Chart
+            </Link>
+            <Link
               href="/hostel-booking"
               className="px-4 py-2 border border-primary/20 hover:border-primary/50 text-primary bg-primary/5 hover:bg-primary/10 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1.5"
             >
