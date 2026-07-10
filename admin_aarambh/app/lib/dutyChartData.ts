@@ -146,66 +146,52 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
         "duties": {}
       },
       {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
+        "time": "Full Day",
+        "event": "Hospitality for Mr. Manish Freeman",
         "duties": {
-          "Feedback & Registration": "Full Day",
-          "Media": "Aadi",
-          "Photography": "Mr. Manish Freeman"
+          "Hospitality": "Aadi"
         }
       },
       {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
+        "time": "Full Day",
+        "event": "Hospitality for Ashutosh",
         "duties": {
-          "Feedback & Registration": "Full Day",
-          "Media": "Aadrika",
-          "Photography": "Ashutosh"
+          "Hospitality": "Aadrika"
         }
       },
       {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
+        "time": "Full Day",
+        "event": "Hospitality for Amreen",
         "duties": {
-          "Feedback & Registration": "Full Day",
-          "Media": "Abhimanyu Singh",
-          "Photography": "Amreen"
+          "Hospitality": "Abhimanyu Singh"
         }
       },
       {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
+        "time": "Full Day",
+        "event": "Hospitality for Chetan",
         "duties": {
-          "Feedback & Registration": "Full Day",
-          "Media": "Anubha Sharma",
-          "Photography": "Chetan"
+          "Hospitality": "Anubha Sharma"
         }
       },
       {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
+        "time": "Full Day",
+        "event": "Hospitality for Vidushi",
         "duties": {
-          "Feedback & Registration": "Full Day",
-          "Media": "Bhavya Doshi",
-          "Photography": "Vidushi"
+          "Hospitality": "Bhavya Doshi"
         }
       },
       {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
+        "time": "Full Day",
+        "event": "Hospitality for Help Desk",
         "duties": {
-          "Feedback & Registration": "Full Day",
-          "Media": "Sanskriti & Rahul Gorani",
-          "Photography": "Help Desk"
+          "Hospitality": "Sanskriti & Rahul Gorani"
         }
       },
       {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
+        "time": "Full Day",
+        "event": "Hospitality for Available",
         "duties": {
-          "Feedback & Registration": "Full Day",
-          "Media": "Pawanii Sharma",
-          "Photography": "Available"
+          "Hospitality": "Pawanii Sharma"
         }
       }
     ]
@@ -297,28 +283,24 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {
         "duties": {}
       },
       {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
+        "time": "Half Day",
+        "event": "Hospitality for Continue with Manish Freeman + Team",
         "duties": {
-          "Feedback & Registration": "Half Day",
-          "Media": "Aadi , Aadrika  , Abhimanyu Singh  , Anubha Sharma , Bhavya Doshi",
-          "Photography": "Continue with Manish Freeman + Team"
+          "Hospitality": "Aadi , Aadrika  , Abhimanyu Singh  , Anubha Sharma , Bhavya Doshi"
         }
       },
       {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
+        "time": "Free",
+        "event": "Hospitality for Help Desk",
         "duties": {
-          "Media": "Rahul Gorani  , Sanskriti",
-          "Photography": "Help Desk"
+          "Hospitality": "Rahul Gorani  , Sanskriti"
         }
       },
       {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
+        "time": "Free",
+        "event": "Hospitality for Available",
         "duties": {
-          "Media": "Pawanii Sharma",
-          "Photography": "Available"
+          "Hospitality": "Pawanii Sharma"
         }
       }
     ]
@@ -2412,21 +2394,14 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
     "timeSlot": "Aarambh  Schedule  | Rules  &",
     "event": "Mr. Deepak  Sogani",
     "venue": "Tech  Lawn",
-    "volunteer": "Manvi Singh"
+    "volunteer": "Vaishali Agarwal"
   },
   {
     "day": "Tue 14 Jul",
     "timeSlot": "Aarambh  Schedule  | Rules  &",
     "event": "Mr. Deepak  Sogani",
     "venue": "Tech  Lawn",
-    "volunteer": "Vaishali Agarwal"
-  },
-  {
-    "day": "Tue 14 Jul",
-    "timeSlot": "Aarambh  Schedule  | Rules  &",
-    "event": "Ice Breaking  Session  by Manish  Freeman  & Team",
-    "venue": "Tech Block",
-    "volunteer": "Garvishtha Asnani"
+    "volunteer": "Manvi Singh"
   },
   {
     "day": "Tue 14 Jul",
@@ -2434,6 +2409,13 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
     "event": "Ice Breaking  Session  by Manish  Freeman  & Team",
     "venue": "Tech Block",
     "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Tue 14 Jul",
+    "timeSlot": "Aarambh  Schedule  | Rules  &",
+    "event": "Ice Breaking  Session  by Manish  Freeman  & Team",
+    "venue": "Tech Block",
+    "volunteer": "Garvishtha Asnani"
   },
   {
     "day": "Tue 14 Jul",
@@ -2461,21 +2443,14 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
     "timeSlot": "Session Timing",
     "event": "Venue : Tech Block",
     "venue": "Registration Desk / Event Venue",
-    "volunteer": "Manvi Singh"
+    "volunteer": "Kavita Sharma"
   },
   {
     "day": "Wed 15 Jul",
     "timeSlot": "Session Timing",
     "event": "Venue : Tech Block",
     "venue": "Registration Desk / Event Venue",
-    "volunteer": "Kavita Sharma"
-  },
-  {
-    "day": "Wed 15 Jul",
-    "timeSlot": "Session Timing",
-    "event": "The League  Room:  Peer Connect",
-    "venue": "All four Batches  Together  in four venues  By Team  Aarambh",
-    "volunteer": "Garvishtha Asnani"
+    "volunteer": "Manvi Singh"
   },
   {
     "day": "Wed 15 Jul",
@@ -2486,9 +2461,9 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
   },
   {
     "day": "Wed 15 Jul",
-    "timeSlot": "venues By Team Aarambh",
-    "event": "venues By Team Aarambh",
-    "venue": "All four Batches  Together  in four",
+    "timeSlot": "Session Timing",
+    "event": "The League  Room:  Peer Connect",
+    "venue": "All four Batches  Together  in four venues  By Team  Aarambh",
     "volunteer": "Garvishtha Asnani"
   },
   {
@@ -2497,6 +2472,13 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
     "event": "venues By Team Aarambh",
     "venue": "All four Batches  Together  in four",
     "volunteer": "Kavita Sharma"
+  },
+  {
+    "day": "Wed 15 Jul",
+    "timeSlot": "venues By Team Aarambh",
+    "event": "venues By Team Aarambh",
+    "venue": "All four Batches  Together  in four",
+    "volunteer": "Garvishtha Asnani"
   },
   {
     "day": "Wed 15 Jul",
@@ -2545,14 +2527,14 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
     "timeSlot": "Mr. Amitanshu Shrivastava",
     "event": "Brush & Bond",
     "venue": "Tech  Lawn",
-    "volunteer": "Manvi Singh"
+    "volunteer": "Vaishali Agarwal"
   },
   {
     "day": "Thu 16 Jul",
     "timeSlot": "Mr. Amitanshu Shrivastava",
     "event": "Brush & Bond",
     "venue": "Tech  Lawn",
-    "volunteer": "Vaishali Agarwal"
+    "volunteer": "Manvi Singh"
   },
   {
     "day": "Thu 16 Jul",
@@ -2566,14 +2548,14 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
     "timeSlot": "Session Timing",
     "event": "Venue : Tech Lawn",
     "venue": "Tech  Lawn",
-    "volunteer": "Garvishtha Asnani"
+    "volunteer": "Kavita Sharma"
   },
   {
     "day": "Thu 16 Jul",
     "timeSlot": "Session Timing",
     "event": "Venue : Tech Lawn",
     "venue": "Tech  Lawn",
-    "volunteer": "Kavita Sharma"
+    "volunteer": "Garvishtha Asnani"
   },
   {
     "day": "Thu 16 Jul",
@@ -2671,14 +2653,14 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
     "timeSlot": "Venue: IET Amphi (Garvistha)",
     "event": "Night",
     "venue": "Tech  Lawn",
-    "volunteer": "Manvi Singh"
+    "volunteer": "Vaishali Agarwal"
   },
   {
     "day": "Fri 17 Jul",
     "timeSlot": "Venue: IET Amphi (Garvistha)",
     "event": "Night",
     "venue": "Tech  Lawn",
-    "volunteer": "Vaishali Agarwal"
+    "volunteer": "Manvi Singh"
   },
   {
     "day": "Fri 17 Jul",
@@ -2783,14 +2765,14 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
     "timeSlot": "LUNCH  Examination",
     "event": "Fashion  Show",
     "venue": "Tech  Lawn",
-    "volunteer": "Garvishtha Asnani"
+    "volunteer": "Vaishali Agarwal"
   },
   {
     "day": "Sat 18 Jul",
     "timeSlot": "LUNCH  Examination",
     "event": "Fashion  Show",
     "venue": "Tech  Lawn",
-    "volunteer": "Vaishali Agarwal"
+    "volunteer": "Garvishtha Asnani"
   },
   {
     "day": "Sat 18 Jul",
@@ -2951,14 +2933,14 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
     "timeSlot": "Session Timing",
     "event": "Brief  about  Outing",
     "venue": "Tech  Lawn",
-    "volunteer": "Manvi Singh"
+    "volunteer": "Kavita Sharma"
   },
   {
     "day": "Sun 19 Jul",
     "timeSlot": "Session Timing",
     "event": "Brief  about  Outing",
     "venue": "Tech  Lawn",
-    "volunteer": "Kavita Sharma"
+    "volunteer": "Manvi Singh"
   },
   {
     "day": "Sun 19 Jul",
@@ -3063,20 +3045,13 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
     "timeSlot": "Session Timing",
     "event": "JKLU Got Latent",
     "venue": "Tech  Lawn",
-    "volunteer": "Garvishtha Asnani"
+    "volunteer": "Vaishali Agarwal"
   },
   {
     "day": "Mon 20 Jul",
     "timeSlot": "Session Timing",
     "event": "JKLU Got Latent",
     "venue": "Tech  Lawn",
-    "volunteer": "Vaishali Agarwal"
-  },
-  {
-    "day": "Mon 20 Jul",
-    "timeSlot": "By Art Club & Aarambh Team",
-    "event": "By Art Club & Aarambh Team",
-    "venue": "Tech  Lawn  (Start  From  8pm*  (Cohort",
     "volunteer": "Garvishtha Asnani"
   },
   {
@@ -3085,6 +3060,13 @@ export const REGISTRATION_RECORDS: RegistrationRecord[] = [
     "event": "By Art Club & Aarambh Team",
     "venue": "Tech  Lawn  (Start  From  8pm*  (Cohort",
     "volunteer": "Manvi Singh"
+  },
+  {
+    "day": "Mon 20 Jul",
+    "timeSlot": "By Art Club & Aarambh Team",
+    "event": "By Art Club & Aarambh Team",
+    "venue": "Tech  Lawn  (Start  From  8pm*  (Cohort",
+    "volunteer": "Garvishtha Asnani"
   },
   {
     "day": "Mon 20 Jul",
