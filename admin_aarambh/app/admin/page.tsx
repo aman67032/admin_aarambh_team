@@ -19,7 +19,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!appLoading && user) {
-      if (user.email === 'hosteladmin@jklu.edu.in') {
+      if (user.email === 'hosteladmin@jklu.edu.in' || user.email === 'kartavya@jklu.edu.in') {
         router.push('/admin/hostel');
       } else if (user.role === 'teammember') {
         router.push('/admin/duty-chart');

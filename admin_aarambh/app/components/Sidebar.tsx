@@ -86,7 +86,7 @@ export default function Sidebar() {
           }
         ];
       case 'admin':
-        if (user.email === 'hosteladmin@jklu.edu.in') {
+        if (user.email === 'hosteladmin@jklu.edu.in' || user.email === 'kartavya@jklu.edu.in') {
           return [
             {
               label: 'Hostel Management',
