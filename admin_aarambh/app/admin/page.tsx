@@ -41,7 +41,9 @@ export default function AdminDashboard() {
 
   const [aarambhData, setAarambhData] = useState<any>(null);
 
-  const [activeTab, setActiveTab] = useState<'performance' | 'correctness' | 'not-continuing' | 'aarambh-verification'>('performance');
+  const [batchesData, setBatchesData] = useState<any[]>([]);
+
+  const [activeTab, setActiveTab] = useState<'performance' | 'correctness' | 'not-continuing' | 'aarambh-verification' | 'batches'>('performance');
 
   const [notPublished, setNotPublished] = useState(false);
 
@@ -86,6 +88,11 @@ export default function AdminDashboard() {
       const aarambhVerificationData = await api.admin.getAarambhVerification();
 
       setAarambhData(aarambhVerificationData);
+
+      const batchesRes = await api.admin.getBatches();
+      if (batchesRes && batchesRes.success) {
+        setBatchesData(batchesRes.batches);
+      }
 
     } catch (error) {
 
@@ -340,6 +347,22 @@ export default function AdminDashboard() {
         >
 
           Not Continuing & Not Coming Panel ({notContinuing.length})
+
+        </button>
+
+        <button
+
+          onClick={() => setActiveTab('batches')}
+
+          className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
+
+            activeTab === 'batches' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
+
+          }`}
+
+        >
+
+          Batch Structure
 
         </button>
 
@@ -1111,6 +1134,121 @@ export default function AdminDashboard() {
 
         </div>
 
+      )}
+
+      {activeTab === 'batches' && (
+        <div className="space-y-6 animate-fadeIn">
+          {/* Header Card */}
+          <div className="bg-card-bg border border-card-border p-6 rounded-2xl shadow-sm text-center space-y-2">
+            <h2 className="text-2xl font-black text-foreground font-outfit uppercase tracking-wider">Aarambh &apos;26 Batch Structure</h2>
+            <p className="text-xs font-bold text-primary uppercase tracking-widest">14th to 21st July • Attendee Tracking</p>
+            <div className="w-16 h-1 bg-primary mx-auto rounded-full mt-2" />
+          </div>
+
+          {/* Batches 2x2 Grid */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            {batchesData.map((batch: any) => {
+              const checkInRate = batch.totals.activeAttendees > 0 
+                ? Math.round((batch.totals.checkedIn / batch.totals.activeAttendees) * 100) 
+                : 0;
+              const confirmationRate = batch.totals.activeAttendees > 0 
+                ? Math.round((batch.totals.confirmed / batch.totals.activeAttendees) * 100) 
+                : 0;
+
+              return (
+                <div key={batch.batchName} className="bg-card-bg border border-card-border rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-all duration-300">
+                  {/* Header */}
+                  <div className="bg-card-bg/50 border-b border-card-border px-5 py-4 flex items-center justify-between">
+                    <div>
+                      <h3 className="text-base font-extrabold text-foreground font-outfit">{batch.batchName}</h3>
+                      <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mt-0.5">
+                        {batch.batchName === 'Batch 1' && 'A, E, I'}
+                        {batch.batchName === 'Batch 2' && 'B, F, J'}
+                        {batch.batchName === 'Batch 3' && 'C, G, K'}
+                        {batch.batchName === 'Batch 4' && 'D, H, L'}
+                        {' '}• {batch.totals.cohortsCount} Total Cohorts
+                      </p>
+                    </div>
+                    <span className="text-[10px] bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-md font-bold">
+                      Active: {batch.totals.activeAttendees}
+                    </span>
+                  </div>
+
+                  {/* Body Table */}
+                  <div className="overflow-x-auto p-4">
+                    <table className="w-full text-xs text-left border-collapse">
+                      <thead>
+                        <tr className="border-b border-card-border text-[9px] font-bold text-text-muted uppercase tracking-wider">
+                          <th className="pb-2">Cluster</th>
+                          <th className="pb-2 text-center">Cohorts</th>
+                          <th className="pb-2 text-center">Allotted</th>
+                          <th className="pb-2 text-center">Not Coming</th>
+                          <th className="pb-2 text-center">Active</th>
+                          <th className="pb-2 text-center">Confirmed</th>
+                          <th className="pb-2 text-center">Checked In</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-card-border/50 font-bold text-foreground">
+                        {batch.clusters.map((c: any) => (
+                          <tr key={c.clusterName} className="hover:bg-card-bg/30">
+                            <td className="py-2.5 font-extrabold text-primary">Cluster {c.clusterName}</td>
+                            <td className="py-2.5 text-center text-text-muted">{c.cohortsCount}</td>
+                            <td className="py-2.5 text-center">{c.totalAllotted}</td>
+                            <td className="py-2.5 text-center text-red-500">{c.notComing}</td>
+                            <td className="py-2.5 text-center text-indigo-600">{c.activeAttendees}</td>
+                            <td className="py-2.5 text-center text-emerald-600">{c.confirmed}</td>
+                            <td className="py-2.5 text-center text-amber-600">{c.checkedIn}</td>
+                          </tr>
+                        ))}
+                        {/* Totals Row */}
+                        <tr className="border-t border-card-border bg-card-bg/30 font-extrabold text-foreground">
+                          <td className="py-3 text-foreground">Total</td>
+                          <td className="py-3 text-center text-text-muted">{batch.totals.cohortsCount}</td>
+                          <td className="py-3 text-center">{batch.totals.totalAllotted}</td>
+                          <td className="py-3 text-center text-red-500">{batch.totals.notComing}</td>
+                          <td className="py-3 text-center text-indigo-600">{batch.totals.activeAttendees}</td>
+                          <td className="py-3 text-center text-emerald-600">{batch.totals.confirmed}</td>
+                          <td className="py-3 text-center text-amber-600">{batch.totals.checkedIn}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Progress Indicators */}
+                  <div className="bg-card-bg/20 border-t border-card-border p-4 space-y-3">
+                    {/* Confirmation Progress */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-[10px] font-bold text-text-muted">
+                        <span>Aarambh Confirmation Rate</span>
+                        <span className="text-emerald-600">{confirmationRate}% ({batch.totals.confirmed}/{batch.totals.activeAttendees})</span>
+                      </div>
+                      <div className="w-full bg-card-border rounded-full h-1.5 overflow-hidden">
+                        <div 
+                          className="bg-emerald-500 h-1.5 transition-all duration-500" 
+                          style={{ width: `${confirmationRate}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Check-In Progress */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-[10px] font-bold text-text-muted">
+                        <span>Hostel Check-In Progress</span>
+                        <span className="text-amber-600">{checkInRate}% ({batch.totals.checkedIn}/{batch.totals.activeAttendees})</span>
+                      </div>
+                      <div className="w-full bg-card-border rounded-full h-1.5 overflow-hidden">
+                        <div 
+                          className="bg-amber-500 h-1.5 transition-all duration-500" 
+                          style={{ width: `${checkInRate}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       )}
 
     </div>

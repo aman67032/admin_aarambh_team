@@ -143,6 +143,110 @@ router.get('/overview', requireAuth, requireRole(['admin', 'super_admin']), asyn
   }
 });
 
+// GET /api/admin/batches
+// Get Aarambh'26 batch structure and attendee stats (allotted, active, confirmed, checked-in)
+router.get('/batches', requireAuth, requireRole(['admin', 'super_admin']), async (req, res) => {
+  try {
+    const Student = require('../models/Student');
+    const TeamMember = require('../models/TeamMember');
+
+    const students = await Student.find({});
+    const checkedInMembers = await TeamMember.find({ checkedIn: true }, 'rollNo');
+    
+    function normalizeRoll(rollNo) {
+      if (!rollNo) return "";
+      return rollNo.replace(/[\/\.\s-]/g, '').toUpperCase().trim();
+    }
+
+    const checkedInRolls = new Set(checkedInMembers.map(m => normalizeRoll(m.rollNo)));
+
+    const batchesConfig = [
+      {
+        batchName: 'Batch 1',
+        clusters: [
+          { clusterName: 'A', cohortsCount: 5 },
+          { clusterName: 'E', cohortsCount: 5 },
+          { clusterName: 'I', cohortsCount: 3 }
+        ]
+      },
+      {
+        batchName: 'Batch 2',
+        clusters: [
+          { clusterName: 'B', cohortsCount: 4 },
+          { clusterName: 'F', cohortsCount: 5 },
+          { clusterName: 'J', cohortsCount: 3 }
+        ]
+      },
+      {
+        batchName: 'Batch 3',
+        clusters: [
+          { clusterName: 'C', cohortsCount: 4 },
+          { clusterName: 'G', cohortsCount: 5 },
+          { clusterName: 'K', cohortsCount: 3 }
+        ]
+      },
+      {
+        batchName: 'Batch 4',
+        clusters: [
+          { clusterName: 'D', cohortsCount: 5 },
+          { clusterName: 'H', cohortsCount: 5 },
+          { clusterName: 'L', cohortsCount: 3 }
+        ]
+      }
+    ];
+
+    const batches = batchesConfig.map(batch => {
+      const clusterStats = batch.clusters.map(cConfig => {
+        const clusterStudents = students.filter(s => s.cluster === cConfig.clusterName);
+        
+        const totalAllotted = clusterStudents.length;
+        const notComing = clusterStudents.filter(s => s.notComingAarambh || s.notContinuing).length;
+        const activeAttendees = totalAllotted - notComing;
+        const confirmed = clusterStudents.filter(s => s.confirmedAarambh).length;
+        
+        const checkedIn = clusterStudents.filter(s => {
+          const norm = normalizeRoll(s.applicationNo);
+          return checkedInRolls.has(norm);
+        }).length;
+
+        return {
+          clusterName: cConfig.clusterName,
+          cohortsCount: cConfig.cohortsCount,
+          totalAllotted,
+          notComing,
+          activeAttendees,
+          confirmed,
+          checkedIn
+        };
+      });
+
+      const totals = {
+        cohortsCount: clusterStats.reduce((acc, c) => acc + c.cohortsCount, 0),
+        totalAllotted: clusterStats.reduce((acc, c) => acc + c.totalAllotted, 0),
+        notComing: clusterStats.reduce((acc, c) => acc + c.notComing, 0),
+        activeAttendees: clusterStats.reduce((acc, c) => acc + c.activeAttendees, 0),
+        confirmed: clusterStats.reduce((acc, c) => acc + c.confirmed, 0),
+        checkedIn: clusterStats.reduce((acc, c) => acc + c.checkedIn, 0)
+      };
+
+      return {
+        batchName: batch.batchName,
+        clusters: clusterStats,
+        totals
+      };
+    });
+
+    res.json({
+      success: true,
+      batches
+    });
+
+  } catch (error) {
+    console.error('Fetch batches stats error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // GET /api/admin/distribution-check
 // Check is distribution correct or not (course and gender ratio checks)
 router.get('/distribution-check', requireAuth, requireRole(['admin', 'super_admin']), async (req, res) => {

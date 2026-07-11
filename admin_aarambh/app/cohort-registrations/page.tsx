@@ -487,6 +487,164 @@ export default function CohortRegistrationsPage() {
           </div>
         )}
 
+        {/* Batch Structure (Aarambh Attendees) Dashboard */}
+        {!loading && !notPublished && data.length > 0 && (
+          <div className="max-w-4xl mx-auto space-y-4">
+            <div className="flex items-center gap-2.5 pb-1 justify-center sm:justify-start">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary shrink-0">
+                <rect x="3" y="3" width="7" height="9" />
+                <rect x="14" y="3" width="7" height="5" />
+                <rect x="14" y="12" width="7" height="9" />
+                <rect x="3" y="16" width="7" height="5" />
+              </svg>
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">Aarambh &apos;26 Batch Structure (Attendees)</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                {
+                  batchName: 'Batch 1',
+                  dateRange: '14th to 21st July',
+                  clusters: [
+                    { name: 'A', cohorts: 5 },
+                    { name: 'E', cohorts: 5 },
+                    { name: 'I', cohorts: 3 }
+                  ]
+                },
+                {
+                  batchName: 'Batch 2',
+                  dateRange: '14th to 21st July',
+                  clusters: [
+                    { name: 'B', cohorts: 4 },
+                    { name: 'F', cohorts: 5 },
+                    { name: 'J', cohorts: 3 }
+                  ]
+                },
+                {
+                  batchName: 'Batch 3',
+                  dateRange: '14th to 21st July',
+                  clusters: [
+                    { name: 'C', cohorts: 4 },
+                    { name: 'G', cohorts: 5 },
+                    { name: 'K', cohorts: 3 }
+                  ]
+                },
+                {
+                  batchName: 'Batch 4',
+                  dateRange: '14th to 21st July',
+                  clusters: [
+                    { name: 'D', cohorts: 5 },
+                    { name: 'H', cohorts: 5 },
+                    { name: 'L', cohorts: 3 }
+                  ]
+                }
+              ].map(batch => {
+                let totalCohorts = 0;
+                let totalAllotted = 0;
+                let totalNotComing = 0;
+                let totalActive = 0;
+                let totalConfirmed = 0;
+
+                const clusterBreakdown = batch.clusters.map(cConf => {
+                  totalCohorts += cConf.cohorts;
+                  const clusterObj = data.find(c => c.clusterName === cConf.name);
+                  
+                  let allotted = 0;
+                  let notComing = 0;
+                  let confirmed = 0;
+
+                  if (clusterObj) {
+                    clusterObj.cohorts.forEach(cohort => {
+                      allotted += cohort.students.length;
+                      notComing += cohort.students.filter(s => s.notComingAarambh || s.notContinuing).length;
+                      confirmed += cohort.students.filter(s => s.confirmedAarambh).length;
+                    });
+                  }
+
+                  const active = allotted - notComing;
+                  totalAllotted += allotted;
+                  totalNotComing += notComing;
+                  totalActive += active;
+                  totalConfirmed += confirmed;
+
+                  return {
+                    name: cConf.name,
+                    cohorts: cConf.cohorts,
+                    allotted,
+                    notComing,
+                    active,
+                    confirmed
+                  };
+                });
+
+                const progressPercent = totalActive > 0 ? Math.round((totalConfirmed / totalActive) * 100) : 0;
+
+                return (
+                  <div key={batch.batchName} className="glass-card overflow-hidden flex flex-col justify-between hover:shadow-md transition-all duration-300">
+                    <div className="bg-card-bg/30 border-b border-card-border px-4 py-3 flex items-center justify-between">
+                      <div>
+                        <span className="text-xs font-black text-foreground font-outfit">{batch.batchName}</span>
+                        <span className="text-[9px] text-text-muted font-bold block">{batch.dateRange}</span>
+                      </div>
+                      <span className="text-[9px] bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded font-extrabold uppercase">
+                        {totalCohorts} Cohorts
+                      </span>
+                    </div>
+
+                    <div className="p-3 overflow-x-auto">
+                      <table className="w-full text-[10px] text-left border-collapse">
+                        <thead>
+                          <tr className="border-b border-card-border text-[8px] font-bold text-text-muted uppercase tracking-wider">
+                            <th className="pb-1.5">Cluster</th>
+                            <th className="pb-1.5 text-center">Cohorts</th>
+                            <th className="pb-1.5 text-center">Allotted</th>
+                            <th className="pb-1.5 text-center">Not Coming</th>
+                            <th className="pb-1.5 text-center">Active Target</th>
+                            <th className="pb-1.5 text-center">Confirmed</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-card-border/30 font-bold text-foreground">
+                          {clusterBreakdown.map(c => (
+                            <tr key={c.name} className="hover:bg-card-bg/25">
+                              <td className="py-2 text-primary font-extrabold">Cluster {c.name}</td>
+                              <td className="py-2 text-center text-text-muted">{c.cohorts}</td>
+                              <td className="py-2 text-center">{c.allotted}</td>
+                              <td className="py-2 text-center text-red-500">{c.notComing}</td>
+                              <td className="py-2 text-center text-indigo-600">{c.active}</td>
+                              <td className="py-2 text-center text-emerald-600">{c.confirmed}</td>
+                            </tr>
+                          ))}
+                          <tr className="border-t border-card-border bg-card-bg/10 font-extrabold text-foreground">
+                            <td className="py-2 text-foreground">Total</td>
+                            <td className="py-2 text-center text-text-muted">{totalCohorts}</td>
+                            <td className="py-2 text-center">{totalAllotted}</td>
+                            <td className="py-2 text-center text-red-500">{totalNotComing}</td>
+                            <td className="py-2 text-center text-indigo-600">{totalActive}</td>
+                            <td className="py-2 text-center text-emerald-600">{totalConfirmed}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="bg-card-bg/5 border-t border-card-border px-4 py-3 space-y-1">
+                      <div className="flex justify-between text-[9px] font-bold text-text-muted">
+                        <span>Aarambh Confirmation Rate</span>
+                        <span className="text-emerald-600">{progressPercent}% ({totalConfirmed}/{totalActive})</span>
+                      </div>
+                      <div className="w-full bg-card-border rounded-full h-1.5 overflow-hidden">
+                        <div 
+                          className="bg-emerald-500 h-1.5 transition-all duration-300"
+                          style={{ width: `${progressPercent}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Brackets Dashboard */}
         {!loading && !notPublished && cohortsRanked.length > 0 && (
           <div className="max-w-4xl mx-auto space-y-4">

@@ -277,6 +277,30 @@ export const api = {
         }>;
         notPublished?: boolean;
       }>('/admin/overview'),
+    getBatches: () =>
+      request<{
+        success: boolean;
+        batches: Array<{
+          batchName: string;
+          clusters: Array<{
+            clusterName: string;
+            cohortsCount: number;
+            totalAllotted: number;
+            notComing: number;
+            activeAttendees: number;
+            confirmed: number;
+            checkedIn: number;
+          }>;
+          totals: {
+            cohortsCount: number;
+            totalAllotted: number;
+            notComing: number;
+            activeAttendees: number;
+            confirmed: number;
+            checkedIn: number;
+          };
+        }>;
+      }>('/admin/batches'),
     getDistributionCheck: () => 
       request<{
         success: boolean;
