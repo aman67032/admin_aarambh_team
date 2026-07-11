@@ -159,36 +159,75 @@ export default function AdminArrivalsPage() {
         </div>
       </div>
 
-      {/* Daily Arrival Breakdown */}
+      {/* Daily & Time Slot Arrival Distribution */}
       {!loading && declarations.length > 0 && (
-        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-3">
-          <div className="flex items-center gap-2 border-b border-card-border pb-2.5">
-            <span className="text-xs">📅</span>
-            <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">
-              Daily Arrival Distribution
-            </h3>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
-            {(() => {
-              const dailyCounts: Record<string, number> = {};
-              declarations.forEach(d => {
-                const date = d.arrivalInfo?.arrivalDate || 'Not Declared';
-                dailyCounts[date] = (dailyCounts[date] || 0) + 1;
-              });
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Daily Arrival Breakdown */}
+          <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-3">
+            <div className="flex items-center gap-2 border-b border-card-border pb-2.5">
+              <span className="text-xs">📅</span>
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">
+                Daily Arrival Distribution
+              </h3>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {(() => {
+                const dailyCounts: Record<string, number> = {};
+                declarations.forEach(d => {
+                  const date = d.arrivalInfo?.arrivalDate || 'Not Declared';
+                  dailyCounts[date] = (dailyCounts[date] || 0) + 1;
+                });
 
-              return Object.keys(dailyCounts)
-                .sort((a, b) => {
-                  if (a === 'Not Declared') return 1;
-                  if (b === 'Not Declared') return -1;
-                  return a.localeCompare(b);
-                })
-                .map(date => (
-                  <div key={date} className="bg-background border border-card-border px-4 py-3 rounded-xl flex flex-col justify-between hover:border-primary/20 transition-all">
-                    <span className="text-[10px] font-bold text-text-muted truncate">{date}</span>
-                    <span className="text-xl font-black text-primary mt-1">{dailyCounts[date]} <span className="text-[9px] font-normal text-text-muted">students</span></span>
-                  </div>
-                ));
-            })()}
+                return Object.keys(dailyCounts)
+                  .sort((a, b) => {
+                    if (a === 'Not Declared') return 1;
+                    if (b === 'Not Declared') return -1;
+                    return a.localeCompare(b);
+                  })
+                  .map(date => (
+                    <div key={date} className="bg-background border border-card-border px-4 py-3 rounded-xl flex flex-col justify-between hover:border-primary/20 transition-all">
+                      <span className="text-[10px] font-bold text-text-muted truncate">{date}</span>
+                      <span className="text-xl font-black text-primary mt-1">
+                        {dailyCounts[date]} <span className="text-[9px] font-normal text-text-muted">students</span>
+                      </span>
+                    </div>
+                  ));
+              })()}
+            </div>
+          </div>
+
+          {/* Time Slot Breakdown */}
+          <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-3">
+            <div className="flex items-center gap-2 border-b border-card-border pb-2.5">
+              <span className="text-xs">⏰</span>
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">
+                Time Slot Distribution
+              </h3>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {(() => {
+                const timeCounts: Record<string, number> = {};
+                declarations.forEach(d => {
+                  const time = d.arrivalInfo?.arrivalTime || 'Not Declared';
+                  timeCounts[time] = (timeCounts[time] || 0) + 1;
+                });
+
+                return Object.keys(timeCounts)
+                  .sort((a, b) => {
+                    if (a === 'Not Declared') return 1;
+                    if (b === 'Not Declared') return -1;
+                    return a.localeCompare(b);
+                  })
+                  .map(time => (
+                    <div key={time} className="bg-background border border-card-border px-4 py-3 rounded-xl flex flex-col justify-between hover:border-primary/20 transition-all">
+                      <span className="text-[10px] font-bold text-text-muted truncate">{time}</span>
+                      <span className="text-xl font-black text-primary mt-1">
+                        {timeCounts[time]} <span className="text-[9px] font-normal text-text-muted">students</span>
+                      </span>
+                    </div>
+                  ));
+              })()}
+            </div>
           </div>
         </div>
       )}
