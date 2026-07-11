@@ -161,73 +161,64 @@ export default function AdminArrivalsPage() {
 
       {/* Daily & Time Slot Arrival Distribution */}
       {!loading && declarations.length > 0 && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Daily Arrival Breakdown */}
-          <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-3">
-            <div className="flex items-center gap-2 border-b border-card-border pb-2.5">
-              <span className="text-xs">📅</span>
-              <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">
-                Daily Arrival Distribution
-              </h3>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {(() => {
-                const dailyCounts: Record<string, number> = {};
-                declarations.forEach(d => {
-                  const date = d.arrivalInfo?.arrivalDate || 'Not Declared';
-                  dailyCounts[date] = (dailyCounts[date] || 0) + 1;
-                });
-
-                return Object.keys(dailyCounts)
-                  .sort((a, b) => {
-                    if (a === 'Not Declared') return 1;
-                    if (b === 'Not Declared') return -1;
-                    return a.localeCompare(b);
-                  })
-                  .map(date => (
-                    <div key={date} className="bg-background border border-card-border px-4 py-3 rounded-xl flex flex-col justify-between hover:border-primary/20 transition-all">
-                      <span className="text-[10px] font-bold text-text-muted truncate">{date}</span>
-                      <span className="text-xl font-black text-primary mt-1">
-                        {dailyCounts[date]} <span className="text-[9px] font-normal text-text-muted">students</span>
-                      </span>
-                    </div>
-                  ));
-              })()}
-            </div>
+        <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-4">
+          <div className="flex items-center gap-2 border-b border-card-border pb-2.5">
+            <span className="text-xs">📅</span>
+            <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">
+              Arrival Distribution (Date &amp; Time Slots)
+            </h3>
           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {(() => {
+              const dailyCounts: Record<string, number> = {};
+              declarations.forEach(d => {
+                const date = d.arrivalInfo?.arrivalDate || 'Not Declared';
+                dailyCounts[date] = (dailyCounts[date] || 0) + 1;
+              });
 
-          {/* Time Slot Breakdown */}
-          <div className="bg-card-bg border border-card-border p-5 rounded-2xl shadow-sm space-y-3">
-            <div className="flex items-center gap-2 border-b border-card-border pb-2.5">
-              <span className="text-xs">⏰</span>
-              <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">
-                Time Slot Distribution
-              </h3>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {(() => {
-                const timeCounts: Record<string, number> = {};
-                declarations.forEach(d => {
-                  const time = d.arrivalInfo?.arrivalTime || 'Not Declared';
-                  timeCounts[time] = (timeCounts[time] || 0) + 1;
-                });
+              return Object.keys(dailyCounts)
+                .sort((a, b) => {
+                  if (a === 'Not Declared') return 1;
+                  if (b === 'Not Declared') return -1;
+                  return a.localeCompare(b);
+                })
+                .map(date => {
+                  // Compute time slot breakdown for this specific date
+                  const slotsForDate: Record<string, number> = {};
+                  declarations.forEach(d => {
+                    const dDate = d.arrivalInfo?.arrivalDate || 'Not Declared';
+                    if (dDate === date) {
+                      const slot = d.arrivalInfo?.arrivalTime || 'Not Declared';
+                      slotsForDate[slot] = (slotsForDate[slot] || 0) + 1;
+                    }
+                  });
 
-                return Object.keys(timeCounts)
-                  .sort((a, b) => {
-                    if (a === 'Not Declared') return 1;
-                    if (b === 'Not Declared') return -1;
-                    return a.localeCompare(b);
-                  })
-                  .map(time => (
-                    <div key={time} className="bg-background border border-card-border px-4 py-3 rounded-xl flex flex-col justify-between hover:border-primary/20 transition-all">
-                      <span className="text-[10px] font-bold text-text-muted truncate">{time}</span>
-                      <span className="text-xl font-black text-primary mt-1">
-                        {timeCounts[time]} <span className="text-[9px] font-normal text-text-muted">students</span>
-                      </span>
+                  return (
+                    <div key={date} className="bg-background border border-card-border p-4 rounded-xl flex flex-col justify-between hover:border-primary/20 hover:shadow-sm transition-all space-y-3">
+                      <div className="flex items-center justify-between border-b border-card-border pb-2">
+                        <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">{date}</span>
+                        <span className="text-lg font-black text-primary">
+                          {dailyCounts[date]} <span className="text-[8px] font-bold text-text-muted uppercase">students</span>
+                        </span>
+                      </div>
+                      <div className="space-y-1.5">
+                        {Object.keys(slotsForDate)
+                          .sort((a, b) => {
+                            if (a === 'Not Declared') return 1;
+                            if (b === 'Not Declared') return -1;
+                            return a.localeCompare(b);
+                          })
+                          .map(slot => (
+                            <div key={slot} className="flex items-center justify-between text-[10px] font-bold text-slate-600">
+                              <span className="truncate max-w-[130px]">{slot}</span>
+                              <span className="bg-primary/5 text-primary border border-primary/10 px-1.5 py-0.5 rounded text-[9px] font-extrabold">{slotsForDate[slot]}</span>
+                            </div>
+                          ))}
+                      </div>
                     </div>
-                  ));
-              })()}
-            </div>
+                  );
+                });
+            })()}
           </div>
         </div>
       )}
