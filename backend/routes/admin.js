@@ -576,4 +576,273 @@ router.post('/backup', requireAuth, requireRole('super_admin'), async (req, res)
   }
 });
 
+// POST /api/admin/register-student
+// Register a new student, auto-assign underfilled cohort, and send welcome email
+router.post('/register-student', requireAuth, requireRole(['admin', 'super_admin']), async (req, res) => {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const { sendEmail } = require('../services/email');
+    
+    const {
+      name,
+      applicationNo,
+      email,
+      mobile,
+      gender,
+      course,
+      specialization,
+      fatherName,
+      fatherMobile,
+      fatherEmail,
+      city,
+      district,
+      state,
+      pincode
+    } = req.body;
+
+    // Check mandatory fields
+    if (!name || !applicationNo || !email || !mobile || !gender || !course) {
+      return res.status(400).json({ error: 'Mandatory fields: name, applicationNo, email, mobile, gender, and course are required.' });
+    }
+
+    // Clean up input fields
+    const studentName = String(name).trim().toUpperCase();
+    const appNo = String(applicationNo).trim().toUpperCase();
+    const studentEmail = String(email).trim().toLowerCase();
+    const studentMobile = String(mobile).trim();
+    const studentGender = String(gender).trim().charAt(0).toUpperCase() + String(gender).trim().slice(1).toLowerCase();
+    const studentCourse = String(course).trim() === 'BBA' ? 'BBA' : (String(course).trim() === 'B.Des' ? 'B.Des' : 'B.Tech');
+
+    // Check for duplicates
+    const existingApp = await Student.findOne({ applicationNo: appNo });
+    if (existingApp) {
+      return res.status(400).json({ error: `Student with application number ${appNo} is already registered.` });
+    }
+
+    const existingEmail = await Student.findOne({ email: studentEmail });
+    if (existingEmail) {
+      return res.status(400).json({ error: `Student with email ${studentEmail} is already registered.` });
+    }
+
+    // Determine region based on state
+    let region = 'North';
+    const stateUpper = String(state || '').toUpperCase();
+    if (
+      stateUpper.includes('ANDHRA') || 
+      stateUpper.includes('TELANGANA') || 
+      stateUpper.includes('TAMIL') || 
+      stateUpper.includes('KARNATAKA') || 
+      stateUpper.includes('KERALA')
+    ) {
+      region = 'South';
+    }
+
+    // Get all cohort leaders and dynamic cohort course mapping
+    const cohortLeaders = await User.find({ role: 'cohort_leader' });
+    const activeCohorts = cohortLeaders.map(cl => cl.cohort).filter(Boolean);
+
+    // Map cohorts to course by scanning database
+    const cohortCourses = {};
+    const dbStudents = await Student.find({}, 'cohort course');
+    dbStudents.forEach(s => {
+      if (s.cohort && s.course) {
+        if (!cohortCourses[s.cohort]) cohortCourses[s.cohort] = {};
+        cohortCourses[s.cohort][s.course] = (cohortCourses[s.cohort][s.course] || 0) + 1;
+      }
+    });
+
+    const cohortToCourse = {};
+    for (const cohort in cohortCourses) {
+      const courses = cohortCourses[cohort];
+      let maxCount = 0;
+      let dominantCourse = null;
+      for (const c in courses) {
+        if (courses[c] > maxCount) {
+          maxCount = courses[c];
+          dominantCourse = c;
+        }
+      }
+      cohortToCourse[cohort] = dominantCourse;
+    }
+
+    // Static fallback mappings
+    const fallbackMapping = {
+      "A1": "B.Tech", "A2": "BBA", "A3": "B.Tech", "A4": "BBA", "A5": "B.Tech",
+      "B1": "B.Tech", "B2": "B.Tech", "B3": "B.Tech", "B4": "BBA",
+      "C1": "B.Des", "C2": "B.Tech", "C3": "BBA", "C4": "BBA",
+      "D1": "B.Tech", "D2": "B.Tech", "D3": "B.Tech", "D4": "BBA", "D5": "B.Tech",
+      "E1": "B.Des", "E2": "BBA", "E3": "B.Tech", "E4": "B.Tech", "E5": "BBA",
+      "F1": "BBA", "F2": "BBA", "F3": "B.Tech", "F4": "BBA", "F5": "B.Tech",
+      "G1": "B.Des", "G2": "B.Tech", "G3": "B.Tech", "G4": "B.Tech", "G5": "B.Tech",
+      "H1": "B.Tech", "H2": "BBA", "H3": "B.Tech", "H4": "B.Des", "H5": "B.Tech",
+      "I1": "B.Tech", "I2": "B.Tech", "I3": "B.Tech",
+      "J1": "B.Tech", "J2": "B.Tech", "J3": "B.Tech",
+      "K1": "B.Tech", "K2": "B.Tech", "K3": "B.Tech",
+      "L1": "B.Tech", "L2": "B.Tech", "L3": "B.Tech"
+    };
+
+    const getCohortCourse = (c) => cohortToCourse[c] || fallbackMapping[c] || "B.Tech";
+
+    // Count active students per cohort
+    const cohortCounts = {};
+    activeCohorts.forEach(c => { cohortCounts[c] = 0; });
+    const activeStudents = await Student.find({ notContinuing: { $ne: true }, notComingAarambh: { $ne: true } });
+    activeStudents.forEach(s => {
+      if (s.cohort && cohortCounts[s.cohort] !== undefined) {
+        cohortCounts[s.cohort]++;
+      }
+    });
+
+    // Filter matching cohorts
+    const matchingCohorts = activeCohorts.filter(c => getCohortCourse(c) === studentCourse);
+
+    // Pick matching cohort with the minimum size
+    let selectedCohort = null;
+    let minCount = Infinity;
+    matchingCohorts.forEach(c => {
+      if (cohortCounts[c] < minCount) {
+        minCount = cohortCounts[c];
+        selectedCohort = c;
+      }
+    });
+
+    if (!selectedCohort) {
+      selectedCohort = Object.keys(fallbackMapping).find(c => fallbackMapping[c] === studentCourse) || "A1";
+    }
+
+    // Determine next sequential S.No
+    const maxStudent = await Student.findOne().sort({ sno: -1 });
+    const nextSno = maxStudent ? maxStudent.sno + 1 : 430;
+
+    // Generate random 6-digit arrival code
+    const arrivalCode = String(Math.floor(100000 + Math.random() * 900000));
+
+    // Construct student document
+    const newStudent = new Student({
+      sno: nextSno,
+      applicationNo: appNo,
+      name: studentName,
+      gender: studentGender,
+      course: studentCourse,
+      specialization: specialization || '',
+      mobile: studentMobile,
+      email: studentEmail,
+      fatherName: fatherName || '',
+      fatherMobile: fatherMobile || '',
+      fatherEmail: fatherEmail || '',
+      city: city || '',
+      district: district || '',
+      state: state || '',
+      pincode: pincode || '',
+      region: region,
+      cohort: selectedCohort,
+      cluster: selectedCohort.charAt(0),
+      confirmedAarambh: true,
+      confirmedJklu: true,
+      documentsVerified: false,
+      mailReceived: false,
+      arrivalCode: arrivalCode,
+      callLogs: [],
+      callCount: 0
+    });
+
+    await newStudent.save();
+    console.log(`Saved new student ${studentName} to database with S.No ${nextSno} and cohort ${selectedCohort}.`);
+
+    // Fetch cohort leader details
+    const cohortLeader = await User.findOne({ role: 'cohort_leader', cohort: selectedCohort });
+    const clName = cohortLeader ? cohortLeader.name : 'N/A';
+    const clPhone = cohortLeader ? cohortLeader.phone : 'N/A';
+    const clEmail = cohortLeader ? cohortLeader.email : 'N/A';
+    const ccEmail = cohortLeader ? cohortLeader.email : '';
+
+    // Load email template
+    const templatePath = path.join(__dirname, '../templates/aarambh_email_template.html');
+    let emailSent = false;
+
+    if (fs.existsSync(templatePath)) {
+      const templateContent = fs.readFileSync(templatePath, 'utf8');
+      
+      const rawFirstName = studentName.trim().split(' ')[0];
+      const firstName = rawFirstName ? (rawFirstName.charAt(0).toUpperCase() + rawFirstName.slice(1).toLowerCase()) : '';
+
+      const parsedBody = templateContent
+        .replace(/\{\{name\}\}/g, studentName)
+        .replace(/\{\{firstName\}\}/g, firstName)
+        .replace(/\{\{applicationNo\}\}/g, appNo)
+        .replace(/\{\{course\}\}/g, studentCourse)
+        .replace(/\{\{cohort\}\}/g, selectedCohort)
+        .replace(/\{\{cohortLeaderName\}\}/g, clName)
+        .replace(/\{\{cohortLeaderPhone\}\}/g, clPhone)
+        .replace(/\{\{cohortLeaderEmail\}\}/g, clEmail);
+
+      const attachments = [];
+      const bannerPath = path.join(__dirname, '../../admin_aarambh/public/banner_compiled.jpg');
+      if (parsedBody.includes('cid:bannerImage') && fs.existsSync(bannerPath)) {
+        attachments.push({
+          filename: 'banner.jpg',
+          path: bannerPath,
+          cid: 'bannerImage'
+        });
+      }
+
+      const qrPath = path.join(__dirname, '../../admin_aarambh/public/registration_qr.png');
+      if (parsedBody.includes('cid:registrationQr') && fs.existsSync(qrPath)) {
+        attachments.push({
+          filename: 'registration_qr.png',
+          path: qrPath,
+          cid: 'registrationQr'
+        });
+      }
+
+      const attachmentDir = path.join(__dirname, '../../admin_aarambh/public/Email Attachment');
+      if (fs.existsSync(attachmentDir)) {
+        const files = fs.readdirSync(attachmentDir);
+        files.forEach(file => {
+          const filePath = path.join(attachmentDir, file);
+          const stat = fs.statSync(filePath);
+          if (stat.isFile()) {
+            attachments.push({ filename: file, path: filePath });
+          }
+        });
+      }
+
+      console.log(`Triggering welcome email for ${studentName}...`);
+      const emailResult = await sendEmail({
+        to: studentEmail,
+        subject: 'Invitation to AARAMBH 2026 - Your Journey at JKLU Begins Here!',
+        body: parsedBody,
+        cc: ccEmail || undefined,
+        attachments: attachments.length > 0 ? attachments : undefined
+      });
+
+      if (emailResult.success || emailResult.queued) {
+        emailSent = true;
+        newStudent.mailReceived = true;
+        await newStudent.save();
+        console.log(`Email successfully sent/queued for ${studentName}.`);
+      }
+    } else {
+      console.log("Warning: Welcome email template not found.");
+    }
+
+    res.json({
+      success: true,
+      message: 'Student registered successfully.',
+      student: {
+        sno: newStudent.sno,
+        name: newStudent.name,
+        cohort: newStudent.cohort,
+        cohortLeader: clName,
+        emailSent
+      }
+    });
+
+  } catch (error) {
+    console.error('Register new student endpoint error:', error);
+    res.status(500).json({ error: 'Failed to register student: ' + error.message });
+  }
+});
+
 module.exports = router;

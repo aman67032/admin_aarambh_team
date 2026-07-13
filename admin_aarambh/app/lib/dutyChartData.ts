@@ -75,7 +75,63 @@ export interface TeamMemberDB {
   email: string;
 }
 
-export const MASTER_SCHEDULE: Record<string, MasterDay> = {
+export const MASTER_SCHEDULE: Record<string, MasterDay> = {  "DAY0": {
+        "label": "Mon 13 Jul",
+        "events": [
+              {
+                    "time": "8:00am - 1:00pm",
+                    "event": "Shift 1: Aarambh Campus Registration & Hostel Onboarding",
+                    "duties": {
+                          "GH1 Hostel Duty": "PRATIKI AGARWAL, SAMRIDDHI SINGH, ANOUSHKA SINGH, SIDDHI KHANDELWAL, HANSIKA AGARWAL, PAWANI SHARMA, SANCHI DHOOPIA, ADITI AGARWAL, GOURANSHI SHARMA, HIMANI SARAF, SMILE CHHABRA, VARRA SRIVALLI, JHEEL JAIN, ARSHIYAA YADAV, CHESTHA KULSHRESTHA",
+                          "BH2 Hostel Duty (Female)": "VAISHNAVI GAJJALA, DISHIKA PANCHOLI, ANUKRITI CHOUDHARY, AADIPOOJYA MEHRA",
+                          "BH2 Hostel Duty (Male)": "KRISH BHOLA, ADITYAVARDHAN SINGH CHAUHAN, HARSHUL AGARWAL, VANSH BHATIA, ARYAN AJAY BHASKAT, SHOURYAVEER BISHNOI, DEVAM GUPTA, KARTIK SHARMA, PULKIT DOSI, DAKSH KUMAR",
+                          "Mess Duty": "RAHUL GORANI, GHYAN CHECHANI, HERAMB SHARMA, JAINAM JAIN, SHIVIA RAWAT, GOURANG TAK",
+                          "Gate 2 Desk 1 (QR, ID & Forms)": "SURYAVANSHISRIDEVI, JANAPAATI ROHITH, ADITI SHARMA",
+                          "Gate 2 Desk 2 (QR, ID & Forms)": "KAUSHAL MALVI, SANSKRITI GEHLOT, HIMANI MENGHANI",
+                          "Gate 2 Desk 3 (QR, ID & Forms)": "VAISHALI AGARWAL, YATHARTH CHATURVEDI, VARUN TEJA ANKARLA",
+                          "Gate 2 Desk 4 (QR, ID & Forms)": "HARDIK SAIN, BHAVYA DOSHI, GAURI SINGHI",
+                          "Barricade Patrol (ID Checker)": "JITENDRA, MOHIT SUWALKA",
+                          "Parking Control": "SHUBHANGI BHANAWAT, VIDHAAN SHAH, SHLOK CHATURVEDI, NAMAN SHUKLA",
+                          "Crowd Controller": "YUVRAJ SINGH RATHORE",
+                          "Gate 1 Helpdesk": "RAGHAV SONI, AMAN ANCHALIYA",
+                          "Admin Helpdesk": "PRATHAM LALWANI, HARSHITA HARCHANDANI",
+                          "LRC Circle Patrolling": "KHANAK JAIN, KOMAL VERMA, PENDYALA SRI VAIBHAV, PURVI JAIN",
+                          "LRC On-Spot Registration": "RASHI KATIYAR, NAKKALAPALLY OMRUTHIK, ASHUTOSH YADAV, KAVYA GUPTA",
+                          "Navigator (Activity Center)": "ANANYA SINGH",
+                          "Navigator (Volleyball Court)": "SHREYA SHARMA",
+                          "Navigator (Left of Mess)": "RISHA SAINI",
+                          "Navigator (GH2 Corner)": "HEMANGI SANCHETI",
+                          "Buffer Support": "RISHIKA SINGH, VIDHI CHAMARIA, TANVI GUPTA, TARUN KUMAR, NAWYA DUSAD, ADITYA NAYAK, MAYANK GAUTAM, PARI NAHATA, VANKAYALA PAVANI, DODDAPUNENI JAHANAVI, PRATIGYA BOMB, KANDELA NANDINI, PARTH BHARDWAJ, MOHIT KHURANA"
+                    }
+              },
+              {
+                    "time": "1:00pm - 6:00pm",
+                    "event": "Shift 2: Aarambh Campus Registration & Hostel Onboarding",
+                    "duties": {
+                          "GH1 Hostel Duty": "PRANJAL JANGID, ADITI SHARMA, SAMRIDHI SINGH, V TANVI REDDY, MANSI SOMANI, AVIKA SONI, RUCHI CHOUDHARY, DIYA SHAH, POORNA TEJITHA, ANUBHA SHARMA, RISHIKA SHARMA, CHARVI SHARMA, PRIECY GANDHI, PURVEE DUDHERIA",
+                          "BH2 Hostel Duty (Female)": "TARUSHI AGARWAL, DRONI SEHGAL, SHAMBHAVI SINGH, ANUKRITI CHOUDHARY, YASHSVI BOTHRA",
+                          "BH2 Hostel Duty (Male)": "BHAVYA GUPTA, RAGHURAJ JANGID, AALAP GOSWAMI, PRIYANSHU KUMAR, PARTH MUNDRA, KARTAVYA GARHWAL, YASH BANSAL, ARYAN GUPTA, MANANT SRIVASTAVA, U VISHNU",
+                          "Mess Duty": "MRADUL SAXENA, FARHAN KHAN, ABHIMANYU SINGH KATIYAR, LENKALAPALLY RAVI TEJA, GARVIT AGRAWAL, ROSHAN JANGIR",
+                          "Gate 2 Desk 1 (QR, ID & Forms)": "LAKSHYA GUPTA, NAKKALAPALLY OMRUTHIK, RAGHAV SHARMA",
+                          "Gate 2 Desk 2 (QR, ID & Forms)": "PARIHAAN KABRA, LAKSHITA TANWAR, NIHARIKA CHAUHAN",
+                          "Gate 2 Desk 3 (QR, ID & Forms)": "DHRUV KUMAR, UDIT MISHRA, NANDINI SHAH",
+                          "Gate 2 Desk 4 (QR, ID & Forms)": "KAVITA SHARMA, PRIYANSHI AGNANI, HARSHVARDHAN SINGH",
+                          "Barricade Patrol (ID Checker)": "KAJAL AGARWAL, DARSHITA JAIN",
+                          "Parking Control": "SRIJAN SHARMA, ADITYA VYAS",
+                          "Crowd Controller": "AMRIT AGRAWAL, NAINA DAYARAMANI",
+                          "Gate 1 Helpdesk": "AKSHAT BISHT, RIDDHI SHARMA",
+                          "Admin Helpdesk": "ASHUTOSH YADAV, NIKITA BHATIA",
+                          "LRC Circle Patrolling": "KHUSHI SHARMA, SUNAY KUNDALWAL, PARI MALOO, CHELSYTANWAR",
+                          "LRC On-Spot Registration": "RASHI KATIYAR, NAKKALAPALLY OMRUTHIK, ASHUTOSH YADAV, PREKSHYA SHARMA",
+                          "Navigator (Activity Center)": "HARDIK KUMAWAT",
+                          "Navigator (Volleyball Court)": "NARESH ROJ",
+                          "Navigator (Left of Mess)": "MANVI SINGH",
+                          "Navigator (GH2 Corner)": "BHAVISHA SABNANI",
+                          "Buffer Support": "SWADHA SAXENA, KHUSHI SONI, HIMANSHU, ARIHANT JAIN, KARNAM HASINI, AADRIKA ROY, SAANCHI VIJAYVERGIA, CHANCHAL KARANANI, SHRESHTHA SHARMA, ARJUN SINGH TANWAR, BHAVYA BANG, VAIBHAV KHANDELWAL, ANVI VASHIST, ANUSHRI FALOR"
+                    }
+              }
+        ]
+  },
   "DAY1": {
     "label": "Tue 14 Jul",
     "events": [

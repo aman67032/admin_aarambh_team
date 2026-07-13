@@ -23,7 +23,7 @@ export default function DutyChartPage() {
   const isDark = theme === 'fun';
 
   const [activeTab, setActiveTab] = useState<TabType>('master');
-  const [selectedDayKey, setSelectedDayKey] = useState<string>('DAY1');
+  const [selectedDayKey, setSelectedDayKey] = useState<string>('DAY0');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Clean and parse search query
@@ -482,7 +482,7 @@ export default function DutyChartPage() {
                     onClick={() => setSelectedDayKey(dayKey)}
                     className={`px-3 py-2 border rounded-xl text-[10px] font-extrabold uppercase tracking-wide transition-all cursor-pointer ${selectedDayKey === dayKey ? 'bg-amber-500/10 border-amber-500 text-amber-600 shadow-sm' : 'bg-card-bg border-card-border text-text-muted hover:text-foreground'}`}
                   >
-                    {dayKey} (Jul {dayKey === 'DAY1' ? '14' : dayKey === 'DAY2' ? '15' : dayKey === 'DAY3' ? '16' : dayKey === 'DAY4' ? '17' : dayKey === 'DAY5' ? '18' : dayKey === 'DAY6' ? '19' : dayKey === 'DAY7' ? '20' : '21'})
+                    {dayKey === 'DAY0' ? 'DAY0' : dayKey} ({dayKey === 'DAY0' ? 'Mon 13 Jul' : dayKey === 'DAY1' ? 'Jul 14' : dayKey === 'DAY2' ? 'Jul 15' : dayKey === 'DAY3' ? 'Jul 16' : dayKey === 'DAY4' ? 'Jul 17' : dayKey === 'DAY5' ? 'Jul 18' : dayKey === 'DAY6' ? 'Jul 19' : dayKey === 'DAY7' ? 'Jul 20' : 'Jul 21'})
                   </button>
                 ))}
               </div>
