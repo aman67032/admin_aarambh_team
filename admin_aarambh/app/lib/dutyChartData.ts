@@ -135,122 +135,125 @@ export const MASTER_SCHEDULE: Record<string, MasterDay> = {  "DAY0": {
   "DAY1": {
     "label": "Tue 14 Jul",
     "events": [
-      {
-        "time": "11:00am - 12:30pm",
-        "event": "Full Team - 14",
-        "duties": {
-          "Internal Arrangments": "Full Team - 14"
-        }
-      },
-      {
-        "time": "12:30pm - 1:00pm",
-        "event": "Full Team - 14",
-        "duties": {
-          "Internal Arrangments": "Full Team - 14"
-        }
-      },
-      {
-        "time": "1:00pm - 2:30pm",
-        "event": "",
-        "duties": {}
-      },
-      {
-        "time": "2:30pm -5:30 pm",
-        "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
-        "duties": {
-          "Internal Arrangments": "Pari Maloo, Lakshay, Priyanshu, Raghav",
-          "Events & Venue": "Navya and Shubhangi , Navya and Shubhangi , Priyanshi and Pari, Manvik and Tanvi",
-          "Technical": "Rashi , Heramb, Ashutosh, Pratham , Arihant"
-        }
-      },
-      {
-        "time": "5:30 pm - 6:30 pm",
-        "event": "",
-        "duties": {}
-      },
-      {
-        "time": "6:30 pm - 9:00pm",
-        "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
-        "duties": {
-          "Internal Arrangments": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
-          "Events & Venue": "Aman and Himangi, Parihaan and Priecy, Yatharth and Anvi, Naresh and Navya",
-          "Technical": "Aalap, Amrit"
-        }
-      },
-      {
-        "time": "9:00 pm - 10:30pm",
-        "event": "",
-        "duties": {}
-      },
-      {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
-        "duties": {
-          "Internal Arrangments": "Shrestha, Raghuraj, Harshvardhan Singh",
-          "Events & Venue": "Subhangi and Yatharth , Siddhi and Priecy ,Tarushi and Aman, Himangi and Parihaan",
-          "Technical": "Manant, Udit, Arihant"
-        }
-      },
-      {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
-        "duties": {}
-      },
-      {
-        "time": "10:30pm - 11:30pm",
-        "event": "",
-        "duties": {}
-      },
-      {
-        "time": "Full Day",
-        "event": "Hospitality for Mr. Manish Freeman",
-        "duties": {
-          "Hospitality": "Aadi"
-        }
-      },
-      {
-        "time": "Full Day",
-        "event": "Hospitality for Ashutosh",
-        "duties": {
-          "Hospitality": "Aadrika"
-        }
-      },
-      {
-        "time": "Full Day",
-        "event": "Hospitality for Amreen",
-        "duties": {
-          "Hospitality": "Abhimanyu Singh"
-        }
-      },
-      {
-        "time": "Full Day",
-        "event": "Hospitality for Chetan",
-        "duties": {
-          "Hospitality": "Anubha Sharma"
-        }
-      },
-      {
-        "time": "Full Day",
-        "event": "Hospitality for Vidushi",
-        "duties": {
-          "Hospitality": "Bhavya Doshi"
-        }
-      },
-      {
-        "time": "Full Day",
-        "event": "Hospitality for Help Desk",
-        "duties": {
-          "Hospitality": "Sanskriti & Rahul Gorani"
-        }
-      },
-      {
-        "time": "Full Day",
-        "event": "Hospitality for Available",
-        "duties": {
-          "Hospitality": "Pawanii Sharma"
-        }
-      }
-    ]
+            {
+                        "time": "6:00am - 8:30am",
+                        "event": "Shift 1: Aarambh Campus Registration & Hostel Onboarding",
+                        "duties": {
+                              "GH1 Hostel Duty": "VANKAYALA PAVANI (7842114595), SMILE CHHABRA (9571839843), ANOUSHKA SINGH (8949038616), TEEDA SRI RAMYA (9346228928), HANSIKA AGARWAL (8824325776), CHESTHA KULSHRESTHA (9928883938), SANCHI DHOOPIA (9664356901), ADITI AGARWAL (8529341939), GOURANSHI SHARMA (8890174914), HIMANI SARAF (7229990039)",
+                              "BH2 Hostel Duty (Female)": "VAISHNAVI GAJJALA (8309299039), DISHIKA PANCHOLI (9588934442), RASHI KATIYAR (7878437857), ARSHIYAA YADAV (7976616005), CHANCHAL KARANANI (7297066050)",
+                              "BH2 Hostel Duty (Male)": "KRISH BHOLA (7073517788), HARSHUL AGARWAL (7742991906), VANSH BHATIA (9413833334), ARYAN AJAY BHASKAT (9351362479), SHOURYAVEER BISHNOI (9828692129)",
+                              "Mess Duty": "DEVAM GUPTA (7340015201), GHYAN CHECHANI (8824600720), HERAMB SHARMA (6377827962), JAINAM JAIN (8000796223), SHIVIA RAWAT (7849833123), SUDHI CHAURASIA (8966873111)",
+                              "Gate 2 Desk 1 (QR, ID & Forms)": "SURYAVANSHISRIDEVI (8639190326), JANAPAATI ROHITH (8309571278), PRATIKI AGARWAL (8000021198)",
+                              "Gate 2 Desk 2 (QR, ID & Forms)": "KAUSHAL MALVI (9644679988), ADITI SHARMA (8769266444), HIMANI MENGHANI (9509221101)",
+                              "Gate 2 Desk 3 (QR, ID & Forms)": "VAISHALI AGARWAL (9521273276), ADITYAVARDHAN SINGH CHAUHAN (8955738808), VARUN TEJA ANKARLA (9573857352)",
+                              "Gate 2 Desk 4 (QR, ID & Forms)": "HARDIK SAIN (8000554092), PULKIT DOSI (9887788899), GAURI SINGHI (8305015800)",
+                              "Barricade Patrol (ID Checker)": "JITENDRA (9653840559), MOHIT SUWALKA (8005961269)",
+                              "Parking Control": "SUVARNA KEZIAH DIGWAL (7032764515), VIDHAAN SHAH (7357252112), SHLOK CHATURVEDI (7737257861), NAMAN SHUKLA (9929727849)",
+                              "Crowd Controller": "YUVRAJ SINGH RATHORE (9351912044)",
+                              "Gate 1 Helpdesk": "RAGHAV SONI (9140338834), KARTIK SHARMA (8769329369)",
+                              "Admin Helpdesk": "PRATHAM LALWANI (7232857451), HARSHITA HARCHANDANI (7470808031)",
+                              "LRC Circle Patrolling": "KHANAK JAIN (8104805555), KOMAL VERMA (8209421348), PENDYALA SRI VAIBHAV (9398897495), PURVI JAIN (7877082586), DAKSH KUMAR (8949291337), PAWANI SHARMA (8905818323)",
+                              "LRC On-Spot Registration": "",
+                              "Navigator (Activity Center)": "ANANYA SINGH (9509946112)",
+                              "Navigator (Volleyball Court)": "SHREYA SHARMA (7895887371)",
+                              "Navigator (Left of Mess)": "RISHA SAINI (7296947096)",
+                              "Navigator (GH2 Corner)": "KAVYA GUPTA (6263137120)",
+                              "Buffer Support": "SHUBHANGI BHANAWAT (9829015671), PARI NAHATA (8209095137), SIDDHI KHANDELWAL (8852824149), HEMANGI SANCHETI (7357956666), RISHIKA SINGH (7300118679), VIDHI CHAMARIA (9829883263), SAMRIDDHI SINGH (7974779477), TARUN KUMAR (8764191998), VARRA SRIVALLI (9502303519), ADITYA NAYAK (9116727168), MAYANK GAUTAM (8949349516), TANVI GUPTA (8302847403), NAWYA DUSAD (8279220922), JHEEL JAIN (9929001325), GOURANG TAK (8058477540), YATHARTH CHATURVEDI (8529958544), RAHUL GORANI (6367427790), AMAN ANCHALIYA (9549696968), BHAVYA DOSHI (7014763106), SANSKRITI GEHLOT (8824500776), DODDAPUNENI JAHANAVI (9515934329), PRATIGYA BOMB (6264667506), KANDELA NANDINI (9391774008), PARTH BHARDWAJ (7850993545), MOHIT KHURANA (8905744728)"
+                        }
+                  },
+                  {
+                        "time": "8:30am - 11:00am",
+                        "event": "Shift 2: Aarambh Campus Registration & Hostel Onboarding",
+                        "duties": {
+                              "GH1 Hostel Duty": "PRANJAL JANGID (9828188830), ADITI SHARMA (8769266444), SAMRIDHI SINGH (8851168424), V TANVI REDDY (6301758988), MANSI SOMANI (9636866919), AVIKA SONI (9828239900), RUCHI CHOUDHARY (8905185761), DIYA SHAH (8866560966), POORNA TEJITHA (8247754198), CHARVI SHARMA (8847490178)",
+                              "BH2 Hostel Duty (Female)": "NAINA DAYARAMANI (8982800788), DRONI SEHGAL (7737984411), YASHSVI BOTHRA (9875765696), ANUKRITI CHOUDHARY (7424841969)",
+                              "BH2 Hostel Duty (Male)": "ARJUN SINGH TANWAR (9166130402), RAGHURAJ JANGID (8306203348), AALAP GOSWAMI (9783081486), PRIYANSHU KUMAR (9891660352), ARYAN GUPTA (8302958564), ROSHAN JANGIR (7877552810)",
+                              "Mess Duty": "LAKSHYA GUPTA (7597370438), FARHAN KHAN (8852080171), KARTAVYA GARHWAL (8233848184), LENKALAPALLY RAVI TEJA (7416090030), GARVIT AGRAWAL (9024079027), AKSHAT MURARKA (9153498719)",
+                              "Gate 2 Desk 1 (QR, ID & Forms)": "RASHI KATIYAR (7878437857), ASHUTOSH YADAV (9259068512), RAGHAV SHARMA (7849902293)",
+                              "Gate 2 Desk 2 (QR, ID & Forms)": "PREKSHYA SHARMA (7850984940), LAKSHITA TANWAR (9251016998), PURVEE DUDHERIA (9352221827)",
+                              "Gate 2 Desk 3 (QR, ID & Forms)": "DHRUV KUMAR (8979809484), UDIT MISHRA (9509908119), NANDINI SHAH (9358369605)",
+                              "Gate 2 Desk 4 (QR, ID & Forms)": "KAVITA SHARMA (94621 49044), RISHIKA SHARMA (9929175875), HARSHVARDHAN SINGH (7568434676)",
+                              "Barricade Patrol (ID Checker)": "KAJAL AGARWAL (9660595115), DARSHITA JAIN (6378803495)",
+                              "Parking Control": "SRIJAN SHARMA (7007904127), U VISHNU (9059814029)",
+                              "Crowd Controller": "AMRIT AGRAWAL (95889 34442), AADIPOOJYA MEHRA (7742314923)",
+                              "Gate 1 Helpdesk": "AKSHAT BISHT (9509693736), RIDDHI SHARMA (7014857867)",
+                              "Admin Helpdesk": "ASHUTOSH YADAV (9259068512), NIKITA BHATIA (7742314923)",
+                              "LRC Circle Patrolling": "KHUSHI SHARMA (8949969152), BHAVYA GUPTA (8302914430), PARI MALOO (9351313345), CHELSYTANWAR (9119289533), ADITYA VYAS (8955637102), SHAMBHAVI SINGH (9452588089)",
+                              "LRC On-Spot Registration": "",
+                              "Navigator (Activity Center)": "HARDIK KUMAWAT (9001023997)",
+                              "Navigator (Volleyball Court)": "NAKKALAPALLY OMRUTHIK (9014857921)",
+                              "Navigator (Left of Mess)": "MANVI SINGH (9024411648)",
+                              "Navigator (GH2 Corner)": "BHAVYA BANG (7023282838)",
+                              "Buffer Support": "MRADUL SAXENA (8767289743), TARUSHI AGARWAL (7588883230), NARESH ROJ (9509879995), PARIHAAN KABRA (9057123555), SWADHA SAXENA (9079707725), KHUSHI SONI (9024877641), HIMANSHU (9251015254), ARIHANT JAIN (63670 45695), KARNAM HASINI (6303751019), NIHARIKA CHAUHAN (9660622428), SAANCHI VIJAYVERGIA (9509481665), PRIYANSHI AGNANI (9772217788), ABHIMANYU SINGH KATIYAR (9257266461), YASH BANSAL (8619011601), PARTH MUNDRA (9664098829), MANANT SRIVASTAVA (9451021467), ANUBHA SHARMA (9829820425), PRIECY GANDHI (7378100524), AADRIKA ROY (9423486807), SHRESHTHA SHARMA (9660599045), SUNAY KUNDALWAL (8619804776), BHAVISHA SABNANI (7878530529), VAIBHAV KHANDELWAL (6376511127)"
+                        }
+                  },
+                  {
+                        "time": "11:00am - 12:30pm",
+                        "event": "Full Team - 14",
+                        "duties": {
+                              "Internal Arrangments": "Full Team - 14"
+                        }
+                  },
+                  {
+                        "time": "12:30pm - 1:00pm",
+                        "event": "Full Team - 14",
+                        "duties": {
+                              "Internal Arrangments": "Full Team - 14"
+                        }
+                  },
+                  {
+                        "time": "1:00pm - 2:30pm",
+                        "event": "",
+                        "duties": {}
+                  },
+                  {
+                        "time": "2:30pm -5:30 pm",
+                        "event": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+                        "duties": {
+                              "Internal Arrangments": "Pari Maloo, Lakshay, Priyanshu, Raghav",
+                              "Events & Venue": "Navya and Shubhangi , Navya and Shubhangi , Priyanshi and Pari, Manvik and Tanvi",
+                              "Technical": "Rashi , Heramb, Ashutosh, Pratham , Arihant"
+                        }
+                  },
+                  {
+                        "time": "5:30 pm - 6:30 pm",
+                        "event": "",
+                        "duties": {}
+                  },
+                  {
+                        "time": "6:30 pm - 9:00pm",
+                        "event": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+                        "duties": {
+                              "Internal Arrangments": "Saanchi, Jitendra, Farhan, Hardik Kumawat",
+                              "Events & Venue": "Aman and Himangi, Parihaan and Priecy, Yatharth and Anvi, Naresh and Navya",
+                              "Technical": "Aalap, Amrit"
+                        }
+                  },
+                  {
+                        "time": "9:00 pm - 10:30pm",
+                        "event": "",
+                        "duties": {}
+                  },
+                  {
+                        "time": "10:30pm - 11:30pm",
+                        "event": "",
+                        "duties": {
+                              "Internal Arrangments": "Shrestha, Raghuraj, Harshvardhan Singh",
+                              "Events & Venue": "Subhangi and Yatharth , Siddhi and Priecy ,Tarushi and Aman, Himangi and Parihaan",
+                              "Technical": "Manant, Udit, Arihant"
+                        }
+                  },
+                  {
+                        "time": "10:30pm - 11:30pm",
+                        "event": "",
+                        "duties": {}
+                  },
+                  {
+                        "time": "10:30pm - 11:30pm",
+                        "event": "",
+                        "duties": {}
+                  }
+      ]
   },
   "DAY2": {
     "label": "Wed 15 Jul",

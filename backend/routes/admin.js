@@ -602,8 +602,12 @@ router.post('/register-student', requireAuth, requireRole(['admin', 'super_admin
     } = req.body;
 
     // Check mandatory fields
-    if (!name || !applicationNo || !email || !mobile || !gender || !course) {
-      return res.status(400).json({ error: 'Mandatory fields: name, applicationNo, email, mobile, gender, and course are required.' });
+    if (
+      !name || !applicationNo || !email || !mobile || !gender || !course ||
+      !fatherName || !fatherMobile || !fatherEmail ||
+      !pincode || !city || !district || !state
+    ) {
+      return res.status(400).json({ error: 'All fields are mandatory, including Parent details (Name, Phone, Email) and Residential details (Pincode, City, District, State).' });
     }
 
     // Clean up input fields
@@ -625,18 +629,28 @@ router.post('/register-student', requireAuth, requireRole(['admin', 'super_admin
       return res.status(400).json({ error: `Student with email ${studentEmail} is already registered.` });
     }
 
-    // Determine region based on state
-    let region = 'North';
-    const stateUpper = String(state || '').toUpperCase();
-    if (
-      stateUpper.includes('ANDHRA') || 
-      stateUpper.includes('TELANGANA') || 
-      stateUpper.includes('TAMIL') || 
-      stateUpper.includes('KARNATAKA') || 
-      stateUpper.includes('KERALA')
-    ) {
-      region = 'South';
-    }
+    // Determine region based on state, city, and district using South India keywords
+    const isSouthIndia = (c, d, s) => {
+      const cityLower = String(c || '').toLowerCase().trim();
+      const distLower = String(d || '').toLowerCase().trim();
+      const stateLower = String(s || '').toLowerCase().trim();
+
+      const southKeywords = [
+        'andhra', 'telangana', 'karnataka', 'tamil', 'kerala', 'goa', 'puducherry', 'pondicherry',
+        'hyderabad', 'bangalore', 'bengaluru', 'chennai', 'coimbatore', 'kochi', 'cochin', 'mysore', 'mysuru',
+        'trivandrum', 'thiruvananthapuram', 'amaravati', 'visakhapatnam', 'vizag', 'vijayawada',
+        'secunderabad', 'guntur', 'nellore', 'warangal', 'tirupati', 'hubli', 'dharwad', 'mangalore', 'mangaluru',
+        'belgaum', 'gulbarga', 'madurai', 'trichy', 'tiruchirappalli', 'salem', 'tirunelveli', 'vellore',
+        'thanjavur', 'kozhikode', 'calicut', 'thrissur', 'malappuram', 'kollam', 'alappuzha', 'palakkad'
+      ];
+
+      const southStates = ['ap', 'ts', 'tn', 'ka', 'kl', 'ga'];
+
+      return southKeywords.some(keyword => cityLower.includes(keyword) || distLower.includes(keyword) || stateLower.includes(keyword)) ||
+             southStates.includes(stateLower);
+    };
+
+    const region = isSouthIndia(city, district, state) ? 'South' : 'North';
 
     // Get all cohort leaders and dynamic cohort course mapping
     const cohortLeaders = await User.find({ role: 'cohort_leader' });
@@ -695,7 +709,17 @@ router.post('/register-student', requireAuth, requireRole(['admin', 'super_admin
     });
 
     // Filter matching cohorts
-    const matchingCohorts = activeCohorts.filter(c => getCohortCourse(c) === studentCourse);
+    let matchingCohorts = activeCohorts.filter(c => getCohortCourse(c) === studentCourse);
+
+    // Restrict B.Tech cohorts based on region (South clusters: I, J, K, L)
+    if (studentCourse === 'B.Tech') {
+      const southClusters = ['I', 'J', 'K', 'L'];
+      if (region === 'South') {
+        matchingCohorts = matchingCohorts.filter(c => southClusters.includes(c.charAt(0)));
+      } else {
+        matchingCohorts = matchingCohorts.filter(c => !southClusters.includes(c.charAt(0)));
+      }
+    }
 
     // Pick matching cohort with the minimum size
     let selectedCohort = null;
@@ -708,7 +732,11 @@ router.post('/register-student', requireAuth, requireRole(['admin', 'super_admin
     });
 
     if (!selectedCohort) {
-      selectedCohort = Object.keys(fallbackMapping).find(c => fallbackMapping[c] === studentCourse) || "A1";
+      if (studentCourse === 'B.Tech') {
+        selectedCohort = region === 'South' ? 'I1' : 'A1';
+      } else {
+        selectedCohort = Object.keys(fallbackMapping).find(c => fallbackMapping[c] === studentCourse) || "A1";
+      }
     }
 
     // Determine next sequential S.No
@@ -740,6 +768,8 @@ router.post('/register-student', requireAuth, requireRole(['admin', 'super_admin
       cluster: selectedCohort.charAt(0),
       confirmedAarambh: true,
       confirmedJklu: true,
+      confirmedAt: new Date().toISOString(),
+      confirmedBy: req.user ? req.user._id : undefined,
       documentsVerified: false,
       mailReceived: false,
       arrivalCode: arrivalCode,

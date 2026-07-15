@@ -250,8 +250,9 @@ export default function AddStudentPage() {
           <h2 className="text-lg font-bold text-foreground border-b border-card-border pb-2">Parent Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-1.5">
-              <label htmlFor="fatherName" className="text-xs font-bold text-text-muted uppercase tracking-wider">Parent Name</label>
+              <label htmlFor="fatherName" className="text-xs font-bold text-text-muted uppercase tracking-wider">Parent Name <span className="text-red-500">*</span></label>
               <input
+                required
                 type="text"
                 id="fatherName"
                 name="fatherName"
@@ -262,8 +263,9 @@ export default function AddStudentPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="fatherMobile" className="text-xs font-bold text-text-muted uppercase tracking-wider">Parent Phone</label>
+              <label htmlFor="fatherMobile" className="text-xs font-bold text-text-muted uppercase tracking-wider">Parent Phone <span className="text-red-500">*</span></label>
               <input
+                required
                 type="text"
                 id="fatherMobile"
                 name="fatherMobile"
@@ -274,8 +276,9 @@ export default function AddStudentPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="fatherEmail" className="text-xs font-bold text-text-muted uppercase tracking-wider">Parent Email</label>
+              <label htmlFor="fatherEmail" className="text-xs font-bold text-text-muted uppercase tracking-wider">Parent Email <span className="text-red-500">*</span></label>
               <input
+                required
                 type="email"
                 id="fatherEmail"
                 name="fatherEmail"
@@ -293,8 +296,9 @@ export default function AddStudentPage() {
           <h2 className="text-lg font-bold text-foreground border-b border-card-border pb-2">Residential Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="space-y-1.5">
-              <label htmlFor="pincode" className="text-xs font-bold text-text-muted uppercase tracking-wider">Pincode</label>
+              <label htmlFor="pincode" className="text-xs font-bold text-text-muted uppercase tracking-wider">Pincode <span className="text-red-500">*</span></label>
               <input
+                required
                 type="text"
                 id="pincode"
                 name="pincode"
@@ -305,8 +309,9 @@ export default function AddStudentPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="city" className="text-xs font-bold text-text-muted uppercase tracking-wider">City</label>
+              <label htmlFor="city" className="text-xs font-bold text-text-muted uppercase tracking-wider">City <span className="text-red-500">*</span></label>
               <input
+                required
                 type="text"
                 id="city"
                 name="city"
@@ -317,8 +322,9 @@ export default function AddStudentPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="district" className="text-xs font-bold text-text-muted uppercase tracking-wider">District</label>
+              <label htmlFor="district" className="text-xs font-bold text-text-muted uppercase tracking-wider">District <span className="text-red-500">*</span></label>
               <input
+                required
                 type="text"
                 id="district"
                 name="district"
@@ -329,8 +335,9 @@ export default function AddStudentPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="state" className="text-xs font-bold text-text-muted uppercase tracking-wider">State</label>
+              <label htmlFor="state" className="text-xs font-bold text-text-muted uppercase tracking-wider">State <span className="text-red-500">*</span></label>
               <input
+                required
                 type="text"
                 id="state"
                 name="state"
