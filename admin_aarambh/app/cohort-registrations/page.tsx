@@ -20,7 +20,30 @@ interface StudentInfo {
   notContinuing: boolean;
   notComingAarambh: boolean;
   confirmedAt?: string;
+  state?: string;
 }
+
+const stateCorrections: Record<string, string> = {
+  'RAJESTHAN': 'RAJASTHAN',
+  'RAJASTHAN': 'RAJASTHAN',
+  'MP': 'MADHYA PRADESH',
+  'MADHYAPRADESH': 'MADHYA PRADESH',
+  'UP': 'UTTAR PRADESH',
+  'UTTARPRADESH': 'UTTAR PRADESH',
+  'AP': 'ANDHRA PRADESH',
+  'ANDHRAPRADESH': 'ANDHRA PRADESH',
+  'TELANGANA': 'TELANGANA',
+  'BIHAR': 'BIHAR',
+  'GUJARAT': 'GUJARAT',
+  'HARYANA': 'HARYANA',
+  'JHARKHAND': 'JHARKHAND',
+  'WEST BENGAL': 'WEST BENGAL',
+  'MAHARASHTRA': 'MAHARASHTRA',
+  'PUNJAB': 'PUNJAB',
+  'DELHI': 'DELHI',
+  'KARNATAKA': 'KARNATAKA',
+  'ANDHAR PRADESH': 'ANDHRA PRADESH',
+};
 
 interface CohortInfo {
   cohortName: string;
@@ -53,6 +76,24 @@ export default function CohortRegistrationsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [notPublished, setNotPublished] = useState(false);
   const [expandedCohorts, setExpandedCohorts] = useState<Record<string, boolean>>({});
+
+  const [svgText, setSvgText] = useState<string | null>(null);
+  const [hoveredState, setHoveredState] = useState<{
+    name: string;
+    count: number;
+    breakdown?: { btech: number; bba: number; bdes: number };
+    coords: { x: number; y: number };
+  } | null>(null);
+
+  // Load the map SVG
+  useEffect(() => {
+    fetch('/india_map.svg')
+      .then(res => res.text())
+      .then(text => {
+        setSvgText(text);
+      })
+      .catch(err => console.error("Error loading map SVG:", err));
+  }, []);
 
   const getBackLink = () => {
     if (!user) return { href: '/', label: 'Back to Home' };
@@ -154,6 +195,124 @@ export default function CohortRegistrationsPage() {
   let regBTech = 0;
   let regBBA = 0;
   let regBDes = 0;
+
+  // Compute state-wise registrations
+  const stateCourseCounts: Record<string, { btech: number; bba: number; bdes: number; total: number }> = {};
+  
+  if (data && data.length > 0) {
+    data.forEach(cluster => {
+      cluster.cohorts.forEach(cohort => {
+        cohort.students.forEach(student => {
+          if (student.confirmedJklu) {
+            const sName = student.state || 'UNKNOWN';
+            const cleanState = stateCorrections[sName.trim().toUpperCase()] || sName.trim().toUpperCase();
+            
+            if (!stateCourseCounts[cleanState]) {
+              stateCourseCounts[cleanState] = { btech: 0, bba: 0, bdes: 0, total: 0 };
+            }
+            
+            stateCourseCounts[cleanState].total++;
+            
+            const cName = student.course.trim().toUpperCase();
+            if (cName.includes('TECH')) {
+              stateCourseCounts[cleanState].btech++;
+            } else if (cName.includes('DES')) {
+              stateCourseCounts[cleanState].bdes++;
+            } else if (cName.includes('BBA')) {
+              stateCourseCounts[cleanState].bba++;
+            } else {
+              stateCourseCounts[cleanState].btech++; // fallback
+            }
+          }
+        });
+      });
+    });
+  }
+
+  // Update map colors dynamically based on the stateCourseCounts
+  useEffect(() => {
+    if (!svgText) return;
+    
+    // Find all paths in the SVG container
+    const svgEl = document.getElementById('india-svg-container');
+    if (!svgEl) return;
+    
+    const paths = svgEl.getElementsByTagName('path');
+    for (let i = 0; i < paths.length; i++) {
+      const path = paths[i];
+      const pathId = path.getAttribute('id');
+      const stateName = path.getAttribute('name');
+      
+      // Default style
+      path.style.fill = isDark ? '#1e293b' : '#f3f4f6'; // Light gray or Slate-800 default for 0 registrations
+      path.style.stroke = isDark ? '#475569' : '#cbd5e1';
+      path.style.strokeWidth = '0.5';
+      path.style.transition = 'all 0.3s ease';
+      
+      // Add class for pointer
+      path.setAttribute('class', 'state-path cursor-pointer hover:opacity-85');
+      
+      // Get count for this state
+      const normalizedName = stateName ? stateName.toUpperCase() : '';
+      const cleanState = stateCorrections[normalizedName] || normalizedName;
+      const counts = stateCourseCounts[cleanState] || { total: 0, btech: 0, bba: 0, bdes: 0 };
+      
+      if (counts.total > 0) {
+        // Beautiful amber palette for light/dark theme
+        if (isDark) {
+          if (counts.total > 100) path.style.fill = '#f59e0b'; // Amber 500
+          else if (counts.total > 20) path.style.fill = '#d97706'; // Amber 600
+          else if (counts.total > 5) path.style.fill = '#b45309'; // Amber 700
+          else path.style.fill = '#78350f'; // Amber 900
+        } else {
+          if (counts.total > 100) path.style.fill = '#b45309'; // Amber 700
+          else if (counts.total > 20) path.style.fill = '#d97706'; // Amber 600
+          else if (counts.total > 5) path.style.fill = '#fbbf24'; // Amber 400
+          else path.style.fill = '#fde68a'; // Amber 200
+        }
+        
+        // Add glows on hover
+        path.onmouseenter = (e: MouseEvent) => {
+          path.style.stroke = '#ffffff';
+          path.style.strokeWidth = '1.5';
+          setHoveredState({
+            name: stateName || '',
+            count: counts.total,
+            breakdown: { btech: counts.btech, bba: counts.bba, bdes: counts.bdes },
+            coords: { x: e.clientX, y: e.clientY }
+          });
+        };
+        path.onmousemove = (e: MouseEvent) => {
+          setHoveredState(prev => prev ? { ...prev, coords: { x: e.clientX, y: e.clientY } } : null);
+        };
+        path.onmouseleave = () => {
+          path.style.stroke = isDark ? '#475569' : '#cbd5e1';
+          path.style.strokeWidth = '0.5';
+          setHoveredState(null);
+        };
+      } else {
+        // Zero count hover
+        path.onmouseenter = (e: MouseEvent) => {
+          path.style.stroke = isDark ? '#94a3b8' : '#64748b';
+          path.style.strokeWidth = '1';
+          setHoveredState({
+            name: stateName || '',
+            count: 0,
+            breakdown: { btech: 0, bba: 0, bdes: 0 },
+            coords: { x: e.clientX, y: e.clientY }
+          });
+        };
+        path.onmousemove = (e: MouseEvent) => {
+          setHoveredState(prev => prev ? { ...prev, coords: { x: e.clientX, y: e.clientY } } : null);
+        };
+        path.onmouseleave = () => {
+          path.style.stroke = isDark ? '#475569' : '#cbd5e1';
+          path.style.strokeWidth = '0.5';
+          setHoveredState(null);
+        };
+      }
+    }
+  }, [svgText, stateCourseCounts, isDark]);
 
   let btechMales = 0;
   let btechFemales = 0;
@@ -484,6 +643,102 @@ export default function CohortRegistrationsPage() {
                 </div>
               );
             })()}
+          </div>
+        )}
+
+        {/* State-wise Map and Summary Table */}
+        {!loading && !notPublished && data.length > 0 && (
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
+            {/* Map Column */}
+            <div className="lg:col-span-7 glass-card p-5 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden min-h-[500px]">
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-widest self-start mb-4">Statewise Registration Heatmap</h2>
+              {svgText ? (
+                <>
+                  <style dangerouslySetInnerHTML={{ __html: `
+                    #india-svg-container svg {
+                      width: 100%;
+                      height: auto;
+                      max-height: 450px;
+                    }
+                    .state-path {
+                      transition: fill 0.3s ease, stroke 0.3s ease, stroke-width 0.3s ease;
+                    }
+                  `}} />
+                  <div 
+                    id="india-svg-container" 
+                    className="w-full max-w-[450px] h-auto text-foreground"
+                    dangerouslySetInnerHTML={{ __html: svgText }}
+                  />
+                </>
+              ) : (
+                <div className="text-text-muted text-sm font-semibold animate-pulse">Loading Map...</div>
+              )}
+              
+              {/* Tooltip */}
+              {hoveredState && (
+                <div 
+                  className="absolute pointer-events-none bg-slate-900/95 text-white p-3 rounded-xl border border-slate-700/50 shadow-xl text-xs space-y-1.5 z-50 backdrop-blur-sm transition-all duration-75"
+                  style={{ 
+                    left: `${hoveredState.coords.x + 15}px`, 
+                    top: `${hoveredState.coords.y + 15}px`,
+                    position: 'fixed'
+                  }}
+                >
+                  <div className="font-bold text-sm text-amber-400 border-b border-slate-700/50 pb-1">{hoveredState.name}</div>
+                  <div className="flex justify-between gap-4 font-semibold text-slate-300">
+                    <span>Total Students:</span>
+                    <span className="text-white font-bold">{hoveredState.count}</span>
+                  </div>
+                  {hoveredState.breakdown && (
+                    <div className="space-y-0.5 pt-1 text-[10px] text-slate-400 font-medium border-t border-slate-800 mt-1">
+                      <div className="flex justify-between gap-4">
+                        <span>B.Tech:</span>
+                        <span className="text-slate-200">{hoveredState.breakdown.btech}</span>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <span>BBA:</span>
+                        <span className="text-slate-200">{hoveredState.breakdown.bba}</span>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <span>B.Des:</span>
+                        <span className="text-slate-200">{hoveredState.breakdown.bdes}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            
+            {/* Table Column */}
+            <div className="lg:col-span-5 glass-card p-5 sm:p-6 flex flex-col overflow-hidden max-h-[550px]">
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-widest mb-4">Registration Numbers by State</h2>
+              <div className="overflow-y-auto flex-1 pr-1 custom-scrollbar">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="border-b border-card-border/50 text-text-muted font-bold uppercase tracking-wider">
+                      <th className="py-2.5 pb-2">State</th>
+                      <th className="py-2.5 pb-2 text-center">B.Tech</th>
+                      <th className="py-2.5 pb-2 text-center">BBA</th>
+                      <th className="py-2.5 pb-2 text-center">B.Des</th>
+                      <th className="py-2.5 pb-2 text-right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-card-border/30 font-semibold text-foreground">
+                    {Object.entries(stateCourseCounts)
+                      .sort((a, b) => b[1].total - a[1].total)
+                      .map(([state, counts]) => (
+                        <tr key={state} className="hover:bg-card-bg/25 transition-all">
+                          <td className="py-2.5 font-bold text-foreground">{state}</td>
+                          <td className="py-2.5 text-center text-text-muted">{counts.btech}</td>
+                          <td className="py-2.5 text-center text-text-muted">{counts.bba}</td>
+                          <td className="py-2.5 text-center text-text-muted">{counts.bdes}</td>
+                          <td className="py-2.5 text-right font-extrabold text-primary">{counts.total}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         )}
 
