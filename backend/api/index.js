@@ -398,6 +398,7 @@ const adminRoutes = require('../routes/admin');
 const cohortRoutes = require('../routes/cohort');
 const hostelRoutes = require('../routes/hostel');
 const arrivalRoutes = require('../routes/arrival');
+const timeslotRoutes = require('../routes/timeslot');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/distribution', distributionRoutes);
@@ -407,6 +408,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/cohort', cohortRoutes);
 app.use('/api/hostel', hostelRoutes);
 app.use('/api/arrival', arrivalRoutes);
+app.use('/api/timeslot', timeslotRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
