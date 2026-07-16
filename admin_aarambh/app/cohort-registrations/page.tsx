@@ -59,6 +59,21 @@ const cityCorrections: Record<string, string> = {
   'ANANDPURA KUCHAMAN CITY  DIDWANA-KUCHAMAN': 'KUCHAMAN CITY'
 };
 
+const RJ_CITY_MARKERS: Record<string, { left: string; top: string }> = {
+  'JAIPUR': { left: '68.0%', top: '39.0%' },
+  'AJMER': { left: '55.5%', top: '46.0%' },
+  'BEAWAR': { left: '50.1%', top: '50.3%' },
+  'JODHPUR': { left: '36.5%', top: '47.7%' },
+  'UDAIPUR': { left: '37.5%', top: '78.3%' },
+  'KOTA': { left: '71.4%', top: '67.9%' },
+  'BHILWARA': { left: '52.8%', top: '63.3%' },
+  'ALWAR': { left: '78.2%', top: '23.8%' },
+  'BIKANER': { left: '34.2%', top: '25.4%' },
+  'SIKAR': { left: '61.2%', top: '26.9%' },
+  'GULABPURA': { left: '51.1%', top: '59.1%' },
+  'KUCHAMAN CITY': { left: '56.2%', top: '37.3%' },
+};
+
 interface CohortInfo {
   cohortName: string;
   leaderName: string;
@@ -107,6 +122,24 @@ export default function CohortRegistrationsPage() {
         setSvgText(text);
       })
       .catch(err => console.error("Error loading map SVG:", err));
+  }, []);
+
+  const [rjSvgText, setRjSvgText] = useState<string | null>(null);
+  const [hoveredCity, setHoveredCity] = useState<{
+    name: string;
+    count: number;
+    breakdown?: { btech: number; bba: number; bdes: number };
+    coords: { x: number; y: number };
+  } | null>(null);
+
+  // Load the Rajasthan map SVG
+  useEffect(() => {
+    fetch('/rajasthan_map.svg')
+      .then(res => res.text())
+      .then(text => {
+        setRjSvgText(text);
+      })
+      .catch(err => console.error("Error loading Rajasthan map SVG:", err));
   }, []);
 
   const getBackLink = () => {
@@ -366,6 +399,23 @@ export default function CohortRegistrationsPage() {
       }
     }
   }, [svgText, stateCourseCounts, isDark]);
+
+  // Update Rajasthan map paths color dynamically
+  useEffect(() => {
+    if (!rjSvgText) return;
+    
+    const svgEl = document.getElementById('rajasthan-svg-container');
+    if (!svgEl) return;
+    
+    const paths = svgEl.getElementsByTagName('path');
+    for (let i = 0; i < paths.length; i++) {
+      const path = paths[i];
+      path.style.fill = isDark ? '#1e293b' : '#e2e8f0';
+      path.style.stroke = isDark ? '#334155' : '#cbd5e1';
+      path.style.strokeWidth = '0.5';
+      path.style.transition = 'all 0.3s ease';
+    }
+  }, [rjSvgText, isDark]);
 
   let btechMales = 0;
   let btechFemales = 0;
@@ -795,14 +845,14 @@ export default function CohortRegistrationsPage() {
           </div>
         )}
 
-        {/* Second Row: Rajasthan City-wise and Report Downloads */}
+        {/* Second Row: Rajasthan City-wise, Map Heatmap, and Report Downloads */}
         {!loading && !notPublished && data.length > 0 && (
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-            {/* Rajasthan Citywise Column */}
-            <div className="lg:col-span-7 glass-card p-5 sm:p-6 flex flex-col overflow-hidden max-h-[500px]">
+            {/* Column 1: Rajasthan Citywise Table (col-span-5) */}
+            <div className="lg:col-span-5 glass-card p-5 sm:p-6 flex flex-col overflow-hidden max-h-[500px]">
               <h2 className="text-sm font-bold text-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
-                Rajasthan Citywise Registration Details
+                Rajasthan Citywise
               </h2>
               <div className="overflow-y-auto flex-1 pr-1 custom-scrollbar">
                 <table className="w-full text-left text-xs border-collapse">
@@ -831,72 +881,169 @@ export default function CohortRegistrationsPage() {
                 </table>
               </div>
             </div>
-            
-            {/* Downloads & Reports Column */}
-            <div className="lg:col-span-5 glass-card p-5 sm:p-6 flex flex-col justify-between">
+
+            {/* Column 2: Rajasthan Interactive Map (col-span-4) */}
+            <div className="lg:col-span-4 glass-card p-5 sm:p-6 flex flex-col justify-between relative overflow-hidden h-[500px]">
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                Rajasthan Heatmap
+              </h2>
+              
+              <div className="flex-1 w-full relative flex items-center justify-center min-h-[300px]">
+                {rjSvgText ? (
+                  <div 
+                    id="rajasthan-svg-container"
+                    className="w-full h-full flex items-center justify-center relative select-none"
+                    dangerouslySetInnerHTML={{ __html: rjSvgText }}
+                  />
+                ) : (
+                  <div className="text-center text-xs text-text-muted animate-pulse">Loading Map...</div>
+                )}
+
+                {/* Overlaid city dots */}
+                {rjSvgText && Object.entries(rajasthanCityCourseCounts).map(([city, counts]) => {
+                  const marker = RJ_CITY_MARKERS[city.toUpperCase()];
+                  if (!marker) return null;
+
+                  const maxCount = Math.max(...Object.values(rajasthanCityCourseCounts).map(c => c.total));
+                  const minRadius = 6;
+                  const maxRadius = 18;
+                  const size = maxCount > 0 
+                    ? minRadius + (counts.total / maxCount) * (maxRadius - minRadius) 
+                    : minRadius;
+
+                  return (
+                    <div
+                      key={city}
+                      className="absolute group/pin cursor-pointer transform -translate-x-1/2 -translate-y-1/2 z-20"
+                      style={{ left: marker.left, top: marker.top }}
+                      onMouseEnter={(e) => {
+                        setHoveredCity({
+                          name: city,
+                          count: counts.total,
+                          breakdown: { btech: counts.btech, bba: counts.bba, bdes: counts.bdes },
+                          coords: { x: e.clientX, y: e.clientY }
+                        });
+                      }}
+                      onMouseMove={(e) => {
+                        setHoveredCity(prev => prev ? { ...prev, coords: { x: e.clientX, y: e.clientY } } : null);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredCity(null);
+                      }}
+                    >
+                      {/* Pulse effect */}
+                      <span 
+                        className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-60 animate-ping"
+                        style={{ width: `${size * 2}px`, height: `${size * 2}px`, left: `-${size}px`, top: `-${size}px` }}
+                      ></span>
+                      {/* Solid marker center */}
+                      <span 
+                        className="relative inline-block rounded-full bg-gradient-to-br from-amber-400 to-orange-500 border border-white dark:border-slate-800 shadow-md shadow-orange-500/30"
+                        style={{ width: `${size}px`, height: `${size}px`, transform: 'translate(-50%, -50%)' }}
+                      ></span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Hovered City Tooltip */}
+              {hoveredCity && (
+                <div 
+                  className="absolute pointer-events-none bg-slate-900/95 text-white p-3 rounded-xl border border-slate-700/50 shadow-xl text-xs space-y-1.5 z-50 backdrop-blur-sm transition-all duration-75"
+                  style={{ 
+                    left: `${hoveredCity.coords.x + 15}px`, 
+                    top: `${hoveredCity.coords.y + 15}px`,
+                    position: 'fixed'
+                  }}
+                >
+                  <div className="font-bold text-sm text-amber-400 border-b border-slate-700/50 pb-1">{hoveredCity.name}</div>
+                  <div className="flex justify-between gap-4 font-semibold text-slate-300">
+                    <span>Total Students:</span>
+                    <span className="text-white font-bold">{hoveredCity.count}</span>
+                  </div>
+                  {hoveredCity.breakdown && (
+                    <div className="space-y-0.5 pt-1 text-[10px] text-slate-400 font-medium border-t border-slate-800 mt-1">
+                      <div className="flex justify-between gap-4">
+                        <span>B.Tech:</span>
+                        <span className="text-slate-200">{hoveredCity.breakdown.btech}</span>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <span>BBA:</span>
+                        <span className="text-slate-200">{hoveredCity.breakdown.bba}</span>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <span>B.Des:</span>
+                        <span className="text-slate-200">{hoveredCity.breakdown.bdes}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Column 3: Downloads & Reports (col-span-3) */}
+            <div className="lg:col-span-3 glass-card p-5 sm:p-6 flex flex-col justify-between h-[500px]">
               <div>
-                <h2 className="text-sm font-bold text-foreground uppercase tracking-widest mb-4">Reports & Downloads</h2>
-                <p className="text-xs text-text-muted mb-6">
-                  Export registration logs and summary charts directly to Excel spreadsheets.
+                <h2 className="text-sm font-bold text-foreground uppercase tracking-widest mb-4">Downloads</h2>
+                <p className="text-xs text-text-muted mb-4">
+                  Export registration logs directly to Excel.
                 </p>
                 
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <a 
                     href="/api/reports/statewise-summary" 
                     download
-                    className="flex items-center justify-between p-3.5 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
+                    className="flex items-center justify-between p-3 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
                   >
-                    <div className="flex items-center gap-3">
-                      <svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <div className="flex items-center gap-2">
+                      <svg className="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                       <div className="text-left">
-                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">State-wise Summary</div>
-                        <div className="text-[10px] text-text-muted">Course-wise breakdowns by State</div>
+                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Statewise</div>
                       </div>
                     </div>
-                    <span className="text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform">Get XLSX →</span>
+                    <span className="text-[10px] font-bold text-primary group-hover:translate-x-0.5 transition-transform">XLSX</span>
                   </a>
 
                   <a 
                     href="/api/reports/coursewise-details" 
                     download
-                    className="flex items-center justify-between p-3.5 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
+                    className="flex items-center justify-between p-3 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
                   >
-                    <div className="flex items-center gap-3">
-                      <svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <div className="flex items-center gap-2">
+                      <svg className="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                       </svg>
                       <div className="text-left">
-                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Complete Student List</div>
-                        <div className="text-[10px] text-text-muted">3 separate sheets (B.Tech, BBA, B.Des)</div>
+                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Coursewise</div>
                       </div>
                     </div>
-                    <span className="text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform">Get XLSX →</span>
+                    <span className="text-[10px] font-bold text-primary group-hover:translate-x-0.5 transition-transform">XLSX</span>
                   </a>
 
                   <a 
                     href="/api/reports/rajasthan-citywise" 
                     download
-                    className="flex items-center justify-between p-3.5 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
+                    className="flex items-center justify-between p-3 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
                   >
-                    <div className="flex items-center gap-3">
-                      <svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <div className="flex items-center gap-2">
+                      <svg className="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                       <div className="text-left">
-                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Rajasthan City-wise</div>
-                        <div className="text-[10px] text-text-muted">Breakdowns for Rajasthan cities</div>
+                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">RJ Cities</div>
                       </div>
                     </div>
-                    <span className="text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform">Get XLSX →</span>
+                    <span className="text-[10px] font-bold text-primary group-hover:translate-x-0.5 transition-transform">XLSX</span>
                   </a>
                 </div>
               </div>
               
-              <div className="text-[10px] text-text-muted font-bold text-center mt-6 border-t border-card-border/30 pt-4">
-                Aarambh &apos;26 Registration Analytics Engine
+              <div className="text-[9px] text-text-muted font-bold text-center mt-4 border-t border-card-border/30 pt-3">
+                Aarambh Engine
               </div>
             </div>
           </div>
