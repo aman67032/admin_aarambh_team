@@ -21,6 +21,7 @@ interface StudentInfo {
   notComingAarambh: boolean;
   confirmedAt?: string;
   state?: string;
+  city?: string;
 }
 
 const stateCorrections: Record<string, string> = {
@@ -43,6 +44,19 @@ const stateCorrections: Record<string, string> = {
   'DELHI': 'DELHI',
   'KARNATAKA': 'KARNATAKA',
   'ANDHAR PRADESH': 'ANDHRA PRADESH',
+};
+
+const cityCorrections: Record<string, string> = {
+  'BEWAR': 'BEAWAR',
+  'JOTHPUR': 'JODHPUR',
+  'GULBPURA': 'GULABPURA',
+  '105-B ANAND NAGAR SIRSI ROAD, NEAR HARSOLI HAVELI': 'JAIPUR',
+  'PLOT NO42 BANDU NAGAR MURLIPURA JAIPUR DEPO SAME SIKKAR ROAD': 'JAIPUR',
+  '65,SAKET COLONY VIJAY BARI PATH NO.7 SIKAR ROAD JAIPUR': 'JAIPUR',
+  '4008,RAMLILA CHOWK , KALI MAI ROAD NASIRABAD AJMER': 'AJMER',
+  'HNO.1118 AGARWAL MOHALLA NASIRABAD': 'AJMER',
+  '2/62 B-BLOCK PANCHSHEEL': 'AJMER',
+  'ANANDPURA KUCHAMAN CITY  DIDWANA-KUCHAMAN': 'KUCHAMAN CITY'
 };
 
 interface CohortInfo {
@@ -222,6 +236,45 @@ export default function CohortRegistrationsPage() {
               stateCourseCounts[cleanState].bba++;
             } else {
               stateCourseCounts[cleanState].btech++; // fallback
+            }
+          }
+        });
+      });
+    });
+  }
+
+  // Compute Rajasthan city-wise registrations
+  const rajasthanCityCourseCounts: Record<string, { btech: number; bba: number; bdes: number; total: number }> = {};
+  
+  if (data && data.length > 0) {
+    data.forEach(cluster => {
+      cluster.cohorts.forEach(cohort => {
+        cohort.students.forEach(student => {
+          if (student.confirmedJklu) {
+            const sName = student.state || 'UNKNOWN';
+            const cleanState = stateCorrections[sName.trim().toUpperCase()] || sName.trim().toUpperCase();
+            
+            if (cleanState === 'RAJASTHAN') {
+              const cNameRaw = student.city || 'UNKNOWN';
+              const cName = cNameRaw.trim().toUpperCase();
+              const cleanCity = cityCorrections[cName] || cName;
+              
+              if (!rajasthanCityCourseCounts[cleanCity]) {
+                rajasthanCityCourseCounts[cleanCity] = { btech: 0, bba: 0, bdes: 0, total: 0 };
+              }
+              
+              rajasthanCityCourseCounts[cleanCity].total++;
+              
+              const courseName = student.course.trim().toUpperCase();
+              if (courseName.includes('TECH')) {
+                rajasthanCityCourseCounts[cleanCity].btech++;
+              } else if (courseName.includes('DES')) {
+                rajasthanCityCourseCounts[cleanCity].bdes++;
+              } else if (courseName.includes('BBA')) {
+                rajasthanCityCourseCounts[cleanCity].bba++;
+              } else {
+                rajasthanCityCourseCounts[cleanCity].btech++;
+              }
             }
           }
         });
@@ -737,6 +790,113 @@ export default function CohortRegistrationsPage() {
                       ))}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Second Row: Rajasthan City-wise and Report Downloads */}
+        {!loading && !notPublished && data.length > 0 && (
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
+            {/* Rajasthan Citywise Column */}
+            <div className="lg:col-span-7 glass-card p-5 sm:p-6 flex flex-col overflow-hidden max-h-[500px]">
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                Rajasthan Citywise Registration Details
+              </h2>
+              <div className="overflow-y-auto flex-1 pr-1 custom-scrollbar">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="border-b border-card-border/50 text-text-muted font-bold uppercase tracking-wider">
+                      <th className="py-2.5 pb-2">City</th>
+                      <th className="py-2.5 pb-2 text-center">B.Tech</th>
+                      <th className="py-2.5 pb-2 text-center">BBA</th>
+                      <th className="py-2.5 pb-2 text-center">B.Des</th>
+                      <th className="py-2.5 pb-2 text-right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-card-border/30 font-semibold text-foreground">
+                    {Object.entries(rajasthanCityCourseCounts)
+                      .sort((a, b) => b[1].total - a[1].total)
+                      .map(([city, counts]) => (
+                        <tr key={city} className="hover:bg-card-bg/25 transition-all">
+                          <td className="py-2.5 font-bold text-foreground">{city}</td>
+                          <td className="py-2.5 text-center text-text-muted">{counts.btech}</td>
+                          <td className="py-2.5 text-center text-text-muted">{counts.bba}</td>
+                          <td className="py-2.5 text-center text-text-muted">{counts.bdes}</td>
+                          <td className="py-2.5 text-right font-extrabold text-amber-500">{counts.total}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            {/* Downloads & Reports Column */}
+            <div className="lg:col-span-5 glass-card p-5 sm:p-6 flex flex-col justify-between">
+              <div>
+                <h2 className="text-sm font-bold text-foreground uppercase tracking-widest mb-4">Reports & Downloads</h2>
+                <p className="text-xs text-text-muted mb-6">
+                  Export registration logs and summary charts directly to Excel spreadsheets.
+                </p>
+                
+                <div className="space-y-4">
+                  <a 
+                    href="/api/reports/statewise-summary" 
+                    download
+                    className="flex items-center justify-between p-3.5 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      <div className="text-left">
+                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">State-wise Summary</div>
+                        <div className="text-[10px] text-text-muted">Course-wise breakdowns by State</div>
+                      </div>
+                    </div>
+                    <span className="text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform">Get XLSX →</span>
+                  </a>
+
+                  <a 
+                    href="/api/reports/coursewise-details" 
+                    download
+                    className="flex items-center justify-between p-3.5 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                      </svg>
+                      <div className="text-left">
+                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Complete Student List</div>
+                        <div className="text-[10px] text-text-muted">3 separate sheets (B.Tech, BBA, B.Des)</div>
+                      </div>
+                    </div>
+                    <span className="text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform">Get XLSX →</span>
+                  </a>
+
+                  <a 
+                    href="/api/reports/rajasthan-citywise" 
+                    download
+                    className="flex items-center justify-between p-3.5 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <div className="text-left">
+                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Rajasthan City-wise</div>
+                        <div className="text-[10px] text-text-muted">Breakdowns for Rajasthan cities</div>
+                      </div>
+                    </div>
+                    <span className="text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform">Get XLSX →</span>
+                  </a>
+                </div>
+              </div>
+              
+              <div className="text-[10px] text-text-muted font-bold text-center mt-6 border-t border-card-border/30 pt-4">
+                Aarambh &apos;26 Registration Analytics Engine
               </div>
             </div>
           </div>

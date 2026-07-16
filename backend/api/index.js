@@ -303,7 +303,7 @@ app.get('/api/status/cohort-registrations', async (req, res) => {
 
 
     const students = showStudents 
-      ? await Student.find({}).select('name gender applicationNo course cohort cluster confirmedJklu confirmedAarambh documentsVerified notContinuing notComingAarambh confirmedAt state').lean()
+      ? await Student.find({}).select('name gender applicationNo course cohort cluster confirmedJklu confirmedAarambh documentsVerified notContinuing notComingAarambh confirmedAt state city').lean()
       : [];
 
     // Group by cluster
@@ -372,6 +372,21 @@ app.get('/api/status/cohort-registrations', async (req, res) => {
     console.error('Error fetching registrations status:', error);
     res.status(500).json({ error: 'Failed to retrieve cohort registration status.' });
   }
+});
+
+app.get('/api/reports/statewise-summary', (req, res) => {
+  const filePath = path.join(__dirname, '../Statewise_Course_Registration_Summary.xlsx');
+  res.download(filePath, 'Statewise_Course_Registration_Summary.xlsx');
+});
+
+app.get('/api/reports/coursewise-details', (req, res) => {
+  const filePath = path.join(__dirname, '../Course_Wise_Registration_Details.xlsx');
+  res.download(filePath, 'Course_Wise_Registration_Details.xlsx');
+});
+
+app.get('/api/reports/rajasthan-citywise', (req, res) => {
+  const filePath = path.join(__dirname, '../Rajasthan_Citywise_Registration_Summary.xlsx');
+  res.download(filePath, 'Rajasthan_Citywise_Registration_Summary.xlsx');
 });
 
 // Mount Routes
