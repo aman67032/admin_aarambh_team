@@ -47,16 +47,13 @@ export default function BbaBookSlotPage() {
   const [booking, setBooking] = useState<BookingInfo | null>(null);
   const [existingBooking, setExistingBooking] = useState<BookingInfo | null>(null);
 
-  // Get today and tomorrow dates
-  const today = new Date();
-  const todayStr = today.toISOString().split('T')[0];
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const tomorrowStr = tomorrow.toISOString().split('T')[0];
+  // Registration dates: July 22, 23, 24
+  const registrationDates = ['2026-07-22', '2026-07-23', '2026-07-24'];
 
   useEffect(() => {
-    setSelectedDate(todayStr);
-  }, [todayStr]);
+    setSelectedDate(registrationDates[0]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const formatDateLabel = (dateStr: string) => {
     const d = new Date(dateStr + 'T00:00:00');
@@ -237,8 +234,8 @@ export default function BbaBookSlotPage() {
         {step === 'slots' && (
           <div className="space-y-6 max-w-xl mx-auto">
             {/* Date Selector */}
-            <div className="flex items-center justify-center gap-3">
-              {[todayStr, tomorrowStr].map(d => (
+            <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
+              {registrationDates.map(d => (
                 <button
                   key={d}
                   onClick={() => setSelectedDate(d)}
@@ -248,7 +245,7 @@ export default function BbaBookSlotPage() {
                       : 'bg-card-bg border-card-border text-text-muted hover:border-amber-500/50'
                   }`}
                 >
-                  {d === todayStr ? 'Today' : 'Tomorrow'} · {new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                  {new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', weekday: 'short' })}
                 </button>
               ))}
             </div>
