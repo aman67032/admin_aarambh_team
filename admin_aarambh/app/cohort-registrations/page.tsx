@@ -22,6 +22,7 @@ interface StudentInfo {
   confirmedAt?: string;
   state?: string;
   city?: string;
+  gender?: string;
 }
 
 const stateCorrections: Record<string, string> = {
@@ -74,6 +75,23 @@ const RJ_CITY_MARKERS: Record<string, { left: string; top: string }> = {
   'KUCHAMAN CITY': { left: '56.2%', top: '37.3%' },
 };
 
+const RJ_CITY_COORDINATES: Record<string, { x: number; y: number }> = {
+  'JAIPUR': { x: 307.73, y: 372.61 },
+  'AJMER': { x: 276.40, y: 386.76 },
+  'BEAWAR': { x: 267.71, y: 397.42 },
+  'JODHPUR': { x: 232.28, y: 393.20 },
+  'UDAIPUR': { x: 251.08, y: 443.76 },
+  'KOTA': { x: 309.85, y: 425.50 },
+  'BHILWARA': { x: 276.49, y: 420.67 },
+  'ALWAR': { x: 330.00, y: 353.03 },
+  'BIKANER': { x: 240.14, y: 338.66 },
+  'SIKAR': { x: 290.05, y: 351.30 },
+  'GULABPURA': { x: 277.00, y: 403.32 },
+  'KUCHAMAN CITY': { x: 282.48, y: 365.23 },
+};
+
+const RAJASTHAN_PATH_D = "M267.9 490.7l-0.3-0.5-0.8-0.5 0.2-0.7-0.5-1.1-0.6-0.6-1.1-0.4-0.5 0.6-0.2 0.5-0.7-0.1-0.3-0.5-0.5-0.1-0.1-0.9 0.4-0.6-0.1-1.1-0.6-0.4-0.2-0.5-0.4-0.1-1.2 0.1-0.5-0.8 0.1-0.3-1.1-0.2-0.2-0.6-0.6-0.7-0.4 0.2-0.3 1-1.2 0.1 0-0.4-0.4-0.5-0.3-0.8-1.1-1.5-1.2 0.3-0.5-0.7-0.9 1-0.4 0.2-0.4-1.1-1 0.1-0.4 0.4-0.6-0.4 0.4-1.3 0.4-0.5-0.6-0.6 0-0.9 0.3-0.4 0-0.9 0.3-0.5-0.5-0.2-0.6-0.6-1.3-0.1-0.5 0.7-0.8 0.6-0.3-0.2-0.3-0.6 0.2-1.8-0.2-0.3-0.7-0.1-0.1-0.5-0.5-0.4-0.1-0.4-0.5-0.3-0.4-0.5-0.5-0.1-0.7 0.5-0.4-0.7 0.3-0.9-0.3-1 0.7-1.6 0.3-0.3 0.6-0.2 0.1-1.5-0.3-0.7 0.1-1.6-0.5-0.7-0.8-0.4 0-0.8-0.9 0 0 0.9-0.2 0.6-0.6 0.4-0.4 0.7-0.4 0-0.7 0.5-1.4-1 0.7-1.6-0.7-0.3-0.8-0.1-0.6-0.4-0.7-0.5-0.2-0.4-0.9-0.9 0.2-1.1 0.7-1.3 0.6-0.5 0.2-0.8 0.8 0.2 0.3-0.3 0-0.7 0.7 0 0.6-0.9-0.6-0.3-0.8 0.7-0.5-0.1-1-0.4-0.4-0.6-0.7-0.2 0.5-0.8 0.1-1.1-0.4-1.1-1.2 0.9-0.8 0-0.2-0.6-0.9 1 0.3 0.9-0.8 0.8 0.7 0.6-0.3 0.5-1.5 0.9-0.6-0.7-0.9-0.5-1 0.1-0.4 0.2-2.3-0.1-0.7-0.9-0.4-0.9 0-1.2-0.9 0.1-1.9-0.5-0.4-0.4-0.9-0.5-1.1 1.6 0.2 1-0.6 0.4-0.6-0.1-0.3-0.9-0.5-0.7 0.3-1-0.1-0.3-0.6-0.1-1 0.2-0.8-1.6-0.6-0.1-0.1 0.4-1 0.1-0.1-0.5-0.5 0.2-0.6-0.9 0.7-0.6 0.7 0 0.3 0.4 0.8-0.2 0.3-0.7-0.3-0.2-0.7 0.4-1.1-0.4-0.7 0.1-0.6-0.4-0.3 0.4-0.9 0.3-0.6-0.2-0.3-0.5-1 0-0.8-0.6 0.2-0.7-0.2-0.6-0.9-0.3-0.3 0.3-1.3 0.6 0 0.6-0.7 0.6-0.9 0.3-0.5-0.6 0.2-0.5-0.4-0.2-0.5 0.1-0.6-0.2-0.2 0.7 0.2 0.8-0.7 0.2-0.9-0.2 0.1-0.7-0.1-0.4-0.8-0.3-1 0.5-0.8 0-1.5 0.6-0.5-0.6-0.7-0.5-0.6 0.2-0.4-0.4-0.8 0.2-0.4-0.3-1.4 0.2-0.3 0.3-0.7 0.1-0.8 0.6-1.1 0.6-0.4-0.2-0.3-0.8-0.8 0.3-0.8 1.1-1-0.4-0.5-0.2-1-0.4-0.9-0.3-1.5-0.6-0.3-0.3-0.9-1-1.1-2.6-0.8-1.6-0.7-1.1-0.6-0.8-0.3-0.6-0.6-1.8-0.3-1.5-0.5-3-1.1-1.2-1.2-1.2-1.4-1.6-0.4-1.4-0.6-0.7-1.4-1.3 0.2-0.9 0-0.9 0.2-2.2-0.3-0.1 0-2 0.1-2.2-0.4-1.1-0.5-0.3-1.2 0.1-1 0.5-0.9 0.3-1.2 0.1-1.8 0.1-0.7 0.2-0.6-0.1-2.5-0.9-0.4-0.3-0.3-1.1-0.4-0.7-1.1-1.2-0.7-0.4-0.4-0.8-1.6-2.4-0.4-1.2 0-1-0.3-1.9 0.4-1.2 1.4-2.1 0.4-0.8 0.3-1.6-0.2-1 0.1-0.9 0.3-1.3-0.1-2.5 0.2-1.7-0.4-1.9-0.5-0.6-1.2-0.6-1.1-0.3-1.1 0-2.9 0.5-1.8 0-1.1-0.3-1.2-0.6-1.3-1.3-5.5-2.5-0.4-0.4-0.6-1.7 0.4-2.9 0.1-1.4 0.3-2.2 0.6-1.6 0.8-2.2 0.6-1.2 2.1-2.2 4.1-3.4 1.3-1.3 1.3-1.7 0.7-1.4 2.2-1.6 0.3-0.4 2.2-6.1 1.4-2.1 1.4-1.6 2-1.4 0.6-0.5 0.9-1.1 0.8-0.8 1.8-0.4 1.3-0.4 1.4 0 0.9 0.4 2.7 2.8 0.3 0.5 0 1.4 0.2 0.9 1.6 3 0.5 0.8 1.7 0.4 1.8 0.2 0.6-0.1 3.5-1.7 4.8-2.1 1.7-0.6 3.8-0.7 3.3 0 1.5-0.1 2 0 1.1-0.4 1.8-0.9 2.6-0.9 1-0.5 0.4-2.2 0-0.7 0.5-2.2 1-1.4 0.8-1.3 0.7-0.6 2.9-2.4 0.8-1 0.8-0.7 0.7-1.3 2.5-8.2 0.7-1.1 1.6-2 0.5-0.5 1.2-0.4 2-1.2 1.8-1.1 1.8-1.2 2.4-1.4 5.2-2.2 0.4-0.3 1.5-3.7 2.2-2.7 1.6-3 1.5-3.2 0.8-1.6 1.4-2.4 0.7-2.4 0.4-1.7 0.7-2.6 0.5-2.1 0.2-0.5 0.6-2.3 0.1-0.4 0.6-0.4 5.5-2.3 1.1-0.3 1.5-0.5 1.3-0.3 1.1-0.4 1.2-1.2 2.3-1.9 1.2-0.8-0.2 1.6 0.1 0.5-1.2 1.9-0.6 0.4-0.5 1.8 0.3 0.9 4.9 0 5 0.4 1 0 3.2 0.3 0.6-0.1 1.1 0.2 1.4 0-0.4 1.1 0.8 0.2 0.6 1.2-0.6 0.8-1.1 0.4-0.6 0.8-0.2 0.4 0.2 1.4 1.5 0.1 0.3-0.4 0.9 0 0.6-0.4 0.4 0.4-0.1 1-0.7 2.1 0.2 0.6-0.2 0.3-0.2 1.3 0.1 0.9 1 0.8 0.1 0.4-0.6 0.8-0.3 1.1-1.3-0.2-0.1 1.3 0.6 0 0.5 0.5 0.1 0.7 0.7 1-0.1 0.8 1.3-0.1 0.2-1.3 1.1 0.2 0.6-0.1 0.5 0.5 1.2-0.2 1-1.2 1.1-0.1 0.5 0.5 0.5 0 1.1 0.7 0.2 0.8 0.4 0.6-0.3 0.4 0.4 0.7 0.6 0.1 0.4 0.3 0.9-0.7 0.5 0.2 0.3 0.7 0.7 1 0.8 0.2 0.2-0.5 0.9-0.1 0.5-0.6 0.4-0.1 0.4 0.7 0.8 0.3 0.3-0.5 1-0.1 0.2-0.6 1.1-0.6 0.2 0.5-0.1 0.8-0.2 0.5 0.8 0.3 0.2-0.7 0.8-0.5 0.4 0.1 0.1 0.7-0.3 0.3 0.4 1.3-0.4 0.5-0.5 0.1-0.2 0.8 0.9 0.5-0.4 0.5 0 1.3 1.4 0.2 0.2 0.7-0.1 0.8 1-0.1 1.1 0.2 0.1 1.2-0.3 0.4-0.2 0.6-0.8 0.1 0 0.4 0.6 0.9-0.1 1.2 0.7 0.7-0.4 1.5 0.5 0.5 0.4 1.2 0.3 2.7 0.2 0.1 0.2 0.9 0.6 0 0.2 0.3 0.7 0 0.2 0.5 0.3 1.4 1 0.4 0 0.4 0.7 0.6 1.2 0.4 0 0.5 1.2 0.4 0.2 0.6-0.6 0.6 0.2 0.4 0.4 0.1 0.5-0.3 0.7 0.1 0.1 0.4 1.1 0.2 1.3 0.7 0.2 0.7 0.8 0.2 0.8 1.4 0.9 0.4-0.3 0.9 0.1 0.3 1.1 0.6-0.2 0.6 0.6 0.2 0.2 0.8 0.5 0.5-0.3 0.4-0.5 0 0.1-0.8-1.1-0.1-0.9 0.7-0.1 0.7-0.4 0-0.9 0.7-0.2 0.3 0.6 0.3 0.5 0 0.7 0.8 0.4-0.7 0.5 0.4-0.5 0.4-0.2 0.6-0.9 0-0.1 0.6-0.4 0.5-0.1 0.4 0.9 0.1-0.5 0.7-0.1 0.8-0.6-0.1-0.5 0.2 0.1 0.5 0.8-0.1 0.5 0.4 0 1.3 0.9 0.1 1.1 0.5 0.3-0.3 0.6 0.2 0.2-0.6 0.9 0.5 0.2 0.6 1.2 0.8 0.9-1.2-0.4-0.5 0-0.6 0.2-0.5-0.8-0.4 0.3-1.9-0.7-0.6 0.5-0.9 0.8-0.3-0.7-0.6 0-0.3 1.5 0.1 0.5-0.5 0.6 0.2 0.5 0.5 0 0.6 0.7 0.3 0.6-0.3 0.4-1.1-0.4-0.2-0.8-1.2 0.6 0.1 0.7-0.6-0.9-0.7-1.2-0.6 0-0.3 0.8-0.2 0.8 0.2 0.4 0.4 0.2 0.7 0.5 0.2 0.5-0.3 0.9 0 0.2-0.2 1 0.1 0.5 0.5 0.2 0.8-1.1-0.1-0.3 0.6 0.6 0.2 0.8 0.6-0.4 0.2-0.7-0.1-0.1 0.5 1 0 0.6 0.3 0.7-0.1 0 0.7-0.2 1.2 0.4 0.2 1.5-1.2 1 0 0.6-0.3-0.2-0.7-0.1-1.5 0.9-0.2 0.8-1.1 0.8 0.1 0.4-0.5 1-0.3 0.2-0.5-0.2-0.7 0.4-0.2 0.8-0.7 0.8 0 0.1 0.4 0.9 0.2-0.4 0.4 1.5 1.3 0.6 0.2-0.4 2.2-0.4 0.9-0.4 1.4 0.2 0.6-0.2 1.7 0.6 0.2-0.1 0.7-0.3 0 0.1 1.2-0.1 0.7-0.5-0.1-0.2 0.5 0.2 0.4-0.3 0.7-0.2 2 0.7 0.6-0.6 0.7 0.5 0.7 0.6-0.6 1 0.6 0.3-1.6 0.4-1.1 1-0.2 0.6 0.7 0.7-0.3-0.2-0.7-0.6-0.1-0.7-0.8 0.4-1 0.9 0.3 0.8 0.8 1.3-0.1 0-0.7 0.7-0.2 0.4 0.6 0.9 0 0.4 0.4 1.1-0.7 0.8 0.6-0.1 1 0.2 0.6-0.3 0.2 0.1 0.5 0.9 0.2 0.2 1.7-0.8 1.3 0.4 0.4 0.6 0.1-0.5 0.7 0 1 0.3 0.4 0.9 0.2 0.5 0.5 0 0.7 1 0.6-0.4 1.1 0.5 0.8 0.9 0.5 0.9 0.1 1.2 1.2 0.9 0.5 0.5-0.4 0.6 0-0.1 0.7-0.6 0.5 0.5 0.3-0.1 0.5 0.5 0.3 0.6 0.8-0.1 0.7 0.9 0.4-0.5 0.8-0.7 0.2-0.4-0.2-0.3 0.7-0.3 0.4 0.1 0.3-1.5 0.5-0.7 0.8 0.3 0.7 0.5-0.5 0.5 0.1-0.2 0.9 1.1 0.6 1.6 0.2 0.4-0.8 0.9 1.5 0.5 0 0-0.8 0.4-0.2 0.2 0.6-0.2 0.8-0.6-0.1-0.6 0.4-1.4 0.3-1.7 1.1-2.7 0.9-0.7 0.4-0.1 0.4-0.8 0.3-0.1 0.7 0.6 0.8-0.3 1 0.6 0.1 0.3 0.4-0.4 0.7 0.9-0.2 0.3-0.4-0.3-0.7 0.5-1.8 0.4 0.1 0.2 0.7 1.2-0.1 0.2-0.2 1-0.1 0.4-0.4 0.9-0.3 0.4-0.5 1.2-0.2-0.1-0.7 0.4-0.6 0.6-0.1 0.5-0.4 0.6 0.5 0.5-0.2 1.8 0.7 0.5 0.5 0.5-0.8 0.6 0.1 0.3 0.4 0.6-0.4 0.3 0.5 0.5-0.5 0.6 0.1 0.6 1.1 0.2-0.3 0-1 0.5 0 0.7 0.4 0.4-0.2 0.3-0.6 0.1-0.8 0.6-0.1 1.4 0.3 1.2 0.4 0.8 0.1-0.4 1-0.6 0.5-0.6 0.2 0.2 1.2-1.4 0.3 0.5 0.8-0.1 0.3-0.8 0-0.7-0.3-0.7 0.4 0 0.5 0.5 0.7-0.6 0.3-0.1 1.6-0.3 0.3-0.7-0.4-1.6-0.4-0.6 0.8-0.8 0.5-1-0.2-0.4 0.4 0 0.7-0.3 0.4-1 0.1-0.6 0.5 0.1 0.8-0.3 0.6-0.4 0.1-0.9-0.1-0.7 0.3-0.4 0.9-0.8 0.4-0.7-0.3-1.2 0.9-0.8 0.8-1.3 0.5-0.7 0.7-1.4 0-1.3 0.3 0.4 0.8-0.2 0.5-0.9-0.1-0.4 0.1-0.5-0.2-1.4 0.7-0.2 1-1.2 1.2-0.8 0.4-1.1 0.8-0.8-0.3-1 0.2-0.5 0.2-0.4 1.1-0.3 0.3-0.9 0-0.8 0.3-0.5 0.5-0.3 0.7-1.5 1-1.4 0.4-0.5 1.1-1.1 0.8 0.3 0.6-0.6 0.8 0 0.4-0.7 0.8-0.9 0 0 0.7-0.8 0.6-0.5 0-1.1-0.3-0.9 0.2-0.2 0.9-1 0-0.3 0.2-0.5 0.9-0.5 0.4-0.5 0.8-0.2 1 0.2 0.7-0.1 0.4-0.7 0.1-0.5 0.3-0.2 0.7 0.9 0.7-0.3 0.7 0.5 0.4 0 0.8-0.2 0.9 0.4 0.9-0.1 0.6 0.5 0.6 0.6 1.1 0.1 0.9 0.7 0.4 0.4 1.3 0.6 0.4 0.3-0.2 1.2 1.1 0.9 0.1 0.7-0.2 0.8 0.4 0.1 0.6 1.9-0.5 1.4 0.3 1 0.7 0 0.6 0.6 0 0.2-0.6 0.9-0.1 0.9 0 0.4-0.7 0.7 0 0.3-0.4 1.1 0.1 1 0.7 1.1 0 0.2-0.6 0.5 0 0.1-1.3 1.1-0.8 0.6-0.7 0.6-0.4 1.5 0.7-0.4 0.8 0.3 0.6-0.3 0.9 0.5 0.2 0.3 0.8-0.2 0.6-0.5 0.4 0.4 0.7 0.4 0.1 0.8 0.6 0.3 1-0.8 0.1-0.1 2-1 0.8-0.5 0-0.8 0.4-0.5-0.6-0.6-0.5-1.1 0.3-0.7-0.2-0.7 0.1-0.3 0.8-0.9-0.1-0.3 0.6-1 0.4-2.6-0.6-0.4 0.6-0.4 0.3-1.5 0.4-0.5 0-0.3 0.7-0.1 1.2 0.1 0.5 1.5 1.3-0.3 0.7 0.9 0.5-0.6 0.7-0.8 0.3-1.6-0.1-1 0.5 0.4 0.7 0.8 1 0 0.5 0.4 0.1 0.7-0.1 0.5 0.2 0.5-0.1 0.7-0.4 0.4 0.1 0.3 0.8 0.5 0.5 0.8 0 0.4 0.4 0.1 0.6 0.6 1.2-0.1 1.5 0.2 0.9-0.4 1.1-0.5-0.1-0.2 0.9-0.9 0.8-0.9 0.4-0.5-0.2-0.7-0.6 0.1-1.5-0.5-0.3-0.3 0.6-0.4 0-0.2-0.7-0.6 0-0.8 0.5 0.5 1.1 0.3 0.3 0.2 0.5-0.3 0.8 0.2 0.2-0.2 0.9 0.2 0.5 0 0.7-0.3 0.2 0.2 1 0.4 0.4 0.4 1.3 1.1 1.2 0.1 0.3 0.7 0.7-0.3 0.3-0.5 0-0.4 1.7-0.7-0.3-0.5 0.1-0.8 0.4-0.7 0.1-0.3-0.2-0.6-1.1-0.4-0.2-0.7 0-0.2 0.3-0.5-0.3-0.8-0.7 0.4-1.2 0.4-0.4-0.3-1.1-0.4 0.4-1 0.3-0.7-0.1 0 0.7-1.2 0.8-0.2 0.4 0.4 0.6-0.7 0.4-0.8 0.1-0.4-0.4 0 0.7-0.3-0.3-1-0.5-0.2 0.3-0.8-0.3-0.4 0.5-1.6-1.1-0.9-0.1-0.8 0.4-0.4 0.6-0.8-0.3-0.6 0.1-0.5-0.3 0-1.1-0.3-0.4 0.3-0.8-0.6-0.6-0.3 0.5-0.1 0.5-0.5 0.2-0.2 0.3 0.3 1.1-0.1 0.3-0.8 0.9 0 0.8 0.2 0.3 0.2 1.1-0.2 0.4 0.1 0.7-0.8-0.1-0.1 0.2-1.6 0.5-0.4 0.7-1 0.6-0.8 0.2 0 0.8 0.5 0.7-0.1 1.2-0.8 0.3-0.4 0.7-0.3-0.1-1.2 0.6-0.7-0.3-1.3 0.7-0.7 0.5-0.5-0.1 0-0.7-0.9-0.6-0.7-0.1-0.1 0.8 0.8 0.4-0.1 1.1-0.3 0.3-0.6-0.1 0.2 1-0.3 0.4-1-0.8-0.9-0.2-1 0.2-0.4-0.5 0.1-0.5-0.2-0.7-0.7-0.6-0.9-0.4-0.5-0.6-0.8-0.3 0.2-1.8 0.7-0.7 0.7-1.3 0.4 0.5 1.1 0.4 0 0.5 1.8 0 0.1-0.5 0.8-0.5 0.5 0.5-0.1 0.6 0.5 0.8 0.9-0.3 0.1-0.4 0.6-0.1 0.5-1.2 0-0.7 1.4-0.3 0-1.1-0.5 0.1-0.6-0.2-0.3-0.7-1-0.2 0.9-2.4 0.8-0.3 0.2-0.9 0-1.2-0.4-0.4-0.9 0.1-0.7-1.1 0-1.3-0.1-0.4 0.6-0.2 0-0.5 0.8-0.9 0.1-0.5 0.7 0.3-0.1 0.8 0.5 0.4 0.9 0 1.1-0.7 0.2-0.3 0-1.1-0.1-0.4 0.5-0.9-0.5-0.4 0.1-0.8-0.7-0.2-0.3-0.7-0.6-0.2-0.2-0.5 0-1.2-0.4 0 0.3-1.4-0.1-0.4-0.9-0.8-0.5-0.3-1.2 0.2-1.7 0.9-0.6 0.8-1.2 0.4-0.9-1-0.8 0.3-0.5-0.2-1.4 0.7-0.8 0.1-2.5-0.5-0.3-0.2-1.3-0.1-1-0.4-0.5 0.1-0.6-0.2-0.3 0.4-0.6-1.1-0.1-0.9 0.7-0.9 0.8-0.1 0.2-0.5-0.7-0.3-0.7-1.1 1.3-0.3-0.2 1 1.2 0.4 0.4 1 0.4 0.1 0.4-0.6 0.4 0 2-1 0.2-0.8-0.5 0-0.9 0.4-1.3-0.3-0.4 0.6-1.4-0.6 0.2-0.8 0.6-0.3-0.6-1.1 0.5-0.5 0.1 0.8 0.8 1.3 0.2-0.9 0.3-0.8-0.4-0.5-0.1-0.8 0.9-0.5 0-0.5-1.1-0.2-3 0.4-0.8-0.6-0.4 0.3-0.1 0.5 0.4 0.5-0.1 0.6-0.7 0.1-0.7 0.7 0.1 2.3-0.8 0.3-0.4-0.3-0.8 0.9-0.9-0.5-1.8-0.1 0.1-0.5-1-0.1 0-0.9-0.3-0.3-1 0-0.1-0.8-0.2-0.3-0.6 0.2-0.2 0.8 0 1.3 0.8 1.4 0.1 1.2 0.5 0 0.2 0.3 0.6 0.1 1.8 0.2 0.7-0.2 0.4 0.2 0.3 0.6-0.1 0.6-0.7 0-0.1 0.6 0.3 0.7-1 0.3-0.6 1.1-1.1 0.2-0.8-0.4-0.2-0.6-0.5-0.6-0.8-1.7-0.2-0.9-0.3 0 0.1 1.2-0.6 0.4 0.2 0.5-0.3 1.2 1 0 0.1 0.4-0.6 0.5-0.3 0.6 0.1 0.8-1.1 0.4 0.2 1-0.2 0.8-0.6 0.1-0.3 0.3 1.1 1 0.6 0.2 0.4-0.3 0.6 0 1.2 1.3-1.3 1.2-0.2 0.7-0.5 0.6 0 1.5-0.8 0.6 0 0.6 0.5 0.2 1.1-0.2 1.1 0.2 0.6-0.2 0.5 0.5 0.3 0.8-0.7 0.5 0.6 1.3 0.7 0.5 0.3 1.1 0.6 0.3 0.1 0.8 0.4 0.4 0.1 0.9 0.3 0.3-0.2 0.5-0.4 0.3-0.2 0.9-0.6 0.4-0.8 1.4-0.2 1.4 0.3 0.6-0.2 1.4 0.5 0.1 0.3 0.9-0.2 0.3 0.3 0.7-0.5 0.4 0 0.7-0.4 0.6 0.4 0.2 0.4 1.2-0.9 0.2-0.5 0.5-0.5 0.9-0.5 0.6-1.3 0.7-0.2-0.4-0.6 0.1-0.3 0.5-0.6 0.2-0.2 0.6-0.6-0.2-1.2 0.7-0.3 0.5-1.2 0.1-0.4 1-0.7 0.3 0 1.1-0.4 0.5-0.4 0 0 0.8-0.3 0.5 0.4 1 0.5-0.3 0.6 0.4 0.7 0 0.5 0.6 0.6 0.1 0.5-0.4 0.8 0.1 0.6 0.9-0.8 0.4 0.7 0.2 0.9-0.3-0.2 0.6-0.8 0.5-1.3-0.2-0.4 0.6-0.8 0.5-0.4 0.6-1.8 0.3 0.1 0.4-0.3 0.6-0.7 0.3-1.2 0.1-0.6-0.2-0.3-0.4-1.2-0.2-0.8 0.7-0.4 0.6-0.7 0.2z";
+
 interface CohortInfo {
   cohortName: string;
   leaderName: string;
@@ -124,23 +142,12 @@ export default function CohortRegistrationsPage() {
       .catch(err => console.error("Error loading map SVG:", err));
   }, []);
 
-  const [rjSvgText, setRjSvgText] = useState<string | null>(null);
   const [hoveredCity, setHoveredCity] = useState<{
     name: string;
     count: number;
     breakdown?: { btech: number; bba: number; bdes: number };
     coords: { x: number; y: number };
   } | null>(null);
-
-  // Load the Rajasthan map SVG
-  useEffect(() => {
-    fetch('/rajasthan_map.svg')
-      .then(res => res.text())
-      .then(text => {
-        setRjSvgText(text);
-      })
-      .catch(err => console.error("Error loading Rajasthan map SVG:", err));
-  }, []);
 
   const getBackLink = () => {
     if (!user) return { href: '/', label: 'Back to Home' };
@@ -400,22 +407,7 @@ export default function CohortRegistrationsPage() {
     }
   }, [svgText, stateCourseCounts, isDark]);
 
-  // Update Rajasthan map paths color dynamically
-  useEffect(() => {
-    if (!rjSvgText) return;
-    
-    const svgEl = document.getElementById('rajasthan-svg-container');
-    if (!svgEl) return;
-    
-    const paths = svgEl.getElementsByTagName('path');
-    for (let i = 0; i < paths.length; i++) {
-      const path = paths[i];
-      path.style.fill = isDark ? '#1e293b' : '#e2e8f0';
-      path.style.stroke = isDark ? '#334155' : '#cbd5e1';
-      path.style.strokeWidth = '0.5';
-      path.style.transition = 'all 0.3s ease';
-    }
-  }, [rjSvgText, isDark]);
+
 
   let btechMales = 0;
   let btechFemales = 0;
@@ -686,11 +678,47 @@ export default function CohortRegistrationsPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 w-full space-y-8 sm:space-y-10 relative z-10">
 
         {/* Page Title */}
-        <div className="text-center space-y-3 max-w-2xl mx-auto">
+        <div className="text-center space-y-4 max-w-3xl mx-auto">
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Cohort Registration Tracker</h1>
-          <p className="inline-block bg-primary/10 border border-primary/25 text-primary text-xs font-semibold px-4 py-1.5 rounded-full">
-            Real-time student registration progress across all cohorts.
-          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <p className="inline-block bg-primary/10 border border-primary/25 text-primary text-xs font-semibold px-4 py-1.5 rounded-full">
+              Real-time student registration progress across all cohorts.
+            </p>
+            
+            <a 
+              href="/api/reports/statewise-summary" 
+              download 
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-card-bg border border-card-border hover:bg-emerald-500/10 hover:border-emerald-500/30 text-emerald-500 text-xs font-bold rounded-full transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Statewise XLSX
+            </a>
+            
+            <a 
+              href="/api/reports/coursewise-details" 
+              download 
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-card-bg border border-card-border hover:bg-emerald-500/10 hover:border-emerald-500/30 text-emerald-500 text-xs font-bold rounded-full transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+              </svg>
+              Coursewise XLSX
+            </a>
+            
+            <a 
+              href="/api/reports/rajasthan-citywise" 
+              download 
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-card-bg border border-card-border hover:bg-emerald-500/10 hover:border-emerald-500/30 text-emerald-500 text-xs font-bold rounded-full transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              RJ Cities XLSX
+            </a>
+          </div>
         </div>
 
         {/* Global Stats */}
@@ -845,11 +873,11 @@ export default function CohortRegistrationsPage() {
           </div>
         )}
 
-        {/* Second Row: Rajasthan City-wise, Map Heatmap, and Report Downloads */}
+        {/* Second Row: Rajasthan City-wise and Map Heatmap */}
         {!loading && !notPublished && data.length > 0 && (
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-            {/* Column 1: Rajasthan Citywise Table (col-span-5) */}
-            <div className="lg:col-span-5 glass-card p-5 sm:p-6 flex flex-col overflow-hidden max-h-[500px]">
+            {/* Column 1: Rajasthan Citywise Table (col-span-7) */}
+            <div className="lg:col-span-7 glass-card p-5 sm:p-6 flex flex-col overflow-hidden max-h-[500px]">
               <h2 className="text-sm font-bold text-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
                 Rajasthan Citywise
@@ -882,69 +910,100 @@ export default function CohortRegistrationsPage() {
               </div>
             </div>
 
-            {/* Column 2: Rajasthan Interactive Map (col-span-4) */}
-            <div className="lg:col-span-4 glass-card p-5 sm:p-6 flex flex-col justify-between relative overflow-hidden h-[500px]">
+            {/* Column 2: Rajasthan Interactive Map (col-span-5) */}
+            <div className="lg:col-span-5 glass-card p-5 sm:p-6 flex flex-col justify-between relative overflow-hidden h-[500px]">
               <h2 className="text-sm font-bold text-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
                 Rajasthan Heatmap
               </h2>
               
               <div className="flex-1 w-full relative flex items-center justify-center min-h-[300px]">
-                {rjSvgText ? (
-                  <div 
-                    id="rajasthan-svg-container"
-                    className="w-full h-full flex items-center justify-center relative select-none"
-                    dangerouslySetInnerHTML={{ __html: rjSvgText }}
+                <svg
+                  viewBox="123.48499999999967 260.08500000000015 264.3299999999997 242.62999999999982"
+                  className="w-full h-full max-h-[380px] select-none"
+                >
+                  <defs>
+                    <linearGradient id="amberGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#fbbf24" />
+                      <stop offset="100%" stopColor="#f97316" />
+                    </linearGradient>
+                  </defs>
+                  
+                  <path
+                    id="Rajasthan"
+                    name="Rajasthan"
+                    d={RAJASTHAN_PATH_D}
+                    className="transition-all duration-300 ease-in-out"
+                    style={{
+                      fill: isDark ? '#1e293b' : '#f8fafc',
+                      stroke: isDark ? '#334155' : '#cbd5e1',
+                      strokeWidth: '0.8'
+                    }}
                   />
-                ) : (
-                  <div className="text-center text-xs text-text-muted animate-pulse">Loading Map...</div>
-                )}
 
-                {/* Overlaid city dots */}
-                {rjSvgText && Object.entries(rajasthanCityCourseCounts).map(([city, counts]) => {
-                  const marker = RJ_CITY_MARKERS[city.toUpperCase()];
-                  if (!marker) return null;
+                  {/* Overlaid city dots rendered directly inside the SVG */}
+                  {Object.entries(rajasthanCityCourseCounts).map(([city, counts]) => {
+                    const coords = RJ_CITY_COORDINATES[city.toUpperCase()];
+                    if (!coords) return null;
 
-                  const maxCount = Math.max(...Object.values(rajasthanCityCourseCounts).map(c => c.total));
-                  const minRadius = 6;
-                  const maxRadius = 18;
-                  const size = maxCount > 0 
-                    ? minRadius + (counts.total / maxCount) * (maxRadius - minRadius) 
-                    : minRadius;
+                    const maxCount = Math.max(...Object.values(rajasthanCityCourseCounts).map(c => c.total));
+                    const minRadius = 4;
+                    const maxRadius = 12;
+                    const size = maxCount > 0 
+                      ? minRadius + (counts.total / maxCount) * (maxRadius - minRadius) 
+                      : minRadius;
 
-                  return (
-                    <div
-                      key={city}
-                      className="absolute group/pin cursor-pointer transform -translate-x-1/2 -translate-y-1/2 z-20"
-                      style={{ left: marker.left, top: marker.top }}
-                      onMouseEnter={(e) => {
-                        setHoveredCity({
-                          name: city,
-                          count: counts.total,
-                          breakdown: { btech: counts.btech, bba: counts.bba, bdes: counts.bdes },
-                          coords: { x: e.clientX, y: e.clientY }
-                        });
-                      }}
-                      onMouseMove={(e) => {
-                        setHoveredCity(prev => prev ? { ...prev, coords: { x: e.clientX, y: e.clientY } } : null);
-                      }}
-                      onMouseLeave={() => {
-                        setHoveredCity(null);
-                      }}
-                    >
-                      {/* Pulse effect */}
-                      <span 
-                        className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-60 animate-ping"
-                        style={{ width: `${size * 2}px`, height: `${size * 2}px`, left: `-${size}px`, top: `-${size}px` }}
-                      ></span>
-                      {/* Solid marker center */}
-                      <span 
-                        className="relative inline-block rounded-full bg-gradient-to-br from-amber-400 to-orange-500 border border-white dark:border-slate-800 shadow-md shadow-orange-500/30"
-                        style={{ width: `${size}px`, height: `${size}px`, transform: 'translate(-50%, -50%)' }}
-                      ></span>
-                    </div>
-                  );
-                })}
+                    return (
+                      <g
+                        key={city}
+                        className="cursor-pointer"
+                        onMouseEnter={(e) => {
+                          setHoveredCity({
+                            name: city,
+                            count: counts.total,
+                            breakdown: { btech: counts.btech, bba: counts.bba, bdes: counts.bdes },
+                            coords: { x: e.clientX, y: e.clientY }
+                          });
+                        }}
+                        onMouseMove={(e) => {
+                          setHoveredCity(prev => prev ? { ...prev, coords: { x: e.clientX, y: e.clientY } } : null);
+                        }}
+                        onMouseLeave={() => {
+                          setHoveredCity(null);
+                        }}
+                      >
+                        {/* Animated pulse circle using standard SVG elements */}
+                        <circle
+                          cx={coords.x}
+                          cy={coords.y}
+                          r={size}
+                          className="fill-amber-400"
+                        >
+                          <animate
+                            attributeName="r"
+                            values={`${size};${size * 2.5}`}
+                            dur="1.5s"
+                            repeatCount="indefinite"
+                          />
+                          <animate
+                            attributeName="opacity"
+                            values="0.6;0"
+                            dur="1.5s"
+                            repeatCount="indefinite"
+                          />
+                        </circle>
+                        {/* Solid marker center */}
+                        <circle
+                          cx={coords.x}
+                          cy={coords.y}
+                          r={size}
+                          className="stroke-white dark:stroke-slate-800 stroke-[1px]"
+                          style={{ fill: 'url(#amberGradient)' }}
+                        />
+                      </g>
+                    );
+                  })}
+                </svg>
               </div>
 
               {/* Hovered City Tooltip */}
@@ -980,71 +1039,6 @@ export default function CohortRegistrationsPage() {
                   )}
                 </div>
               )}
-            </div>
-
-            {/* Column 3: Downloads & Reports (col-span-3) */}
-            <div className="lg:col-span-3 glass-card p-5 sm:p-6 flex flex-col justify-between h-[500px]">
-              <div>
-                <h2 className="text-sm font-bold text-foreground uppercase tracking-widest mb-4">Downloads</h2>
-                <p className="text-xs text-text-muted mb-4">
-                  Export registration logs directly to Excel.
-                </p>
-                
-                <div className="space-y-3">
-                  <a 
-                    href="/api/reports/statewise-summary" 
-                    download
-                    className="flex items-center justify-between p-3 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
-                  >
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <div className="text-left">
-                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Statewise</div>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-bold text-primary group-hover:translate-x-0.5 transition-transform">XLSX</span>
-                  </a>
-
-                  <a 
-                    href="/api/reports/coursewise-details" 
-                    download
-                    className="flex items-center justify-between p-3 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
-                  >
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                      </svg>
-                      <div className="text-left">
-                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Coursewise</div>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-bold text-primary group-hover:translate-x-0.5 transition-transform">XLSX</span>
-                  </a>
-
-                  <a 
-                    href="/api/reports/rajasthan-citywise" 
-                    download
-                    className="flex items-center justify-between p-3 bg-card-bg border border-card-border hover:bg-primary/5 hover:border-primary/50 rounded-xl transition-all group cursor-pointer"
-                  >
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      <div className="text-left">
-                        <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">RJ Cities</div>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-bold text-primary group-hover:translate-x-0.5 transition-transform">XLSX</span>
-                  </a>
-                </div>
-              </div>
-              
-              <div className="text-[9px] text-text-muted font-bold text-center mt-4 border-t border-card-border/30 pt-3">
-                Aarambh Engine
-              </div>
             </div>
           </div>
         )}
