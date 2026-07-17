@@ -149,6 +149,18 @@ export default function CohortRegistrationsPage() {
     coords: { x: number; y: number };
   } | null>(null);
 
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Auto-advance highlights slider
+  useEffect(() => {
+    if (loading || notPublished || data.length === 0 || isPaused) return;
+    const interval = setInterval(() => {
+      setActiveSlide(prev => (prev + 1) % 4);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [loading, notPublished, data, isPaused]);
+
   const getBackLink = () => {
     if (!user) return { href: '/', label: 'Back to Home' };
     switch (user.role) {
@@ -664,7 +676,12 @@ export default function CohortRegistrationsPage() {
                 </svg>
               )}
             </button>
-
+            <Link
+              href="/cohort-registrations/highlights"
+              className="px-3 sm:px-5 py-1.5 sm:py-2.5 border border-indigo-500/20 hover:border-indigo-500/50 text-indigo-600 bg-indigo-500/5 hover:bg-indigo-500/10 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
+            >
+              📺 <span className="hidden sm:inline">TV Mode</span><span className="inline sm:hidden">TV</span>
+            </Link>
             <Link
               href={backLink.href}
               className="px-3 sm:px-5 py-1.5 sm:py-2.5 bg-card-bg border border-card-border hover:bg-background text-foreground text-xs font-semibold rounded-full transition-all cursor-pointer flex items-center gap-1.5"
@@ -687,24 +704,174 @@ export default function CohortRegistrationsPage() {
           </div>
         </div>
 
-        {/* Global Stats */}
+        {/* Live Highlights Slide Card */}
         {!loading && !notPublished && grandTotalStudents > 0 && (
           <div className="space-y-6 max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-              <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-primary">
-                <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Total Students</div>
-                <div className="text-2xl sm:text-3xl font-bold text-foreground">{grandTotalStudents}</div>
-                <div className="text-xs text-text-muted">Allocated across all cohorts</div>
+            <div 
+              className="glass-card p-6 border-l-4 border-l-primary flex flex-col justify-between h-[220px] sm:h-[190px] relative overflow-hidden transition-all duration-300 group select-none bg-card-bg/60"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+            >
+              {/* Slide Navigation Arrows */}
+              <button 
+                onClick={() => setActiveSlide(prev => (prev - 1 + 4) % 4)}
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-30 text-foreground cursor-pointer font-bold text-sm"
+              >
+                ←
+              </button>
+              <button 
+                onClick={() => setActiveSlide(prev => (prev + 1) % 4)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-30 text-foreground cursor-pointer font-bold text-sm"
+              >
+                →
+              </button>
+
+              {/* Slide Contents */}
+              <div className="flex-1 flex flex-col justify-center px-4">
+                {activeSlide === 0 && (
+                  <div className="space-y-3.5 animate-fadeIn">
+                    <div className="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-widest">
+                      <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+                      Live Registration Numbers
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Total Students</div>
+                        <div className="text-xl sm:text-2xl font-black text-foreground">{grandTotalStudents}</div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Registered</div>
+                        <div className="text-xl sm:text-2xl font-black text-emerald-500">{grandRegisteredCount}</div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Verified</div>
+                        <div className="text-xl sm:text-2xl font-black text-indigo-500">{grandVerifiedCount}</div>
+                      </div>
+                    </div>
+                    <div className="w-full bg-card-border/40 rounded-full h-1.5 overflow-hidden mt-1">
+                      <div 
+                        className="bg-primary h-full rounded-full transition-all duration-500" 
+                        style={{ width: `${grandTotalStudents > 0 ? (grandRegisteredCount / grandTotalStudents) * 100 : 0}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                )}
+
+                {activeSlide === 1 && (() => {
+                  const topStates = Object.entries(stateCourseCounts)
+                    .map(([state, counts]) => ({ name: state, total: counts.total }))
+                    .sort((a, b) => b.total - a.total)
+                    .slice(0, 3);
+
+                  return (
+                    <div className="space-y-3.5 animate-fadeIn">
+                      <div className="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-widest">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Top Registration Regions
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {topStates.map((st, idx) => {
+                          const pct = grandRegisteredCount > 0 ? Math.round((st.total / grandRegisteredCount) * 100) : 0;
+                          const colors = ['from-orange-500 to-amber-500', 'from-emerald-500 to-teal-500', 'from-indigo-500 to-purple-500'];
+                          return (
+                            <div key={st.name} className="space-y-1">
+                              <div className="flex justify-between items-center text-[10px] font-bold text-text-muted">
+                                <span className="truncate">{st.name}</span>
+                                <span>{st.total} ({pct}%)</span>
+                              </div>
+                              <div className="w-full bg-card-border/45 rounded-full h-2 overflow-hidden">
+                                <div 
+                                  className={`bg-gradient-to-r ${colors[idx]} h-full rounded-full transition-all duration-500`}
+                                  style={{ width: `${pct}%` }}
+                                ></div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {activeSlide === 2 && (() => {
+                  const totalReg = regBTech + regBBA + regBDes;
+                  const btechPct = totalReg > 0 ? Math.round((regBTech / totalReg) * 100) : 0;
+                  const bbaPct = totalReg > 0 ? Math.round((regBBA / totalReg) * 100) : 0;
+                  const bdesPct = totalReg > 0 ? Math.round((regBDes / totalReg) * 100) : 0;
+
+                  return (
+                    <div className="space-y-3.5 animate-fadeIn">
+                      <div className="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-widest">
+                        <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                        Course-wise Distribution
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">B.Tech</div>
+                          <div className="text-xl sm:text-2xl font-black text-indigo-500">{regBTech}</div>
+                          <div className="text-[9px] text-text-muted font-bold mt-0.5">{btechPct}% of total</div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">BBA</div>
+                          <div className="text-xl sm:text-2xl font-black text-emerald-500">{regBBA}</div>
+                          <div className="text-[9px] text-text-muted font-bold mt-0.5">{bbaPct}% of total</div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">B.Des</div>
+                          <div className="text-xl sm:text-2xl font-black text-pink-500">{regBDes}</div>
+                          <div className="text-[9px] text-text-muted font-bold mt-0.5">{bdesPct}% of total</div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {activeSlide === 3 && (() => {
+                  const totalGender = regMales + regFemales;
+                  const malePct = totalGender > 0 ? Math.round((regMales / totalGender) * 100) : 0;
+                  const femalePct = totalGender > 0 ? Math.round((regFemales / totalGender) * 100) : 0;
+
+                  return (
+                    <div className="space-y-3.5 animate-fadeIn">
+                      <div className="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-widest">
+                        <span className="w-2.5 h-2.5 rounded-full bg-pink-500 animate-pulse"></span>
+                        Gender Diversity
+                      </div>
+                      <div className="flex items-center justify-between text-xs font-bold text-text-muted mb-1">
+                        <span className="text-blue-500">Male: {regMales} ({malePct}%)</span>
+                        <span className="text-pink-500">Female: {regFemales} ({femalePct}%)</span>
+                      </div>
+                      <div className="w-full bg-card-border/45 rounded-full h-3 overflow-hidden flex">
+                        <div 
+                          className="bg-gradient-to-r from-blue-500 to-indigo-500 h-full transition-all duration-500"
+                          style={{ width: `${malePct}%` }}
+                        ></div>
+                        <div 
+                          className="bg-gradient-to-r from-pink-500 to-purple-500 h-full transition-all duration-500"
+                          style={{ width: `${femalePct}%` }}
+                        ></div>
+                      </div>
+                      <div className="text-[9px] text-text-muted italic text-center font-semibold mt-1">
+                        Promoting a balanced and inclusive student community.
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
-              <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-emerald-500">
-                <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Registered at JKLU</div>
-                <div className="text-2xl sm:text-3xl font-bold text-emerald-600">{grandRegisteredCount}</div>
-                <div className="text-xs text-text-muted">Registered in database</div>
-              </div>
-              <div className="glass-card p-5 sm:p-6 flex flex-col gap-2 sm:gap-3 border-l-4 border-l-indigo-500">
-                <div className="text-xs font-semibold text-text-muted uppercase tracking-widest">Documents Verified</div>
-                <div className="text-2xl sm:text-3xl font-bold text-indigo-600">{grandVerifiedCount}</div>
-                <div className="text-xs text-text-muted">Verified by cluster head</div>
+
+              {/* Pagination indicators */}
+              <div className="flex justify-center gap-1.5 mt-2">
+                {[0, 1, 2, 3].map(idx => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveSlide(idx)}
+                    className={`w-1.5 h-1.5 rounded-full transition-all cursor-pointer ${
+                      activeSlide === idx 
+                        ? 'bg-primary w-3.5' 
+                        : 'bg-card-border hover:bg-text-muted'
+                    }`}
+                  />
+                ))}
               </div>
             </div>
 
@@ -759,6 +926,13 @@ export default function CohortRegistrationsPage() {
                     }
                     .state-path {
                       transition: fill 0.3s ease, stroke 0.3s ease, stroke-width 0.3s ease;
+                    }
+                    @keyframes fadeIn {
+                      from { opacity: 0; transform: translateY(4px); }
+                      to { opacity: 1; transform: translateY(0); }
+                    }
+                    .animate-fadeIn {
+                      animation: fadeIn 0.4s ease-out forwards;
                     }
                   `}} />
                   <div 
