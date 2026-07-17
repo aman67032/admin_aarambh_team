@@ -296,7 +296,7 @@ export default function BtechBookSlotPage() {
                 <button
                   key={d}
                   onClick={() => { setSelectedDate(d); setSelectedSlot(null); }}
-                  className={`px-5 py-2.5 rounded-full text-xs font-bold border transition-all duration-300 cursor-pointer ${
+                  className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-bold border transition-all duration-300 cursor-pointer ${
                     selectedDate === d
                       ? `bg-gradient-to-r ${COURSE_GRADIENT} text-white border-transparent shadow-md ${COURSE_GLOW}`
                       : 'bg-card-bg border-card-border/60 text-text-muted hover:border-indigo-500/50 hover:bg-indigo-500/5'
@@ -326,7 +326,7 @@ export default function BtechBookSlotPage() {
                     </svg>
                     <span>Morning Session · 9:30 AM – 1:30 PM</span>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
                     {slots.filter(s => {
                       const h = parseInt(s.time.split(':')[0]);
                       return h < 14;
@@ -340,7 +340,7 @@ export default function BtechBookSlotPage() {
                           key={slot.time}
                           disabled={isFull}
                           onClick={() => setSelectedSlot(isSelected ? null : slot.time)}
-                          className={`p-3 rounded-xl border text-center transition-all duration-300 cursor-pointer flex flex-col justify-between items-center min-h-[72px] ${
+                          className={`p-2.5 sm:p-3 rounded-xl border text-center transition-all duration-300 cursor-pointer flex flex-col justify-between items-center min-h-[68px] sm:min-h-[72px] ${
                             isSelected
                               ? `bg-gradient-to-r ${COURSE_GRADIENT} text-white border-transparent shadow-md ${COURSE_GLOW} scale-102`
                               : isFull
@@ -385,7 +385,7 @@ export default function BtechBookSlotPage() {
                     </svg>
                     <span>Afternoon Session · 2:00 PM – 5:00 PM</span>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
                     {slots.filter(s => {
                       const h = parseInt(s.time.split(':')[0]);
                       return h >= 14;
@@ -399,7 +399,7 @@ export default function BtechBookSlotPage() {
                           key={slot.time}
                           disabled={isFull}
                           onClick={() => setSelectedSlot(isSelected ? null : slot.time)}
-                          className={`p-3 rounded-xl border text-center transition-all duration-300 cursor-pointer flex flex-col justify-between items-center min-h-[72px] ${
+                          className={`p-2.5 sm:p-3 rounded-xl border text-center transition-all duration-300 cursor-pointer flex flex-col justify-between items-center min-h-[68px] sm:min-h-[72px] ${
                             isSelected
                               ? `bg-gradient-to-r ${COURSE_GRADIENT} text-white border-transparent shadow-md ${COURSE_GLOW} scale-102`
                               : isFull
@@ -447,17 +447,17 @@ export default function BtechBookSlotPage() {
               </div>
             )}
 
-            <div className="flex gap-3 pt-3">
+            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-3">
               <button
                 onClick={() => { setStep('form'); setSelectedSlot(null); setError(''); }}
-                className="flex-1 py-3.5 bg-card-bg border border-card-border/60 text-foreground text-xs font-bold rounded-xl hover:bg-background hover:border-card-border transition-all duration-300 cursor-pointer"
+                className="w-full sm:flex-1 py-3.5 bg-card-bg border border-card-border/60 text-foreground text-xs font-bold rounded-xl hover:bg-background hover:border-card-border transition-all duration-300 cursor-pointer order-2 sm:order-1"
               >
                 ← Back
               </button>
               <button
                 onClick={handleBook}
                 disabled={!selectedSlot || loading}
-                className={`flex-[2] py-3.5 bg-gradient-to-r ${COURSE_GRADIENT} text-white text-xs font-bold rounded-xl hover:opacity-90 transition-all ${COURSE_GLOW} disabled:opacity-40 cursor-pointer`}
+                className={`w-full sm:flex-[2] py-3.5 bg-gradient-to-r ${COURSE_GRADIENT} text-white text-xs font-bold rounded-xl hover:opacity-90 transition-all ${COURSE_GLOW} disabled:opacity-40 cursor-pointer order-1 sm:order-2`}
               >
                 {loading ? 'Reserving slot...' : 'Confirm Registration Slot'}
               </button>
@@ -489,13 +489,13 @@ export default function BtechBookSlotPage() {
 
             {/* Ticket Details Box */}
             <div className="bg-card-bg/60 border border-card-border/50 rounded-2xl p-5 space-y-3.5 relative">
-              <div className="flex justify-between items-center py-1 border-b border-card-border/20">
-                <span className="text-xs text-text-muted font-bold uppercase tracking-wider">Application No</span>
-                <span className="text-xs font-extrabold text-foreground tracking-wider">{booking.applicationNo}</span>
+              <div className="flex justify-between items-center gap-4 py-1.5 border-b border-card-border/20">
+                <span className="text-xs text-text-muted font-bold uppercase tracking-wider shrink-0">Application No</span>
+                <span className="text-xs font-extrabold text-foreground tracking-wider text-right break-all max-w-[180px] sm:max-w-none">{booking.applicationNo}</span>
               </div>
-              <div className="flex justify-between items-center py-1 border-b border-card-border/20">
-                <span className="text-xs text-text-muted font-bold uppercase tracking-wider">Name</span>
-                <span className="text-xs font-extrabold text-foreground uppercase">{booking.name}</span>
+              <div className="flex justify-between items-center gap-4 py-1.5 border-b border-card-border/20">
+                <span className="text-xs text-text-muted font-bold uppercase tracking-wider shrink-0">Name</span>
+                <span className="text-xs font-extrabold text-foreground uppercase text-right break-words max-w-[180px] sm:max-w-none">{booking.name}</span>
               </div>
               <div className="flex justify-between items-center py-1 border-b border-card-border/20">
                 <span className="text-xs text-text-muted font-bold uppercase tracking-wider">Date</span>
