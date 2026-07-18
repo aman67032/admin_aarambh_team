@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 
 import { api, Student } from '../lib/api';
 import { useApp } from '../context/AppContext';
+import { shift1Buses, shift2Buses, trekDuties } from '../lib/busRosterData';
 
 
 
@@ -43,7 +44,12 @@ export default function AdminDashboard() {
 
   const [batchesData, setBatchesData] = useState<any[]>([]);
 
-  const [activeTab, setActiveTab] = useState<'performance' | 'correctness' | 'not-continuing' | 'aarambh-verification' | 'batches'>('performance');
+  const [activeTab, setActiveTab] = useState<'performance' | 'correctness' | 'not-continuing' | 'aarambh-verification' | 'batches' | 'bus-trek-slots'>('performance');
+  const [busSubTab, setBusSubTab] = useState<'shift1' | 'shift2' | 'trek'>('shift1');
+  const [expandedBuses, setExpandedBuses] = useState<Record<string, boolean>>({});
+  const toggleBus = (key: string) => {
+    setExpandedBuses(prev => ({ ...prev, [key]: !prev[key] }));
+  };
 
   const [notPublished, setNotPublished] = useState(false);
 
@@ -363,6 +369,22 @@ export default function AdminDashboard() {
         >
 
           Batch Structure
+
+        </button>
+
+        <button
+
+          onClick={() => setActiveTab('bus-trek-slots')}
+
+          className={`pb-3 font-bold text-sm transition-all cursor-pointer ${
+
+            activeTab === 'bus-trek-slots' ? 'border-b-2 border-primary text-primary' : 'text-text-muted'
+
+          }`}
+
+        >
+
+          Bus & Trek Slots
 
         </button>
 
@@ -1248,6 +1270,193 @@ export default function AdminDashboard() {
               );
             })}
           </div>
+        </div>
+      )}
+
+      {activeTab === 'bus-trek-slots' && (
+        <div className="space-y-6 animate-fadeIn">
+          {/* Header Card */}
+          <div className="bg-card-bg border border-card-border p-6 rounded-2xl shadow-sm text-center space-y-2">
+            <h2 className="text-2xl font-black text-foreground font-outfit uppercase tracking-wider">Bus & Trek Slots Tracker</h2>
+            <p className="text-xs font-bold text-primary uppercase tracking-widest">Real-time Seat Capacities & Duty Allocations</p>
+            <div className="w-16 h-1 bg-primary mx-auto rounded-full mt-2" />
+          </div>
+
+          {/* Sub Navigation */}
+          <div className="flex gap-4 border-b border-card-border pb-2">
+            <button
+              onClick={() => setBusSubTab('shift1')}
+              className={`px-4 py-2 rounded-lg font-bold text-sm transition-all cursor-pointer ${
+                busSubTab === 'shift1' ? 'bg-primary text-white font-extrabold' : 'text-text-muted hover:bg-card-bg/50'
+              }`}
+            >
+              Shift 1 Buses
+            </button>
+            <button
+              onClick={() => setBusSubTab('shift2')}
+              className={`px-4 py-2 rounded-lg font-bold text-sm transition-all cursor-pointer ${
+                busSubTab === 'shift2' ? 'bg-primary text-white font-extrabold' : 'text-text-muted hover:bg-card-bg/50'
+              }`}
+            >
+              Shift 2 Buses
+            </button>
+            <button
+              onClick={() => setBusSubTab('trek')}
+              className={`px-4 py-2 rounded-lg font-bold text-sm transition-all cursor-pointer ${
+                busSubTab === 'trek' ? 'bg-primary text-white font-extrabold' : 'text-text-muted hover:bg-card-bg/50'
+              }`}
+            >
+              Trek Roster
+            </button>
+          </div>
+
+          {/* Bus Grid for Shift 1 & 2 */}
+          {busSubTab !== 'trek' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fadeIn">
+              {(busSubTab === 'shift1' ? shift1Buses : shift2Buses).map((bus) => {
+                const isOverCapacity = bus.empty_seats < 0;
+                const isFull = bus.empty_seats === 0;
+                const occupancyPercent = Math.min(100, Math.round((bus.total_members / bus.capacity) * 100));
+                
+                return (
+                  <div 
+                    key={bus.name} 
+                    className={`bg-card-bg border rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-all duration-300 ${
+                      isOverCapacity ? 'border-red-200' : 'border-card-border'
+                    }`}
+                  >
+                    {/* Bus Header */}
+                    <div className="bg-card-bg/50 border-b border-card-border px-5 py-4 flex items-center justify-between">
+                      <div>
+                        <h3 className="text-base font-extrabold text-foreground font-outfit">{bus.name}</h3>
+                        <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mt-0.5">
+                          Capacity: {bus.capacity} Seats
+                        </p>
+                      </div>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-md font-bold border ${
+                        isOverCapacity 
+                          ? 'bg-red-50 text-red-700 border-red-200' 
+                          : isFull 
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
+                            : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                      }`}>
+                        {isOverCapacity ? 'Over Capacity' : isFull ? 'Full' : `${bus.empty_seats} Seats Available`}
+                      </span>
+                    </div>
+
+                    {/* Bus Details */}
+                    <div className="p-5 space-y-4">
+                      {/* Progress Bar */}
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs font-bold text-text-muted">
+                          <span>Seat Occupancy</span>
+                          <span>{occupancyPercent}% ({bus.total_members}/{bus.capacity})</span>
+                        </div>
+                        <div className="w-full bg-card-border rounded-full h-2 overflow-hidden">
+                          <div 
+                            className={`h-2 transition-all duration-500 ${
+                              isOverCapacity ? 'bg-red-500' : 'bg-primary'
+                            }`} 
+                            style={{ width: `${occupancyPercent}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Detail Metrics */}
+                      <div className="grid grid-cols-3 gap-4 text-center">
+                        <div className="bg-card-bg/30 border border-card-border/50 p-2.5 rounded-xl">
+                          <span className="text-[9px] font-bold text-text-muted uppercase tracking-wider block">New Students</span>
+                          <span className="text-base font-extrabold text-foreground font-outfit">{bus.new_students}</span>
+                        </div>
+                        <div className="bg-card-bg/30 border border-card-border/50 p-2.5 rounded-xl">
+                          <span className="text-[9px] font-bold text-text-muted uppercase tracking-wider block">Staff & Team</span>
+                          <span className="text-base font-extrabold text-foreground font-outfit">{bus.members.length}</span>
+                        </div>
+                        <div className="bg-card-bg/30 border border-card-border/50 p-2.5 rounded-xl">
+                          <span className="text-[9px] font-bold text-text-muted uppercase tracking-wider block">Empty Seats</span>
+                          <span className={`text-base font-extrabold font-outfit ${isOverCapacity ? 'text-red-500' : 'text-foreground'}`}>{bus.empty_seats}</span>
+                        </div>
+                      </div>
+
+                      {/* Toggle Collapse Button */}
+                      <button
+                        onClick={() => toggleBus(`${busSubTab}-${bus.name}`)}
+                        className="w-full py-2 bg-card-bg/60 border border-card-border hover:bg-card-bg hover:text-primary rounded-xl text-xs font-bold transition-all text-foreground cursor-pointer flex items-center justify-center gap-1"
+                      >
+                        {expandedBuses[`${busSubTab}-${bus.name}`] ? 'Hide Passengers ▲' : 'View Passengers ▼'}
+                      </button>
+
+                      {/* Passengers Table Collapse */}
+                      {expandedBuses[`${busSubTab}-${bus.name}`] && (
+                        <div className="border border-card-border rounded-xl overflow-hidden mt-3 animate-slideDown">
+                          <table className="w-full text-[11px] text-left border-collapse">
+                            <thead>
+                              <tr className="bg-card-bg/50 border-b border-card-border text-[9px] font-bold text-text-muted uppercase tracking-wider">
+                                <th className="p-2">Type / Cohort</th>
+                                <th className="p-2">Name</th>
+                                <th className="p-2">Phone</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-card-border/50 font-bold text-foreground">
+                              {bus.members.map((m, idx) => (
+                                <tr key={idx} className="hover:bg-card-bg/30">
+                                  <td className="p-2 text-primary">{m.type}</td>
+                                  <td className="p-2 text-foreground font-extrabold">{m.name}</td>
+                                  <td className="p-2 text-text-muted">{m.phone}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Trek Roster Tab */}
+          {busSubTab === 'trek' && (
+            <div className="space-y-6">
+              {/* Group by Trek Category */}
+              {Array.from(new Set(trekDuties.map(d => d.group))).map((groupName) => {
+                const membersInGroup = trekDuties.filter(d => d.group === groupName);
+                
+                return (
+                  <div key={groupName} className="bg-card-bg border border-card-border rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 animate-fadeIn">
+                    <div className="bg-card-bg/50 border-b border-card-border px-5 py-4">
+                      <h3 className="text-base font-extrabold text-foreground font-outfit uppercase tracking-wider">{groupName}</h3>
+                    </div>
+                    <div className="overflow-x-auto p-4">
+                      <table className="w-full text-xs text-left border-collapse">
+                        <thead>
+                          <tr className="border-b border-card-border text-[10px] font-bold text-text-muted uppercase tracking-wider">
+                            <th className="pb-2">Shift</th>
+                            <th className="pb-2">Name</th>
+                            <th className="pb-2">Role / Committee</th>
+                            <th className="pb-2">Phone</th>
+                            <th className="pb-2">Remarks / Details</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-card-border/50 font-bold text-foreground">
+                          {membersInGroup.map((d, idx) => (
+                            <tr key={idx} className="hover:bg-card-bg/30">
+                              <td className="py-2.5 text-indigo-600">{d.shift}</td>
+                              <td className="py-2.5 font-extrabold text-foreground">{d.name}</td>
+                              <td className="py-2.5 text-text-muted">{d.role}</td>
+                              <td className="py-2.5 text-foreground">{d.phone}</td>
+                              <td className="py-2.5 text-text-muted font-normal italic">{d.remarks}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 
