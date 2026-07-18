@@ -1301,7 +1301,7 @@ export default function SuperAdminDashboard() {
                     {bookingData?.grouped && Object.keys(bookingData.grouped).length > 0 ? (
                       Object.keys(bookingData.grouped).sort().map((timeSlot) => {
                         const slotBookings = bookingData.grouped[timeSlot] || [];
-                        const capacity = 16;
+                        const capacity = bookingCourse === 'B.Tech' ? 4 : bookingCourse === 'BBA' ? 2 : 6;
                         const bookedCount = slotBookings.length;
                         const occupancyPercent = Math.min(100, Math.round((bookedCount / capacity) * 100));
                         const isExpanded = !!expandedSlots[timeSlot];
@@ -1319,7 +1319,7 @@ export default function SuperAdminDashboard() {
                               <div className="flex items-center gap-3">
                                 <span className="text-lg">⏰</span>
                                 <div>
-                                  <h4 className="text-sm font-extrabold text-foreground font-outfit">{timeSlot}</h4>
+                                  <h4 className="text-sm font-extrabold text-foreground font-outfit">{formatSlotLabel(timeSlot)}</h4>
                                   <p className="text-[10px] text-text-muted font-bold uppercase mt-0.5">
                                     {bookedCount} Students Booked
                                   </p>
@@ -1405,5 +1405,30 @@ export default function SuperAdminDashboard() {
 
   );
 
+}
+
+function formatSlotLabel(timeStr: string) {
+  try {
+    const [hStr, mStr] = timeStr.split(':');
+    const startH = parseInt(hStr, 10);
+    const startM = parseInt(mStr, 10);
+    
+    let endMin = startM + 15;
+    let endH = startH;
+    if (endMin >= 60) {
+      endMin -= 60;
+      endH += 1;
+    }
+    
+    const formatAMPM = (h: number, m: number) => {
+      const period = h >= 12 ? 'PM' : 'AM';
+      const displayH = h > 12 ? h - 12 : h === 0 ? 12 : h;
+      return `${displayH}:${String(m).padStart(2, '0')} ${period}`;
+    };
+    
+    return `${formatAMPM(startH, startM)} - ${formatAMPM(endH, endMin)}`;
+  } catch (e) {
+    return timeStr;
+  }
 }
 
