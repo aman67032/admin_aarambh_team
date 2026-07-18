@@ -117,22 +117,20 @@ router.post('/book', async (req, res) => {
       return res.status(400).json({ error: 'Invalid course. Must be B.Tech or BBA' });
     }
 
-    // 1. Validate student exists and is confirmed
-    const student = await Student.findOne({ applicationNo, confirmedJklu: true });
-    if (!student) {
-      return res.status(404).json({ error: 'Student not found or not confirmed at JKLU' });
-    }
+    // 1. Validate student exists and is confirmed (Bypassed by request)
+    const student = await Student.findOne({ applicationNo });
+    if (student) {
+      // 2. Validate course matches student's actual course if student exists
+      const studentCourse = student.course || '';
+      let expectedCourse = null;
+      if (studentCourse.includes('Tech')) expectedCourse = 'B.Tech';
+      else if (studentCourse.includes('BBA')) expectedCourse = 'BBA';
 
-    // 2. Validate course matches student's actual course
-    const studentCourse = student.course || '';
-    let expectedCourse = null;
-    if (studentCourse.includes('Tech')) expectedCourse = 'B.Tech';
-    else if (studentCourse.includes('BBA')) expectedCourse = 'BBA';
-
-    if (expectedCourse !== course) {
-      return res.status(400).json({
-        error: `Course mismatch. Your registered course maps to ${expectedCourse || 'unknown'}, but you selected ${course}`
-      });
+      if (expectedCourse && expectedCourse !== course) {
+        return res.status(400).json({
+          error: `Course mismatch. Your registered course maps to ${expectedCourse || 'unknown'}, but you selected ${course}`
+        });
+      }
     }
 
     // 3. Check student hasn't already booked for this course
