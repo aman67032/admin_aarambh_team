@@ -10,17 +10,19 @@ if (!uri) {
   process.exit(1);
 }
 
-const TimeSlotBooking = require('../models/TimeSlotBooking');
+const Student = require('../models/Student');
 
 async function run() {
   try {
     await mongoose.connect(uri);
-    console.log("Successfully connected to Database.");
+    console.log("Connected.");
 
-    const slot = "09:30";
-    const bookings = await TimeSlotBooking.find({ date: '2026-07-22', timeSlot: slot }).lean();
-    console.log(`Bookings on 2026-07-22 for slot ${slot}:`);
-    console.log(JSON.stringify(bookings, null, 2));
+    const query = "Menghani";
+    const matches = await Student.find({ name: new RegExp(query, 'i') }).lean();
+    console.log(`Found ${matches.length} matches for "${query}":`);
+    matches.forEach(s => {
+      console.log(`- Name: ${s.name} | AppNo: ${s.applicationNo} | Course: ${s.course} | ConfJklu: ${s.confirmedJklu}`);
+    });
 
   } catch (error) {
     console.error("Error:", error);
