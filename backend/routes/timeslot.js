@@ -118,20 +118,7 @@ router.post('/book', async (req, res) => {
     }
 
     // 1. Validate student exists and is confirmed (Bypassed by request)
-    const student = await Student.findOne({ applicationNo });
-    if (student) {
-      // 2. Validate course matches student's actual course if student exists
-      const studentCourse = student.course || '';
-      let expectedCourse = null;
-      if (studentCourse.includes('Tech')) expectedCourse = 'B.Tech';
-      else if (studentCourse.includes('BBA')) expectedCourse = 'BBA';
-
-      if (expectedCourse && expectedCourse !== course) {
-        return res.status(400).json({
-          error: `Course mismatch. Your registered course maps to ${expectedCourse || 'unknown'}, but you selected ${course}`
-        });
-      }
-    }
+    // Bypassed completely to allow any application number and course combination.
 
     // 3. Check student hasn't already booked for this course
     const existingBooking = await TimeSlotBooking.findOne({
