@@ -64,6 +64,7 @@ function formatAMPM(h, m) {
 // ── GET /available ───────────────────────────────────────────────────
 
 router.get('/available', async (req, res) => {
+  return res.status(403).json({ error: 'Slot booking is currently closed.', slots: [] });
   try {
     const { course, date } = req.query;
     if (!course || !date) {
@@ -105,6 +106,7 @@ router.get('/available', async (req, res) => {
 // ── POST /book ───────────────────────────────────────────────────────
 
 router.post('/book', async (req, res) => {
+  return res.status(403).json({ error: 'Slot booking is currently closed.' });
   try {
     const { applicationNo, name, course, date, timeSlot } = req.body;
 

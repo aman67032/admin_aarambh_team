@@ -104,7 +104,7 @@ export default function BbaBookSlotPage() {
           return;
         }
       }
-      setStep('slots');
+      setError('Registration slot booking is currently closed. Only existing bookings can be verified.');
     } catch (err) {
       setError('Unable to connect. Please try again.');
     } finally {
@@ -247,6 +247,9 @@ export default function BbaBookSlotPage() {
         {/* Step 1: Form */}
         {step === 'form' && (
           <div className="glass-card p-6 sm:p-8 space-y-6 max-w-lg mx-auto animate-float-subtle">
+            <div className="bg-amber-500/10 border border-amber-500/25 rounded-xl p-4 text-xs font-bold text-amber-600 dark:text-amber-400 leading-relaxed">
+              ⚠️ New slot bookings are now closed. If you have already booked a slot, you can verify your details below to view your confirmation slip.
+            </div>
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-text-muted uppercase tracking-wider">Application Number</label>
               <input
